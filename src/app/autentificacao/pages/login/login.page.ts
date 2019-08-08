@@ -1,9 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, AbstractControl, FormControl } from '@angular/forms';
+import { trigger, state, transition, style, animate } from '@angular/animations';
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
-  styleUrls: ['./login.page.scss']
+  styleUrls: ['./login.page.scss'],
+  animations: [
+    trigger('movLogo', [
+      state('cadastro', style({ 'padding-top': '10%' })),
+      state('login', style({ 'padding-top': '25%' })),
+      transition('login => cadastro', [style({ transition: '1s' }), animate('300ms 0s ease-in')]),
+      transition('cadastro => login', [style({ transition: '1s' }), animate('300ms 0s ease-in')])
+    ])
+  ]
 })
 export class LoginPage implements OnInit {
   loginForm: FormGroup;

@@ -5,10 +5,10 @@ import { BrowserModule } from '@angular/platform-browser';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { RouteReuseStrategy } from '@angular/router';
-
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 @NgModule({
-  imports: [IonicModule.forRoot()],
-  exports: [BrowserModule, IonicModule],
+  imports: [IonicModule.forRoot(), BrowserAnimationsModule],
+  exports: [BrowserModule, IonicModule, BrowserAnimationsModule],
   providers: [
     StatusBar,
     SplashScreen,

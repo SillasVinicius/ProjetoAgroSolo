@@ -3,6 +3,7 @@
     <ion-img
       src="../../../assets/img/logo.png"
       id="img-logo"
+      [@movLogo]="configs.login ? 'login' : 'cadastro'"
     ></ion-img>
   </h1>
   <form
