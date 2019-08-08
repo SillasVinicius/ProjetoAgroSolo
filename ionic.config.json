@@ -1,5 +1,7 @@
 {
   "name": "AgroSolo",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }
