@@ -2,12 +2,13 @@
 exports.__esModule = true;
 var users_1 = require("./users");
 var jwt = require("jsonwebtoken");
+var api_config_1 = require("./api-config");
 exports.handleAuthentication = function (req, resp) {
     var user = req.body;
     if (isValid(user)) {
-        var dbUser = users_1.users[user.email];
-        var token = jwt.sign({ sub: dbUser.email, iss: 'agroSolo-api' }, 'agroSolo-password');
-        resp.json({ name: dbUser.name, email: dbUser.email, accessToken: token });
+        var dbUser_1 = users_1.users[user.email];
+        var token = jwt.sign({ sub: function () { return dbUser_1.email; }, iss: 'agroSolo-api' }, api_config_1.apiConfig.secret);
+        resp.json({ name: dbUser_1.name, email: dbUser_1.email, accessToken: token });
     }
     else {
         resp.status(303).json({ message: 'dados invalidos' });

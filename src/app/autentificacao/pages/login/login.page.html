@@ -41,29 +41,28 @@
       <ion-item>
         <ion-icon
           slot="start"
-          name="at"
+          name="key"
           color="primary"
         ></ion-icon>
         <ion-input
-          type="email"
-          inputmode="email"
-          placeholder="Email"
+          placeholder="Cpf"
           color="primary"
-          formControlName="email"
+          autoFocus="true"
+          formControlName="cpf"
         ></ion-input>
         <ion-note
           slot="end"
           color="danger"
-          *ngIf="email.dirty && email.hasError('required')"
+          *ngIf="cpf.dirty && cpf.hasError('required')"
         >
-          Email Obrigatório!
+          Cpf Obrigatório!
         </ion-note>
         <ion-note
           slot="end"
           color="danger"
-          *ngIf="email.dirty && email.hasError('email')"
+          *ngIf="cpf.dirty && (cpf.hasError('minlength') || cpf.hasError('maxlength'))"
         >
-          Email inválido!
+          Cpf Inválido!
         </ion-note>
       </ion-item>
       <ion-item>
@@ -149,28 +148,29 @@
     <ion-item>
       <ion-icon
         slot="start"
-        name="key"
+        name="at"
         color="primary"
       ></ion-icon>
       <ion-input
-        placeholder="Cpf"
+        type="email"
+        inputmode="email"
+        placeholder="Email"
         color="primary"
-        autoFocus="true"
-        formControlName="cpf"
+        formControlName="email"
       ></ion-input>
       <ion-note
         slot="end"
         color="danger"
-        *ngIf="cpf.dirty && cpf.hasError('required')"
+        *ngIf="email.dirty && email.hasError('required')"
       >
-        Cpf Obrigatório!
+        Email Obrigatório!
       </ion-note>
       <ion-note
         slot="end"
         color="danger"
-        *ngIf="cpf.dirty && (cpf.hasError('minlength') || cpf.hasError('maxlength'))"
+        *ngIf="email.dirty && email.hasError('email')"
       >
-        Cpf Inválido!
+        Email inválido!
       </ion-note>
     </ion-item>
     <ion-item>
@@ -204,10 +204,18 @@
       expand="block"
       [disabled]="loginForm.invalid"
       type="submit"
+      (click)="login()"
     >
       {{configs.acao}}
     </ion-button>
   </form>
+
+
+
+
+
+
+
 
   <ion-button
     expand="block"

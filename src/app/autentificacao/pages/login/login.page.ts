@@ -1,6 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, AbstractControl, FormControl } from '@angular/forms';
 import { trigger, state, transition, style, animate } from '@angular/animations';
+import { AuthService } from 'src/app/core/services/auth.service';
+import { User } from '../../../core/services/user.model';
+import { OverlayService } from 'src/app/core/services/overlay.service';
+import { response } from 'express';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -31,7 +36,12 @@ export class LoginPage implements OnInit {
     Validators.minLength(9),
     Validators.maxLength(9)
   ]);
-  private emailControl = new FormControl('', [Validators.required, Validators.email]);
+  private cpfControl = new FormControl('', [
+    Validators.required,
+    Validators.pattern(this.numberPattern),
+    Validators.minLength(11),
+    Validators.maxLength(11)
+  ]);
   private telefoneControl = new FormControl('', [
     Validators.required,
     Validators.pattern(this.numberPattern),
@@ -43,17 +53,17 @@ export class LoginPage implements OnInit {
     Validators.minLength(10),
     Validators.maxLength(10)
   ]);
-  constructor(private formBuilder: FormBuilder) {}
+  constructor(
+    private formBuilder: FormBuilder,
+    private loginService: AuthService,
+    private overlayService: OverlayService,
+    private router: Router
+  ) {}
 
   ngOnInit() {
     this.loginForm = this.formBuilder.group({
-      senha: this.formBuilder.control('', [Validators.required, Validators.minLength(6)]),
-      cpf: this.formBuilder.control('', [
-        Validators.required,
-        Validators.pattern(this.numberPattern),
-        Validators.minLength(11),
-        Validators.maxLength(11)
-      ])
+      senha: this.formBuilder.control('123456', [Validators.required, Validators.minLength(6)]),
+      email: this.formBuilder.control('sillas@gmail.com', [Validators.required, Validators.email])
     });
   }
 
@@ -87,16 +97,28 @@ export class LoginPage implements OnInit {
     if (!login) {
       this.loginForm.addControl('nome', this.nomeControl);
       this.loginForm.addControl('rg', this.rgControl);
-      this.loginForm.addControl('email', this.emailControl);
+      this.loginForm.addControl('cpf', this.cpfControl);
       this.loginForm.addControl('telefone', this.telefoneControl);
       this.loginForm.addControl('dataNascimento', this.dataNascimentoControl);
     } else {
       this.loginForm.removeControl('nome');
       this.loginForm.removeControl('rg');
-      this.loginForm.removeControl('email');
+      this.loginForm.removeControl('cpf');
       this.loginForm.removeControl('telefone');
       this.loginForm.removeControl('dataNascimento');
     }
+  }
+
+  async login() {
+    const loading = await this.overlayService.loading();
+    this.loginService
+      .login(this.loginForm.value.email, this.loginForm.value.senha)
+      .subscribe(
+        user => this.router.navigate(['/menu']),
+        response => this.overlayService.toast({ message: response.error.message })
+      );
+
+    loading.dismiss();
   }
 
   onSubmit(): void {

@@ -1,0 +1,23 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Relatório de Clientes</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-list>
+    <app-lista-cliente-item
+      *ngFor="let cliente of (clientes$ | async)"
+      [cliente]="cliente"
+    ></app-lista-cliente-item>
+  </ion-list>
+  <ion-fab
+    vertical="bottom"
+    horizontal="end"
+    slot="fixed"
+  >
+    <ion-fab-button>
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>
