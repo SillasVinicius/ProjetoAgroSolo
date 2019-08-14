@@ -9,6 +9,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AuthService } from './services/auth.service';
 import { HttpClientModule } from '@angular/common/http';
 import { HttpModule } from '@angular/http';
+import { CriaClienteService } from './services/cria-cliente.service';
 @NgModule({
   imports: [IonicModule.forRoot(), BrowserAnimationsModule, HttpClientModule, HttpModule],
   exports: [BrowserModule, IonicModule, BrowserAnimationsModule, HttpClientModule, HttpModule],
@@ -17,6 +18,7 @@ import { HttpModule } from '@angular/http';
     SplashScreen,
     AuthService,
     HttpClientModule,
+    CriaClienteService,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ]
 })

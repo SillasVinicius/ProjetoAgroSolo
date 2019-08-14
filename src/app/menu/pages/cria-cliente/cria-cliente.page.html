@@ -1,63 +1,129 @@
 <ion-header>
   <ion-toolbar color="primary">
-    <ion-title>Cadastro de Cliente</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/menu"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{ pageTitle }}</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content padding>
-  <ion-item>
-    <ion-icon
-      slot="start"
-      name="person"
-      color="primary"
-    ></ion-icon>
-    <ion-input
-      type="text"
-      placeholder="Nome"
-      color="primary"
-      autoFocus="true"
-    ></ion-input>
-  </ion-item>
-  <ion-item>
-    <ion-icon
-      slot="start"
-      name="key"
-      color="primary"
-    ></ion-icon>
-    <ion-input
-      placeholder="Cpf"
-      color="primary"
-    ></ion-input>
-  </ion-item>
-  <ion-item>
-    <ion-icon
-      slot="start"
-      name="logo-usd"
-      color="primary"
-    ></ion-icon>
-    <ion-input
-      placeholder="Patrimônio"
-      color="primary"
-    ></ion-input>
-  </ion-item>
-  <ion-item>
-    <ion-icon
-      slot="start"
-      name="cash"
-      color="primary"
-    ></ion-icon>
-    <ion-input
-      placeholder="Produtividade Agropecuária"
-      color="primary"
-    ></ion-input>
-  </ion-item>
-  <ion-item
-    lines="none"
-    slot="start"
+  <form
+    [formGroup]="clienteForm"
+    (submit)="onSubmit()"
+    novalidate
   >
+    <ion-item>
+      <ion-icon
+        slot="start"
+        name="person"
+        color="primary"
+      ></ion-icon>
+      <ion-input
+        formControlName="nome"
+        type="text"
+        placeholder="Nome"
+        color="primary"
+        autoFocus="true"
+      ></ion-input>
+      <ion-note
+        slot="end"
+        color="danger"
+        *ngIf="nome.dirty && nome.hasError('required')"
+      >
+        Nome Obrigatório!
+      </ion-note>
+      <ion-note
+        slot="end"
+        color="danger"
+        *ngIf="nome.dirty && nome.hasError('minlength')"
+      >
+        Mínimo 3 caracteres
+      </ion-note>
+    </ion-item>
+    <ion-item>
+      <ion-icon
+        slot="start"
+        name="key"
+        color="primary"
+      ></ion-icon>
+      <ion-input
+        formControlName="cpf"
+        placeholder="Cpf"
+        color="primary"
+      ></ion-input>
+      <ion-note
+        slot="end"
+        color="danger"
+        *ngIf="cpf.dirty && cpf.hasError('required')"
+      >
+        Cpf Obrigatório!
+      </ion-note>
+      <ion-note
+        slot="end"
+        color="danger"
+        *ngIf="cpf.dirty && (cpf.hasError('minlength') || cpf.hasError('maxlength'))"
+      >
+        Cpf Inválido!
+      </ion-note>
+    </ion-item>
+    <ion-item>
+      <ion-icon
+        slot="start"
+        name="logo-usd"
+        color="primary"
+      ></ion-icon>
+      <ion-input
+        formControlName="patrimonio"
+        placeholder="Patrimônio"
+        color="primary"
+      ></ion-input>
+      <ion-note
+        slot="end"
+        color="danger"
+        *ngIf="patrimonio.dirty && patrimonio.hasError('required')"
+      >
+        Patrimônio Obrigatório!
+      </ion-note>
+      <ion-note
+        slot="end"
+        color="danger"
+        *ngIf="
+          patrimonio.dirty && (patrimonio.hasError('minlength') || patrimonio.hasError('maxlength'))
+        "
+      >
+        Patrimônio Inválido!
+      </ion-note>
+    </ion-item>
+    <ion-item>
+      <ion-icon
+        slot="start"
+        name="cash"
+        color="primary"
+      ></ion-icon>
+      <ion-input
+        formControlName="pdtvAgro"
+        placeholder="Produtividade Agropecuária"
+        color="primary"
+      ></ion-input>
+      <ion-note
+        slot="end"
+        color="danger"
+        *ngIf="pdtvAgro.dirty && pdtvAgro.hasError('required')"
+      >
+        Prod.Agropecuária Obrigatória!
+      </ion-note>
+      <ion-note
+        slot="end"
+        color="danger"
+        *ngIf="pdtvAgro.dirty && (pdtvAgro.hasError('minlength') || pdtvAgro.hasError('maxlength'))"
+      >
+        Prod.Agropecuária Inválida!
+      </ion-note>
+    </ion-item>
     <ion-button
       color="primary"
-      size="medium"
+      expand="full"
     >
       <ion-icon
         slot="icon-only"
@@ -65,11 +131,12 @@
       ></ion-icon>
       <ion-label padding>Adicionar Foto Pessoal</ion-label>
     </ion-button>
-  </ion-item>
-  <ion-button
-    expand="full"
-    type="submit"
-  >
-    Criar
-  </ion-button>
+    <ion-button
+      expand="full"
+      type="submit"
+      [disabled]="clienteForm.invalid"
+    >
+      {{botaoTitle}}
+    </ion-button>
+  </form>
 </ion-content>

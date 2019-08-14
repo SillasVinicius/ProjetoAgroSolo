@@ -5,26 +5,20 @@
 </ion-header>
 
 <ion-content padding>
-  <ion-list *ngIf="(clientes$ | async) as clientes">
+  <ion-list *ngIf="clientes$ | async as clientes">
     <ng-container *ngIf="clientes.length > 0; else semClientes">
       <app-lista-cliente-item
         *ngFor="let cliente of clientes"
         [cliente]="cliente"
+        (update)="atualizar($event)"
       ></app-lista-cliente-item>
     </ng-container>
     <ng-template #semClientes>
       <ion-item lines="none">Sem clientes cadastrados...</ion-item>
     </ng-template>
   </ion-list>
-  <ion-fab
-    vertical="bottom"
-    horizontal="end"
-    slot="fixed"
-  >
-    <ion-fab-button
-      [routerLink]="['/menu/cadastroCliente']"
-      routerDirection="forward"
-    >
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button [routerLink]="['/menu/cadastroCliente']" routerDirection="forward">
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
   </ion-fab>

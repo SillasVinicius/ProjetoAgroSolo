@@ -10,6 +10,10 @@ const routes: Routes = [
         loadChildren: './pages/cria-cliente/cria-cliente.module#CriaClientePageModule'
       },
       {
+        path: 'updateCliente/:id',
+        loadChildren: './pages/cria-cliente/cria-cliente.module#CriaClientePageModule'
+      },
+      {
         path: '',
         loadChildren: './pages/lista-cliente/lista-cliente.module#ListaClientePageModule'
       }
