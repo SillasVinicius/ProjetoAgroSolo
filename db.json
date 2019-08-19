@@ -5,7 +5,8 @@
       "nome": "Sillas Vinícius",
       "cpf": "11111111111",
       "patrimonio": "111111111",
-      "pdtvAgro": "111"
+      "pdtvAgro": "111",
+      "foto": ""
     },
     {
       "id": "5454545",
@@ -29,6 +30,14 @@
       "cpf": "33333333333",
       "patrimonio": "333",
       "pdtvAgro": "333"
+    },
+    {
+      "id": "30917",
+      "nome": "Bill Gates",
+      "cpf": "12345678901",
+      "patrimonio": "123",
+      "pdtvAgro": "123",
+      "foto": ""
     }
   ]
 }

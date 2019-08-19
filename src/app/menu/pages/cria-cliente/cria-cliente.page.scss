@@ -5,3 +5,28 @@ ion-button {
 // .content {
 //   margin-top: 30%;
 // }
+.upload-btn-wrapper {
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+  margin-left: 16%;
+  margin-top: 5%;
+}
+
+.btn {
+  border: 2px solid #217e36;
+  color: #217e36;
+  background-color: white;
+  padding: 8px 20px;
+  border-radius: 8px;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.upload-btn-wrapper input[type='file'] {
+  font-size: 100px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
+}

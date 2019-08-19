@@ -3,7 +3,15 @@ import { OverlayService } from 'src/app/core/services/overlay.service';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CriaClienteService } from 'src/app/core/services/cria-cliente.service';
-import { NavController } from '@ionic/angular';
+import { NavController, LoadingController, ToastController } from '@ionic/angular';
+import { Crop } from '@ionic-native/crop/ngx';
+import { ImagePicker } from '@ionic-native/image-picker/ngx';
+import {
+  FileTransfer,
+  FileUploadOptions,
+  FileTransferObject
+} from '@ionic-native/file-transfer/ngx';
+import { Camera, CameraOptions } from '@ionic-native/camera';
 
 @Component({
   selector: 'app-cria-cliente',
@@ -16,13 +24,22 @@ export class CriaClientePage implements OnInit {
   botaoTitle = '...';
   pageTitle = '...';
   clienteId: string = undefined;
+  fileUrl: any = null;
+  respData: any;
+  imageURI: any;
+  imageFileName: any;
 
   constructor(
     private formBuilder: FormBuilder,
     private overlayService: OverlayService,
     private navCtrl: NavController,
     private criaClienteService: CriaClienteService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private imagePicker: ImagePicker,
+    private crop: Crop,
+    private transfer: FileTransfer,
+    public loadingCtrl: LoadingController,
+    public toastCtrl: ToastController
   ) {}
 
   ngOnInit() {
@@ -47,7 +64,8 @@ export class CriaClientePage implements OnInit {
         Validators.minLength(3),
         Validators.maxLength(15)
       ]),
-      foto: this.formBuilder.control('', [])
+      foto: this.formBuilder.control('', []),
+      testeArquivo: this.formBuilder.control('', [])
     });
 
     this.inicio();
@@ -149,8 +167,67 @@ export class CriaClientePage implements OnInit {
         nome: this.clienteForm.get('nome').value,
         cpf: this.clienteForm.get('cpf').value,
         patrimonio: this.clienteForm.get('patrimonio').value,
-        pdtvAgro: this.clienteForm.get('pdtvAgro').value
+        pdtvAgro: this.clienteForm.get('pdtvAgro').value,
+        foto: this.clienteForm.get('foto').value
       });
     }
+  }
+
+  cropUpload() {
+    this.imagePicker.getPictures({ maximumImagesCount: 1, outputType: 0 }).then(
+      results => {
+        // tslint:disable-next-line: prefer-for-of
+        for (let i = 0; i < results.length; i++) {
+          console.log('Image URI: ' + results[i]);
+          this.crop.crop(results[i], { quality: 100 }).then(
+            newImage => {
+              console.log('new image path is: ' + newImage);
+              const fileTransfer: FileTransferObject = this.transfer.create();
+              const uploadOpts: FileUploadOptions = {
+                fileKey: 'file',
+                fileName: newImage.substr(newImage.lastIndexOf('/') + 1)
+              };
+
+              fileTransfer.upload(newImage, 'http://localhost:3001/cliente', uploadOpts).then(
+                data => {
+                  console.log(data);
+                  this.respData = JSON.parse(data.response);
+                  console.log(this.respData);
+                  this.fileUrl = this.respData.fileUrl;
+                },
+                err => {
+                  console.log(err);
+                }
+              );
+            },
+            error => console.error('Error cropping image', error)
+          );
+        }
+      },
+      err => {
+        console.log(err);
+      }
+    );
+  }
+  uploadFile() {
+    const fileTransfer: FileTransferObject = this.transfer.create();
+
+    const options: FileUploadOptions = {
+      fileKey: 'ionicfile',
+      fileName: 'ionicfile',
+      chunkedMode: false,
+      mimeType: 'image/jpeg',
+      headers: {}
+    };
+
+    fileTransfer.upload(this.imageURI, 'http://localhost:3001/cliente', options).then(
+      data => {
+        console.log(data + ' Uploaded Successfully');
+        this.imageFileName = 'http://192.168.0.7:8080/static/images/ionicfile.jpg';
+      },
+      err => {
+        console.log(err);
+      }
+    );
   }
 }

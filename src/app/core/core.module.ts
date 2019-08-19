@@ -10,6 +10,7 @@ import { AuthService } from './services/auth.service';
 import { HttpClientModule } from '@angular/common/http';
 import { HttpModule } from '@angular/http';
 import { CriaClienteService } from './services/cria-cliente.service';
+import { ImagePicker } from '@ionic-native/image-picker/ngx';
 @NgModule({
   imports: [IonicModule.forRoot(), BrowserAnimationsModule, HttpClientModule, HttpModule],
   exports: [BrowserModule, IonicModule, BrowserAnimationsModule, HttpClientModule, HttpModule],
@@ -19,7 +20,8 @@ import { CriaClienteService } from './services/cria-cliente.service';
     AuthService,
     HttpClientModule,
     CriaClienteService,
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    ImagePicker
   ]
 })
 export class CoreModule {}
