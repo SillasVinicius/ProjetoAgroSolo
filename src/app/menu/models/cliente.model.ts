@@ -5,5 +5,4 @@ export interface Cliente {
   patrimonio: string;
   pdtvAgro: string;
   foto: string;
-  testeArquivo: string;
 }

@@ -5,13 +5,13 @@
 export const environment = {
   production: false,
   firebase: {
-    apiKey: 'AIzaSyCS32ItnxIpaFPGHYOOPYuTAIFauhw4t7g',
-    authDomain: 'ionic-firestore-tasks-b7239.firebaseapp.com',
-    databaseURL: 'https://ionic-firestore-tasks-b7239.firebaseio.com',
-    projectId: 'ionic-firestore-tasks-b7239',
+    apiKey: 'AIzaSyDXI4oKUtQB00mbxl4lLMyb3xaJoD_1TM4',
+    authDomain: 'agrosolo-a5c19.firebaseapp.com',
+    databaseURL: 'https://agrosolo-a5c19.firebaseio.com',
+    projectId: 'agrosolo-a5c19',
     storageBucket: '',
-    messagingSenderId: '39759071944',
-    appId: '1:39759071944:web:a52f61e55d98c68e'
+    messagingSenderId: '842160787962',
+    appId: '1:842160787962:web:9a6aadedee803a2a'
   }
 };
 

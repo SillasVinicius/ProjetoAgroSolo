@@ -5,6 +5,33 @@ ion-button {
 // .content {
 //   margin-top: 30%;
 // }
+
+input[type='file'] {
+  display: none;
+}
+
+label {
+  background-color: #217e36;
+  color: #fff;
+  cursor: pointer;
+  margin: 10px;
+  padding: 11px 40px;
+}
+.label {
+  background-color: #217e36;
+  color: #fff;
+  cursor: pointer;
+  margin: 10px;
+  padding: 11px 40px;
+}
+.noLabel {
+  background-color: red;
+  color: #fff;
+  cursor: pointer;
+  margin: 10px;
+  padding: 11px 40px;
+}
+
 .upload-btn-wrapper {
   position: relative;
   overflow: hidden;
