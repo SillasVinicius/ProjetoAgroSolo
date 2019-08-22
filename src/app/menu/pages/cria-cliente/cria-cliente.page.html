@@ -8,17 +8,9 @@
 </ion-header>
 
 <ion-content padding>
-  <form
-    [formGroup]="clienteForm"
-    (submit)="onSubmit()"
-    novalidate
-  >
+  <form [formGroup]="clienteForm" (submit)="onSubmit()" novalidate>
     <ion-item>
-      <ion-icon
-        slot="start"
-        name="person"
-        color="primary"
-      ></ion-icon>
+      <ion-icon slot="start" name="person" color="primary"></ion-icon>
       <ion-input
         formControlName="nome"
         type="text"
@@ -26,37 +18,17 @@
         color="primary"
         autoFocus="true"
       ></ion-input>
-      <ion-note
-        slot="end"
-        color="danger"
-        *ngIf="nome.dirty && nome.hasError('required')"
-      >
+      <ion-note slot="end" color="danger" *ngIf="nome.dirty && nome.hasError('required')">
         Nome Obrigatório!
       </ion-note>
-      <ion-note
-        slot="end"
-        color="danger"
-        *ngIf="nome.dirty && nome.hasError('minlength')"
-      >
+      <ion-note slot="end" color="danger" *ngIf="nome.dirty && nome.hasError('minlength')">
         Mínimo 3 caracteres
       </ion-note>
     </ion-item>
     <ion-item>
-      <ion-icon
-        slot="start"
-        name="key"
-        color="primary"
-      ></ion-icon>
-      <ion-input
-        formControlName="cpf"
-        placeholder="Cpf"
-        color="primary"
-      ></ion-input>
-      <ion-note
-        slot="end"
-        color="danger"
-        *ngIf="cpf.dirty && cpf.hasError('required')"
-      >
+      <ion-icon slot="start" name="key" color="primary"></ion-icon>
+      <ion-input formControlName="cpf" placeholder="Cpf" color="primary"></ion-input>
+      <ion-note slot="end" color="danger" *ngIf="cpf.dirty && cpf.hasError('required')">
         Cpf Obrigatório!
       </ion-note>
       <ion-note
@@ -68,16 +40,8 @@
       </ion-note>
     </ion-item>
     <ion-item>
-      <ion-icon
-        slot="start"
-        name="logo-usd"
-        color="primary"
-      ></ion-icon>
-      <ion-input
-        formControlName="patrimonio"
-        placeholder="Patrimônio"
-        color="primary"
-      ></ion-input>
+      <ion-icon slot="start" name="logo-usd" color="primary"></ion-icon>
+      <ion-input formControlName="patrimonio" placeholder="Patrimônio" color="primary"></ion-input>
       <ion-note
         slot="end"
         color="danger"
@@ -96,21 +60,13 @@
       </ion-note>
     </ion-item>
     <ion-item>
-      <ion-icon
-        slot="start"
-        name="cash"
-        color="primary"
-      ></ion-icon>
+      <ion-icon slot="start" name="cash" color="primary"></ion-icon>
       <ion-input
         formControlName="pdtvAgro"
         placeholder="Produtividade Agropecuária"
         color="primary"
       ></ion-input>
-      <ion-note
-        slot="end"
-        color="danger"
-        *ngIf="pdtvAgro.dirty && pdtvAgro.hasError('required')"
-      >
+      <ion-note slot="end" color="danger" *ngIf="pdtvAgro.dirty && pdtvAgro.hasError('required')">
         Prod.Agropecuária Obrigatória!
       </ion-note>
       <ion-note
@@ -121,19 +77,13 @@
         Prod.Agropecuária Inválida!
       </ion-note>
     </ion-item>
-    <ion-card
-      text-center
-      *ngIf="!isUploading && !isUploaded"
-    >
+    <ion-card text-center *ngIf="!isUploading && !isUploaded">
       <ion-card-header>
         <ion-card-title style="font-size: 20px;">Adicione uma Foto</ion-card-title>
       </ion-card-header>
       <ion-card-content>
         <div class="fileUpload">
-          <label
-            for="uploadBtn"
-            *ngIf="clienteForm.valid"
-          >
+          <label for="uploadBtn" *ngIf="clienteForm.valid">
             Adicionar
           </label>
           <ion-button
@@ -149,14 +99,11 @@
             type="file"
             class="upload"
             (change)="uploadFile($event.target.files)"
-          >
+          />
         </div>
       </ion-card-content>
     </ion-card>
-    <ion-card
-      text-center
-      *ngIf="isUploading && !isUploaded"
-    >
+    <ion-card text-center *ngIf="isUploading && !isUploaded">
       <ion-card-header>
         <ion-card-title>
           Selected File:
@@ -171,7 +118,7 @@
         </div>
         <div *ngIf="snapshot | async as snap">
           File Size: {{ snap.totalBytes | fileSizePipe }} Transfered:
-        {{ snap.bytesTransferred | fileSizePipe }}
+          {{ snap.bytesTransferred | fileSizePipe }}
           <div *ngIf="snapshot && snap.bytesTransferred != snap.totalBytes">
             <ion-button
               color="warning"
@@ -181,11 +128,7 @@
             >
               Pause
             </ion-button>
-            <ion-button
-              size="small"
-              (click)="task.resume()"
-              class="button is-info"
-            >
+            <ion-button size="small" (click)="task.resume()" class="button is-info">
               Resume
             </ion-button>
             <ion-button
@@ -200,21 +143,19 @@
         </div>
       </ion-card-content>
     </ion-card>
-    <ion-card
-      text-center
-      *ngIf="!isUploading && isUploaded"
-    >
+    <ion-card text-center *ngIf="!isUploading && isUploaded">
       <ion-card-header>
         <ion-card-title style="font-size: 20px;">Imagem Adicionada!</ion-card-title>
       </ion-card-header>
 
       <ion-card-content>
         <div *ngIf="UploadedFileURL | async as url">
-          <img [src]="url">
+          <img [src]="url" />
         </div>
         File Size: {{ fileSize | fileSizePipe }}
       </ion-card-content>
     </ion-card>
+    <app-uploader></app-uploader>
     <!-- <ion-item lines="none">
       <ion-card *ngFor="let file of files | async">
         <ion-card-header>{{ file.created | date:'medium' }}</ion-card-header>
@@ -268,13 +209,9 @@
       *ngIf="fileName !== ''"
       [disabled]="clienteForm.invalid"
     >
-      {{botaoTitle}}
+      {{ botaoTitle }}
     </ion-button>
-    <ion-button
-      expand="full"
-      *ngIf="fileName === ''"
-      [disabled]="true"
-    >
+    <ion-button expand="full" *ngIf="fileName === ''" [disabled]="true">
       DESABILITADO
     </ion-button>
   </form>

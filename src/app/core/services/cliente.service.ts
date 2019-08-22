@@ -14,5 +14,6 @@ export class ClienteService extends Firestore<Cliente> {
 
   private init(): void {
     this.setCollection('/menu');
+    // this.setCollection('/menu', ref => ref.orderBy('nome', 'asc').orderBy('id', 'asc'));
   }
 }

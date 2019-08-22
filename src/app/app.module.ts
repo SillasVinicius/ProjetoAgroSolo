@@ -11,6 +11,9 @@ import { FilePath } from '@ionic-native/file-path/ngx';
 
 import { IonicStorageModule } from '@ionic/storage';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
+import { UploadTaskComponent } from './menu/component/upload-task/upload-task.component';
+import { UploaderComponent } from './menu/component/uploader/uploader.component';
+import { DropzoneDirective } from './core/directives/dropzone.directive';
 
 @NgModule({
   declarations: [AppComponent],

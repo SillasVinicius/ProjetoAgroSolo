@@ -1,0 +1,19 @@
+<div *ngIf="percentage | async as pct">
+  <div *ngIf="!downloadURL"><progress [value]="pct" max="100"></progress> {{ pct | number }}%</div>
+</div>
+
+<div *ngIf="snapshot | async as snap">
+  <div *ngIf="!downloadURL">{{ snap.bytesTransferred }} of {{ snap.totalBytes }}</div>
+
+  <div *ngIf="downloadURL as url">
+    <h3>Arquivo Adicionado!</h3>
+  </div>
+
+  <div *ngIf="!downloadURL">
+    <button (click)="task.pause()" [disabled]="!isActive(snap)" type="button">Pause</button>
+    <button (click)="task.cancel()" [disabled]="!isActive(snap)" type="button">Cancel</button>
+    <button (click)="task.resume()" [disabled]="!(snap?.state === 'paused')" type="button">
+      Resume
+    </button>
+  </div>
+</div>

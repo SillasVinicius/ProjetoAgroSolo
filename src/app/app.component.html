@@ -1,3 +1,25 @@
-<ion-app>
-  <ion-router-outlet></ion-router-outlet>
-</ion-app>
+<ion-split-pane contentId="menuContent" when="md">
+  <ion-menu menuId="main-menu" side="start" type="overlay" contentId="menuContent">
+    <ion-header>
+      <ion-toolbar color="primary">
+        <ion-title>Menu</ion-title>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content>
+      <ion-list>
+        <ion-menu-toggle autoHide="false">
+          <ion-item
+            button
+            *ngFor="let p of pages"
+            [routerLink]="p.url"
+            [routerDirection]="p.direction"
+          >
+            <ion-icon slot="start" [name]="p.icon" color="primary"></ion-icon>
+            <ion-label>{{ p.text }}</ion-label>
+          </ion-item>
+        </ion-menu-toggle>
+      </ion-list>
+    </ion-content>
+  </ion-menu>
+  <ion-router-outlet id="menuContent"></ion-router-outlet>
+</ion-split-pane>

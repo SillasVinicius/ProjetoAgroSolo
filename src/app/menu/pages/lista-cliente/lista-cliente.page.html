@@ -1,11 +1,12 @@
 <ion-header>
   <ion-toolbar color="primary">
+    <app-menu-toogle slot="start" menu="main-menu"></app-menu-toogle>
     <ion-title>Relatório de Clientes</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content padding>
-  <ion-list *ngIf="(clientes$ | async) as clientes">
+  <ion-list *ngIf="clientes$ | async as clientes">
     <ng-container *ngIf="clientes.length > 0; else semClientes">
       <app-lista-cliente-item
         *ngFor="let cliente of clientes"

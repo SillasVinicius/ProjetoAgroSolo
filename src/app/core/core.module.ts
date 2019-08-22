@@ -18,6 +18,7 @@ import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireStorageModule } from '@angular/fire/storage';
 import { environment } from 'src/environments/environment';
 import { DataService } from './services/data.service';
+import { DropzoneDirective } from './directives/dropzone.directive';
 
 @NgModule({
   imports: [
@@ -26,15 +27,7 @@ import { DataService } from './services/data.service';
     HttpClientModule,
     HttpModule,
     AngularFireStorageModule,
-    AngularFireModule.initializeApp({
-      apiKey: 'AIzaSyDXI4oKUtQB00mbxl4lLMyb3xaJoD_1TM4',
-      authDomain: 'agrosolo-a5c19.firebaseapp.com',
-      databaseURL: 'https://agrosolo-a5c19.firebaseio.com',
-      projectId: 'agrosolo-a5c19',
-      storageBucket: 'agrosolo-a5c19.appspot.com',
-      messagingSenderId: '842160787962',
-      appId: '1:842160787962:web:9a6aadedee803a2a'
-    }),
+    AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule
   ],
   exports: [BrowserModule, IonicModule, BrowserAnimationsModule, HttpClientModule, HttpModule],
@@ -48,6 +41,7 @@ import { DataService } from './services/data.service';
     ImagePicker,
     FileImageService,
     DataService
-  ]
+  ],
+  declarations: [DropzoneDirective]
 })
 export class CoreModule {}
