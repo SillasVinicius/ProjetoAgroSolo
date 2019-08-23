@@ -25,6 +25,7 @@ import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/fire
 import { Observable } from 'rxjs';
 import { DataService } from 'src/app/core/services/data.service';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
+import { UsuarioService } from 'src/app/core/services/usuario.service';
 
 const STORAGE_KEY = 'my_images';
 @Component({

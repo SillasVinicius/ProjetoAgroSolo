@@ -6,6 +6,11 @@ import { User } from '../../../core/services/user.model';
 import { OverlayService } from 'src/app/core/services/overlay.service';
 import { response } from 'express';
 import { Router } from '@angular/router';
+import { UsuarioService } from 'src/app/core/services/usuario.service';
+import { NavController } from '@ionic/angular';
+import { Observable } from 'rxjs';
+import { Usuario } from './model/usuario.model';
+import { map, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-login',
@@ -22,12 +27,15 @@ import { Router } from '@angular/router';
 })
 export class LoginPage implements OnInit {
   loginForm: FormGroup;
+  logado: boolean = false;
   numberPattern = /^[0-9]*$/;
   configs = {
     login: true,
     acao: 'Login',
     novaAcao: 'Criar conta!'
   };
+
+  private user: Observable<Usuario[]>;
 
   private nomeControl = new FormControl('', [Validators.required, Validators.minLength(3)]);
   private rgControl = new FormControl('', [
@@ -57,7 +65,9 @@ export class LoginPage implements OnInit {
     private formBuilder: FormBuilder,
     private loginService: AuthService,
     private overlayService: OverlayService,
-    private router: Router
+    private router: Router,
+    private usuarioService: UsuarioService,
+    private navCtrl: NavController
   ) {}
 
   ngOnInit() {
@@ -109,19 +119,84 @@ export class LoginPage implements OnInit {
     }
   }
 
+  logar(): void {
+    this.logado = true;
+  }
   async login() {
-    const loading = await this.overlayService.loading();
-    this.loginService
-      .login(this.loginForm.value.email, this.loginForm.value.senha)
-      .subscribe(
-        user => this.router.navigate(['/menu']),
-        response => this.overlayService.toast({ message: response.error.message })
-      );
+    // const loading = await this.overlayService.loading();
+    // this.loginService
+    //   .login(this.loginForm.value.email, this.loginForm.value.senha)
+    //   .subscribe(
+    //     user => this.router.navigate(['/menu']),
+    //     response => this.overlayService.toast({ message: response.error.message })
+    //   );
 
-    loading.dismiss();
+    // loading.dismiss();
+    // console.log('login');
+    //console.log(this.logado);
+    const loading = await this.overlayService.loading({
+      message: 'Logando...'
+    });
+
+    try {
+      this.user = await this.usuarioService.loginDb(
+        this.loginForm.get('email').value,
+        this.loginForm.get('senha').value
+      );
+      this.user.subscribe(async (r: Usuario[]) => {
+        if (r.length >= 1) {
+          //await this.logar();
+          console.log('Usuário Logado', this.user);
+          this.usuarioService.setId(r[0].id);
+          this.logar();
+          console.log(r[0].id);
+          console.log(this.logado);
+          this.navCtrl.navigateForward('/menu');
+          this.usuarioService.logado = true;
+        } else {
+          await this.overlayService.toast({
+            message: 'Usuário inválido! Verifique os dados e tente novamente!'
+          });
+          this.usuarioService.logado = false;
+        }
+      });
+    } catch (error) {
+      await this.overlayService.toast({
+        message: error.message
+      });
+      console.log('Erro ao Logar usuário: ', error);
+    } finally {
+      loading.dismiss();
+    }
+    //console.log(this.logado);
   }
 
-  onSubmit(): void {
-    console.log('LoginForm: ', this.loginForm.value);
+  async cadastro(): Promise<void> {
+    //console.log('cadastro');
+    const loading = await this.overlayService.loading({
+      message: 'Cadastrando...'
+    });
+    try {
+      const usuario = await this.usuarioService.create(this.loginForm.value);
+      console.log('Usuário Criado', usuario);
+      this.navCtrl.navigateForward('/menu');
+      this.usuarioService.logado = true;
+    } catch (error) {
+      await this.overlayService.toast({
+        message: error.message
+      });
+      this.usuarioService.logado = false;
+      console.log('Erro ao criar usuário: ', error);
+    } finally {
+      loading.dismiss();
+    }
+  }
+
+  onSubmit() {
+    if (this.configs.login) {
+      this.login();
+    } else {
+      this.cadastro();
+    }
   }
 }

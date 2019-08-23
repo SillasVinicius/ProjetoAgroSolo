@@ -1,8 +1,13 @@
 import { AngularFirestore, AngularFirestoreCollection, QueryFn } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
+import { Query } from '@angular/core';
 
 export abstract class Firestore<T extends { id: string }> {
   protected collection: AngularFirestoreCollection<T>;
+
+  id: string;
+
+  logado: boolean = false;
 
   constructor(protected db: AngularFirestore) {}
 
@@ -11,7 +16,10 @@ export abstract class Firestore<T extends { id: string }> {
   }
 
   private setItem(item: T, operation: string): Promise<T> {
-    return this.collection.doc<T>(item.id)[operation](item).then(() => item);
+    return this.collection
+      .doc<T>(item.id)
+      [operation](item)
+      .then(() => item);
   }
 
   getAll(): Observable<T[]> {
@@ -22,8 +30,21 @@ export abstract class Firestore<T extends { id: string }> {
     return this.collection.doc<T>(id).valueChanges();
   }
 
+  loginDb(email: string, senha: string): Observable<T[]> {
+    this.setCollection('/users', ref =>
+      ref.where('email', '==', email).where('senha', '==', senha)
+    );
+
+    return this.getAll();
+  }
+
+  setId(id: string) {
+    this.id = id;
+  }
+
   create(item: T): Promise<T> {
     item.id = this.db.createId();
+    this.setId(item.id);
     return this.setItem(item, 'set');
   }
 
@@ -34,5 +55,4 @@ export abstract class Firestore<T extends { id: string }> {
   delete(item: T): Promise<void> {
     return this.collection.doc<T>(item.id).delete();
   }
-
 }
