@@ -134,20 +134,7 @@
       </ion-card-header>
       <ion-card-content>
         <div class="fileUpload">
-          <label
-            for="uploadBtn"
-            *ngIf="clienteForm.valid"
-          >
-            Adicionar
-          </label>
-          <ion-button
-            *ngIf="!clienteForm.valid"
-            [disabled]="true"
-            expand="full"
-            style="margin-top: -4%; margin-bottom: -2%;"
-          >
-            Desabilitado
-          </ion-button>
+          <label for="uploadBtn">Adicionar</label>
           <input
             id="uploadBtn"
             type="file"
@@ -270,17 +257,9 @@
     <ion-button
       expand="full"
       type="submit"
-      *ngIf="fileName !== ''"
       [disabled]="clienteForm.invalid"
     >
       {{ botaoTitle }}
-    </ion-button>
-    <ion-button
-      expand="full"
-      *ngIf="fileName === ''"
-      [disabled]="true"
-    >
-      DESABILITADO
     </ion-button>
   </form>
 </ion-content>
