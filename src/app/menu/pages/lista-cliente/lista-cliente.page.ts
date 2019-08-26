@@ -6,6 +6,7 @@ import { map, take } from 'rxjs/operators';
 import { NavController } from '@ionic/angular';
 import { ClienteService } from 'src/app/core/services/cliente.service';
 import { OverlayService } from 'src/app/core/services/overlay.service';
+import { UsuarioService } from 'src/app/core/services/usuario.service';
 
 @Component({
   selector: 'app-lista-cliente',
@@ -14,7 +15,6 @@ import { OverlayService } from 'src/app/core/services/overlay.service';
 })
 export class ListaClientePage implements OnInit {
   clientes$: Observable<Cliente[]>;
-
   // private clientes(): Observable<Cliente[]> {
   //   return this.http.get('http://localhost:3001/cliente').pipe(map(response => response.json()));
   // }

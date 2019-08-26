@@ -9,6 +9,8 @@ export abstract class Firestore<T extends { id: string }> {
 
   logado: boolean = false;
 
+  nomeUser: string = '';
+
   constructor(protected db: AngularFirestore) {}
 
   protected setCollection(path: string, queryFn?: QueryFn): void {
@@ -21,6 +23,10 @@ export abstract class Firestore<T extends { id: string }> {
       [operation](item)
       .then(() => item);
   }
+
+  // nomeUser() {
+  //   let nome = this.collection.doc('nome').set;
+  // }
 
   getAll(): Observable<T[]> {
     return this.collection.valueChanges();

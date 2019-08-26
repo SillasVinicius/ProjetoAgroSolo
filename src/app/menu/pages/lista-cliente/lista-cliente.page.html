@@ -1,10 +1,16 @@
 <ion-header>
   <ion-toolbar color="primary">
-    <app-menu-toogle slot="start" menu="main-menu"></app-menu-toogle>
+    <app-menu-toogle
+      slot="start"
+      menu="main-menu"
+    ></app-menu-toogle>
     <ion-title>Relatório de Clientes</ion-title>
+    <app-logout-button
+      slot="end"
+      menu="main-menu"
+    ></app-logout-button>
   </ion-toolbar>
 </ion-header>
-
 <ion-content padding>
   <ion-list *ngIf="clientes$ | async as clientes">
     <ng-container *ngIf="clientes.length > 0; else semClientes">
@@ -19,8 +25,15 @@
       <ion-item lines="none">Sem clientes cadastrados...</ion-item>
     </ng-template>
   </ion-list>
-  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-    <ion-fab-button [routerLink]="['/menu/cadastroCliente']" routerDirection="forward">
+  <ion-fab
+    vertical="bottom"
+    horizontal="end"
+    slot="fixed"
+  >
+    <ion-fab-button
+      [routerLink]="['/menu/cadastroCliente']"
+      routerDirection="forward"
+    >
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
   </ion-fab>

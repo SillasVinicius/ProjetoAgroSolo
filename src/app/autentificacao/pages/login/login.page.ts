@@ -153,6 +153,8 @@ export class LoginPage implements OnInit {
           console.log(this.logado);
           this.navCtrl.navigateForward('/menu');
           this.usuarioService.logado = true;
+          this.usuarioService.nomeUser = r[0].nome;
+          //console.log(this.usuarioService.nomeUser);
         } else {
           await this.overlayService.toast({
             message: 'Usuário inválido! Verifique os dados e tente novamente!'
@@ -181,6 +183,7 @@ export class LoginPage implements OnInit {
       console.log('Usuário Criado', usuario);
       this.navCtrl.navigateForward('/menu');
       this.usuarioService.logado = true;
+      this.usuarioService.nomeUser = this.loginForm.get('nome').value;
     } catch (error) {
       await this.overlayService.toast({
         message: error.message
