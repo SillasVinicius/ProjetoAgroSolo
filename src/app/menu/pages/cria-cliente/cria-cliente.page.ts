@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, Input } from '@angular/core';
 import { OverlayService } from 'src/app/core/services/overlay.service';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
@@ -40,6 +40,7 @@ export class CriaClientePage implements OnInit {
   pageTitle = '...';
   toastMessage = '...';
   clienteId: string = undefined;
+  arquivos: FileList;
 
   files: Observable<any[]>;
   // Upload Task
@@ -64,6 +65,10 @@ export class CriaClientePage implements OnInit {
   //Status check
   isUploading: boolean;
   isUploaded: boolean;
+
+  image: MyData;
+
+  nomeFoto: String;
 
   private imageCollection: AngularFirestoreCollection<MyData>;
 
@@ -93,10 +98,6 @@ export class CriaClientePage implements OnInit {
   ) {
     this.isUploading = false;
     this.isUploaded = false;
-    //Set collection where our documents/ images info will save
-    this.imageCollection = database.collection<MyData>('freakyImages');
-    this.images = this.imageCollection.valueChanges();
-
     //this.files = this.dataProvider.getFiles();
   }
 
@@ -155,6 +156,9 @@ export class CriaClientePage implements OnInit {
   }
 
   uploadFile(event: FileList) {
+    console.log(event.length);
+    this.arquivos = event;
+
     // The File object
     const file = event.item(0);
 
@@ -168,51 +172,60 @@ export class CriaClientePage implements OnInit {
     this.isUploaded = false;
 
     this.fileName = file.name;
+    if (this.clienteService.id !== '') {
+      // The storage path
+      const path = `/users/${this.clienteService.usuarioId}/cliente/${
+        this.clienteService.id
+      }/imagens/${new Date().getTime()}_${file.name}`;
 
-    // The storage path
-    const path = `freakyStorage/${new Date().getTime()}_${file.name}`;
+      // Totally optional metadata
+      const customMetadata = { app: 'Image Upload' };
 
-    // Totally optional metadata
-    const customMetadata = { app: 'Freaky Image Upload Demo' };
+      //File reference
+      const fileRef = this.storage.ref(path);
 
-    //File reference
-    const fileRef = this.storage.ref(path);
+      // The main task
+      this.task = this.storage.upload(path, file, { customMetadata });
 
-    // The main task
-    this.task = this.storage.upload(path, file, { customMetadata });
+      // Get file progress percentage
+      this.percentage = this.task.percentageChanges();
 
-    // Get file progress percentage
-    this.percentage = this.task.percentageChanges();
-    this.snapshot = this.task.snapshotChanges().pipe(
-      finalize(() => {
-        // Get uploaded file storage path
-        this.UploadedFileURL = fileRef.getDownloadURL();
-
-        this.UploadedFileURL.subscribe(
-          resp => {
-            this.addImagetoDB({
-              name: file.name,
-              filepath: resp,
-              size: this.fileSize
-            });
-            this.isUploading = false;
-            this.isUploaded = true;
-          },
-          error => {
-            console.error(error);
-          }
-        );
-      }),
-      tap(snap => {
-        this.fileSize = snap.totalBytes;
-      })
-    );
+      this.snapshot = this.task.snapshotChanges().pipe(
+        finalize(() => {
+          // Get uploaded file storage path
+          this.UploadedFileURL = fileRef.getDownloadURL();
+          this.UploadedFileURL.subscribe(
+            resp => {
+              this.addImagetoDB({
+                name: file.name,
+                filepath: resp,
+                size: this.fileSize
+              });
+              this.isUploading = false;
+              this.isUploaded = true;
+            },
+            error => {
+              console.error(error);
+            }
+          );
+        }),
+        tap(snap => {
+          this.fileSize = snap.totalBytes;
+        })
+      );
+      this.image = {
+        name: this.fileName,
+        size: file.size,
+        filepath: path
+      };
+    }
   }
 
   addImagetoDB(image: MyData) {
     //Create an ID for document
     const id = this.database.createId();
-
+    // console.log(this.img);
+    // console.log(image);
     //Set document id with value in database
     this.imageCollection
       .doc(id)
@@ -362,21 +375,50 @@ export class CriaClientePage implements OnInit {
   //   loading.dismiss();
   // }
 
+  iniciaUploadFotos() {
+    this.isUploading = false;
+    this.isUploaded = false;
+    //Set collection where our documents/ images info will save
+    this.imageCollection = this.database.collection<MyData>(
+      `/users/${this.clienteService.usuarioId}/cliente/${this.clienteService.id}/imagens`
+    );
+    this.images = this.imageCollection.valueChanges();
+  }
+
   async onSubmit(): Promise<void> {
     const loading = await this.overlayService.loading({
       message: this.toastMessage
     });
     try {
-      const cliente = !this.clienteId
-        ? await this.clienteService.create(this.clienteForm.value)
-        : await this.clienteService.update({
-            id: this.clienteId,
-            cpf: this.clienteForm.get('cpf').value,
-            nome: this.clienteForm.get('nome').value,
-            foto: '',
-            patrimonio: this.clienteForm.get('patrimonio').value,
-            pdtvAgro: this.clienteForm.get('pdtvAgro').value
-          });
+      const cliente = '';
+      if (!this.clienteId) {
+        const cliente = await this.clienteService.create(this.clienteForm.value);
+        this.iniciaUploadFotos();
+        this.uploadFile(this.arquivos);
+        this.iniciaUploadFotos();
+        this.clienteService.setCollectionFoto(this.clienteService.id);
+        //console.log(this.image);
+        this.clienteService.collection.doc(this.image.name).set(this.image);
+      } else {
+        const cliente = await this.clienteService.update({
+          id: this.clienteId,
+          cpf: this.clienteForm.get('cpf').value,
+          nome: this.clienteForm.get('nome').value,
+          foto: '',
+          patrimonio: this.clienteForm.get('patrimonio').value,
+          pdtvAgro: this.clienteForm.get('pdtvAgro').value
+        });
+      }
+      // const cliente = !this.clienteId
+      //   ? await this.clienteService.create(this.clienteForm.value)
+      //   : await this.clienteService.update({
+      //       id: this.clienteId,
+      //       cpf: this.clienteForm.get('cpf').value,
+      //       nome: this.clienteForm.get('nome').value,
+      //       foto: '',
+      //       patrimonio: this.clienteForm.get('patrimonio').value,
+      //       pdtvAgro: this.clienteForm.get('pdtvAgro').value
+      //     });
       console.log('Cliente Criado', cliente);
       this.navCtrl.navigateBack('/menu');
     } catch (error) {

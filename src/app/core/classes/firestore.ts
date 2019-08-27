@@ -3,9 +3,9 @@ import { Observable } from 'rxjs';
 import { Query } from '@angular/core';
 
 export abstract class Firestore<T extends { id: string }> {
-  protected collection: AngularFirestoreCollection<T>;
+  collection: AngularFirestoreCollection<T>;
 
-  id: string;
+  id: string = '';
 
   logado: boolean = false;
 
