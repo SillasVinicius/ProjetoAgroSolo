@@ -15,7 +15,7 @@ export class ClienteService extends Firestore<Cliente> {
     this.usuarioId = this.usuarioService.id;
   }
 
-  private init(): void {
+  init(): void {
     this.setCollection(`/users/${this.usuarioService.id}/cliente`);
     // this.setCollection('/menu', ref => ref.orderBy('nome', 'asc').orderBy('id', 'asc'));
   }

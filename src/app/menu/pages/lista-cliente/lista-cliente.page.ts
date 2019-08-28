@@ -43,6 +43,7 @@ export class ListaClientePage implements OnInit {
         {
           text: 'Sim',
           handler: async () => {
+            await this.clienteService.init();
             await this.clienteService.delete(cliente);
             await this.overlayService.toast({
               message: `Cliente "${cliente.nome}" excluido!`
