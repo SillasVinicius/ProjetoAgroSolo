@@ -23,4 +23,7 @@ export class ClienteService extends Firestore<Cliente> {
   setCollectionFoto(cliente: string) {
     this.setCollection(`/users/${this.usuarioId}/cliente/${cliente}/imagens`);
   }
+  setCollectionArquivo(cliente: string) {
+    this.setCollection(`/users/${this.usuarioId}/cliente/${cliente}/arquivos`);
+  }
 }

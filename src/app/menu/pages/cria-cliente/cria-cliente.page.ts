@@ -42,20 +42,20 @@ export class CriaClientePage implements OnInit {
   private imageCollection: AngularFirestoreCollection<MyData>;
 
   // ARQUIVOS
-  arquivoss: FileList;
-  filesArquivo: Observable<any[]>;
-  taskArquivo: AngularFireUploadTask;
-  percentageArquivo: Observable<number>;
-  snapshotArquivo: Observable<any>;
-  UploadedFileURLArquivo: Observable<string>;
-  fileNameArquivo = '';
-  fileSizeArquivo: number;
-  isUploadingArquivo: boolean;
-  isUploadedArquivo: boolean;
-  arquivo: MyData;
-  filess: Observable<MyData[]>;
-  nomeArquivo: string;
-  private fileCollection: AngularFirestoreCollection<MyData>;
+  arquivos2: FileList;
+  files2: Observable<any[]>;
+  task2: AngularFireUploadTask;
+  percentage2: Observable<number>;
+  snapshot2: Observable<any>;
+  UploadedFileURL2: Observable<string>;
+  images2: Observable<MyData[]>;
+  fileName2 = '';
+  fileSize2: number;
+  isUploading2: boolean;
+  isUploaded2: boolean;
+  image2: MyData;
+  nomeFoto2: string;
+  private imageCollection2: AngularFirestoreCollection<MyData>;
 
   // Dependencias
   constructor(
@@ -69,10 +69,11 @@ export class CriaClientePage implements OnInit {
   ) {
     this.isUploading = false;
     this.isUploaded = false;
-    this.isUploadingArquivo = false;
-    this.isUploadedArquivo = false;
+    this.isUploading2 = false;
+    this.isUploaded2 = false;
   }
 
+  // metodo que é chamado quando a pagina é carregada
   ngOnInit() {
     this.criaFormulario();
     this.acao();
@@ -157,6 +158,7 @@ export class CriaClientePage implements OnInit {
         // tslint:disable-next-line: no-shadowed-variable
         const cliente = await this.clienteService.create(this.clienteForm.value);
         this.adicionaFoto();
+        this.adicionaFoto2();
       } else {
         // tslint:disable-next-line: no-shadowed-variable
         const cliente = await this.clienteService.update({
@@ -180,12 +182,15 @@ export class CriaClientePage implements OnInit {
     }
   }
 
+  // Imagens - inicio
   // Faz o upload de uma imagem
-  uploadFile(event: FileList) {
+  async uploadFile(event: FileList) {
     this.arquivos = event;
     const file = event.item(0);
     if (file.type.split('/')[0] !== 'image') {
-      console.error('unsupported file type :( ');
+      await this.overlayService.toast({
+        message: 'tipo de arquivo não suportado :('
+      });
       return;
     }
 
@@ -263,6 +268,95 @@ export class CriaClientePage implements OnInit {
     this.clienteService.setCollectionFoto(this.clienteService.id);
     this.clienteService.collection.doc(this.image.name).set(this.image);
   }
+
+  // Imagens - fim
+  // Arquivos - início
+  // Faz o upload de um arquivo
+  async uploadFile2(event2: FileList) {
+    this.arquivos2 = event2;
+    const file2 = event2.item(0);
+    if (file2.type.split('/')[0] === 'image') {
+      await this.overlayService.toast({
+        message: 'tipo de arquivo não pode ser enviado por esse campo :('
+      });
+      return;
+    }
+
+    this.isUploading2 = true;
+    this.isUploaded2 = false;
+
+    this.fileName2 = file2.name;
+    if (this.clienteService.id !== '') {
+      const path2 = `/users/${this.clienteService.usuarioId}/cliente/${
+        this.clienteService.id
+      }/arquivos/${new Date().getTime()}_${file2.name}`;
+      const customMetadata = { app: 'File Upload' };
+      const fileRef2 = this.storage.ref(path2);
+      this.task2 = this.storage.upload(path2, file2, { customMetadata });
+      this.percentage2 = this.task2.percentageChanges();
+      this.snapshot2 = this.task2.snapshotChanges().pipe(
+        finalize(() => {
+          this.UploadedFileURL2 = fileRef2.getDownloadURL();
+          this.UploadedFileURL2.subscribe(
+            resp2 => {
+              this.addImagetoDB2({
+                name: file2.name,
+                filepath: resp2,
+                size: this.fileSize2
+              });
+              this.isUploading2 = false;
+              this.isUploaded2 = true;
+            },
+            error2 => {
+              console.error(error2);
+            }
+          );
+        }),
+        tap(snap2 => {
+          this.fileSize2 = snap2.totalBytes;
+        })
+      );
+      this.image2 = {
+        name: this.fileName2,
+        size: file2.size,
+        filepath: path2
+      };
+    }
+  }
+
+  // adiciona um arquivo no banco de dados
+  addImagetoDB2(image2: MyData) {
+    const id2 = this.database.createId();
+    this.imageCollection2
+      .doc(id2)
+      .set(image2)
+      .then(resp2 => {
+        console.log(resp2);
+      })
+      .catch(error2 => {
+        console.log('error ' + error2);
+      });
+  }
+
+  // define as variáveis necessárias para realizar o upload de imagens pro banco de dados
+  iniciaUploadFotos2() {
+    this.isUploading2 = false;
+    this.isUploaded2 = false;
+    this.imageCollection2 = this.database.collection<MyData>(
+      `/users/${this.clienteService.usuarioId}/cliente/${this.clienteService.id}/arquivos`
+    );
+    this.images2 = this.imageCollection2.valueChanges();
+  }
+
+  // executa todos os metodós para realizar upload de fotos
+  adicionaFoto2(): void {
+    this.iniciaUploadFotos2();
+    this.uploadFile2(this.arquivos2);
+    this.iniciaUploadFotos2();
+    this.clienteService.setCollectionArquivo(this.clienteService.id);
+    this.clienteService.collection.doc(this.image2.name).set(this.image2);
+  }
+  // Arquivos - fim
 }
 
 export interface MyData {
