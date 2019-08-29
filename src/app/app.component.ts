@@ -19,11 +19,6 @@ export class AppComponent {
     private usuarioService: UsuarioService
   ) {
     this.initializeApp();
-    this.teste();
-  }
-
-  teste() {
-    console.log('dfsfdsf' + this.nome);
   }
 
   initializeApp() {

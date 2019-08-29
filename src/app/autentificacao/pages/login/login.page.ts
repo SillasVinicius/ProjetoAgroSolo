@@ -1,16 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators, AbstractControl, FormControl } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { trigger, state, transition, style, animate } from '@angular/animations';
-import { AuthService } from 'src/app/core/services/auth.service';
-import { User } from '../../../core/services/user.model';
 import { OverlayService } from 'src/app/core/services/overlay.service';
-import { response } from 'express';
-import { Router } from '@angular/router';
 import { UsuarioService } from 'src/app/core/services/usuario.service';
 import { NavController } from '@ionic/angular';
 import { Observable } from 'rxjs';
 import { Usuario } from './model/usuario.model';
-import { map, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-login',
@@ -26,15 +21,15 @@ import { map, tap } from 'rxjs/operators';
   ]
 })
 export class LoginPage implements OnInit {
+  // variáveis login
   loginForm: FormGroup;
-  logado: boolean = false;
+  logado = false;
   numberPattern = /^[0-9]*$/;
   configs = {
     login: true,
     acao: 'Login',
     novaAcao: 'Criar conta!'
   };
-
   private user: Observable<Usuario[]>;
 
   private nomeControl = new FormControl('', [Validators.required, Validators.minLength(3)]);
@@ -63,9 +58,7 @@ export class LoginPage implements OnInit {
   ]);
   constructor(
     private formBuilder: FormBuilder,
-    private loginService: AuthService,
     private overlayService: OverlayService,
-    private router: Router,
     private usuarioService: UsuarioService,
     private navCtrl: NavController
   ) {}
@@ -123,17 +116,6 @@ export class LoginPage implements OnInit {
     this.logado = true;
   }
   async login() {
-    // const loading = await this.overlayService.loading();
-    // this.loginService
-    //   .login(this.loginForm.value.email, this.loginForm.value.senha)
-    //   .subscribe(
-    //     user => this.router.navigate(['/menu']),
-    //     response => this.overlayService.toast({ message: response.error.message })
-    //   );
-
-    // loading.dismiss();
-    // console.log('login');
-    //console.log(this.logado);
     const loading = await this.overlayService.loading({
       message: 'Logando...'
     });
@@ -145,7 +127,6 @@ export class LoginPage implements OnInit {
       );
       this.user.subscribe(async (r: Usuario[]) => {
         if (r.length >= 1) {
-          //await this.logar();
           console.log('Usuário Logado', this.user);
           this.usuarioService.setId(r[0].id);
           this.logar();
@@ -154,7 +135,6 @@ export class LoginPage implements OnInit {
           this.navCtrl.navigateForward('/menu');
           this.usuarioService.logado = true;
           this.usuarioService.nomeUser = r[0].nome;
-          //console.log(this.usuarioService.nomeUser);
         } else {
           await this.overlayService.toast({
             message: 'Usuário inválido! Verifique os dados e tente novamente!'
@@ -170,11 +150,9 @@ export class LoginPage implements OnInit {
     } finally {
       loading.dismiss();
     }
-    //console.log(this.logado);
   }
 
   async cadastro(): Promise<void> {
-    //console.log('cadastro');
     const loading = await this.overlayService.loading({
       message: 'Cadastrando...'
     });
