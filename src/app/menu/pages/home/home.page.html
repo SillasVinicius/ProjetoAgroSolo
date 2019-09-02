@@ -1,0 +1,84 @@
+<ion-header class="header">
+  <ion-toolbar color="primary">
+    <app-menu-toogle
+      slot="start"
+      menu="main-menu"
+    ></app-menu-toogle>
+    <ion-title>Home</ion-title>
+    <app-logout-button
+      slot="end"
+      menu="main-menu"
+    ></app-logout-button>
+  </ion-toolbar>
+  <ion-grid>
+    <ion-row align-items-center>
+      <ion-col></ion-col>
+      <ion-col text-center>
+        <ion-icon
+          name="leaf"
+          color="light"
+          size="large"
+        ></ion-icon>
+      </ion-col>
+      <ion-col></ion-col>
+    </ion-row>
+  </ion-grid>
+  <ion-grid>
+    <ion-row align-items-center>
+      <ion-col></ion-col>
+      <ion-col
+        style="color: white"
+        text-center
+      >
+        {{nomeUser}}
+      </ion-col>
+      <ion-col></ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-header>
+
+<ion-content padding>
+  <ion-grid>
+    <ion-row align-items-center>
+      <ion-col text-center size="8">
+        <ion-button
+          expand="full"
+          (click)="linkCliente()"
+          size="large"
+        >
+          <ion-icon
+            slot="start"
+            name="create"
+          ></ion-icon>
+          Cliente
+        </ion-button>
+      </ion-col>
+      <ion-col text-center>
+        <ion-button
+          expand="full"
+          style="background-color: #30b54f;"
+          size="large"
+        >
+          <ion-icon
+            slot="start"
+            name="albums"
+          ></ion-icon>
+          Outorga
+        </ion-button>
+      </ion-col>
+      <ion-col text-center>
+        <ion-button
+          expand="full"
+          style="background-color: #5ed479;"
+          size="large"
+        >
+          <ion-icon
+            slot="start"
+            name="flower"
+          ></ion-icon>
+          Ambiental
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

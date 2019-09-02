@@ -24,6 +24,7 @@ export class CriaClientePage implements OnInit {
   botaoTitle = '...';
   pageTitle = '...';
   toastMessage = '...';
+  liberaArquivo = false;
 
   // FOTOS
   arquivos: FileList;
@@ -158,7 +159,7 @@ export class CriaClientePage implements OnInit {
         // tslint:disable-next-line: no-shadowed-variable
         const cliente = await this.clienteService.create(this.clienteForm.value);
         this.adicionaFoto();
-        this.adicionaFoto2();
+        //this.adicionaFoto2();
       } else {
         // tslint:disable-next-line: no-shadowed-variable
         const cliente = await this.clienteService.update({
@@ -171,7 +172,7 @@ export class CriaClientePage implements OnInit {
         });
       }
       console.log('Cliente Criado', cliente);
-      this.navCtrl.navigateBack('/menu');
+      this.navCtrl.navigateBack('/menu/cliente');
     } catch (error) {
       await this.overlayService.toast({
         message: error.message
@@ -196,7 +197,7 @@ export class CriaClientePage implements OnInit {
 
     this.isUploading = true;
     this.isUploaded = false;
-
+    this.liberaArquivo = true;
     this.fileName = file.name;
     if (this.clienteService.id !== '') {
       const path = `/users/${this.clienteService.usuarioId}/cliente/${

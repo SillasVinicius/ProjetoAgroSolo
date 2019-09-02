@@ -16,8 +16,12 @@ const routes: Routes = [
         loadChildren: './pages/cria-cliente/cria-cliente.module#CriaClientePageModule'
       },
       {
-        path: '',
+        path: 'cliente',
         loadChildren: './pages/lista-cliente/lista-cliente.module#ListaClientePageModule'
+      },
+      {
+        path: '',
+        loadChildren: './pages/home/home.module#HomePageModule'
       }
     ]
   }

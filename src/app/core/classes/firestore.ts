@@ -5,11 +5,11 @@ import { Query } from '@angular/core';
 export abstract class Firestore<T extends { id: string }> {
   collection: AngularFirestoreCollection<T>;
 
-  id: string = '';
+  id = '';
 
-  logado: boolean = false;
+  logado = false;
 
-  nomeUser: string = '';
+  nomeUser = '';
 
   constructor(protected db: AngularFirestore) {}
 
@@ -23,10 +23,6 @@ export abstract class Firestore<T extends { id: string }> {
       [operation](item)
       .then(() => item);
   }
-
-  // nomeUser() {
-  //   let nome = this.collection.doc('nome').set;
-  // }
 
   getAll(): Observable<T[]> {
     return this.collection.valueChanges();

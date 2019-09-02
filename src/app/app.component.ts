@@ -24,7 +24,7 @@ export class AppComponent {
   initializeApp() {
     this.pages = [
       { url: '/menu', icon: 'home', text: 'Home', direction: 'back' },
-      { url: '/menu/cadastroCliente', icon: 'create', text: 'Novo Cliente', direction: 'forward' }
+      { url: '/menu/cliente', icon: 'create', text: 'Cliente', direction: 'forward' }
     ];
 
     this.platform.ready().then(() => {

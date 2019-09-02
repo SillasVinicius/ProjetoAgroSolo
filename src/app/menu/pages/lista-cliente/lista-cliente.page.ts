@@ -13,7 +13,6 @@ import { OverlayService } from 'src/app/core/services/overlay.service';
 })
 export class ListaClientePage implements OnInit {
   clientes$: Observable<Cliente[]>;
-
   constructor(
     private navCtrl: NavController,
     private clienteService: ClienteService,
@@ -22,6 +21,7 @@ export class ListaClientePage implements OnInit {
 
   async ngOnInit(): Promise<void> {
     const loading = await this.overlayService.loading();
+    this.clienteService.init();
     this.clientes$ = this.clienteService.getAll();
     this.clientes$.pipe(take(1)).subscribe(() => loading.dismiss());
   }
