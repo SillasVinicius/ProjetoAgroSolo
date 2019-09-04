@@ -1,0 +1,40 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <app-menu-toogle
+      slot="start"
+      menu="main-menu"
+    ></app-menu-toogle>
+    <ion-title>Relatório de Outorgas</ion-title>
+    <app-logout-button
+      slot="end"
+      menu="main-menu"
+    ></app-logout-button>
+  </ion-toolbar>
+</ion-header>
+<ion-content padding>
+  <ion-list *ngIf="outorgas$ | async as outorgas">
+    <ng-container *ngIf="outorgas.length > 0; else semOutorgas">
+      <app-lista-outorga-item
+        *ngFor="let outorga of outorgas"
+        [outorga]="outorga"
+        (update)="atualizar($event)"
+        (delete)="deletar($event)"
+      ></app-lista-outorga-item>
+    </ng-container>
+    <ng-template #semOutorgas>
+      <ion-item lines="none">Sem Outorgas cadastradas...</ion-item>
+    </ng-template>
+  </ion-list>
+  <ion-fab
+    vertical="bottom"
+    horizontal="end"
+    slot="fixed"
+  >
+    <ion-fab-button
+      [routerLink]="['/menu/cadastroOutorga']"
+      routerDirection="forward"
+    >
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

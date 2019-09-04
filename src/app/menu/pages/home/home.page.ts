@@ -15,6 +15,12 @@ export class HomePage implements OnInit {
   linkCliente() {
     this.navCtrl.navigateForward('/menu/cliente');
   }
+  linkOutorga() {
+    this.navCtrl.navigateForward('/menu/outorga');
+  }
+  linkAmbiental() {
+    this.navCtrl.navigateForward('/menu/ambiental');
+  }
   ngOnInit() {
     this.nomeUser = this.usuario.nomeUser;
   }

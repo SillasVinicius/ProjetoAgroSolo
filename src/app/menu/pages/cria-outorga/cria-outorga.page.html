@@ -1,0 +1,173 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/menu"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{ pageTitle }}</ion-title>
+    <app-logout-button slot="end" menu="main-menu"></app-logout-button>
+  </ion-toolbar>
+</ion-header>
+<ion-content padding>
+  <form [formGroup]="outorgaForm" (submit)="onSubmit()" novalidate>
+    <ion-item>
+      <ion-icon slot="start" name="list-box" color="primary"></ion-icon>
+      <ion-input
+        formControlName="descricao"
+        type="text"
+        placeholder="Descrição"
+        color="primary"
+        autoFocus="true"
+      ></ion-input>
+      <ion-note slot="end" color="danger" *ngIf="descricao.dirty && descricao.hasError('required')">
+        Descrição Obrigatória!
+      </ion-note>
+      <ion-note slot="end" color="danger" *ngIf="descricao.dirty && descricao.hasError('minlength')">
+        Mínimo 3 caracteres
+      </ion-note>
+    </ion-item>
+    <ion-item>
+      <ion-icon
+        slot="start"
+        name="calendar"
+        color="primary"
+      ></ion-icon>
+      <ion-input
+        type="date"
+        placeholder="Vencimento"
+        color="primary"
+        formControlName="dataDeVencimento"
+      ></ion-input>
+      <ion-note
+        slot="end"
+        color="danger"
+        *ngIf="dataDeVencimento.dirty && dataDeVencimento.hasError('required')"
+      >
+        Vencimento Obrigatório!
+      </ion-note>
+      <ion-note
+        slot="end"
+        color="danger"
+        *ngIf="
+          dataDeVencimento.dirty &&
+          (dataDeVencimento.hasError('minlength') || dataDeVencimento.hasError('maxlength'))
+        "
+      >
+        Vencimento inválido!
+      </ion-note>
+    </ion-item>
+    <!-- inicio imagem -->
+    <!-- <ion-card text-center *ngIf="!isUploading && !isUploaded">
+      <ion-card-header>
+        <ion-card-title style="font-size: 20px;">Adicione uma Foto</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <div class="fileUpload">
+          <label for="uploadBtn">Adicionar</label>
+          <input
+            id="uploadBtn"
+            type="file"
+            class="upload"
+            (change)="uploadFile($event.target.files)"
+          />
+        </div>
+      </ion-card-content>
+    </ion-card>
+    <ion-card text-center *ngIf="isUploading && !isUploaded">
+      <ion-card-header>
+        <ion-card-title style="font-size: 15px;">
+          Imagem selecionada:
+          <b>{{ fileName }}</b>
+        </ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <div *ngIf="percentage | async as pct">
+          Progress: {{ pct | number }}%
+          <ion-progress-bar value="{{ pct / 100 }}"></ion-progress-bar>
+        </div>
+        <div *ngIf="snapshot | async as snap">
+          File Size: {{ snap.totalBytes | fileSizePipe }} Transfered:
+          {{ snap.bytesTransferred | fileSizePipe }}
+          <div *ngIf="snapshot && snap.bytesTransferred != snap.totalBytes">
+            <ion-button
+              color="warning"
+              size="small"
+              (click)="task.pause()"
+              class="button is-warning"
+            >
+              Pausar
+            </ion-button>
+            <ion-button size="small" (click)="task.resume()" class="button is-info">
+              Continuar
+            </ion-button>
+            <ion-button
+              color="danger"
+              size="small"
+              (click)="task.cancel()"
+              class="button is-danger"
+            >
+              Cancelar
+            </ion-button>
+          </div>
+        </div>
+      </ion-card-content>
+    </ion-card>
+    <ion-card text-center *ngIf="!isUploading && isUploaded">
+      <ion-card-header>
+        <ion-card-title style="font-size: 20px;">Imagem Adicionada!</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <div *ngIf="UploadedFileURL | async as url">
+          <img [src]="url" />
+        </div>
+        File Size: {{ fileSize | fileSizePipe }}
+      </ion-card-content>
+    </ion-card> -->
+    <!-- fim imagem -->
+    <!-- inicio arquivo -->
+    <ion-card
+      text-center
+      *ngIf="!isUploading2 && !isUploaded2"
+    >
+      <ion-card-header>
+        <ion-card-title style="font-size: 20px;">Adicione um Arquivo</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <div class="fileUpload">
+          <label for="uploadBtn2">Adicionar</label>
+          <input
+            id="uploadBtn2"
+            type="file"
+            class="upload"
+            (change)="uploadFile2($event.target.files)"
+          >
+        </div>
+      </ion-card-content>
+    </ion-card>
+    <ion-card
+      text-center
+      *ngIf="isUploading2 && !isUploaded2"
+    >
+      <ion-card-header>
+        <ion-card-title style="font-size: 15px;">
+          Arquivo selecionado:
+          <b>{{ fileName2 }}</b>
+        </ion-card-title>
+      </ion-card-header>
+    </ion-card>
+    <!-- fim arquivo -->
+    <ion-button expand="full" type="submit" *ngIf="outorgaForm.valid && liberaArquivo">
+      {{ botaoTitle }}
+    </ion-button>
+    <ion-button
+      expand="full"
+      [disabled]="true"
+      *ngIf="
+        (!outorgaForm.valid && !liberaArquivo) ||
+        (!outorgaForm.valid && liberaArquivo) ||
+        (outorgaForm.valid && !liberaArquivo)
+      "
+    >
+      {{ botaoTitle }}
+    </ion-button>
+  </form>
+</ion-content>

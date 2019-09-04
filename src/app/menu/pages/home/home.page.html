@@ -12,27 +12,16 @@
   </ion-toolbar>
   <ion-grid>
     <ion-row align-items-center>
-      <ion-col></ion-col>
-      <ion-col text-center>
-        <ion-icon
-          name="leaf"
-          color="light"
-          size="large"
-        ></ion-icon>
-      </ion-col>
-      <ion-col></ion-col>
-    </ion-row>
-  </ion-grid>
-  <ion-grid>
-    <ion-row align-items-center>
-      <ion-col></ion-col>
       <ion-col
-        style="color: white"
         text-center
       >
-        {{nomeUser}}
+      <ion-chip style="color: white">
+          <ion-avatar>
+            <img src="../../../assets/img/avatar.svg">
+          </ion-avatar>
+          <ion-label>{{nomeUser}}</ion-label>
+      </ion-chip>
       </ion-col>
-      <ion-col></ion-col>
     </ion-row>
   </ion-grid>
 </ion-header>
@@ -40,7 +29,7 @@
 <ion-content padding>
   <ion-grid>
     <ion-row align-items-center>
-      <ion-col text-center size="8">
+      <ion-col text-center>
         <ion-button
           expand="full"
           (click)="linkCliente()"
@@ -53,10 +42,14 @@
           Cliente
         </ion-button>
       </ion-col>
-      <ion-col text-center>
+    </ion-row>
+  </ion-grid>
+  <ion-grid>
+    <ion-row align-items-center>
+       <ion-col text-center>
         <ion-button
           expand="full"
-          style="background-color: #30b54f;"
+          (click)="linkOutorga()"
           size="large"
         >
           <ion-icon
@@ -66,10 +59,14 @@
           Outorga
         </ion-button>
       </ion-col>
+    </ion-row>
+  </ion-grid>
+  <ion-grid>
+    <ion-row align-items-center>
       <ion-col text-center>
         <ion-button
           expand="full"
-          style="background-color: #5ed479;"
+          (click)="linkAmbiental()"
           size="large"
         >
           <ion-icon

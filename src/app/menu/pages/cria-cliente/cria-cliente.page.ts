@@ -78,6 +78,8 @@ export class CriaClientePage implements OnInit {
   ngOnInit() {
     this.criaFormulario();
     this.acao();
+    this.clienteService.init();
+    this.clienteService.id = '';
   }
 
   // Cria formulários

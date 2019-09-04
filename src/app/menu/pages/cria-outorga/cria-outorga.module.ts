@@ -1,16 +1,17 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { CriaClientePage } from './cria-cliente.page';
 import { SharedModule } from 'src/app/shared/shared.module';
+import { CriaOutorgaPage } from './cria-outorga.page';
+
 const routes: Routes = [
   {
     path: '',
-    component: CriaClientePage
+    component: CriaOutorgaPage
   }
 ];
 
 @NgModule({
   imports: [SharedModule, RouterModule.forChild(routes)],
-  declarations: [CriaClientePage]
+  declarations: [CriaOutorgaPage]
 })
-export class CriaClientePageModule {}
+export class CriaOutorgaPageModule {}

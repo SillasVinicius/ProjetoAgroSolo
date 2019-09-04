@@ -12,6 +12,10 @@ const routes: Routes = [
         loadChildren: './pages/cria-cliente/cria-cliente.module#CriaClientePageModule'
       },
       {
+        path: 'cadastroOutorga',
+        loadChildren: './pages/cria-outorga/cria-outorga.module#CriaOutorgaPageModule'
+      },
+      {
         path: 'updateCliente/:id',
         loadChildren: './pages/cria-cliente/cria-cliente.module#CriaClientePageModule'
       },
@@ -20,11 +24,16 @@ const routes: Routes = [
         loadChildren: './pages/lista-cliente/lista-cliente.module#ListaClientePageModule'
       },
       {
+        path: 'outorga',
+        loadChildren: './pages/lista-outorga/lista-outorga.module#ListaOutorgaPageModule'
+      },
+      {
         path: '',
         loadChildren: './pages/home/home.module#HomePageModule'
       }
     ]
-  }
+  },
+  { path: 'cria-outorga', loadChildren: './pages/cria-outorga/cria-outorga.module#CriaOutorgaPageModule' }
 ];
 
 @NgModule({
