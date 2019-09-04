@@ -6,8 +6,24 @@ import { Outorga } from '../../models/outorga.model';
   templateUrl: './lista-outorga-item.component.html',
   styleUrls: ['./lista-outorga-item.component.scss'],
 })
-export class ListaOutorgaItemComponent {
+export class ListaOutorgaItemComponent implements OnInit{
+  clicado: boolean = false;
   @Input() outorga: Outorga;
   @Output() update = new EventEmitter<Outorga>();
   @Output() delete = new EventEmitter<Outorga>();
+
+  ngOnInit(){
+    this.clicado = false;
+  }
+
+  abrir(){
+    this.clicado = true;
+  }
+
+  fechar(){
+    this.clicado = false;
+  }
+  teste(){
+    console.log("teste");
+  }
 }
