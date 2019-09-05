@@ -1,4 +1,12 @@
 .header {
   height: 18%;
-  background-color: #217e36;
+  // background-color: #217e36;
+  background-image: url('../../../../assets/img/back.jpg');
+  // background: url('../../img/getstart.png');
+  background-repeat: no-repeat;
+  background-size:cover;
+}
+
+ion-button .cliente:hover {
+  background: rgba(0,0,0,0.5);
 }

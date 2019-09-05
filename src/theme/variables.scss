@@ -111,3 +111,60 @@
   --ion-color-shade: var(--ion-color-tertiary-primary-shade);
   --ion-color-tint: var(--ion-color-tertiary-primary-tint);
 }
+
+.transparent {
+  --background: transparent;
+  --color: white;
+}
+
+.rgba1 {
+  --background: rgba(20, 100, 30, 0.8);
+  --color: white;
+}
+
+.rgba2 {
+  --background: rgba(255, 255, 255, 0.6);
+}
+
+.rgba3 {
+  //--background: rgba(16, 60, 26, 0.8);
+  --background: rgba(0, 0, 0, 0.8);
+  --color: white;
+}
+
+.cliente {
+  --background: url('../assets/img/cliente.jpg');
+  --background-repeat: no-repeat;
+  --background-size:cover;
+  --color: white;
+}
+.cliente:hover {
+  --background: rgba(0,0,0,0.5);
+}
+
+.outorga {
+  --background: url('../assets/img/outorga.jpg');
+  --background-repeat: no-repeat;
+  --background-size:cover;
+  --color: white;
+}
+.outorga:hover {
+  --background: rgba(0,0,0,0.5);
+}
+
+.ambiental {
+  --background: url('../assets/img/ambiental.jpg');
+  --background-repeat: no-repeat;
+  --background-size:cover;
+  --color: white;
+}
+
+.login {
+  --background: url('../assets/img/login.jpg');
+  --background-repeat: no-repeat;
+  --background-size:cover;
+}
+
+.ambiental:hover {
+  --background: rgba(0,0,0,0.5);
+}

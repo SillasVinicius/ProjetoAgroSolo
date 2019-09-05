@@ -1,5 +1,5 @@
 #img-logo {
-  padding-bottom: 10%;
+  padding-top: 7%;
 }
 ion-note {
   font-size: 13px;
@@ -7,11 +7,10 @@ ion-note {
 ion-button {
   margin-top: 5%;
 }
-.login {
-  background-color: white;
-  border-radius: 10%;
-}
 
-ion-button .ho:hover {
-  color: red;
+.login-menu{
+  font-family: 'imperfecta';
+  background-color: rgba(255,255,255,0.8);
+  --ion-background-color: transparent;
+
 }

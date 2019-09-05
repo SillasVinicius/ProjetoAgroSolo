@@ -1,4 +1,4 @@
-<ion-content padding>
+<ion-content padding class="login">
   <ion-grid>
     <ion-row justify-content-center>
       <ion-col
@@ -7,229 +7,230 @@
         size-lg="3"
         size-xl="3"
       >
-        <h1 text-center>
-          <ion-img
-            src="../../../assets/img/logo.png"
-            id="img-logo"
-            [@movLogo]="configs.login ? 'login' : 'cadastro'"
-          ></ion-img>
-        </h1>
-        <form
-          [formGroup]="loginForm"
-          (submit)="onSubmit()"
-        >
-          <ng-container *ngIf="!configs.login">
-            <ion-item>
-              <ion-icon
-                slot="start"
-                name="person"
-                color="primary"
-              ></ion-icon>
-              <ion-input
-                type="text"
-                placeholder="Nome"
-                color="primary"
-                formControlName="nome"
-              ></ion-input>
-              <ion-note
-                slot="end"
-                color="danger"
-                *ngIf="nome.dirty && nome.hasError('required')"
-              >
-                Nome Obrigatório!
-              </ion-note>
-              <ion-note
-                slot="end"
-                color="danger"
-                *ngIf="nome.dirty && nome.hasError('minlength')"
-              >
-                Mínimo 3 caracteres
-              </ion-note>
-            </ion-item>
-            <ion-item>
-              <ion-icon
-                slot="start"
-                name="key"
-                color="primary"
-              ></ion-icon>
-              <ion-input
-                placeholder="Cpf"
-                color="primary"
-                formControlName="cpf"
-              ></ion-input>
-              <ion-note
-                slot="end"
-                color="danger"
-                *ngIf="cpf.dirty && cpf.hasError('required')"
-              >
-                Cpf Obrigatório!
-              </ion-note>
-              <ion-note
-                slot="end"
-                color="danger"
-                *ngIf="cpf.dirty && (cpf.hasError('minlength') || cpf.hasError('maxlength'))"
-              >
-                Cpf Inválido!
-              </ion-note>
-            </ion-item>
-            <ion-item>
-              <ion-icon
-                slot="start"
-                name="paper"
-                color="primary"
-              ></ion-icon>
-              <ion-input
-                placeholder="RG"
-                color="primary"
-                formControlName="rg"
-              ></ion-input>
-              <ion-note
-                slot="end"
-                color="danger"
-                *ngIf="rg.dirty && rg.hasError('required')"
-              >
-                RG Obrigatório!
-              </ion-note>
-              <ion-note
-                slot="end"
-                color="danger"
-                *ngIf="rg.dirty && (rg.hasError('minlength') || rg.hasError('maxlength'))"
-              >
-                RG inválido!
-              </ion-note>
-            </ion-item>
-            <ion-item>
-              <ion-icon
-                slot="start"
-                name="call"
-                color="primary"
-              ></ion-icon>
-              <ion-input
-                type="tel"
-                placeholder="Telefone"
-                color="primary"
-                formControlName="telefone"
-              ></ion-input>
-              <ion-note
-                slot="end"
-                color="danger"
-                *ngIf="telefone.dirty && telefone.hasError('required')"
-              >
-                Telefone Obrigatório!
-              </ion-note>
-              <ion-note
-                slot="end"
-                color="danger"
-                *ngIf="
-                  telefone.dirty &&
-                  (telefone.hasError('minlength') || telefone.hasError('maxlength'))
-                "
-              >
-                Telefone inválido!
-              </ion-note>
-            </ion-item>
-            <ion-item>
-              <ion-icon
-                slot="start"
-                name="calendar"
-                color="primary"
-              ></ion-icon>
-              <ion-input
-                type="date"
-                placeholder="Aniversário"
-                color="primary"
-                formControlName="dataNascimento"
-              ></ion-input>
-              <ion-note
-                slot="end"
-                color="danger"
-                *ngIf="dataNascimento.dirty && dataNascimento.hasError('required')"
-              >
-                Aniversário Obrigatório!
-              </ion-note>
-              <ion-note
-                slot="end"
-                color="danger"
-                *ngIf="
-                  dataNascimento.dirty &&
-                  (dataNascimento.hasError('minlength') || dataNascimento.hasError('maxlength'))
-                "
-              >
-                Aniversário inválido!
-              </ion-note>
-            </ion-item>
-          </ng-container>
-          <ion-item>
-            <ion-icon
-              slot="start"
-              name="at"
-              color="primary"
-            ></ion-icon>
-            <ion-input
-              type="email"
-              inputmode="email"
-              placeholder="Email"
-              color="primary"
-              formControlName="email"
-              autoFocus="true"
-            ></ion-input>
-            <ion-note
-              slot="end"
-              color="danger"
-              *ngIf="email.dirty && email.hasError('required')"
-            >
-              Email Obrigatório!
-            </ion-note>
-            <ion-note
-              slot="end"
-              color="danger"
-              *ngIf="email.dirty && email.hasError('email')"
-            >
-              Email inválido!
-            </ion-note>
-          </ion-item>
-          <ion-item>
-            <ion-icon
-              slot="start"
-              name="lock"
-              color="primary"
-            ></ion-icon>
-            <ion-input
-              type="password"
-              placeholder="Senha"
-              color="primary"
-              formControlName="senha"
-            ></ion-input>
-            <ion-note
-              slot="end"
-              color="danger"
-              *ngIf="senha.dirty && senha.hasError('required')"
-            >
-              Senha Obrigatória!
-            </ion-note>
-            <ion-note
-              slot="end"
-              color="danger"
-              *ngIf="senha.dirty && senha.hasError('minlength')"
-            >
-              Mínimo 6 caracteres
-            </ion-note>
-          </ion-item>
-          <ion-button
-            expand="block"
-            [disabled]="loginForm.invalid"
-            type="submit"
+        <div class="login-menu" [@movDiv]="configs.login ? 'login' : 'cadastro'">
+          <h1 text-center>
+            <ion-img
+              src="../../../assets/img/logo.png"
+              id="img-logo"
+            ></ion-img>
+          </h1>
+          <form
+            [formGroup]="loginForm"
+            (submit)="onSubmit()"
           >
-            {{ configs.acao }}
+            <ng-container *ngIf="!configs.login">
+              <ion-item>
+                <ion-icon
+                  slot="start"
+                  name="person"
+                  color="primary"
+                ></ion-icon>
+                <ion-input
+                  type="text"
+                  placeholder="Nome"
+                  color="primary"
+                  formControlName="nome"
+                ></ion-input>
+                <ion-note
+                  slot="end"
+                  color="danger"
+                  *ngIf="nome.dirty && nome.hasError('required')"
+                >
+                  Nome Obrigatório!
+                </ion-note>
+                <ion-note
+                  slot="end"
+                  color="danger"
+                  *ngIf="nome.dirty && nome.hasError('minlength')"
+                >
+                  Mínimo 3 caracteres
+                </ion-note>
+              </ion-item>
+              <ion-item>
+                <ion-icon
+                  slot="start"
+                  name="key"
+                  color="primary"
+                ></ion-icon>
+                <ion-input
+                  placeholder="Cpf"
+                  color="primary"
+                  formControlName="cpf"
+                ></ion-input>
+                <ion-note
+                  slot="end"
+                  color="danger"
+                  *ngIf="cpf.dirty && cpf.hasError('required')"
+                >
+                  Cpf Obrigatório!
+                </ion-note>
+                <ion-note
+                  slot="end"
+                  color="danger"
+                  *ngIf="cpf.dirty && (cpf.hasError('minlength') || cpf.hasError('maxlength'))"
+                >
+                  Cpf Inválido!
+                </ion-note>
+              </ion-item>
+              <ion-item>
+                <ion-icon
+                  slot="start"
+                  name="paper"
+                  color="primary"
+                ></ion-icon>
+                <ion-input
+                  placeholder="RG"
+                  color="primary"
+                  formControlName="rg"
+                ></ion-input>
+                <ion-note
+                  slot="end"
+                  color="danger"
+                  *ngIf="rg.dirty && rg.hasError('required')"
+                >
+                  RG Obrigatório!
+                </ion-note>
+                <ion-note
+                  slot="end"
+                  color="danger"
+                  *ngIf="rg.dirty && (rg.hasError('minlength') || rg.hasError('maxlength'))"
+                >
+                  RG inválido!
+                </ion-note>
+              </ion-item>
+              <ion-item>
+                <ion-icon
+                  slot="start"
+                  name="call"
+                  color="primary"
+                ></ion-icon>
+                <ion-input
+                  type="tel"
+                  placeholder="Telefone"
+                  color="primary"
+                  formControlName="telefone"
+                ></ion-input>
+                <ion-note
+                  slot="end"
+                  color="danger"
+                  *ngIf="telefone.dirty && telefone.hasError('required')"
+                >
+                  Telefone Obrigatório!
+                </ion-note>
+                <ion-note
+                  slot="end"
+                  color="danger"
+                  *ngIf="
+                    telefone.dirty &&
+                    (telefone.hasError('minlength') || telefone.hasError('maxlength'))
+                  "
+                >
+                  Telefone inválido!
+                </ion-note>
+              </ion-item>
+              <ion-item>
+                <ion-icon
+                  slot="start"
+                  name="calendar"
+                  color="primary"
+                ></ion-icon>
+                <ion-input
+                  type="date"
+                  placeholder="Aniversário"
+                  color="primary"
+                  formControlName="dataNascimento"
+                ></ion-input>
+                <ion-note
+                  slot="end"
+                  color="danger"
+                  *ngIf="dataNascimento.dirty && dataNascimento.hasError('required')"
+                >
+                  Aniversário Obrigatório!
+                </ion-note>
+                <ion-note
+                  slot="end"
+                  color="danger"
+                  *ngIf="
+                    dataNascimento.dirty &&
+                    (dataNascimento.hasError('minlength') || dataNascimento.hasError('maxlength'))
+                  "
+                >
+                  Aniversário inválido!
+                </ion-note>
+              </ion-item>
+            </ng-container>
+            <ion-item>
+              <ion-icon
+                slot="start"
+                name="at"
+                color="primary"
+              ></ion-icon>
+              <ion-input
+                type="email"
+                inputmode="email"
+                placeholder="Email"
+                color="primary"
+                formControlName="email"
+                autoFocus="true"
+              ></ion-input>
+              <ion-note
+                slot="end"
+                color="danger"
+                *ngIf="email.dirty && email.hasError('required')"
+              >
+                Email Obrigatório!
+              </ion-note>
+              <ion-note
+                slot="end"
+                color="danger"
+                *ngIf="email.dirty && email.hasError('email')"
+              >
+                Email inválido!
+              </ion-note>
+            </ion-item>
+            <ion-item>
+              <ion-icon
+                slot="start"
+                name="lock"
+                color="primary"
+              ></ion-icon>
+              <ion-input
+                type="password"
+                placeholder="Senha"
+                color="primary"
+                formControlName="senha"
+              ></ion-input>
+              <ion-note
+                slot="end"
+                color="danger"
+                *ngIf="senha.dirty && senha.hasError('required')"
+              >
+                Senha Obrigatória!
+              </ion-note>
+              <ion-note
+                slot="end"
+                color="danger"
+                *ngIf="senha.dirty && senha.hasError('minlength')"
+              >
+                Mínimo 6 caracteres
+              </ion-note>
+            </ion-item>
+            <ion-button
+              expand="full"
+              [disabled]="loginForm.invalid"
+              type="submit"
+            >
+            <strong>{{ configs.acao }}</strong>
+            </ion-button>
+          </form>
+          <ion-button
+            expand="full"
+            fill="clear"
+            (click)="mudarAcaoForm()"
+          >
+          <strong>{{ configs.novaAcao }}</strong>
           </ion-button>
-        </form>
-        <ion-button
-          expand="block"
-          fill="clear"
-          (click)="mudarAcaoForm()"
-        >
-          {{ configs.novaAcao }}
-        </ion-button>
+        </div>
       </ion-col>
     </ion-row>
   </ion-grid>

@@ -12,12 +12,12 @@ import { Usuario } from './model/usuario.model';
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
   animations: [
-    trigger('movLogo', [
-      state('cadastro', style({ 'padding-top': '10%' })),
-      state('login', style({ 'padding-top': '25%' })),
-      transition('login => cadastro', [style({ transition: '1s' }), animate('300ms 0s ease-in')]),
-      transition('cadastro => login', [style({ transition: '1s' }), animate('300ms 0s ease-in')])
-    ])
+    trigger('movDiv', [
+      state('cadastro', style({ 'margin-top': '-4%', 'height': '101%', 'border-radius': '3%' })),
+      state('login', style({ 'margin-top': '33%', 'height': '79%', 'border-radius': '5%'})),
+      transition('login => cadastro', [style({ transition: '0.2s' }), animate('100ms 0s ease-in')]),
+      transition('cadastro => login', [style({ transition: '0.2s' }), animate('100ms 0s ease-in')])
+    ]),
   ]
 })
 export class LoginPage implements OnInit {
@@ -95,7 +95,7 @@ export class LoginPage implements OnInit {
   mudarAcaoForm(): void {
     this.configs.login = !this.configs.login;
     const { login } = this.configs;
-    this.configs.acao = login ? 'Entrar' : 'Cadastrar';
+    this.configs.acao = login ? 'Login' : 'Cadastrar';
     this.configs.novaAcao = login ? 'Criar Conta!' : 'Já tenho uma conta!';
     if (!login) {
       this.loginForm.addControl('nome', this.nomeControl);

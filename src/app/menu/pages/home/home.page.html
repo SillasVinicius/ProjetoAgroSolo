@@ -1,5 +1,5 @@
 <ion-header class="header">
-  <ion-toolbar color="primary">
+  <ion-toolbar class="transparent">
     <app-menu-toogle
       slot="start"
       menu="main-menu"
@@ -15,7 +15,7 @@
       <ion-col
         text-center
       >
-      <ion-chip style="color: white">
+      <ion-chip class="rgba3">
           <ion-avatar>
             <img src="../../../assets/img/avatar.svg">
           </ion-avatar>
@@ -25,7 +25,6 @@
     </ion-row>
   </ion-grid>
 </ion-header>
-
 <ion-content padding>
   <ion-grid>
     <ion-row align-items-center>
@@ -34,6 +33,7 @@
           expand="full"
           (click)="linkCliente()"
           size="large"
+          class="cliente"
         >
           <ion-icon
             slot="start"
@@ -51,7 +51,7 @@
           expand="full"
           (click)="linkOutorga()"
           size="large"
-          color="second-primary"
+          class="outorga"
         >
           <ion-icon
             slot="start"
@@ -70,7 +70,7 @@
           (click)="linkAmbiental()"
           size="large"
           style="background:"
-          color="tertiary-primary"
+          class="ambiental"
         >
           <ion-icon
             slot="start"
