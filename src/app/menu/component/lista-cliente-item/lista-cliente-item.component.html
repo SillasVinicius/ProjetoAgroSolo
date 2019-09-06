@@ -1,5 +1,11 @@
 <ion-item-sliding #sliding>
-  <ion-item (click)="update.emit(cliente)">{{ cliente.nome }}</ion-item>
+  <ion-item>
+    <ion-button (click)="sliding.open(); abrir()" fill="clear" *ngIf="!clicado">
+    <ion-icon slot="icon-only" name="more"></ion-icon>
+  </ion-button>
+  <ion-button (click)="sliding.close(); fechar()" fill="clear" *ngIf="clicado">
+    <ion-icon slot="icon-only" name="more"></ion-icon>
+  </ion-button>{{ cliente.nome }}</ion-item>
   <ion-item-options side="start">
     <ion-item-option color="danger" (click)="delete.emit(cliente); sliding.close()">
       <ion-icon slot="icon-only" name="trash"></ion-icon>

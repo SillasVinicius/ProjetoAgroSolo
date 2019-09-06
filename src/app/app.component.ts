@@ -10,7 +10,7 @@ import { UsuarioService } from './core/services/usuario.service';
   templateUrl: 'app.component.html'
 })
 export class AppComponent {
-  pages: { url: string; direction: string; icon: string; text: string }[];
+  pages: { url: string; direction: string; icon: string; text: string, color: string }[];
   @Input() nome: string;
   constructor(
     private platform: Platform,
@@ -23,10 +23,10 @@ export class AppComponent {
 
   initializeApp() {
     this.pages = [
-      { url: '/menu', icon: 'home', text: 'Home', direction: 'back' },
-      { url: '/menu/cliente', icon: 'create', text: 'Cliente', direction: 'forward' },
-      { url: '/menu/outorga', icon: 'albums', text: 'Outorga', direction: 'forward' },
-      { url: '#', icon: 'flower', text: 'Ambiental', direction: 'forward' },
+      { url: '/menu', icon: 'home', text: 'Home', direction: 'back', color: 'primary' },
+      { url: '/menu/cliente', icon: 'create', text: 'Cliente', direction: 'forward', color: 'second-primary' },
+      { url: '/menu/outorga', icon: 'albums', text: 'Outorga', direction: 'forward', color: 'success'},
+      { url: '#', icon: 'flower', text: 'Ambiental', direction: 'forward', color: 'tertiary-primary'},
     ];
 
     this.platform.ready().then(() => {

@@ -23,7 +23,4 @@ export class ListaOutorgaItemComponent implements OnInit{
   fechar(){
     this.clicado = false;
   }
-  teste(){
-    console.log("teste");
-  }
 }
