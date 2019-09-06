@@ -1,8 +1,8 @@
 {
   "name": "AgroSolo",
-  "version": "0.0.7",
-  "author": "Ionic Framework",
-  "homepage": "https://ionicframework.com/",
+  "version": "0.1.2",
+  "author": "HMS Consulting",
+  "homepage": "https://www.hmsconsulting.com.br",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
