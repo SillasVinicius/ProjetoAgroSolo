@@ -138,18 +138,12 @@
   --background-size:cover;
   --color: white;
 }
-.cliente:hover {
-  --background: rgba(0,0,0,0.5);
-}
 
 .outorga {
   --background: url('../assets/img/outorga.jpg');
   --background-repeat: no-repeat;
   --background-size:cover;
   --color: white;
-}
-.outorga:hover {
-  --background: rgba(0,0,0,0.5);
 }
 
 .ambiental {
@@ -165,6 +159,23 @@
   --background-size:cover;
 }
 
-.ambiental:hover {
-  --background: rgba(0,0,0,0.5);
+.la {
+  --background: url('../assets/img/la.jpg');
+  --background-repeat: no-repeat;
+  --background-size:cover;
+  --color: white;
+}
+
+.da {
+  --background: url('../assets/img/da.jpg');
+  --background-repeat: no-repeat;
+  --background-size:cover;
+  --color: white;
+}
+
+.car {
+  --background: url('../assets/img/car.jpg');
+  --background-repeat: no-repeat;
+  --background-size:cover;
+  --color: white;
 }

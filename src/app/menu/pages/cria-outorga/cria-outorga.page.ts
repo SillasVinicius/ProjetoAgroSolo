@@ -8,6 +8,8 @@ import { AngularFireStorage, AngularFireUploadTask } from '@angular/fire/storage
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { OutorgaService } from 'src/app/core/services/outorga.service';
+import { ClienteService } from 'src/app/core/services/cliente.service';
+import { Cliente } from '../../models/cliente.model';
 
 @Component({
   selector: 'app-cria-outorga',
@@ -16,9 +18,14 @@ import { OutorgaService } from 'src/app/core/services/outorga.service';
 })
 export class CriaOutorgaPage implements OnInit {
 
-  // Cliente
+  // outorga
   outorgaForm: FormGroup;
   outorgaId: string = undefined;
+
+  //cliente
+
+  clientes: Cliente[] = [];
+  selCliente: string;
 
   // Validacao
   numberPattern = /^[0-9]*$/;
@@ -50,11 +57,22 @@ export class CriaOutorgaPage implements OnInit {
     private navCtrl: NavController,
     private route: ActivatedRoute,
     private outorgaService: OutorgaService,
+    private clienteService: ClienteService,
     private storage: AngularFireStorage,
     private database: AngularFirestore
   ) {
     this.isUploading2 = false;
     this.isUploaded2 = false;
+    this.clienteService.init();
+    this.clienteService.getAll().subscribe((r: Cliente[]) => {
+
+      for (let i = 0; i < r.length; i++) {
+          this.clientes[i] = r[i];
+      }
+
+  });
+
+  console.log(this.clientes);
   }
 
   // metodo que é chamado quando a pagina é carregada
@@ -70,7 +88,8 @@ export class CriaOutorgaPage implements OnInit {
     this.outorgaForm = this.formBuilder.group({
       descricao: this.formBuilder.control('', [Validators.required, Validators.minLength(3)]),
       dataDeVencimento: this.formBuilder.control('', [Validators.required, Validators.minLength(10),
-        Validators.maxLength(10)])
+        Validators.maxLength(10)]),
+      idCliente: this.formBuilder.control('', [Validators.required])
     });
   }
 
@@ -80,6 +99,10 @@ export class CriaOutorgaPage implements OnInit {
   }
   get dataDeVencimento(): FormControl {
     return this.outorgaForm.get('dataDeVencimento') as FormControl;
+  }
+
+  get idCliente(): FormControl {
+    return this.outorgaForm.get('idCliente') as FormControl;
   }
 
   // verifica se a acao é de criação ou atualização
@@ -98,9 +121,10 @@ export class CriaOutorgaPage implements OnInit {
     this.outorgaService
       .get(outorgaId)
       .pipe(take(1))
-      .subscribe(({ descricao, dataDeVencimento  }) => {
+      .subscribe(({ descricao, dataDeVencimento, clienteId  }) => {
         this.outorgaForm.get('descricao').setValue(descricao),
           this.outorgaForm.get('dataDeVencimento').setValue(dataDeVencimento)
+          this.outorgaForm.get('idCliente').setValue(clienteId)
       });
   }
 
@@ -121,7 +145,8 @@ export class CriaOutorgaPage implements OnInit {
         const outorga = await this.outorgaService.update({
           id: this.outorgaId,
           descricao: this.outorgaForm.get('descricao').value,
-          dataDeVencimento: this.outorgaForm.get('dataDeVencimento').value
+          dataDeVencimento: this.outorgaForm.get('dataDeVencimento').value,
+          clienteId: this.outorgaForm.get('idCliente').value,
         });
       }
       console.log('Outorga Criada', outorga);
@@ -222,6 +247,12 @@ export class CriaOutorgaPage implements OnInit {
     this.outorgaService.collection.doc(this.image2.name).set(this.image2);
   }
   // Arquivos - fim
+
+
+  teste() {
+
+    console.log(this.selCliente);
+  }
 }
 
 export interface MyData {

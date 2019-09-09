@@ -1,4 +1,4 @@
-<ion-content padding class="login">
+<ion-content padding color="primary">
   <ion-grid>
     <ion-row justify-content-center>
       <ion-col
@@ -216,15 +216,20 @@
               </ion-note>
             </ion-item>
             <ion-button
-              expand="full"
+              expand="block"
               [disabled]="loginForm.invalid"
               type="submit"
+              id="login-button"
             >
-            <strong>{{ configs.acao }}</strong>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            LOGIN
             </ion-button>
           </form>
           <ion-button
-            expand="full"
+            expand="block"
             fill="clear"
             (click)="mudarAcaoForm()"
           >

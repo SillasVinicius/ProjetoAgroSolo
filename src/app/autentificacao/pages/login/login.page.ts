@@ -6,6 +6,7 @@ import { UsuarioService } from 'src/app/core/services/usuario.service';
 import { NavController } from '@ionic/angular';
 import { Observable } from 'rxjs';
 import { Usuario } from './model/usuario.model';
+import { Network } from '@ionic-native/network/ngx';
 
 @Component({
   selector: 'app-login',
@@ -60,7 +61,8 @@ export class LoginPage implements OnInit {
     private formBuilder: FormBuilder,
     private overlayService: OverlayService,
     private usuarioService: UsuarioService,
-    private navCtrl: NavController
+    private navCtrl: NavController,
+    private network: Network
   ) {}
 
   ngOnInit() {
@@ -68,6 +70,10 @@ export class LoginPage implements OnInit {
       senha: this.formBuilder.control('123456', [Validators.required, Validators.minLength(6)]),
       email: this.formBuilder.control('sillas@gmail.com', [Validators.required, Validators.email])
     });
+
+    let disconnectSubscription = this.network.onDisconnect().subscribe(r => console.log(r));
+
+    let connectSubscription = this.network.onConnect().subscribe(r => console.log(r));
   }
 
   get cpf(): FormControl {

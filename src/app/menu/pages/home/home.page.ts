@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ClienteService } from 'src/app/core/services/cliente.service';
 import { NavController } from '@ionic/angular';
-import { Usuario } from 'src/app/autentificacao/pages/login/model/usuario.model';
 import { UsuarioService } from 'src/app/core/services/usuario.service';
 
 @Component({

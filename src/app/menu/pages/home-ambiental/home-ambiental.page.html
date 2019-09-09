@@ -1,0 +1,72 @@
+<ion-header >
+  <ion-toolbar color="primary">
+    <app-menu-toogle
+      slot="start"
+      menu="main-menu"
+    ></app-menu-toogle>
+    <ion-title>Ambiental</ion-title>
+    <app-logout-button
+      slot="end"
+      menu="main-menu"
+    ></app-logout-button>
+  </ion-toolbar>
+</ion-header>
+<ion-content padding>
+  <h1 align="center" style="text-transform: uppercase;">Cadastros Ambientais</h1>
+  <div style="padding-top: 5%;">
+    <ion-grid>
+      <ion-row align-items-center>
+        <ion-col text-center>
+          <ion-button
+            expand="block"
+            (click)="linkDA()"
+            size="large"
+            class="btn-ambiental"
+          >
+            <ion-icon
+              slot="start"
+              name="folder"
+            ></ion-icon>
+            Declaração Ambiental
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    <ion-grid>
+      <ion-row align-items-center>
+         <ion-col text-center>
+          <ion-button
+            expand="block"
+            (click)="linkLA()"
+            size="large"
+            class="btn-ambiental"
+          >
+            <ion-icon
+              slot="start"
+              name="albums"
+            ></ion-icon>
+            Licença Ambiental
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    <ion-grid>
+      <ion-row align-items-center>
+        <ion-col text-center>
+          <ion-button
+            expand="block"
+            (click)="linkCAR()"
+            size="large"
+            class="btn-ambiental"
+          >
+            <ion-icon
+              slot="start"
+              name="paper"
+            ></ion-icon>
+            Cadastro Ambiental Rural
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+</ion-content>

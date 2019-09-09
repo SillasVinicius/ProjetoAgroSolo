@@ -1,5 +1,5 @@
 <ion-header class="header">
-  <ion-toolbar class="transparent">
+  <ion-toolbar color="primary">
     <app-menu-toogle
       slot="start"
       menu="main-menu"
@@ -30,10 +30,10 @@
     <ion-row align-items-center>
       <ion-col text-center>
         <ion-button
-          expand="full"
+          expand="block"
           (click)="linkCliente()"
           size="large"
-          class="cliente"
+
         >
           <ion-icon
             slot="start"
@@ -48,10 +48,10 @@
     <ion-row align-items-center>
        <ion-col text-center>
         <ion-button
-          expand="full"
+          expand="block"
           (click)="linkOutorga()"
           size="large"
-          class="outorga"
+
         >
           <ion-icon
             slot="start"
@@ -66,11 +66,10 @@
     <ion-row align-items-center>
       <ion-col text-center>
         <ion-button
-          expand="full"
+          expand="block"
           (click)="linkAmbiental()"
           size="large"
-          style="background:"
-          class="ambiental"
+
         >
           <ion-icon
             slot="start"

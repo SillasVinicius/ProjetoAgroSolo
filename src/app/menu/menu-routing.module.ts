@@ -28,12 +28,15 @@ const routes: Routes = [
         loadChildren: './pages/lista-outorga/lista-outorga.module#ListaOutorgaPageModule'
       },
       {
+        path: 'ambiental',
+        loadChildren: './ambiental-routing.module#AmbientalRoutingModule'
+      },
+      {
         path: '',
         loadChildren: './pages/home/home.module#HomePageModule'
       }
     ]
-  },
-  { path: 'cria-outorga', loadChildren: './pages/cria-outorga/cria-outorga.module#CriaOutorgaPageModule' }
+  }
 ];
 
 @NgModule({
