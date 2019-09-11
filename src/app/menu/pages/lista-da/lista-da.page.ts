@@ -1,4 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
+import { take } from 'rxjs/operators';
+import { NavController } from '@ionic/angular';
+import { OverlayService } from 'src/app/core/services/overlay.service';
+import { DeclaracaoAmbiental } from '../../models/da.model';
+import { DaService } from 'src/app/core/services/da.service';
+
 
 @Component({
   selector: 'app-lista-da',
@@ -7,9 +14,41 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ListaDAPage implements OnInit {
 
-  constructor() { }
+  das$: Observable<DeclaracaoAmbiental[]>;
+  constructor(
+    private navCtrl: NavController,
+    private daService: DaService,
+    private overlayService: OverlayService
+  ) {}
 
-  ngOnInit() {
+  async ngOnInit(): Promise<void> {
+    const loading = await this.overlayService.loading();
+    this.daService.init();
+    this.das$ = this.daService.getAll();
+    this.das$.pipe(take(1)).subscribe(() => loading.dismiss());
+  }
+
+  atualizar(da: DeclaracaoAmbiental): void {
+    this.navCtrl.navigateForward(`menu/ambiental/DeclaracaoAmbieltal/UpdateDeclaracaoAmbiental/${da.id}`);
+  }
+
+  async deletar(da: DeclaracaoAmbiental): Promise<void> {
+    await this.overlayService.alert({
+      message: `Você realmente deseja deletar a Declaracao Ambiental "${da.descricao}"?`,
+      buttons: [
+        {
+          text: 'Sim',
+          handler: async () => {
+            await this.daService.init();
+            await this.daService.delete(da);
+            await this.overlayService.toast({
+              message: `Declaracao Ambiental "${da.descricao}" excluida!`
+            });
+          }
+        },
+        'Não'
+      ]
+    });
   }
 
 }

@@ -8,7 +8,19 @@ const routes: Routes = [
     canActivateChild: [AuthGuard],
     children: [
       {
-        path: 'DeclaracaoAmbieltal',
+        path: 'CadastroDeclaracaoAmbiental',
+        loadChildren: './pages/cria-da/cria-da.module#CriaDaPageModule'
+      },
+      {
+        path: 'CadastroLicencaAmbiental',
+        loadChildren: './pages/cria-la/cria-la.module#CriaLaPageModule'
+      },
+      {
+        path: 'AddCadastroAmbientalRural',
+        loadChildren: './pages/cria-car/cria-car.module#CriaCarPageModule'
+      },
+      {
+        path: 'DeclaracaoAmbiental',
         loadChildren: './pages/lista-da/lista-da.module#ListaDAPageModule'
       },
       {

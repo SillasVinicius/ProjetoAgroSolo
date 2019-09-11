@@ -8,7 +8,7 @@
   </ion-toolbar>
 </ion-header>
 <ion-content padding>
-  <form [formGroup]="outorgaForm" (submit)="onSubmit()" novalidate>
+  <form [formGroup]="cadastroRuralAmbientalForm" (submit)="onSubmit()" novalidate>
     <ion-item>
       <ion-label position="floating" color="primary">Cliente</ion-label>
       <ion-select interface="popover" #selectCliente formControlName="idCliente">
@@ -36,32 +36,6 @@
       </ion-note>
       <ion-note slot="end" color="danger" *ngIf="descricao.dirty && descricao.hasError('minlength')">
         Mínimo 3 caracteres
-      </ion-note>
-    </ion-item>
-    <ion-item>
-      <ion-label position="floating" color="primary">Vencimento</ion-label>
-      <ion-input
-        type="date"
-        placeholder="Vencimento"
-        color="primary"
-        formControlName="dataDeVencimento"
-      ></ion-input>
-      <ion-note
-        slot="end"
-        color="danger"
-        *ngIf="dataDeVencimento.dirty && dataDeVencimento.hasError('required')"
-      >
-        Vencimento Obrigatório!
-      </ion-note>
-      <ion-note
-        slot="end"
-        color="danger"
-        *ngIf="
-          dataDeVencimento.dirty &&
-          (dataDeVencimento.hasError('minlength') || dataDeVencimento.hasError('maxlength'))
-        "
-      >
-        Vencimento inválido!
       </ion-note>
     </ion-item>
     <!-- inicio arquivo -->
@@ -96,16 +70,16 @@
       </ion-card-header>
     </ion-card>
     <!-- fim arquivo -->
-    <ion-button expand="full" type="submit" *ngIf="outorgaForm.valid && liberaArquivo">
+    <ion-button expand="full" type="submit" *ngIf="cadastroRuralAmbientalForm.valid && liberaArquivo">
       {{ botaoTitle }}
     </ion-button>
     <ion-button
       expand="full"
       [disabled]="true"
       *ngIf="
-        (!outorgaForm.valid && !liberaArquivo) ||
-        (!outorgaForm.valid && liberaArquivo) ||
-        (outorgaForm.valid && !liberaArquivo)
+        (!cadastroRuralAmbientalForm.valid && !liberaArquivo) ||
+        (!cadastroRuralAmbientalForm.valid && liberaArquivo) ||
+        (cadastroRuralAmbientalForm.valid && !liberaArquivo)
       "
     >
       {{ botaoTitle }}

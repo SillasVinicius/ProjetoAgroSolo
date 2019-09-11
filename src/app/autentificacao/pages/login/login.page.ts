@@ -14,7 +14,7 @@ import { Network } from '@ionic-native/network/ngx';
   styleUrls: ['./login.page.scss'],
   animations: [
     trigger('movDiv', [
-      state('cadastro', style({ 'margin-top': '-4%', 'height': '101%', 'border-radius': '3%' })),
+      state('cadastro', style({ 'margin-top': '-12%', 'height': '105%', 'border-radius': '3%' })),
       state('login', style({ 'margin-top': '33%', 'height': '79%', 'border-radius': '5%'})),
       transition('login => cadastro', [style({ transition: '0.2s' }), animate('100ms 0s ease-in')]),
       transition('cadastro => login', [style({ transition: '0.2s' }), animate('100ms 0s ease-in')])

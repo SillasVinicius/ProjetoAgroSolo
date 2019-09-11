@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { CadastroAmbientalRural } from '../../models/car.model';
+
 
 @Component({
   selector: 'app-lista-car-item',
@@ -6,9 +8,20 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./lista-car-item.component.scss'],
 })
 export class ListaCarItemComponent implements OnInit {
+  clicado: boolean = false;
+  @Input() cadastroAmbientalRural: CadastroAmbientalRural;
+  @Output() update = new EventEmitter<CadastroAmbientalRural>();
+  @Output() delete = new EventEmitter<CadastroAmbientalRural>();
 
-  constructor() { }
+  ngOnInit(){
+    this.clicado = false;
+  }
 
-  ngOnInit() {}
+  abrir(){
+    this.clicado = true;
+  }
 
+  fechar(){
+    this.clicado = false;
+  }
 }

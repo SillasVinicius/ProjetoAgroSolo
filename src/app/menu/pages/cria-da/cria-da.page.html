@@ -8,7 +8,7 @@
   </ion-toolbar>
 </ion-header>
 <ion-content padding>
-  <form [formGroup]="outorgaForm" (submit)="onSubmit()" novalidate>
+  <form [formGroup]="declaracaoAmbientalForm" (submit)="onSubmit()" novalidate>
     <ion-item>
       <ion-label position="floating" color="primary">Cliente</ion-label>
       <ion-select interface="popover" #selectCliente formControlName="idCliente">
@@ -39,7 +39,7 @@
       </ion-note>
     </ion-item>
     <ion-item>
-      <ion-label position="floating" color="primary">Vencimento</ion-label>
+    <ion-label position="floating" color="primary">Vencimento</ion-label>
       <ion-input
         type="date"
         placeholder="Vencimento"
@@ -96,16 +96,16 @@
       </ion-card-header>
     </ion-card>
     <!-- fim arquivo -->
-    <ion-button expand="full" type="submit" *ngIf="outorgaForm.valid && liberaArquivo">
+    <ion-button expand="full" type="submit" *ngIf="declaracaoAmbientalForm.valid && liberaArquivo">
       {{ botaoTitle }}
     </ion-button>
     <ion-button
       expand="full"
       [disabled]="true"
       *ngIf="
-        (!outorgaForm.valid && !liberaArquivo) ||
-        (!outorgaForm.valid && liberaArquivo) ||
-        (outorgaForm.valid && !liberaArquivo)
+        (!declaracaoAmbientalForm.valid && !liberaArquivo) ||
+        (!declaracaoAmbientalForm.valid && liberaArquivo) ||
+        (declaracaoAmbientalForm.valid && !liberaArquivo)
       "
     >
       {{ botaoTitle }}

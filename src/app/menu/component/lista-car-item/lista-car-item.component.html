@@ -1,3 +1,19 @@
-<p>
-  lista-car-item works!
-</p>
+<ion-item-sliding #sliding >
+  <ion-item (onload)="sliding.open()">
+    <ion-button (click)="sliding.open(); abrir()" fill="clear" *ngIf="!clicado">
+    <ion-icon slot="icon-only" name="more"></ion-icon>
+  </ion-button>
+  <ion-button (click)="sliding.close(); fechar()" fill="clear" *ngIf="clicado">
+    <ion-icon slot="icon-only" name="more"></ion-icon>
+  </ion-button>
+  {{ cadastroAmbientalRural.descricao }}
+</ion-item>
+  <ion-item-options side="start">
+    <ion-item-option color="danger" (click)="delete.emit(cadastroAmbientalRural); sliding.close()">
+      <ion-icon slot="icon-only" name="trash"></ion-icon>
+    </ion-item-option>
+    <ion-item-option color="tertiary" (click)="update.emit(cadastroAmbientalRural); sliding.close()">
+      <ion-icon slot="icon-only" name="create"></ion-icon>
+    </ion-item-option>
+  </ion-item-options>
+</ion-item-sliding>

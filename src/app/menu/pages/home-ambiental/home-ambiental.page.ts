@@ -9,7 +9,7 @@ import { NavController } from '@ionic/angular';
 export class HomeAmbientalPage implements OnInit {
   constructor(private navCtrl: NavController) {}
   linkDA() {
-    this.navCtrl.navigateForward('/menu/ambiental/DeclaracaoAmbieltal');
+    this.navCtrl.navigateForward('/menu/ambiental/DeclaracaoAmbiental');
   }
   linkLA() {
     this.navCtrl.navigateForward('/menu/ambiental/LicencaAmbiental');

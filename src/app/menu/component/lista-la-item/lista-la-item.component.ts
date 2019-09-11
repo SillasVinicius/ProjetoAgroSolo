@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { LicencaAmbiental } from '../../models/la.model';
 
 @Component({
   selector: 'app-lista-la-item',
@@ -7,8 +8,21 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ListaLaItemComponent implements OnInit {
 
-  constructor() { }
+  clicado: boolean = false;
+  @Input() licencaAmbiental: LicencaAmbiental;
+  @Output() update = new EventEmitter<LicencaAmbiental>();
+  @Output() delete = new EventEmitter<LicencaAmbiental>();
 
-  ngOnInit() {}
+  ngOnInit(){
+    this.clicado = false;
+  }
+
+  abrir(){
+    this.clicado = true;
+  }
+
+  fechar(){
+    this.clicado = false;
+  }
 
 }
