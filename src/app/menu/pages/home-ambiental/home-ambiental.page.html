@@ -16,30 +16,13 @@
   <div style="padding-top: 5%;">
     <ion-grid>
       <ion-row align-items-center>
-        <ion-col text-center>
-          <ion-button
-            expand="block"
-            (click)="linkDA()"
-            size="large"
-            class="btn-ambiental"
-          >
-            <ion-icon
-              slot="start"
-              name="folder"
-            ></ion-icon>
-            Declaração Ambiental
-          </ion-button>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-    <ion-grid>
-      <ion-row align-items-center>
          <ion-col text-center>
           <ion-button
-            expand="block"
+            shape="round"
             (click)="linkLA()"
             size="large"
             class="btn-ambiental"
+            fill="outline"
           >
             <ion-icon
               slot="start"
@@ -54,10 +37,28 @@
       <ion-row align-items-center>
         <ion-col text-center>
           <ion-button
-            expand="block"
-            (click)="linkCAR()"
+            (click)="linkDA()"
             size="large"
             class="btn-ambiental"
+            shape="round"
+          >
+            <ion-icon
+              slot="start"
+              name="folder"
+            ></ion-icon>
+            Declaração Ambiental
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    <ion-grid>
+      <ion-row align-items-center>
+        <ion-col text-center>
+          <ion-button
+            shape="round"
+            (click)="linkCAR()"
+            size="large"
+            class="btn-ambiental btn-final"
           >
             <ion-icon
               slot="start"
@@ -70,3 +71,4 @@
     </ion-grid>
   </div>
 </ion-content>
+<img src="../../../../assets/img/grama.png" alt="" style="margin-bottom: 0px;">

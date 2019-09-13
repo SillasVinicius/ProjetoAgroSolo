@@ -10,3 +10,16 @@
 .btn-ambiental {
 font-size: small;
 }
+
+.round {
+  width: 60px;
+  height: 60px;
+  --border-radius: 50%;
+  --vertical-align: middle;
+  --padding-start: 10px;
+  --padding-end: 10px;
+}
+
+.btn-final {
+  --background: #001a0f;
+}

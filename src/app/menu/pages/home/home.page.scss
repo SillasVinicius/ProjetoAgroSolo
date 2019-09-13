@@ -1,6 +1,6 @@
 .header {
   height: 18%;
-  background-color: #217e36;
+  background-color: #00643a;
   // background-image: url('../../../../assets/img/back.jpg');
   // // background: url('../../img/getstart.png');
   // background-repeat: no-repeat;
@@ -10,3 +10,24 @@
 // ion-button .cliente:hover {
 //   background: rgba(0,0,0,0.5);
 // }
+//
+// div {
+//   text-align:center;
+//   height: 50px;
+//   width: 50%;
+//   background-color: transparent;
+//   border: 2px solid #00643a;
+// }
+
+.round {
+  width: 60px;
+  height: 60px;
+  --border-radius: 50%;
+  --vertical-align: middle;
+  --padding-start: 10px;
+  --padding-end: 10px;
+}
+
+#btn-final {
+  --background: #001a0f;
+}
