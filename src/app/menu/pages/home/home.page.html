@@ -25,15 +25,15 @@
     </ion-row>
   </ion-grid>
 </ion-header>
-<ion-content padding>
-  <ion-grid>
+<ion-content>
+  <ion-grid style="margin:0px; padding: 0px;">
     <ion-row align-items-center>
-      <ion-col text-center>
+      <ion-col text-center style="width:100%; background: #a2bd31;" (click)="linkCliente()">
         <ion-button
           shape="round"
-          (click)="linkCliente()"
           size="large"
-          fill="outline"
+          fill="clear"
+          style="color: #00643a;"
         >
           <ion-icon
             slot="start"
@@ -44,13 +44,14 @@
       </ion-col>
     </ion-row>
   </ion-grid>
-  <ion-grid>
+  <ion-grid style="margin:0px; padding: 0px;">
     <ion-row align-items-center>
-       <ion-col text-center>
+       <ion-col text-center style="width:100%; background-color: #00643a" (click)="linkOutorga()">
         <ion-button
-          (click)="linkOutorga()"
           size="large"
           shape="round"
+          fill="clear"
+          style="color: white;"
         >
           <ion-icon
             slot="start"
@@ -61,14 +62,15 @@
       </ion-col>
     </ion-row>
   </ion-grid>
-  <ion-grid>
+  <ion-grid style="margin:0px; padding: 0px;">
     <ion-row align-items-center>
-      <ion-col text-center>
+      <ion-col text-center style="width:100%; background-color: #001a0f" (click)="linkAmbiental()">
         <ion-button
-          (click)="linkAmbiental()"
           shape="round"
           id="btn-final"
           size="large"
+          fill="clear"
+          style="color: white;"
         >
           <ion-icon
             slot="start"

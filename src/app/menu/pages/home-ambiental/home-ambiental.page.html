@@ -1,74 +1,80 @@
-<ion-header >
+<ion-header class="header">
   <ion-toolbar color="primary">
     <app-menu-toogle
       slot="start"
       menu="main-menu"
     ></app-menu-toogle>
     <ion-title>Ambiental</ion-title>
-    <!-- <app-logout-button
-      slot="end"
-      menu="main-menu"
-    ></app-logout-button> -->
   </ion-toolbar>
+  <ion-grid>
+    <ion-row align-items-center>
+      <ion-col
+        text-center
+      >
+      <ion-chip class="rgba3">
+          <ion-label>Cadastros Ambientais</ion-label>
+      </ion-chip>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-header>
-<ion-content padding>
-  <h1 align="center" style="text-transform: uppercase;">Cadastros Ambientais</h1>
-  <div style="padding-top: 5%;">
-    <ion-grid>
-      <ion-row align-items-center>
-         <ion-col text-center>
-          <ion-button
-            shape="round"
-            (click)="linkLA()"
-            size="large"
-            class="btn-ambiental"
-            fill="outline"
-          >
-            <ion-icon
-              slot="start"
-              name="albums"
-            ></ion-icon>
-            Licença Ambiental
-          </ion-button>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-    <ion-grid>
-      <ion-row align-items-center>
-        <ion-col text-center>
-          <ion-button
-            (click)="linkDA()"
-            size="large"
-            class="btn-ambiental"
-            shape="round"
-          >
-            <ion-icon
-              slot="start"
-              name="folder"
-            ></ion-icon>
-            Declaração Ambiental
-          </ion-button>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-    <ion-grid>
-      <ion-row align-items-center>
-        <ion-col text-center>
-          <ion-button
-            shape="round"
-            (click)="linkCAR()"
-            size="large"
-            class="btn-ambiental btn-final"
-          >
-            <ion-icon
-              slot="start"
-              name="paper"
-            ></ion-icon>
-            Cadastro Ambiental Rural
-          </ion-button>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-  </div>
+<ion-content>
+  <ion-grid style="margin:0px; padding: 0px;">
+    <ion-row align-items-center>
+       <ion-col text-center style="width:100%; background: #a2bd31;" (click)="linkLA()">
+        <ion-button
+          shape="round"
+          size="large"
+          class="btn-ambiental"
+          fill="clear"
+          style="color: #00643a;"
+        >
+          <ion-icon
+            slot="start"
+            name="albums"
+          ></ion-icon>
+          Licença Ambiental
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <ion-grid style="margin:0px; padding: 0px;">
+    <ion-row align-items-center>
+      <ion-col text-center style="width:100%; background-color: #00643a" (click)="linkDA()">
+        <ion-button
+          size="large"
+          class="btn-ambiental"
+          shape="round"
+          fill="clear"
+          style="color: white;"
+        >
+          <ion-icon
+            slot="start"
+            name="folder"
+          ></ion-icon>
+          Declaração Ambiental
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <ion-grid style="margin:0px; padding: 0px;">
+    <ion-row align-items-center>
+      <ion-col text-center style="width:100%; background-color: #001a0f" (click)="linkCAR()">
+        <ion-button
+          shape="round"
+          size="large"
+          class="btn-ambiental btn-final"
+          fill="clear"
+          style="color: white;"
+        >
+          <ion-icon
+            slot="start"
+            name="paper"
+          ></ion-icon>
+          Cadastro Ambiental Rural
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>
 <img src="../../../../assets/img/grama.png" alt="" style="margin-bottom: 0px;">
