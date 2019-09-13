@@ -19,6 +19,9 @@ export class HomePage implements OnInit {
   linkAmbiental() {
     this.navCtrl.navigateForward('/menu/ambiental');
   }
+  linkAlterarUsuario() {
+    this.navCtrl.navigateForward(`/menu/updateUsuario/${this.usuario.id}`);
+  }
   ngOnInit() {
     this.nomeUser = this.usuario.nomeUser;
   }

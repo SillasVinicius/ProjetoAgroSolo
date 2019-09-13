@@ -1,10 +1,10 @@
 <ion-header>
   <ion-toolbar color="primary">
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/menu"></ion-back-button>
+      <ion-back-button defaultHref="/menu/cliente"></ion-back-button>
     </ion-buttons>
     <ion-title>{{ pageTitle }}</ion-title>
-    <app-logout-button slot="end" menu="main-menu"></app-logout-button>
+    <!-- <app-logout-button slot="end" menu="main-menu"></app-logout-button> -->
   </ion-toolbar>
 </ion-header>
 <ion-content padding>
@@ -63,7 +63,7 @@
       <ion-input
         formControlName="pdtvAgro"
         color="primary"
-      ></ion-input>    
+      ></ion-input>
     </ion-item>
     <ion-note slot="end" color="danger" *ngIf="pdtvAgro.dirty && pdtvAgro.hasError('required')">
       Prod.Agropecuária Obrigatória!

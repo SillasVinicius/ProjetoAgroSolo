@@ -1,0 +1,217 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/menu"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Alterar Perfil</ion-title>
+    <!-- <app-logout-button slot="end" menu="main-menu"></app-logout-button> -->
+  </ion-toolbar>
+</ion-header>
+<ion-content padding>
+  <form [formGroup]="updateUsuarioForm" (submit)="onSubmit()" novalidate>
+    <ion-item>
+      <ion-icon
+        slot="start"
+        name="person"
+        color="primary"
+      ></ion-icon>
+      <ion-label position="floating" color="primary">Nome</ion-label>
+      <ion-input
+        type="text"
+        color="primary"
+        formControlName="nome"
+      ></ion-input>
+      <ion-note
+        slot="end"
+        color="danger"
+        *ngIf="nome.dirty && nome.hasError('required')"
+      >
+        Nome Obrigatório!
+      </ion-note>
+      <ion-note
+        slot="end"
+        color="danger"
+        *ngIf="nome.dirty && nome.hasError('minlength')"
+      >
+        Mínimo 3 caracteres
+      </ion-note>
+    </ion-item>
+    <ion-item>
+      <ion-icon
+        slot="start"
+        name="key"
+        color="primary"
+      ></ion-icon>
+      <ion-label position="floating" color="primary">CPF</ion-label>
+      <ion-input
+        color="primary"
+        formControlName="cpf"
+      ></ion-input>
+      <ion-note
+        slot="end"
+        color="danger"
+        *ngIf="cpf.dirty && cpf.hasError('required')"
+      >
+        Cpf Obrigatório!
+      </ion-note>
+      <ion-note
+        slot="end"
+        color="danger"
+        *ngIf="cpf.dirty && (cpf.hasError('minlength') || cpf.hasError('maxlength'))"
+      >
+        Cpf Inválido!
+      </ion-note>
+    </ion-item>
+    <ion-item>
+      <ion-icon
+        slot="start"
+        name="paper"
+        color="primary"
+      ></ion-icon>
+      <ion-label position="floating" color="primary">RG</ion-label>
+      <ion-input
+        color="primary"
+        formControlName="rg"
+      ></ion-input>
+      <ion-note
+        slot="end"
+        color="danger"
+        *ngIf="rg.dirty && rg.hasError('required')"
+      >
+        RG Obrigatório!
+      </ion-note>
+      <ion-note
+        slot="end"
+        color="danger"
+        *ngIf="rg.dirty && (rg.hasError('minlength') || rg.hasError('maxlength'))"
+      >
+        RG inválido!
+      </ion-note>
+    </ion-item>
+    <ion-item>
+      <ion-icon
+        slot="start"
+        name="call"
+        color="primary"
+      ></ion-icon>
+      <ion-label position="floating" color="primary">Telefone</ion-label>
+      <ion-input
+        type="tel"
+        color="primary"
+        formControlName="telefone"
+      ></ion-input>
+      <ion-note
+        slot="end"
+        color="danger"
+        *ngIf="telefone.dirty && telefone.hasError('required')"
+      >
+        Telefone Obrigatório!
+      </ion-note>
+      <ion-note
+        slot="end"
+        color="danger"
+        *ngIf="
+          telefone.dirty &&
+          (telefone.hasError('minlength') || telefone.hasError('maxlength'))
+        "
+      >
+        Telefone inválido!
+      </ion-note>
+    </ion-item>
+
+    <ion-item>
+      <ion-icon
+        slot="start"
+        name="calendar"
+        color="primary"
+      ></ion-icon>
+      <ion-label position="floating" color="primary">Aniversário</ion-label>
+      <ion-input
+        type="date"
+        color="primary"
+        placeholder="Aniversário"
+        formControlName="dataNascimento"
+      ></ion-input>
+      <ion-note
+        slot="end"
+        color="danger"
+        *ngIf="dataNascimento.dirty && dataNascimento.hasError('required')"
+      >
+        Aniversário Obrigatório!
+      </ion-note>
+      <ion-note
+        slot="end"
+        color="danger"
+        *ngIf="
+          dataNascimento.dirty &&
+          (dataNascimento.hasError('minlength') || dataNascimento.hasError('maxlength'))
+        "
+      >
+        Aniversário inválido!
+      </ion-note>
+    </ion-item>
+    <ion-item>
+      <ion-icon
+        slot="start"
+        name="at"
+        color="primary"
+      ></ion-icon>
+      <ion-label position="floating" color="primary">Email</ion-label>
+      <ion-input
+        type="email"
+        inputmode="email"
+        color="primary"
+        formControlName="email"
+        autoFocus="true"
+      ></ion-input>
+      <ion-note
+        slot="end"
+        color="danger"
+        *ngIf="email.dirty && email.hasError('required')"
+      >
+        Email Obrigatório!
+      </ion-note>
+      <ion-note
+        slot="end"
+        color="danger"
+        *ngIf="email.dirty && email.hasError('email')"
+      >
+        Email inválido!
+      </ion-note>
+    </ion-item>
+    <ion-item>
+      <ion-icon
+        slot="start"
+        name="lock"
+        color="primary"
+      ></ion-icon>
+      <ion-label position="floating" color="primary">Senha</ion-label>
+      <ion-input
+        type="password"
+        color="primary"
+        formControlName="senha"
+      ></ion-input>
+      <ion-note
+        slot="end"
+        color="danger"
+        *ngIf="senha.dirty && senha.hasError('required')"
+      >
+        Senha Obrigatória!
+      </ion-note>
+      <ion-note
+        slot="end"
+        color="danger"
+        *ngIf="senha.dirty && senha.hasError('minlength')"
+      >
+        Mínimo 6 caracteres
+      </ion-note>
+    </ion-item>
+    <ion-button
+      expand="block"
+      [disabled]="updateUsuarioForm.invalid"
+      type="submit"
+    >
+    ALTERAR
+    </ion-button>
+  </form>
+</ion-content>

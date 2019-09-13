@@ -9,7 +9,10 @@ import { Button } from 'protractor';
   template: `
     <ion-buttons>
       <ion-button (click)="logout()">
-        <ion-icon name="exit" slot="icon-only"></ion-icon>
+        <ion-chip style="color: white">
+          <ion-label>Sair</ion-label>
+          <ion-icon name="exit" size="small" color="white"></ion-icon>
+        </ion-chip>
       </ion-button>
     </ion-buttons>
   `

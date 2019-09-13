@@ -20,6 +20,14 @@ const routes: Routes = [
         loadChildren: './pages/cria-cliente/cria-cliente.module#CriaClientePageModule'
       },
       {
+        path: 'updateUsuario/:id',
+        loadChildren: './pages/altera-usuario/altera-usuario.module#AlteraUsuarioPageModule'
+      },
+      // {
+      //   path: 'updateUsuario',
+      //   loadChildren: './pages/altera-usuario/altera-usuario.module#AlteraUsuarioPageModule'
+      // },
+      {
         path: 'cliente',
         loadChildren: './pages/lista-cliente/lista-cliente.module#ListaClientePageModule'
       },

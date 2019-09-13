@@ -15,7 +15,7 @@ export class UsuarioService extends Firestore<Usuario> {
     this.init();
   }
 
-  private init(): void {
+  init(): void {
     this.setCollection('/users');
     // this.setCollection('/menu', ref => ref.orderBy('nome', 'asc').orderBy('id', 'asc'));
   }
