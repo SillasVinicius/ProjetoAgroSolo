@@ -23,6 +23,8 @@ import { Network } from '@ionic-native/network/ngx';
 })
 export class LoginPage implements OnInit {
   // variáveis login
+  version: string = '';
+  author: string = '';
   loginForm: FormGroup;
   logado = false;
   numberPattern = /^[0-9]*$/;
@@ -31,6 +33,7 @@ export class LoginPage implements OnInit {
     acao: 'Login',
     novaAcao: 'Criar conta!'
   };
+
   private user: Observable<Usuario[]>;
 
   private nomeControl = new FormControl('', [Validators.required, Validators.minLength(3)]);
@@ -71,9 +74,9 @@ export class LoginPage implements OnInit {
       email: this.formBuilder.control('sillas@gmail.com', [Validators.required, Validators.email])
     });
 
-    let disconnectSubscription = this.network.onDisconnect().subscribe(r => console.log(r));
-
-    let connectSubscription = this.network.onConnect().subscribe(r => console.log(r));
+    var packageJsonInfo = require('package.json');
+    this.version = packageJsonInfo.version;
+    this.author = packageJsonInfo.author;
   }
 
   get cpf(): FormControl {
