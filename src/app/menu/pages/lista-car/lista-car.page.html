@@ -11,7 +11,7 @@
     ></app-logout-button> -->
   </ion-toolbar>
 </ion-header>
-<ion-content padding >
+<ion-content>
   <ion-list *ngIf="cadastrosAmbientaisRurais$ | async as cadastrosAmbientaisRurais">
     <ng-container *ngIf="cadastrosAmbientaisRurais.length > 0; else semCadastrosAmbientaisRurais">
       <app-lista-car-item

@@ -11,7 +11,7 @@
     ></app-logout-button> -->
   </ion-toolbar>
 </ion-header>
-<ion-content padding >
+<ion-content>
   <ion-list *ngIf="das$ | async as das">
     <ng-container *ngIf="das.length > 0; else semDas">
       <app-lista-da-item
