@@ -9,6 +9,31 @@
 </ion-header>
 <ion-content padding>
   <form [formGroup]="updateUsuarioForm" (submit)="onSubmit()" novalidate>
+    <ion-card>
+      <ion-grid>
+        <ion-row align-items-center>
+          <ion-col
+            text-center
+            class="teste"
+          >
+            <ion-avatar>
+              <img [src]="downloadUrl | async" *ngIf="downloadUrl | async">
+              <img src="../../../assets/img/avatar.svg" *ngIf="!liberaAlterar">
+            </ion-avatar>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+
+      <div class="fileUpload" text-center>
+        <div *ngIf="uploadPercent | async as pct">
+          Progress: {{ pct | number }}%
+          <ion-progress-bar value="{{ pct / 100 }}"></ion-progress-bar>
+        </div>
+        <ion-button (click)="openGalery()" class="upload" fill="clear">
+            Escolher foto
+        </ion-button>
+      </div>
+    </ion-card>
     <ion-item>
       <ion-icon
         slot="start"
@@ -206,12 +231,20 @@
         Mínimo 6 caracteres
       </ion-note>
     </ion-item>
+    <ion-button expand="block" type="submit" *ngIf="updateUsuarioForm.valid && liberaArquivo" style="margin-top: 15%;">
+      ALTERAR
+    </ion-button>
     <ion-button
+    style="margin-top: 15%;"
       expand="block"
-      [disabled]="updateUsuarioForm.invalid"
-      type="submit"
+      [disabled]="true"
+      *ngIf="
+        (!updateUsuarioForm.valid && !liberaArquivo) ||
+        (!updateUsuarioForm.valid && liberaArquivo) ||
+        (updateUsuarioForm.valid && !liberaArquivo)
+      "
     >
-    ALTERAR
+      ALTERAR
     </ion-button>
   </form>
 </ion-content>

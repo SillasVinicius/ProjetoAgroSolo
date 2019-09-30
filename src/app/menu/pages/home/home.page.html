@@ -15,9 +15,10 @@
       <ion-col
         text-center
       >
-      <ion-chip class="rgba3" (click)="linkAlterarUsuario()" style="background: #00331e;">
-          <ion-avatar>
-            <img src="../../../assets/img/avatar.svg">
+      <ion-chip class="rgba3" (click)="linkAlterarUsuario()" style="background: #00331e; height:45px;">
+          <ion-avatar style="height: 35px; width: 35px;">
+            <img [src]="urlFoto" *ngIf="urlFoto">
+            <img src="../../../assets/img/avatar.svg" *ngIf="!urlFoto">
           </ion-avatar>
           <ion-label>{{nomeUser}}</ion-label>
       </ion-chip>

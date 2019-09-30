@@ -11,6 +11,8 @@ export abstract class Firestore<T extends { id: string }> {
 
   nomeUser = '';
 
+  urlFoto = '...';
+
   constructor(protected db: AngularFirestore) {}
 
   protected setCollection(path: string, queryFn?: QueryFn): void {

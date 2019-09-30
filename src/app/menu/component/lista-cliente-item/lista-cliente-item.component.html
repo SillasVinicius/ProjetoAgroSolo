@@ -5,7 +5,12 @@
   </ion-button>
   <ion-button (click)="sliding.close(); fechar()" fill="clear" *ngIf="clicado">
     <ion-icon slot="icon-only" name="more"></ion-icon>
-  </ion-button>{{ cliente.nome }}</ion-item>
+  </ion-button>
+  <ion-avatar>
+    <img [src]="cliente.foto">
+  </ion-avatar>
+  <h5 style="padding-left: 5%;">{{ cliente.nome }}</h5>
+</ion-item>
   <ion-item-options side="start">
     <ion-item-option color="danger" (click)="delete.emit(cliente); sliding.close()">
       <ion-icon slot="icon-only" name="trash"></ion-icon>

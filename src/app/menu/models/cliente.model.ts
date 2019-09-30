@@ -4,5 +4,5 @@ export interface Cliente {
   cpf: string;
   patrimonio: string;
   pdtvAgro: string;
-  foto: string;
+  foto?: string;
 }

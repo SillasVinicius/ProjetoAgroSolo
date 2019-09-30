@@ -2,12 +2,16 @@ import { Component, OnInit } from '@angular/core';
 import { OverlayService } from 'src/app/core/services/overlay.service';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { NavController } from '@ionic/angular';
+import { NavController, Platform } from '@ionic/angular';
 import { finalize, take, tap } from 'rxjs/operators';
 import { ClienteService } from 'src/app/core/services/cliente.service';
 import { AngularFireStorage, AngularFireUploadTask } from '@angular/fire/storage';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
+import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
+import { File } from '@ionic-native/file/ngx';
+
+
 
 @Component({
   selector: 'app-cria-cliente',
@@ -25,8 +29,12 @@ export class CriaClientePage implements OnInit {
   pageTitle = '...';
   toastMessage = '...';
   liberaArquivo = false;
+  liberaAlterar = false;
 
   // FOTOS
+  public uploadPercent: Observable<number>;
+  public downloadUrl: Observable<string>;
+  public urlFoto: string;
   arquivos: FileList;
   files: Observable<any[]>;
   task: AngularFireUploadTask;
@@ -34,13 +42,16 @@ export class CriaClientePage implements OnInit {
   snapshot: Observable<any>;
   UploadedFileURL: Observable<string>;
   images: Observable<MyData[]>;
+  imagesBlob: Observable<Blob[]>;
   fileName = '';
   fileSize: number;
   isUploading: boolean;
   isUploaded: boolean;
   image: MyData;
+  imageBlob: Blob;
   nomeFoto: string;
   private imageCollection: AngularFirestoreCollection<MyData>;
+  private imageCollectionBlob: AngularFirestoreCollection<Blob>;
 
   // ARQUIVOS
   arquivos2: FileList;
@@ -66,7 +77,10 @@ export class CriaClientePage implements OnInit {
     private route: ActivatedRoute,
     private clienteService: ClienteService,
     private storage: AngularFireStorage,
-    private database: AngularFirestore
+    private database: AngularFirestore,
+    private camera: Camera,
+    private platform: Platform,
+    private file: File
   ) {
     this.isUploading = false;
     this.isUploaded = false;
@@ -81,6 +95,96 @@ export class CriaClientePage implements OnInit {
     this.clienteService.init();
     this.clienteService.id = '';
   }
+
+  async openGalery(){
+    const options: CameraOptions = {
+      quality: 100,
+      destinationType: this.camera.DestinationType.FILE_URI,
+      sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
+      correctOrientation: true
+    };
+
+    try {
+      const fileUrl: string = await this.camera.getPicture(options);
+      let file: string;
+
+      if (this.platform.is('ios')) {
+        file = fileUrl.split('/').pop();
+      } else {
+        file= fileUrl.substring(fileUrl.lastIndexOf('/') + 1, fileUrl.indexOf('?'));
+      }
+
+      const path: string = fileUrl.substring(0, fileUrl.lastIndexOf('/'));
+
+      const buffer: ArrayBuffer = await this.file.readAsArrayBuffer(path, file);
+
+      const blob: Blob = new Blob([buffer], {type: "image/jpeg"});
+
+      this.imageBlob = blob;
+
+      this.uploadPicture(blob);
+
+    }catch(error){
+      console.error(error);
+    }
+  }
+
+  async uploadPicture(blob: Blob){
+      const ref = this.storage.ref(`${this.clienteService.usuarioId}.jpg`);;
+      const task = ref.put(blob);
+
+      this.uploadPercent = task.percentageChanges();
+      task.snapshotChanges().pipe(
+        finalize(async () => {
+          const loading = await this.overlayService.loading({
+            message: "Carregando Foto..."
+          });
+
+          this.downloadUrl = ref.getDownloadURL();
+          this.liberaArquivo = true;
+          this.liberaAlterar = true;
+
+          loading.dismiss();
+        })
+      ).subscribe();
+  }
+
+  async uploadPictureTo(blob: Blob){
+
+      const ref2 = this.storage.ref(`/users/${this.clienteService.usuarioId}/cliente/${this.clienteService.id}/imagem.jpg`);
+      const task2 = ref2.put(blob);
+
+      task2.snapshotChanges().pipe(
+        finalize(async () => {
+
+          this.downloadUrl = ref2.getDownloadURL();
+          this.liberaArquivo = true;
+          this.liberaAlterar = true;
+
+          this.downloadUrl.subscribe(async r => {
+            this.clienteService.init();
+            const atualizarFoto = await this.clienteService.update({
+              id: this.clienteService.id,
+              cpf: this.clienteForm.get('cpf').value,
+              nome: this.clienteForm.get('nome').value,
+              foto: r,
+              patrimonio: this.clienteForm.get('patrimonio').value,
+              pdtvAgro: this.clienteForm.get('pdtvAgro').value
+            });
+          });
+        })
+      ).subscribe();
+  }
+
+  private mudaUrlFoto(url: string){
+    this.urlFoto = url;
+  }
+
+  deletePicture(){
+    const ref = this.storage.ref(`${this.clienteService.usuarioId}.jpg`);
+    const task = ref.delete();
+  }
+
 
   // Cria formulários
   criaFormulario(): void {
@@ -160,15 +264,18 @@ export class CriaClientePage implements OnInit {
       if (!this.clienteId) {
         // tslint:disable-next-line: no-shadowed-variable
         const cliente = await this.clienteService.create(this.clienteForm.value);
-        this.adicionaFoto();
-        //this.adicionaFoto2();
+
+        this.deletePicture();
+
+        this.uploadPictureTo(this.imageBlob);
+
+
       } else {
         // tslint:disable-next-line: no-shadowed-variable
         const cliente = await this.clienteService.update({
           id: this.clienteId,
           cpf: this.clienteForm.get('cpf').value,
           nome: this.clienteForm.get('nome').value,
-          foto: '',
           patrimonio: this.clienteForm.get('patrimonio').value,
           pdtvAgro: this.clienteForm.get('pdtvAgro').value
         });
@@ -204,7 +311,7 @@ export class CriaClientePage implements OnInit {
     if (this.clienteService.id !== '') {
       const path = `/users/${this.clienteService.usuarioId}/cliente/${
         this.clienteService.id
-      }/imagens/${new Date().getTime()}_${file.name}`;
+      }/imagens/${file.name}`;
       const customMetadata = { app: 'Image Upload' };
       const fileRef = this.storage.ref(path);
       this.task = this.storage.upload(path, file, { customMetadata });

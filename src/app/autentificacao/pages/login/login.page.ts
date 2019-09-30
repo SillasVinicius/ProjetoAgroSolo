@@ -144,6 +144,7 @@ export class LoginPage implements OnInit {
           this.navCtrl.navigateForward('/menu');
           this.usuarioService.logado = true;
           this.usuarioService.nomeUser = r[0].nome;
+          this.usuarioService.urlFoto = r[0].foto;
         } else {
           await this.overlayService.toast({
             message: 'Usuário inválido! Verifique os dados e tente novamente!'

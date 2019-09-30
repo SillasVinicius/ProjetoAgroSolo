@@ -9,6 +9,30 @@
 </ion-header>
 <ion-content padding>
   <form [formGroup]="clienteForm" (submit)="onSubmit()" novalidate>
+    <ion-card>
+      <ion-grid>
+        <ion-row align-items-center>
+          <ion-col
+            text-center
+            class="teste"
+          >
+            <ion-avatar>
+              <img [src]="downloadUrl | async" *ngIf="downloadUrl | async">
+              <img src="../../../assets/img/avatar.svg" *ngIf="!liberaAlterar">
+            </ion-avatar>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+      <div class="fileUpload" text-center>
+        <div *ngIf="uploadPercent | async as pct">
+          Progress: {{ pct | number }}%
+          <ion-progress-bar value="{{ pct / 100 }}"></ion-progress-bar>
+        </div>
+        <ion-button (click)="openGalery()" class="upload" fill="clear">
+            Escolher foto
+        </ion-button>
+      </div>
+    </ion-card>
     <ion-item>
       <ion-label position="floating" color="primary">Nome</ion-label>
       <ion-input
@@ -76,7 +100,7 @@
       Prod.Agropecuária Inválida!
     </ion-note>
     <!-- inicio imagem -->
-    <ion-card text-center *ngIf="!isUploading && !isUploaded">
+    <!-- <ion-card text-center *ngIf="!isUploading && !isUploaded">
       <ion-card-header>
         <ion-card-title style="font-size: 20px;">Adicione uma Foto</ion-card-title>
       </ion-card-header>
@@ -99,7 +123,8 @@
           <b>{{ fileName }}</b>
         </ion-card-title>
       </ion-card-header>
-    </ion-card>
+    </ion-card> -->
+
     <!-- fim imagem -->
     <!-- inicio arquivo -->
     <!-- <ion-card
@@ -182,10 +207,11 @@
       </ion-card-content>
     </ion-card> -->
     <!-- fim arquivo -->
-    <ion-button expand="full" type="submit" *ngIf="clienteForm.valid && liberaArquivo">
+    <ion-button expand="full" type="submit" *ngIf="clienteForm.valid && liberaArquivo" style="margin-top: 15%;">
       {{ botaoTitle }}
     </ion-button>
     <ion-button
+    style="margin-top: 15%;"
       expand="full"
       [disabled]="true"
       *ngIf="

@@ -7,4 +7,5 @@ export interface Usuario {
   telefone: string;
   dataNascimento: string;
   senha: string;
+  foto?: string;
 }

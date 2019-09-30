@@ -2,11 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { OverlayService } from 'src/app/core/services/overlay.service';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { NavController } from '@ionic/angular';
+import { NavController, Platform } from '@ionic/angular';
 import { finalize, take, tap } from 'rxjs/operators';
 import { AngularFireStorage, AngularFireUploadTask } from '@angular/fire/storage';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
+import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
+import { File } from '@ionic-native/file/ngx';
 import { UsuarioService } from 'src/app/core/services/usuario.service';
 
 @Component({
@@ -22,6 +24,15 @@ export class AlteraUsuarioPage implements OnInit {
 
   // Validacao
   numberPattern = /^[0-9]*$/;
+  liberaArquivo = false;
+  liberaAlterar = false;
+
+  //FOTOS
+  public uploadPercent: Observable<number>;
+  public downloadUrl: Observable<string>;
+  public urlFoto: string;
+  imagesBlob: Observable<Blob[]>;
+  imageBlob: Blob;
 
   // Dependencias
   constructor(
@@ -30,6 +41,11 @@ export class AlteraUsuarioPage implements OnInit {
     private navCtrl: NavController,
     private route: ActivatedRoute,
     private usuarioService: UsuarioService,
+    private storage: AngularFireStorage,
+    private database: AngularFirestore,
+    private camera: Camera,
+    private platform: Platform,
+    private file: File
   ){}
 
   // metodo que é chamado quando a pagina é carregada
@@ -37,6 +53,94 @@ export class AlteraUsuarioPage implements OnInit {
     this.criaFormulario();
     this.usuarioService.init();
     this.acao();
+  }
+
+  async openGalery(){
+    const options: CameraOptions = {
+      quality: 100,
+      destinationType: this.camera.DestinationType.FILE_URI,
+      sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
+      correctOrientation: true
+    };
+
+    try {
+      const fileUrl: string = await this.camera.getPicture(options);
+      let file: string;
+
+      if (this.platform.is('ios')) {
+        file = fileUrl.split('/').pop();
+      } else {
+        file= fileUrl.substring(fileUrl.lastIndexOf('/') + 1, fileUrl.indexOf('?'));
+      }
+
+      const path: string = fileUrl.substring(0, fileUrl.lastIndexOf('/'));
+
+      const buffer: ArrayBuffer = await this.file.readAsArrayBuffer(path, file);
+
+      const blob: Blob = new Blob([buffer], {type: "image/jpeg"});
+
+      this.imageBlob = blob;
+
+      this.uploadPicture(blob);
+
+    }catch(error){
+      console.error(error);
+    }
+  }
+
+  async uploadPicture(blob: Blob){
+      const ref = this.storage.ref(`${this.updateUsuarioId}.jpg`);;
+      const task = ref.put(blob);
+
+      this.uploadPercent = task.percentageChanges();
+      task.snapshotChanges().pipe(
+        finalize(async () => {
+          const loading = await this.overlayService.loading({
+            message: "Carregando Foto..."
+          });
+
+          this.downloadUrl = ref.getDownloadURL();
+          this.liberaArquivo = true;
+          this.liberaAlterar = true;
+
+          loading.dismiss();
+        })
+      ).subscribe();
+  }
+
+  async uploadPictureTo(blob: Blob){
+
+      const ref2 = this.storage.ref(`/users/${this.updateUsuarioId}/fotoPerfil/imagem.jpg`);
+      const task2 = ref2.put(blob);
+
+      task2.snapshotChanges().pipe(
+        finalize(async () => {
+
+          this.downloadUrl = ref2.getDownloadURL();
+          this.liberaArquivo = true;
+          this.liberaAlterar = true;
+
+          this.downloadUrl.subscribe(async r => {
+            this.usuarioService.init();
+            const usuario = await this.usuarioService.update({
+            id: this.updateUsuarioId,
+            nome: this.updateUsuarioForm.get('nome').value,
+            cpf: this.updateUsuarioForm.get('cpf').value,
+            dataNascimento: this.updateUsuarioForm.get('dataNascimento').value,
+            rg: this.updateUsuarioForm.get('rg').value,
+            email: this.updateUsuarioForm.get('email').value,
+            senha: this.updateUsuarioForm.get('senha').value,
+            telefone: this.updateUsuarioForm.get('telefone').value,
+            foto: r
+          });
+          });
+        })
+      ).subscribe();
+  }
+
+  deletePicture(){
+    const ref = this.storage.ref(`${this.updateUsuarioId}.jpg`);;
+    const task = ref.delete();
   }
 
   // Cria formulários
@@ -117,17 +221,20 @@ export class AlteraUsuarioPage implements OnInit {
       message: 'Alterando Perfil...'
     });
     try {
-        const usuario = await this.usuarioService.update({
-        id: this.updateUsuarioId,
-        nome: this.updateUsuarioForm.get('nome').value,
-        cpf: this.updateUsuarioForm.get('cpf').value,
-        dataNascimento: this.updateUsuarioForm.get('dataNascimento').value,
-        rg: this.updateUsuarioForm.get('rg').value,
-        email: this.updateUsuarioForm.get('email').value,
-        senha: this.updateUsuarioForm.get('senha').value,
-        telefone: this.updateUsuarioForm.get('telefone').value
-      });
-      console.log('Perfil do usuario alterado para:', usuario);
+      //   const usuario = await this.usuarioService.update({
+      //   id: this.updateUsuarioId,
+      //   nome: this.updateUsuarioForm.get('nome').value,
+      //   cpf: this.updateUsuarioForm.get('cpf').value,
+      //   dataNascimento: this.updateUsuarioForm.get('dataNascimento').value,
+      //   rg: this.updateUsuarioForm.get('rg').value,
+      //   email: this.updateUsuarioForm.get('email').value,
+      //   senha: this.updateUsuarioForm.get('senha').value,
+      //   telefone: this.updateUsuarioForm.get('telefone').value
+      // });
+      //console.log('Perfil do usuario alterado para:', usuario);
+      this.deletePicture();
+
+      this.uploadPictureTo(this.imageBlob);
       this.usuarioService.logado = false;
       this.navCtrl.navigateBack('/login');
     } catch (error) {
