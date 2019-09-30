@@ -176,9 +176,33 @@ export class CriaClientePage implements OnInit {
       ).subscribe();
   }
 
-  private mudaUrlFoto(url: string){
-    this.urlFoto = url;
+  async uploadPictureUpdate(blob: Blob){
+
+      const ref2 = this.storage.ref(`/users/${this.clienteService.usuarioId}/cliente/${this.clienteService.id}/imagem.jpg`);
+      const task2 = ref2.put(blob);
+
+      task2.snapshotChanges().pipe(
+        finalize(async () => {
+
+          this.downloadUrl = ref2.getDownloadURL();
+          this.liberaArquivo = true;
+          this.liberaAlterar = true;
+
+          this.downloadUrl.subscribe(async r => {
+            this.clienteService.init();
+            const cliente = await this.clienteService.update({
+              id: this.clienteId,
+              cpf: this.clienteForm.get('cpf').value,
+              nome: this.clienteForm.get('nome').value,
+              patrimonio: this.clienteForm.get('patrimonio').value,
+              pdtvAgro: this.clienteForm.get('pdtvAgro').value,
+              foto: r
+            });
+          });
+        })
+      ).subscribe();
   }
+
 
   deletePicture(){
     const ref = this.storage.ref(`${this.clienteService.usuarioId}.jpg`);
@@ -271,14 +295,10 @@ export class CriaClientePage implements OnInit {
 
 
       } else {
-        // tslint:disable-next-line: no-shadowed-variable
-        const cliente = await this.clienteService.update({
-          id: this.clienteId,
-          cpf: this.clienteForm.get('cpf').value,
-          nome: this.clienteForm.get('nome').value,
-          patrimonio: this.clienteForm.get('patrimonio').value,
-          pdtvAgro: this.clienteForm.get('pdtvAgro').value
-        });
+        this.deletePicture();
+
+        this.uploadPictureUpdate(this.imageBlob);
+
       }
       console.log('Cliente Criado', cliente);
       this.navCtrl.navigateBack('/menu/cliente');
