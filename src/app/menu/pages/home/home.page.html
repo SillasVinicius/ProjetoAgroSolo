@@ -15,13 +15,22 @@
       <ion-col
         text-center
       >
-      <ion-chip class="rgba3" (click)="linkAlterarUsuario()" style="background: #00331e; height:45px;">
+      <ion-chip class="rgba3" style="background: #00331e; height:45px;">
           <ion-avatar style="height: 35px; width: 35px;">
             <img [src]="urlFoto" *ngIf="urlFoto">
             <img src="../../../assets/img/avatar.svg" *ngIf="!urlFoto">
           </ion-avatar>
-          <ion-label>{{nomeUser}}</ion-label>
+          <ion-label>{{nomeUser}}
+
+            <!-- <ion-chip (click)="linkAlterarUsuario()" style="background: white; color: #00643a; border-radius: 80%">
+                <ion-label><ion-icon slot="icon-only" name="brush"></ion-icon></ion-label>
+            </ion-chip> -->
+          </ion-label>
+          <ion-avatar (click)="linkAlterarUsuario()" style="height: 35px; width: 35px;">
+            <img src="../../../assets/img/settings.svg">
+          </ion-avatar>
       </ion-chip>
+
       </ion-col>
     </ion-row>
   </ion-grid>

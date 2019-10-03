@@ -46,7 +46,7 @@
                   Mínimo 3 caracteres
                 </ion-note>
               </ion-item>
-              <ion-item>
+              <!-- <ion-item>
                 <ion-icon
                   slot="start"
                   name="key"
@@ -71,7 +71,36 @@
                 >
                   Cpf Inválido!
                 </ion-note>
+              </ion-item> -->
+              <ion-item>
+                <ion-icon
+                  slot="start"
+                  name="key"
+                  color="primary"
+                ></ion-icon>
+                <ion-label position="floating" color="primary">CPF/CNPJ</ion-label>
+	               <ion-input
+                   type="text"
+                   name="cpf"
+                   formControlName="cpf"
+                   [brmasker]="{person: true}"
+                   color="primary"
+                 ></ion-input>
               </ion-item>
+              <ion-note
+                slot="start"
+                color="danger"
+                *ngIf="cpf.dirty && cpf.hasError('required')"
+              >
+                Cpf Obrigatório!
+              </ion-note>
+              <ion-note
+                slot="start"
+                color="danger"
+                *ngIf="cpf.dirty && (cpf.hasError('minlength') || cpf.hasError('maxlength'))"
+              >
+                Cpf Inválido!
+              </ion-note>
               <ion-item>
                 <ion-icon
                   slot="start"
@@ -98,7 +127,7 @@
                   RG inválido!
                 </ion-note>
               </ion-item>
-              <ion-item>
+              <!-- <ion-item>
                 <ion-icon
                   slot="start"
                   name="call"
@@ -127,7 +156,38 @@
                 >
                   Telefone inválido!
                 </ion-note>
+              </ion-item> -->
+              <ion-item>
+                <ion-icon
+                  slot="start"
+                  name="call"
+                  color="primary"
+                ></ion-icon>
+                <ion-label position="floating" color="primary">Telefone</ion-label>
+	               <ion-input
+                  type="text"
+                  color="primary"
+                  formControlName="telefone"
+                  [brmasker]="{phone: true}">
+                </ion-input>
               </ion-item>
+              <ion-note
+                slot="start"
+                color="danger"
+                *ngIf="telefone.dirty && telefone.hasError('required')"
+              >
+                Telefone Obrigatório!
+              </ion-note>
+              <ion-note
+                slot="start"
+                color="danger"
+                *ngIf="
+                  telefone.dirty &&
+                  (telefone.hasError('minlength') || telefone.hasError('maxlength'))
+                "
+              >
+                Telefone inválido!
+              </ion-note>
               <ion-item>
                 <ion-icon
                   slot="start"
@@ -141,24 +201,24 @@
                   placeholder="Aniversário"
                   formControlName="dataNascimento"
                 ></ion-input>
-                <ion-note
-                  slot="end"
-                  color="danger"
-                  *ngIf="dataNascimento.dirty && dataNascimento.hasError('required')"
-                >
-                  Aniversário Obrigatório!
-                </ion-note>
-                <ion-note
-                  slot="end"
-                  color="danger"
-                  *ngIf="
-                    dataNascimento.dirty &&
-                    (dataNascimento.hasError('minlength') || dataNascimento.hasError('maxlength'))
-                  "
-                >
-                  Aniversário inválido!
-                </ion-note>
               </ion-item>
+              <ion-note
+                slot="start"
+                color="danger"
+                *ngIf="dataNascimento.dirty && dataNascimento.hasError('required')"
+              >
+                Aniversário Obrigatório!
+              </ion-note>
+              <ion-note
+                slot="start"
+                color="danger"
+                *ngIf="
+                  dataNascimento.dirty &&
+                  (dataNascimento.hasError('minlength') || dataNascimento.hasError('maxlength'))
+                "
+              >
+                Aniversário inválido!
+              </ion-note>
             </ng-container>
             <ion-item>
               <ion-icon
@@ -222,7 +282,7 @@
               type="submit"
               id="login-button"
             >
-            LOGIN
+            {{ configs.acao }}
             </ion-button>
           </form>
           <ion-button
@@ -237,4 +297,4 @@
     </ion-row>
   </ion-grid>
 </ion-content>
-<ion-item style="margin-bottom: 0px; font-size: 70%;">Version: {{version}} - Author: {{author}}</ion-item>
+<!-- <ion-item style="margin-bottom: 0px; font-size: 70%;">Version: {{version}} - Author: {{author}}</ion-item> -->

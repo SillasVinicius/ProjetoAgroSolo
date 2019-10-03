@@ -6,7 +6,6 @@ import { UsuarioService } from 'src/app/core/services/usuario.service';
 import { NavController } from '@ionic/angular';
 import { Observable } from 'rxjs';
 import { Usuario } from './model/usuario.model';
-import { Network } from '@ionic-native/network/ngx';
 
 @Component({
   selector: 'app-login',
@@ -45,15 +44,13 @@ export class LoginPage implements OnInit {
   ]);
   private cpfControl = new FormControl('', [
     Validators.required,
-    Validators.pattern(this.numberPattern),
-    Validators.minLength(11),
-    Validators.maxLength(11)
+    Validators.minLength(14),
+    Validators.maxLength(18)
   ]);
   private telefoneControl = new FormControl('', [
     Validators.required,
-    Validators.pattern(this.numberPattern),
-    Validators.minLength(12),
-    Validators.maxLength(12)
+    Validators.minLength(14),
+    Validators.maxLength(15)
   ]);
   private dataNascimentoControl = new FormControl('', [
     Validators.required,
@@ -64,8 +61,7 @@ export class LoginPage implements OnInit {
     private formBuilder: FormBuilder,
     private overlayService: OverlayService,
     private usuarioService: UsuarioService,
-    private navCtrl: NavController,
-    private network: Network
+    private navCtrl: NavController
   ) {}
 
   ngOnInit() {
@@ -190,4 +186,6 @@ export class LoginPage implements OnInit {
       this.cadastro();
     }
   }
+
+
 }

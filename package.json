@@ -1,6 +1,6 @@
 {
   "name": "AgroSolo",
-  "version": "0.3.4",
+  "version": "0.3.5",
   "author": "HMS Consulting",
   "homepage": "https://www.hmsconsulting.com.br",
   "scripts": {
@@ -38,6 +38,7 @@
     "@ionic/angular": "^4.1.0",
     "@ionic/storage": "^2.2.0",
     "@types/jsonwebtoken": "^8.3.3",
+    "br-mask": "0.0.8",
     "cordova-android": "8.0.0",
     "cordova-browser": "6.0.0",
     "cordova-js": "^5.0.0",

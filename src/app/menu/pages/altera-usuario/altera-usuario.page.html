@@ -34,106 +34,167 @@
         </ion-button>
       </div>
     </ion-card>
-    <ion-item>
-      <ion-icon
+      <ion-item>
+        <ion-icon
+          slot="start"
+          name="person"
+          color="primary"
+        ></ion-icon>
+        <ion-label position="floating" color="primary">Nome</ion-label>
+        <ion-input
+          type="text"
+          color="primary"
+          formControlName="nome"
+        ></ion-input>
+        <ion-note
+          slot="end"
+          color="danger"
+          *ngIf="nome.dirty && nome.hasError('required')"
+        >
+          Nome Obrigatório!
+        </ion-note>
+        <ion-note
+          slot="end"
+          color="danger"
+          *ngIf="nome.dirty && nome.hasError('minlength')"
+        >
+          Mínimo 3 caracteres
+        </ion-note>
+      </ion-item>
+      <!-- <ion-item>
+        <ion-icon
+          slot="start"
+          name="key"
+          color="primary"
+        ></ion-icon>
+        <ion-label position="floating" color="primary">CPF</ion-label>
+        <ion-input
+          color="primary"
+          formControlName="cpf"
+        ></ion-input>
+        <ion-note
+          slot="end"
+          color="danger"
+          *ngIf="cpf.dirty && cpf.hasError('required')"
+        >
+          Cpf Obrigatório!
+        </ion-note>
+        <ion-note
+          slot="end"
+          color="danger"
+          *ngIf="cpf.dirty && (cpf.hasError('minlength') || cpf.hasError('maxlength'))"
+        >
+          Cpf Inválido!
+        </ion-note>
+      </ion-item> -->
+      <ion-item>
+        <ion-icon
+          slot="start"
+          name="key"
+          color="primary"
+        ></ion-icon>
+        <ion-label position="floating" color="primary">CPF/CNPJ</ion-label>
+         <ion-input
+           type="text"
+           name="cpf"
+           formControlName="cpf"
+           [brmasker]="{person: true}"
+           color="primary"
+         ></ion-input>
+      </ion-item>
+      <ion-note
         slot="start"
-        name="person"
-        color="primary"
-      ></ion-icon>
-      <ion-label position="floating" color="primary">Nome</ion-label>
-      <ion-input
-        type="text"
-        color="primary"
-        formControlName="nome"
-      ></ion-input>
-      <ion-note
-        slot="end"
-        color="danger"
-        *ngIf="nome.dirty && nome.hasError('required')"
-      >
-        Nome Obrigatório!
-      </ion-note>
-      <ion-note
-        slot="end"
-        color="danger"
-        *ngIf="nome.dirty && nome.hasError('minlength')"
-      >
-        Mínimo 3 caracteres
-      </ion-note>
-    </ion-item>
-    <ion-item>
-      <ion-icon
-        slot="start"
-        name="key"
-        color="primary"
-      ></ion-icon>
-      <ion-label position="floating" color="primary">CPF</ion-label>
-      <ion-input
-        color="primary"
-        formControlName="cpf"
-      ></ion-input>
-      <ion-note
-        slot="end"
         color="danger"
         *ngIf="cpf.dirty && cpf.hasError('required')"
       >
         Cpf Obrigatório!
       </ion-note>
       <ion-note
-        slot="end"
+        slot="start"
         color="danger"
         *ngIf="cpf.dirty && (cpf.hasError('minlength') || cpf.hasError('maxlength'))"
       >
         Cpf Inválido!
       </ion-note>
-    </ion-item>
-    <ion-item>
-      <ion-icon
+      <ion-item>
+        <ion-icon
+          slot="start"
+          name="paper"
+          color="primary"
+        ></ion-icon>
+        <ion-label position="floating" color="primary">RG</ion-label>
+        <ion-input
+          color="primary"
+          formControlName="rg"
+        ></ion-input>
+        <ion-note
+          slot="end"
+          color="danger"
+          *ngIf="rg.dirty && rg.hasError('required')"
+        >
+          RG Obrigatório!
+        </ion-note>
+        <ion-note
+          slot="end"
+          color="danger"
+          *ngIf="rg.dirty && (rg.hasError('minlength') || rg.hasError('maxlength'))"
+        >
+          RG inválido!
+        </ion-note>
+      </ion-item>
+      <!-- <ion-item>
+        <ion-icon
+          slot="start"
+          name="call"
+          color="primary"
+        ></ion-icon>
+        <ion-label position="floating" color="primary">Telefone</ion-label>
+        <ion-input
+          type="tel"
+          color="primary"
+          formControlName="telefone"
+        ></ion-input>
+        <ion-note
+          slot="end"
+          color="danger"
+          *ngIf="telefone.dirty && telefone.hasError('required')"
+        >
+          Telefone Obrigatório!
+        </ion-note>
+        <ion-note
+          slot="end"
+          color="danger"
+          *ngIf="
+            telefone.dirty &&
+            (telefone.hasError('minlength') || telefone.hasError('maxlength'))
+          "
+        >
+          Telefone inválido!
+        </ion-note>
+      </ion-item> -->
+      <ion-item>
+        <ion-icon
+          slot="start"
+          name="call"
+          color="primary"
+        ></ion-icon>
+        <ion-label position="floating" color="primary">Telefone</ion-label>
+         <ion-input
+          type="text"
+          color="primary"
+          formControlName="telefone"
+          [brmasker]="{phone: true}">
+        </ion-input>
+      </ion-item>
+      <ion-note
         slot="start"
-        name="paper"
-        color="primary"
-      ></ion-icon>
-      <ion-label position="floating" color="primary">RG</ion-label>
-      <ion-input
-        color="primary"
-        formControlName="rg"
-      ></ion-input>
-      <ion-note
-        slot="end"
-        color="danger"
-        *ngIf="rg.dirty && rg.hasError('required')"
-      >
-        RG Obrigatório!
-      </ion-note>
-      <ion-note
-        slot="end"
-        color="danger"
-        *ngIf="rg.dirty && (rg.hasError('minlength') || rg.hasError('maxlength'))"
-      >
-        RG inválido!
-      </ion-note>
-    </ion-item>
-    <ion-item>
-      <ion-icon
-        slot="start"
-        name="call"
-        color="primary"
-      ></ion-icon>
-      <ion-label position="floating" color="primary">Telefone</ion-label>
-      <ion-input
-        type="tel"
-        color="primary"
-        formControlName="telefone"
-      ></ion-input>
-      <ion-note
-        slot="end"
         color="danger"
         *ngIf="telefone.dirty && telefone.hasError('required')"
       >
         Telefone Obrigatório!
       </ion-note>
       <ion-note
-        slot="end"
+        slot="start"
         color="danger"
         *ngIf="
           telefone.dirty &&
@@ -142,30 +203,29 @@
       >
         Telefone inválido!
       </ion-note>
-    </ion-item>
-
-    <ion-item>
-      <ion-icon
-        slot="start"
-        name="calendar"
-        color="primary"
-      ></ion-icon>
-      <ion-label position="floating" color="primary">Aniversário</ion-label>
-      <ion-input
-        type="date"
-        color="primary"
-        placeholder="Aniversário"
-        formControlName="dataNascimento"
-      ></ion-input>
+      <ion-item>
+        <ion-icon
+          slot="start"
+          name="calendar"
+          color="primary"
+        ></ion-icon>
+        <ion-label position="floating" color="primary">Aniversário</ion-label>
+        <ion-input
+          type="date"
+          color="primary"
+          placeholder="Aniversário"
+          formControlName="dataNascimento"
+        ></ion-input>
+      </ion-item>
       <ion-note
-        slot="end"
+        slot="start"
         color="danger"
         *ngIf="dataNascimento.dirty && dataNascimento.hasError('required')"
       >
         Aniversário Obrigatório!
       </ion-note>
       <ion-note
-        slot="end"
+        slot="start"
         color="danger"
         *ngIf="
           dataNascimento.dirty &&
@@ -174,7 +234,6 @@
       >
         Aniversário inválido!
       </ion-note>
-    </ion-item>
     <ion-item>
       <ion-icon
         slot="start"

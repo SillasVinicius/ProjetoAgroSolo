@@ -12,6 +12,7 @@ import { AngularFireStorageModule } from '@angular/fire/storage';
 import { environment } from 'src/environments/environment';
 import { File } from '@ionic-native/file/ngx';
 import { Camera } from '@ionic-native/camera/ngx';
+import { BrMaskerModule } from 'br-mask';
 
 @NgModule({
   imports: [
@@ -19,7 +20,8 @@ import { Camera } from '@ionic-native/camera/ngx';
     BrowserAnimationsModule,
     AngularFireStorageModule,
     AngularFireModule.initializeApp(environment.firebase),
-    AngularFirestoreModule
+    AngularFirestoreModule,
+    BrMaskerModule
   ],
   exports: [BrowserModule, IonicModule, BrowserAnimationsModule],
   providers: [

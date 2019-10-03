@@ -157,9 +157,8 @@ export class AlteraUsuarioPage implements OnInit {
       ]),
       cpf: this.formBuilder.control('', [
         Validators.required,
-        Validators.pattern(this.numberPattern),
-        Validators.minLength(11),
-        Validators.maxLength(11)
+        Validators.minLength(14),
+        Validators.maxLength(18)
       ]),
       dataNascimento: this.formBuilder.control('', [
         Validators.required,
@@ -168,8 +167,8 @@ export class AlteraUsuarioPage implements OnInit {
       ]),
       telefone: this.formBuilder.control('', [
         Validators.required,
-        Validators.minLength(12),
-        Validators.maxLength(12)
+        Validators.minLength(14),
+        Validators.maxLength(15)
       ])
     });
   }
