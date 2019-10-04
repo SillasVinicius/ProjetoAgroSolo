@@ -56,13 +56,32 @@ export class AlteraUsuarioPage implements OnInit {
   }
 
   retornaDataNascimento(data: string): string {
-    //2019-10-04T08:45:55.822-03:00
-    let ano: string = data.substring(0,4);
-    let mes: string = data.substring(5,7);
-    let dia: string = data.substring(8,10);
 
-    return `${dia}/${mes}/${ano}`;
+    if (data.length > 10) {
+      //2019-10-04T08:45:55.822-03:00
+      let ano: string = data.substring(0,4);
+      let mes: string = data.substring(5,7);
+      let dia: string = data.substring(8,10);
 
+      return `${dia}/${mes}/${ano}`;
+    }
+    else {
+      return this.retornaDataMMDDYYYY(data);
+    }
+  }
+
+  retornaDataMMDDYYYY(data: string): string {
+    if (data.length === 10) {
+      //04/03/2001
+      let ano: string = data.substring(6);
+      let mes: string = data.substring(3,5);
+      let dia: string = data.substring(0,2);
+
+      return `${mes}/${dia}/${ano}`;
+    }
+    else {
+      return 'error data';
+    }
   }
 
   async openGalery(){
@@ -170,9 +189,7 @@ export class AlteraUsuarioPage implements OnInit {
         Validators.maxLength(18)
       ]),
       dataNascimento: this.formBuilder.control('', [
-        Validators.required,
-        Validators.minLength(10),
-        Validators.maxLength(10)
+        Validators.required
       ]),
       telefone: this.formBuilder.control('', [
         Validators.required,
@@ -196,7 +213,7 @@ export class AlteraUsuarioPage implements OnInit {
           this.updateUsuarioForm.get('rg').setValue(rg),
           this.updateUsuarioForm.get('email').setValue(email),
           this.updateUsuarioForm.get('telefone').setValue(telefone),
-          this.updateUsuarioForm.get('dataNascimento').setValue(dataNascimento)
+          this.updateUsuarioForm.get('dataNascimento').setValue(this.retornaDataMMDDYYYY(dataNascimento))
       });
   }
 
@@ -243,8 +260,8 @@ export class AlteraUsuarioPage implements OnInit {
       this.deletePicture();
 
       this.uploadPictureTo(this.imageBlob);
-      this.usuarioService.logado = false;
-      this.navCtrl.navigateBack('/login');
+      //this.usuarioService.logado = false;
+      this.navCtrl.navigateBack('/menu');
     } catch (error) {
       await this.overlayService.toast({
         message: error.message
