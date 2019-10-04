@@ -55,6 +55,16 @@ export class AlteraUsuarioPage implements OnInit {
     this.acao();
   }
 
+  retornaDataNascimento(data: string): string {
+    //2019-10-04T08:45:55.822-03:00
+    let ano: string = data.substring(0,4);
+    let mes: string = data.substring(5,7);
+    let dia: string = data.substring(8,10);
+
+    return `${dia}/${mes}/${ano}`;
+
+  }
+
   async openGalery(){
     const options: CameraOptions = {
       quality: 100,
@@ -126,7 +136,7 @@ export class AlteraUsuarioPage implements OnInit {
             id: this.updateUsuarioId,
             nome: this.updateUsuarioForm.get('nome').value,
             cpf: this.updateUsuarioForm.get('cpf').value,
-            dataNascimento: this.updateUsuarioForm.get('dataNascimento').value,
+            dataNascimento: this.retornaDataNascimento(this.updateUsuarioForm.get('dataNascimento').value),
             rg: this.updateUsuarioForm.get('rg').value,
             email: this.updateUsuarioForm.get('email').value,
             senha: this.updateUsuarioForm.get('senha').value,
@@ -151,9 +161,8 @@ export class AlteraUsuarioPage implements OnInit {
       nome: this.formBuilder.control('', [Validators.required, Validators.minLength(3)]),
       rg: this.formBuilder.control('', [
         Validators.required,
-        Validators.pattern(this.numberPattern),
-        Validators.minLength(9),
-        Validators.maxLength(9)
+        Validators.minLength(8),
+        Validators.maxLength(8)
       ]),
       cpf: this.formBuilder.control('', [
         Validators.required,

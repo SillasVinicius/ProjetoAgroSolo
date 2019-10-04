@@ -38,9 +38,8 @@ export class LoginPage implements OnInit {
   private nomeControl = new FormControl('', [Validators.required, Validators.minLength(3)]);
   private rgControl = new FormControl('', [
     Validators.required,
-    Validators.pattern(this.numberPattern),
-    Validators.minLength(9),
-    Validators.maxLength(9)
+    Validators.minLength(8),
+    Validators.maxLength(8)
   ]);
   private cpfControl = new FormControl('', [
     Validators.required,
@@ -53,9 +52,7 @@ export class LoginPage implements OnInit {
     Validators.maxLength(15)
   ]);
   private dataNascimentoControl = new FormControl('', [
-    Validators.required,
-    Validators.minLength(10),
-    Validators.maxLength(10)
+    Validators.required
   ]);
   constructor(
     private formBuilder: FormBuilder,
@@ -163,6 +160,7 @@ export class LoginPage implements OnInit {
       message: 'Cadastrando...'
     });
     try {
+      this.loginForm.get('dataNascimento').setValue(this.retornaDataNascimento(this.loginForm.get('dataNascimento').value));
       const usuario = await this.usuarioService.create(this.loginForm.value);
       console.log('Usuário Criado', usuario);
       this.navCtrl.navigateForward('/menu');
@@ -187,5 +185,15 @@ export class LoginPage implements OnInit {
     }
   }
 
+
+  retornaDataNascimento(data: string): string {
+    //2019-10-04T08:45:55.822-03:00
+    let ano: string = data.substring(0,4);
+    let mes: string = data.substring(5,7);
+    let dia: string = data.substring(8,10);
+
+    return `${dia}/${mes}/${ano}`;
+
+  }
 
 }

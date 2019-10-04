@@ -126,6 +126,7 @@
         <ion-input
           color="primary"
           formControlName="rg"
+          [brmasker]="{len: 8, type: 'num'}"
         ></ion-input>
         <ion-note
           slot="end"
@@ -209,31 +210,9 @@
           name="calendar"
           color="primary"
         ></ion-icon>
-        <ion-label position="floating" color="primary">Aniversário</ion-label>
-        <ion-input
-          type="date"
-          color="primary"
-          placeholder="Aniversário"
-          formControlName="dataNascimento"
-        ></ion-input>
+        <ion-label position="floating" color="primary">Data de Nascimento</ion-label>
+        <ion-datetime displayFormat="DD/MM/YYYY" formControlName="dataNascimento" placeholder="Selecione uma data..."></ion-datetime>
       </ion-item>
-      <ion-note
-        slot="start"
-        color="danger"
-        *ngIf="dataNascimento.dirty && dataNascimento.hasError('required')"
-      >
-        Aniversário Obrigatório!
-      </ion-note>
-      <ion-note
-        slot="start"
-        color="danger"
-        *ngIf="
-          dataNascimento.dirty &&
-          (dataNascimento.hasError('minlength') || dataNascimento.hasError('maxlength'))
-        "
-      >
-        Aniversário inválido!
-      </ion-note>
     <ion-item>
       <ion-icon
         slot="start"
