@@ -193,7 +193,7 @@ export class CriaCarPage implements OnInit {
 
       async uploadFileTo(file: Object){
 
-          const ref2 = this.storage.ref(`/users/${this.cadastroRuralAmbientalService.usuarioId}/cadastroRuralAmbientalService/${this.cadastroRuralAmbientalService.id}/arquivos/${this.fileName}`);
+          const ref2 = this.storage.ref(`/users/${this.cadastroRuralAmbientalService.usuarioId}/cadastroRuralAmbiental/${this.cadastroRuralAmbientalService.id}/arquivos/${this.fileName}`);
           const task2 = ref2.put(file);
 
           task2.snapshotChanges().pipe(
