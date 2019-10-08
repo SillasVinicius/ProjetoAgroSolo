@@ -3,4 +3,5 @@ export interface LicencaAmbiental {
   descricao: string;
   dataDeVencimento: string;
   clienteId: string;
+  arquivo?: string;
 }

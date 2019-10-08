@@ -28,7 +28,7 @@ export class ListaLAPage implements OnInit {
   }
 
   atualizar(licencaAmbiental: LicencaAmbiental): void {
-    this.navCtrl.navigateForward(`/menu/ambiental/LicencaAmbiental/UpdateLicencaAmbiental/${licencaAmbiental.id}`);
+    this.navCtrl.navigateForward(`/menu/ambiental/UpdateLicencaAmbiental/${licencaAmbiental.id}`);
   }
 
   async deletar(licencaAmbiental: LicencaAmbiental): Promise<void> {

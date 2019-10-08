@@ -12,8 +12,20 @@ const routes: Routes = [
         loadChildren: './pages/cria-da/cria-da.module#CriaDaPageModule'
       },
       {
+        path: 'UpdateDeclaracaoAmbiental/:id',
+        loadChildren: './pages/cria-da/cria-da.module#CriaDaPageModule'
+      },
+      {
         path: 'CadastroLicencaAmbiental',
         loadChildren: './pages/cria-la/cria-la.module#CriaLaPageModule'
+      },
+      {
+        path: 'UpdateLicencaAmbiental/:id',
+        loadChildren: './pages/cria-la/cria-la.module#CriaLaPageModule'
+      },
+      {
+        path: 'UpdateCadastroAmbientalRural/:id',
+        loadChildren: './pages/cria-car/cria-car.module#CriaCarPageModule'
       },
       {
         path: 'AddCadastroAmbientalRural',

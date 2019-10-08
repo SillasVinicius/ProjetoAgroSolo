@@ -29,7 +29,7 @@ export class ListaDAPage implements OnInit {
   }
 
   atualizar(da: DeclaracaoAmbiental): void {
-    this.navCtrl.navigateForward(`menu/ambiental/DeclaracaoAmbieltal/UpdateDeclaracaoAmbiental/${da.id}`);
+    this.navCtrl.navigateForward(`menu/ambiental/UpdateDeclaracaoAmbiental/${da.id}`);
   }
 
   async deletar(da: DeclaracaoAmbiental): Promise<void> {

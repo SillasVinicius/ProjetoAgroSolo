@@ -3,18 +3,32 @@ import { OverlayService } from 'src/app/core/services/overlay.service';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { NavController } from '@ionic/angular';
-import { finalize, take, tap } from 'rxjs/operators';
-import { AngularFireStorage, AngularFireUploadTask } from '@angular/fire/storage';
-import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
+import { finalize, take } from 'rxjs/operators';
+import { AngularFireStorage } from '@angular/fire/storage';
 import { Observable } from 'rxjs';
 import { OutorgaService } from 'src/app/core/services/outorga.service';
 import { ClienteService } from 'src/app/core/services/cliente.service';
 import { Cliente } from '../../models/cliente.model';
+import { trigger, state, transition, style, animate } from '@angular/animations';
 
 @Component({
   selector: 'app-cria-outorga',
   templateUrl: './cria-outorga.page.html',
   styleUrls: ['./cria-outorga.page.scss'],
+  animations: [
+    trigger('tamanhoArquivo', [
+      state('semArquivo', style({ 'height': '67px'})),
+      state('comArquivo', style({ 'height': '210px'})),
+      transition('antes => depois', [style({ transition: '0.2s' }), animate('100ms 0s ease-in')]),
+      transition('depois => antes', [style({ transition: '0.2s' }), animate('100ms 0s ease-in')])
+    ]),
+    trigger('marginBotao', [
+      state('semArquivo', style({ 'margin-top': '2px'})),
+      state('comArquivo', style({ 'margin-top': '30px'})),
+      transition('antes => depois', [style({ transition: '0.1s' }), animate('100ms 0s ease-in')]),
+      transition('depois => antes', [style({ transition: '0.1s' }), animate('100ms 0s ease-in')])
+    ]),
+  ]
 })
 export class CriaOutorgaPage implements OnInit {
 
@@ -35,20 +49,12 @@ export class CriaOutorgaPage implements OnInit {
   liberaArquivo = false;
 
   // ARQUIVOS
-  arquivos2: FileList;
+  public uploadPercent: Observable<number>;
+  public downloadUrl: Observable<string>;
+  public urlFoto: string;
+  arquivos: Object;
   files2: Observable<any[]>;
-  task2: AngularFireUploadTask;
-  percentage2: Observable<number>;
-  snapshot2: Observable<any>;
-  UploadedFileURL2: Observable<string>;
-  images2: Observable<MyData[]>;
-  fileName2 = '';
-  fileSize2: number;
-  isUploading2: boolean;
-  isUploaded2: boolean;
-  image2: MyData;
-  nomeFoto2: string;
-  private imageCollection2: AngularFirestoreCollection<MyData>;
+  fileName = '';
 
   // Dependencias
   constructor(
@@ -58,29 +64,20 @@ export class CriaOutorgaPage implements OnInit {
     private route: ActivatedRoute,
     private outorgaService: OutorgaService,
     private clienteService: ClienteService,
-    private storage: AngularFireStorage,
-    private database: AngularFirestore
-  ) {
-    this.isUploading2 = false;
-    this.isUploaded2 = false;
-    this.clienteService.init();
-    this.clienteService.getAll().subscribe((r: Cliente[]) => {
-
-      for (let i = 0; i < r.length; i++) {
-          this.clientes[i] = r[i];
-      }
-
-  });
-
-  console.log(this.clientes);
-  }
+    private storage: AngularFireStorage  ) {}
 
   // metodo que é chamado quando a pagina é carregada
   ngOnInit() {
     this.criaFormulario();
+    this.clienteService.init();
+    this.clienteService.getAll().subscribe((r: Cliente[]) => {
+      for (let i = 0; i < r.length; i++) {
+          this.clientes[i] = r[i];
+      }
+    });
+    console.log(this.clientes);
+    this.clienteService.id = '';
     this.acao();
-    this.outorgaService.init();
-    this.outorgaService.id = '';
   }
 
   // Cria formulários
@@ -136,18 +133,17 @@ export class CriaOutorgaPage implements OnInit {
     try {
       const outorga = '';
       if (!this.outorgaId) {
-        // tslint:disable-next-line: no-shadowed-variable
         const outorga = await this.outorgaService.create(this.outorgaForm.value);
-        // this.adicionaFoto();
-        this.adicionaFoto2();
+
+        this.deletePicture();
+
+        this.uploadFileTo(this.arquivos);
+
       } else {
-        // tslint:disable-next-line: no-shadowed-variable
-        const outorga = await this.outorgaService.update({
-          id: this.outorgaId,
-          descricao: this.outorgaForm.get('descricao').value,
-          dataDeVencimento: this.outorgaForm.get('dataDeVencimento').value,
-          clienteId: this.outorgaForm.get('idCliente').value,
-        });
+
+        this.deletePicture();
+
+        this.uploadFileToUpdate(this.arquivos);
       }
       console.log('Outorga Criada', outorga);
       this.navCtrl.navigateBack('/menu/outorga');
@@ -161,102 +157,100 @@ export class CriaOutorgaPage implements OnInit {
     }
   }
 
-  // Arquivos - início
-  // Faz o upload de um arquivo
-  async uploadFile2(event2: FileList) {
-    this.arquivos2 = event2;
-    const file2 = event2.item(0);
-    if (file2.type.split('/')[0] === 'image') {
-      await this.overlayService.toast({
-        message: 'tipo de arquivo não pode ser enviado por esse campo :('
-      });
-      return;
-    }
+  async openGalery(event: FileList){
+    try {
+      const file = event.item(0);
+        if (file.type.split('/')[0] === 'image') {
+          await this.overlayService.toast({
+            message: 'tipo de arquivo não pode ser enviado por esse campo :('
+          });
+          return;
+        }
+      this.fileName = file.name;
+      this.arquivos = file;
+      this.uploadFile(file);
 
-    this.isUploading2 = true;
-    this.isUploaded2 = false;
-    this.fileName2 = file2.name;
-    this.liberaArquivo = true;
-    if (this.outorgaService.id !== '') {
-      const path2 = `/users/${this.outorgaService.usuarioId}/outorga/${
-        this.outorgaService.id
-      }/arquivos/${new Date().getTime()}_${file2.name}`;
-      const customMetadata = { app: 'File Upload' };
-      const fileRef2 = this.storage.ref(path2);
-      this.task2 = this.storage.upload(path2, file2, { customMetadata });
-      this.percentage2 = this.task2.percentageChanges();
-      this.snapshot2 = this.task2.snapshotChanges().pipe(
-        finalize(() => {
-          this.UploadedFileURL2 = fileRef2.getDownloadURL();
-          this.UploadedFileURL2.subscribe(
-            resp2 => {
-              this.addImagetoDB2({
-                name: file2.name,
-                filepath: resp2,
-                size: this.fileSize2
-              });
-              this.isUploading2 = false;
-              this.isUploaded2 = true;
-            },
-            error2 => {
-              console.error(error2);
-            }
-          );
-        }),
-        tap(snap2 => {
-          this.fileSize2 = snap2.totalBytes;
+    }catch(error){
+      console.error(error);
+    }
+  }
+
+  async uploadFile(file: Object){
+      const ref = this.storage.ref(`${this.fileName}`);
+      const task = ref.put(file);
+      //
+      this.uploadPercent = task.percentageChanges();
+      task.snapshotChanges().pipe(
+        finalize(async () => {
+          const loading = await this.overlayService.loading({
+            message: "Carregando Foto..."
+          });
+
+          this.downloadUrl = ref.getDownloadURL();
+          this.liberaArquivo = true;
+
+          this.downloadUrl.subscribe(async r => {
+            this.urlFoto = r;
+          });
+
+          loading.dismiss();
         })
-      );
-      this.image2 = {
-        name: this.fileName2,
-        size: file2.size,
-        filepath: path2
-      };
-    }
+      ).subscribe();
   }
 
-  // adiciona um arquivo no banco de dados
-  addImagetoDB2(image2: MyData) {
-    const id2 = this.database.createId();
-    this.imageCollection2
-      .doc(id2)
-      .set(image2)
-      .then(resp2 => {
-        console.log(resp2);
+  async uploadFileTo(file: Object){
+
+      const ref2 = this.storage.ref(`/users/${this.outorgaService.usuarioId}/outorga/${this.outorgaService.id}/arquivos/${this.fileName}`);
+      const task2 = ref2.put(file);
+
+      task2.snapshotChanges().pipe(
+        finalize(async () => {
+
+          this.downloadUrl = ref2.getDownloadURL();
+          this.liberaArquivo = true;
+
+          this.downloadUrl.subscribe(async r => {
+            this.outorgaService.init();
+            const atualizarFoto = await this.outorgaService.update({
+              id: this.outorgaService.id,
+              descricao: this.outorgaForm.get('descricao').value,
+              dataDeVencimento: this.outorgaForm.get('dataDeVencimento').value,
+              clienteId: this.outorgaForm.get('idCliente').value,
+              arquivo: r
+            });
+          });
+        })
+      ).subscribe();
+  }
+
+  async uploadFileToUpdate(file: Object){
+
+    const ref2 = this.storage.ref(`/users/${this.outorgaService.usuarioId}/outorga/${this.outorgaService.id}/arquivos/${this.fileName}`);
+    const task2 = ref2.put(file);
+
+    task2.snapshotChanges().pipe(
+      finalize(async () => {
+
+        this.downloadUrl = ref2.getDownloadURL();
+        this.liberaArquivo = true;
+
+        this.downloadUrl.subscribe(async r => {
+          this.outorgaService.init();
+          const atualizarFoto = await this.outorgaService.update({
+            id: this.outorgaId,
+            descricao: this.outorgaForm.get('descricao').value,
+            dataDeVencimento: this.outorgaForm.get('dataDeVencimento').value,
+            clienteId: this.outorgaForm.get('idCliente').value,
+            arquivo: r
+          });
+        });
       })
-      .catch(error2 => {
-        console.log('error ' + error2);
-      });
+    ).subscribe();
   }
 
-  // define as variáveis necessárias para realizar o upload de imagens pro banco de dados
-  iniciaUploadFotos2() {
-    this.isUploading2 = false;
-    this.isUploaded2 = false;
-    this.imageCollection2 = this.database.collection<MyData>(
-      `/users/${this.outorgaService.usuarioId}/cliente/${this.outorgaService.id}/arquivos`
-    );
-    this.images2 = this.imageCollection2.valueChanges();
+  deletePicture(){
+    const ref = this.storage.ref(`${this.fileName}`);
+    const task = ref.delete();
   }
 
-  // executa todos os metodós para realizar upload de fotos
-  adicionaFoto2(): void {
-    this.iniciaUploadFotos2();
-    this.uploadFile2(this.arquivos2);
-    this.outorgaService.setCollectionArquivo(this.outorgaService.id);
-    this.outorgaService.collection.doc(this.image2.name).set(this.image2);
-  }
-  // Arquivos - fim
-
-
-  teste() {
-
-    console.log(this.selCliente);
-  }
-}
-
-export interface MyData {
-  name: string;
-  filepath: string;
-  size: number;
 }

@@ -3,4 +3,5 @@ export interface Outorga {
   descricao: string;
   dataDeVencimento: string;
   clienteId: string;
+  arquivo?: string;
 }

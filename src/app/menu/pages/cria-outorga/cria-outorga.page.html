@@ -7,7 +7,8 @@
     <!-- <app-logout-button slot="end" menu="main-menu"></app-logout-button> -->
   </ion-toolbar>
 </ion-header>
-<ion-content padding>
+<ion-item *ngIf="clientes.length === 0" style="position: absolute; margin-top: 20%;" lines="none">Outorgas são vinculadas a clientes, não encontramos nenhum cliente cadastrado, cadastre um cliente e tente novamente!</ion-item>
+<ion-content padding *ngIf="clientes.length > 0">
   <form [formGroup]="outorgaForm" (submit)="onSubmit()" novalidate>
     <ion-item>
       <ion-label position="floating" color="primary">Cliente</ion-label>
@@ -65,35 +66,43 @@
       </ion-note>
     </ion-item>
     <!-- inicio arquivo -->
-    <ion-card
-      text-center
-      *ngIf="!isUploading2 && !isUploaded2"
-    >
-      <ion-card-header>
-        <ion-card-title style="font-size: 20px;">Adicione um Arquivo</ion-card-title>
-      </ion-card-header>
-      <ion-card-content>
-        <div class="fileUpload">
-          <label for="uploadBtn2">Adicionar</label>
+    <ion-card [@tamanhoArquivo]="liberaArquivo ? 'comArquivo' : 'semArquivo'">
+      <ion-grid >
+        <ion-row align-items-center>
+          <ion-col
+            text-center
+            class="teste"
+          >
+          <ion-card
+            text-center
+            *ngIf="liberaArquivo"
+          >
+            <ion-card-header>
+              <ion-card-title style="font-size: 15px;">
+                Arquivo selecionado:
+                <a [href]="urlFoto" target="_blank"><b>{{ fileName }}</b></a>
+              </ion-card-title>
+            </ion-card-header>
+          </ion-card>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+
+      <div class="fileUpload" text-center >
+        <div *ngIf="uploadPercent | async as pct">
+          Progress: {{ pct | number }}%
+          <ion-progress-bar value="{{ pct / 100 }}"></ion-progress-bar>
+        </div>
+        <div [@marginBotao]="liberaArquivo ? 'comArquivo' : 'semArquivo'">
+          <label for="uploadBtn" class="btn">Escolher Arquivo</label>
           <input
-            id="uploadBtn2"
-            type="file"
             class="upload"
-            (change)="uploadFile2($event.target.files)"
+            id="uploadBtn"
+            type="file"
+            (change)="openGalery($event.target.files)"
           >
         </div>
-      </ion-card-content>
-    </ion-card>
-    <ion-card
-      text-center
-      *ngIf="isUploading2 && !isUploaded2"
-    >
-      <ion-card-header>
-        <ion-card-title style="font-size: 15px;">
-          Arquivo selecionado:
-          <b>{{ fileName2 }}</b>
-        </ion-card-title>
-      </ion-card-header>
+      </div>
     </ion-card>
     <!-- fim arquivo -->
     <ion-button expand="full" type="submit" *ngIf="outorgaForm.valid && liberaArquivo">

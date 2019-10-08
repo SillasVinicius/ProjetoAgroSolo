@@ -166,7 +166,7 @@ export class CriaClientePage implements OnInit {
   }
 
   deletePicture(){
-    const ref = this.storage.ref(`${this.clienteService.usuarioId}.jpg`);;
+    const ref = this.storage.ref(`${this.clienteService.usuarioId}.jpg`);
     const task = ref.delete();
   }
 

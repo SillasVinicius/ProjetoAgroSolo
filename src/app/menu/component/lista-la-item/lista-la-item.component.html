@@ -7,7 +7,7 @@
     <ion-icon slot="icon-only" name="more"></ion-icon>
   </ion-button>
   {{ licencaAmbiental.descricao }}
-  <ion-item slot="end" style="font-size:70%">{{ msgVencimento }} <ion-icon slot="end" name="alert" [color]="cor"></ion-icon></ion-item>
+  <ion-item slot="end" style="font-size:70%"><a [href]="licencaAmbiental.arquivo" target="_blank"><ion-icon slot="end" name="cloud-download" size="large"></ion-icon></a> &nbsp; &nbsp; &nbsp;{{ msgVencimento }} <ion-icon slot="end" name="alert" [color]="cor"></ion-icon></ion-item>
 </ion-item>
   <ion-item-options side="start">
     <ion-item-option color="danger" (click)="delete.emit(licencaAmbiental); sliding.close()">

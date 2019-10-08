@@ -29,7 +29,7 @@ export class ListaCARPage implements OnInit {
   }
 
   atualizar(cadastroAmbientalRural: CadastroAmbientalRural): void {
-    this.navCtrl.navigateForward(`menu/ambiental/CadastroAmbientalRural/UpdateCadastroAmbientalRural/${cadastroAmbientalRural.id}`);
+    this.navCtrl.navigateForward(`menu/ambiental/UpdateCadastroAmbientalRural/${cadastroAmbientalRural.id}`);
   }
 
   async deletar(cadastroAmbientalRural: CadastroAmbientalRural): Promise<void> {
