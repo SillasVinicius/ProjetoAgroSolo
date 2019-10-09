@@ -246,22 +246,10 @@ export class AlteraUsuarioPage implements OnInit {
       message: 'Alterando Perfil...'
     });
     try {
-      //   const usuario = await this.usuarioService.update({
-      //   id: this.updateUsuarioId,
-      //   nome: this.updateUsuarioForm.get('nome').value,
-      //   cpf: this.updateUsuarioForm.get('cpf').value,
-      //   dataNascimento: this.updateUsuarioForm.get('dataNascimento').value,
-      //   rg: this.updateUsuarioForm.get('rg').value,
-      //   email: this.updateUsuarioForm.get('email').value,
-      //   senha: this.updateUsuarioForm.get('senha').value,
-      //   telefone: this.updateUsuarioForm.get('telefone').value
-      // });
-      //console.log('Perfil do usuario alterado para:', usuario);
       this.deletePicture();
-
       this.uploadPictureTo(this.imageBlob);
-      //this.usuarioService.logado = false;
-      this.navCtrl.navigateBack('/menu');
+      this.navCtrl.navigateBack('/login');
+      this.usuarioService.logado = false;
     } catch (error) {
       await this.overlayService.toast({
         message: error.message

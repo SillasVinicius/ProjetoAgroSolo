@@ -23,7 +23,6 @@ export class CriaClientePage implements OnInit {
   clienteId: string = undefined;
 
   // Validacao
-  numberPattern = /^[0-9]*$/;
   botaoTitle = '...';
   pageTitle = '...';
   toastMessage = '...';
@@ -176,21 +175,16 @@ export class CriaClientePage implements OnInit {
       nome: this.formBuilder.control('', [Validators.required, Validators.minLength(3)]),
       cpf: this.formBuilder.control('', [
         Validators.required,
-        Validators.pattern(this.numberPattern),
-        Validators.minLength(11),
-        Validators.maxLength(11)
+        Validators.minLength(14),
+        Validators.maxLength(18)
       ]),
       patrimonio: this.formBuilder.control('', [
         Validators.required,
-        Validators.pattern(this.numberPattern),
-        Validators.minLength(3),
-        Validators.maxLength(15)
+        Validators.minLength(3)
       ]),
       pdtvAgro: this.formBuilder.control('', [
         Validators.required,
-        Validators.pattern(this.numberPattern),
-        Validators.minLength(3),
-        Validators.maxLength(15)
+        Validators.minLength(3)
       ])
     });
   }
