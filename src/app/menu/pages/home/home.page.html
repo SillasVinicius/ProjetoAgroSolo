@@ -15,16 +15,24 @@
       <ion-col
         text-center
       >
-      <ion-chip class="rgba3" style="background: #00331e; height:45px;">
+      <ion-chip class="rgba3" style="background: #00331e; height:45px;" *ngIf="!admin">
           <ion-avatar style="height: 35px; width: 35px;">
             <img [src]="urlFoto" *ngIf="urlFoto">
             <img src="../../../assets/img/avatar.svg" *ngIf="!urlFoto">
           </ion-avatar>
           <ion-label>{{nomeUser}}
+          </ion-label>
+          <ion-avatar (click)="linkAlterarUsuario()" style="height: 35px; width: 35px;">
+            <img src="../../../assets/img/settings.svg">
+          </ion-avatar>
+      </ion-chip>
 
-            <!-- <ion-chip (click)="linkAlterarUsuario()" style="background: white; color: #00643a; border-radius: 80%">
-                <ion-label><ion-icon slot="icon-only" name="brush"></ion-icon></ion-label>
-            </ion-chip> -->
+      <ion-chip class="rgba3" style="background: gray; height:45px;" *ngIf="admin">
+          <ion-avatar style="height: 35px; width: 35px;">
+            <img [src]="urlFoto" *ngIf="urlFoto">
+            <img src="../../../assets/img/avatar.svg" *ngIf="!urlFoto">
+          </ion-avatar>
+          <ion-label>{{nomeUser}} / Admin
           </ion-label>
           <ion-avatar (click)="linkAlterarUsuario()" style="height: 35px; width: 35px;">
             <img src="../../../assets/img/settings.svg">
@@ -87,6 +95,24 @@
             name="flower"
           ></ion-icon>
           Ambiental
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <ion-grid style="margin:0px; padding: 0px;" *ngIf="admin">
+    <ion-row align-items-center>
+      <ion-col text-center style="width:100%; background: #dc3545;" (click)="linkUsuarios()">
+        <ion-button
+          shape="round"
+          size="large"
+          fill="clear"
+          style="color: white;"
+        >
+          <ion-icon
+            slot="start"
+            name="person"
+          ></ion-icon>
+          Usuários
         </ion-button>
       </ion-col>
     </ion-row>

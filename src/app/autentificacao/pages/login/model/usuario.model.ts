@@ -8,4 +8,5 @@ export interface Usuario {
   dataNascimento: string;
   senha: string;
   foto?: string;
+  admin?: false;
 }

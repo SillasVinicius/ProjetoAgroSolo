@@ -64,7 +64,8 @@ export class LoginPage implements OnInit {
   ngOnInit() {
     this.loginForm = this.formBuilder.group({
       senha: this.formBuilder.control('123456', [Validators.required, Validators.minLength(6)]),
-      email: this.formBuilder.control('sillas@gmail.com', [Validators.required, Validators.email])
+      email: this.formBuilder.control('sillas@gmail.com', [Validators.required, Validators.email]),
+      admin: this.formBuilder.control(false, [])
     });
 
     var packageJsonInfo = require('package.json');
@@ -138,6 +139,7 @@ export class LoginPage implements OnInit {
           this.usuarioService.logado = true;
           this.usuarioService.nomeUser = r[0].nome;
           this.usuarioService.urlFoto = r[0].foto;
+          this.usuarioService.admin = r[0].admin;
         } else {
           await this.overlayService.toast({
             message: 'Usuário inválido! Verifique os dados e tente novamente!'
