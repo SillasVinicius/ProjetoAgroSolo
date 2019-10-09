@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { DeclaracaoAmbiental } from '../../models/da.model';
+import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 
 @Component({
   selector: 'app-lista-da-item',
@@ -7,6 +8,8 @@ import { DeclaracaoAmbiental } from '../../models/da.model';
   styleUrls: ['./lista-da-item.component.scss'],
 })
 export class ListaDaItemComponent implements OnInit {
+  constructor(private iab: InAppBrowser){}
+
   data: Date = new Date();
   dia = this.data.getDate();
   mes = this.data.getMonth() + 1;
@@ -46,6 +49,10 @@ export class ListaDaItemComponent implements OnInit {
       this.msgVencimento = `Venceu a ${diasSemMenos} dias!`;
       this.cor = 'danger';
     }
+  }
+
+  openLink(){
+    this.iab.create(`${this.declaracaoAmbiental.arquivo}`, `_system`);
   }
 
   abrir(){

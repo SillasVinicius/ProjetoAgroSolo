@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { LicencaAmbiental } from '../../models/la.model';
+import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 
 @Component({
   selector: 'app-lista-la-item',
@@ -8,6 +9,8 @@ import { LicencaAmbiental } from '../../models/la.model';
 })
 export class ListaLaItemComponent implements OnInit {
 
+  constructor(private iab: InAppBrowser){}
+  
   data: Date = new Date();
   dia = this.data.getDate();
   mes = this.data.getMonth() + 1;
@@ -54,6 +57,10 @@ export class ListaLaItemComponent implements OnInit {
 
   fechar(){
     this.clicado = false;
+  }
+
+  openLink(){
+    this.iab.create(`${this.licencaAmbiental.arquivo}`, `_system`);
   }
 
   retornaDiasVencimento(): string{
