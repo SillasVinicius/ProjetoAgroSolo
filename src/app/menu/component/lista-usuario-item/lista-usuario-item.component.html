@@ -1,0 +1,23 @@
+<ion-item-sliding #sliding>
+  <ion-item>
+    <ion-button (click)="sliding.open(); abrir()" fill="clear" *ngIf="!clicado">
+    <ion-icon slot="icon-only" name="more"></ion-icon>
+  </ion-button>
+  <ion-button (click)="sliding.close(); fechar()" fill="clear" *ngIf="clicado">
+    <ion-icon slot="icon-only" name="more"></ion-icon>
+  </ion-button>
+  <ion-avatar>
+    <img [src]="usuario.foto" *ngIf="usuario.foto">
+    <img src="../../../../assets/img/avatar.svg" *ngIf="!usuario.foto">
+  </ion-avatar>
+  <h5 style="padding-left: 5%;">{{ usuario.nome }}</h5>
+</ion-item>
+  <ion-item-options side="start">
+    <ion-item-option color="danger" (click)="delete.emit(usuario); sliding.close()">
+      <ion-icon slot="icon-only" name="trash"></ion-icon>
+    </ion-item-option>
+    <ion-item-option color="tertiary" (click)="update.emit(usuario); sliding.close()">
+      <ion-icon slot="icon-only" name="create"></ion-icon>
+    </ion-item-option>
+  </ion-item-options>
+</ion-item-sliding>

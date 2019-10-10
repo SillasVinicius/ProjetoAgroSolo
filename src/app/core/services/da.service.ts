@@ -20,6 +20,10 @@ export class DaService extends Firestore<DeclaracaoAmbiental>{
       this.setCollection(`/users/${this.usuarioService.id}/DeclaracaoAmbiental`, ref => ref.orderBy('dataDeVencimento', 'desc'));
     }
 
+    initDA(): void {
+      this.setCollection('/DeclaracaoAmbiental');
+    }
+
     setCollectionArquivo(da: string) {
       this.setCollection(`/users/${this.usuarioId}/DeclaracaoAmbiental/${da}/arquivos`);
     }

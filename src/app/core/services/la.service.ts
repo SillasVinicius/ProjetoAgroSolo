@@ -20,6 +20,10 @@ export class LaService extends Firestore<LicencaAmbiental> {
       this.setCollection(`/users/${this.usuarioService.id}/LicencaAmbiental`, ref => ref.orderBy('dataDeVencimento', 'desc'));
     }
 
+    initLA(): void {
+      this.setCollection('/LicencaAmbiental');
+    }
+
     setCollectionArquivo(la: string) {
       this.setCollection(`/users/${this.usuarioId}/LicencaAmbiental/${la}/arquivos`);
     }

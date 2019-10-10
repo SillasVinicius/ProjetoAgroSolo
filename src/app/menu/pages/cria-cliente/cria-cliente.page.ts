@@ -227,6 +227,22 @@ export class CriaClientePage implements OnInit {
       });
   }
 
+  async cadastraListaGlobal(id: string) {
+    this.clienteService.initCliente();
+    const cliente = await this.clienteService.createGlobal(this.clienteForm.value, id);
+  }
+
+  async AtualizaListaGlobal() {
+    this.clienteService.initCliente();
+    const cliente = await this.clienteService.update({
+      id: this.clienteId,
+      cpf: this.clienteForm.get('cpf').value,
+      nome: this.clienteForm.get('nome').value,
+      patrimonio: this.clienteForm.get('patrimonio').value,
+      pdtvAgro: this.clienteForm.get('pdtvAgro').value
+    });
+  }
+
   // método que envia os dados do formulário para o banco de dados
   async onSubmit(): Promise<void> {
     const loading = await this.overlayService.loading({
@@ -235,11 +251,15 @@ export class CriaClientePage implements OnInit {
     try {
       const cliente = '';
       if (!this.clienteId) {
+        this.clienteService.init();
         const cliente = await this.clienteService.create(this.clienteForm.value);
+        this.cadastraListaGlobal(this.clienteService.id);
 
         this.deletePicture();
 
         this.uploadPictureTo(this.imageBlob);
+
+
 
 
       } else {
@@ -247,6 +267,8 @@ export class CriaClientePage implements OnInit {
         this.deletePicture();
 
         this.uploadPictureToUpdate(this.imageBlob);
+
+        this.AtualizaListaGlobal();
 
 
       }

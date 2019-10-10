@@ -1,0 +1,36 @@
+<ion-header>
+  <ion-toolbar color="danger">
+    <app-menu-toogle
+      slot="start"
+      menu="main-menu"
+    ></app-menu-toogle>
+    <ion-title>Usuários</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-list *ngIf="usuarios$ | async as usuarios">
+    <ng-container *ngIf="usuarios.length > 0; else semUsuarios">
+      <app-lista-usuario-item
+        *ngFor="let usuario of usuarios"
+        [usuario]="usuario"
+        (update)="atualizar($event)"
+        (delete)="deletar($event)"
+      ></app-lista-usuario-item>
+    </ng-container>
+    <ng-template #semUsuarios>
+      <ion-item lines="none">Sem Usuários cadastrados...</ion-item>
+    </ng-template>
+  </ion-list>
+  <ion-fab
+    vertical="bottom"
+    horizontal="end"
+    slot="fixed"
+  >
+    <ion-fab-button
+      [routerLink]="['/menu/cadastroUsuarios']"
+      routerDirection="forward"
+    >
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

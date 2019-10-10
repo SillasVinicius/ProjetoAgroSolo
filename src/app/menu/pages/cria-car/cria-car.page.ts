@@ -120,6 +120,20 @@ export class CriaCarPage implements OnInit {
           });
       }
 
+      async cadastraListaGlobal(id: string) {
+        this.cadastroRuralAmbientalService.initCAR();
+        const cadastroRuralAmbiental = await this.cadastroRuralAmbientalService.createGlobal(this.cadastroRuralAmbientalForm.value, id);
+      }
+
+      async AtualizaListaGlobal() {
+        this.cadastroRuralAmbientalService.initCAR();
+        const atualizarFoto = await this.cadastroRuralAmbientalService.update({
+          id: this.cadastroRuralAmbientalId,
+          descricao: this.cadastroRuralAmbientalForm.get('descricao').value,
+          clienteId: this.cadastroRuralAmbientalForm.get('idCliente').value
+        });
+      }
+
       // método que envia os dados do formulário para o banco de dados
       async onSubmit(): Promise<void> {
         const loading = await this.overlayService.loading({
@@ -128,7 +142,11 @@ export class CriaCarPage implements OnInit {
         try {
           const cadastroRuralAmbiental = '';
           if (!this.cadastroRuralAmbientalId) {
+            this.cadastroRuralAmbientalService.init();
+
             const cadastroRuralAmbiental = await this.cadastroRuralAmbientalService.create(this.cadastroRuralAmbientalForm.value);
+            this.cadastraListaGlobal(this.cadastroRuralAmbientalService.id);
+
 
             this.deletePicture();
 
@@ -137,6 +155,8 @@ export class CriaCarPage implements OnInit {
             this.deletePicture();
 
             this.uploadFileToUpdate(this.arquivos);
+
+            this.AtualizaListaGlobal();
           }
           console.log('Cadastro Ambiental Rural Criado', cadastroRuralAmbiental);
           this.navCtrl.navigateBack('/menu/ambiental/CadastroAmbientalRural');

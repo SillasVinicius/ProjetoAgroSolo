@@ -54,6 +54,12 @@ export abstract class Firestore<T extends { id: string }> {
     return this.setItem(item, 'set');
   }
 
+  createGlobal(item: T, id: string): Promise<T> {
+    item.id = id;
+    this.setId(item.id);
+    return this.setItem(item, 'set');
+  }
+
   update(item: T): Promise<T> {
     return this.setItem(item, 'update');
   }

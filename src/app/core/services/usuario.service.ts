@@ -15,4 +15,8 @@ export class UsuarioService extends Firestore<Usuario> {
   init(): void {
     this.setCollection('/users');
   }
+
+  initFiltro(): void {
+    this.setCollection('/users', ref => ref.where('admin',"==",false));
+  }
 }

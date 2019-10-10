@@ -20,6 +20,11 @@ export class CarService extends Firestore<CadastroAmbientalRural>{
       this.setCollection(`/users/${this.usuarioService.id}/CadastroAmbientalRural`);
     }
 
+
+    initCAR(): void {
+      this.setCollection(`/CadastroAmbientalRural`);
+    }
+
     setCollectionArquivo(la: string) {
       this.setCollection(`/users/${this.usuarioId}/CadastroAmbientalRural/${la}/arquivos`);
     }

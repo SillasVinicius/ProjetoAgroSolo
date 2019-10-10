@@ -125,6 +125,21 @@ export class CriaOutorgaPage implements OnInit {
       });
   }
 
+  async cadastraListaGlobal(id: string) {
+    this.outorgaService.initOutorga();
+    const outorga = await this.outorgaService.createGlobal(this.outorgaForm.value, id);
+  }
+
+  async AtualizaListaGlobal() {
+    this.outorgaService.initOutorga();
+    const atualizarFoto = await this.outorgaService.update({
+      id: this.outorgaId,
+      descricao: this.outorgaForm.get('descricao').value,
+      dataDeVencimento: this.outorgaForm.get('dataDeVencimento').value,
+      clienteId: this.outorgaForm.get('idCliente').value
+    });
+  }
+
   // método que envia os dados do formulário para o banco de dados
   async onSubmit(): Promise<void> {
     const loading = await this.overlayService.loading({
@@ -133,7 +148,9 @@ export class CriaOutorgaPage implements OnInit {
     try {
       const outorga = '';
       if (!this.outorgaId) {
+        this.outorgaService.init();
         const outorga = await this.outorgaService.create(this.outorgaForm.value);
+        this.cadastraListaGlobal(this.outorgaService.id);
 
         this.deletePicture();
 
@@ -144,6 +161,8 @@ export class CriaOutorgaPage implements OnInit {
         this.deletePicture();
 
         this.uploadFileToUpdate(this.arquivos);
+
+        this.AtualizaListaGlobal();
       }
       console.log('Outorga Criada', outorga);
       this.navCtrl.navigateBack('/menu/outorga');

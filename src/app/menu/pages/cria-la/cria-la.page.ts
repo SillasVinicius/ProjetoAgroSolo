@@ -126,6 +126,21 @@ export class CriaLaPage implements OnInit {
           });
       }
 
+      async cadastraListaGlobal(id: string) {
+        this.licencaAmbientalService.initLA();
+        const licencaAmbiental = await this.licencaAmbientalService.createGlobal(this.licencaAmbientalForm.value, id);
+      }
+
+      async AtualizaListaGlobal() {
+        this.licencaAmbientalService.initLA();
+        const atualizarFoto = await this.licencaAmbientalService.update({
+          id: this.licencaAmbientalId,
+          descricao: this.licencaAmbientalForm.get('descricao').value,
+          dataDeVencimento: this.licencaAmbientalForm.get('dataDeVencimento').value,
+          clienteId: this.licencaAmbientalForm.get('idCliente').value
+        });
+      }
+
       // método que envia os dados do formulário para o banco de dados
       async onSubmit(): Promise<void> {
         const loading = await this.overlayService.loading({
@@ -135,7 +150,11 @@ export class CriaLaPage implements OnInit {
           const licencaAmbiental = '';
           if (!this.licencaAmbientalId) {
 
+            this.licencaAmbientalService.init();
+
             const licencaAmbiental = await this.licencaAmbientalService.create(this.licencaAmbientalForm.value);
+
+            this.cadastraListaGlobal(this.licencaAmbientalService.id);
 
             this.deletePicture();
 
@@ -146,6 +165,8 @@ export class CriaLaPage implements OnInit {
             this.deletePicture();
 
             this.uploadFileToUpdate(this.arquivos);
+
+            this.AtualizaListaGlobal();
 
           }
           console.log('Licença Ambiental Criada', licencaAmbiental);

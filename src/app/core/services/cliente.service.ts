@@ -17,13 +17,16 @@ export class ClienteService extends Firestore<Cliente> {
 
   init(): void {
     this.setCollection(`/users/${this.usuarioService.id}/cliente`);
-    // this.setCollection('/menu', ref => ref.orderBy('nome', 'asc').orderBy('id', 'asc'));
+  }
+
+  initCliente(): void {
+    this.setCollection(`/cliente`);
   }
 
   setCollectionFoto(cliente: string) {
     this.setCollection(`/users/${this.usuarioId}/cliente/${cliente}/imagens`);
   }
-  
+
   setCollectionArquivo(cliente: string) {
     this.setCollection(`/users/${this.usuarioId}/cliente/${cliente}/arquivos`);
   }

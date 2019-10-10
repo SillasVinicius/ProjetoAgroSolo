@@ -129,6 +129,21 @@ export class CriaDaPage implements OnInit {
         });
     }
 
+    async cadastraListaGlobal(id: string) {
+      this.declaracaoAmbientalService.initDA();
+      const declaracaoAmbiental = await this.declaracaoAmbientalService.createGlobal(this.declaracaoAmbientalForm.value, id);
+    }
+
+    async AtualizaListaGlobal() {
+      this.declaracaoAmbientalService.initDA();
+      const atualizarFoto = await this.declaracaoAmbientalService.update({
+        id: this.declaracaoAmbientalId,
+        descricao: this.declaracaoAmbientalForm.get('descricao').value,
+        dataDeVencimento: this.declaracaoAmbientalForm.get('dataDeVencimento').value,
+        clienteId: this.declaracaoAmbientalForm.get('idCliente').value
+      });
+    }
+
     // método que envia os dados do formulário para o banco de dados
     async onSubmit(): Promise<void> {
       const loading = await this.overlayService.loading({
@@ -137,7 +152,10 @@ export class CriaDaPage implements OnInit {
       try {
         const declaracaoAmbiental = '';
         if (!this.declaracaoAmbientalId) {
+          this.declaracaoAmbientalService.init();
           const declaracaoAmbiental = await this.declaracaoAmbientalService.create(this.declaracaoAmbientalForm.value);
+          this.cadastraListaGlobal(this.declaracaoAmbientalService.id);
+
           this.deletePicture();
 
           this.uploadFileTo(this.arquivos);
@@ -146,6 +164,8 @@ export class CriaDaPage implements OnInit {
           this.deletePicture();
 
           this.uploadFileToUpdate(this.arquivos);
+
+          this.AtualizaListaGlobal();
         }
         console.log('declaracao Ambiental Criada', declaracaoAmbiental);
         this.navCtrl.navigateBack('/menu/ambiental/DeclaracaoAmbiental');

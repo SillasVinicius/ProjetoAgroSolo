@@ -12,6 +12,10 @@ const routes: Routes = [
         loadChildren: './pages/cria-cliente/cria-cliente.module#CriaClientePageModule'
       },
       {
+        path: 'cadastroUsuarios',
+        loadChildren: './pages/cria-usuario/cria-usuario.module#CriaUsuarioPageModule'
+      },
+      {
         path: 'cadastroOutorga',
         loadChildren: './pages/cria-outorga/cria-outorga.module#CriaOutorgaPageModule'
       },
@@ -27,13 +31,17 @@ const routes: Routes = [
         path: 'updateUsuario/:id',
         loadChildren: './pages/altera-usuario/altera-usuario.module#AlteraUsuarioPageModule'
       },
-      // {
-      //   path: 'updateUsuario',
-      //   loadChildren: './pages/altera-usuario/altera-usuario.module#AlteraUsuarioPageModule'
-      // },
+      {
+        path: 'atualizarCliente/:id',
+        loadChildren: './pages/cria-usuario/cria-usuario.module#CriaUsuarioPageModule'
+      },
       {
         path: 'cliente',
         loadChildren: './pages/lista-cliente/lista-cliente.module#ListaClientePageModule'
+      },
+      {
+        path: 'usuario',
+        loadChildren: './pages/lista-usuario/lista-usuario.module#ListaUsuarioPageModule'
       },
       {
         path: 'outorga',

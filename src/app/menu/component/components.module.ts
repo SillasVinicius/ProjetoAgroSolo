@@ -5,10 +5,11 @@ import { ListaOutorgaItemComponent } from './lista-outorga-item/lista-outorga-it
 import { ListaDaItemComponent } from './lista-da-item/lista-da-item.component';
 import { ListaLaItemComponent } from './lista-la-item/lista-la-item.component';
 import { ListaCarItemComponent } from './lista-car-item/lista-car-item.component';
+import { ListaUsuarioItemComponent } from './lista-usuario-item/lista-usuario-item.component';
 
 @NgModule({
-  declarations: [ListaClienteItemComponent, ListaOutorgaItemComponent, ListaDaItemComponent, ListaLaItemComponent, ListaCarItemComponent],
+  declarations: [ListaUsuarioItemComponent,ListaClienteItemComponent, ListaOutorgaItemComponent, ListaDaItemComponent, ListaLaItemComponent, ListaCarItemComponent],
   imports: [SharedModule],
-  exports: [ListaClienteItemComponent, ListaOutorgaItemComponent, ListaDaItemComponent, ListaLaItemComponent, ListaCarItemComponent]
+  exports: [ListaUsuarioItemComponent, ListaClienteItemComponent, ListaOutorgaItemComponent, ListaDaItemComponent, ListaLaItemComponent, ListaCarItemComponent]
 })
 export class ComponentsModule {}

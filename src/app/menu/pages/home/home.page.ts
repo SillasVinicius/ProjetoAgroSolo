@@ -24,6 +24,9 @@ export class HomePage implements OnInit {
   linkAmbiental() {
     this.navCtrl.navigateForward('/menu/ambiental');
   }
+  linkUsuarios() {
+    this.navCtrl.navigateForward('/menu/usuario');
+  }
   linkAlterarUsuario() {
     this.navCtrl.navigateForward(`/menu/updateUsuario/${this.usuario.id}`);
   }
