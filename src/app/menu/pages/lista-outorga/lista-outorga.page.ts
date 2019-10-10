@@ -5,6 +5,7 @@ import { NavController } from '@ionic/angular';
 import { OverlayService } from 'src/app/core/services/overlay.service';
 import { Outorga } from '../../models/outorga.model';
 import { OutorgaService } from 'src/app/core/services/outorga.service';
+import { UsuarioService } from 'src/app/core/services/usuario.service';
 
 @Component({
   selector: 'app-lista-outorga',
@@ -17,14 +18,22 @@ export class ListaOutorgaPage implements OnInit {
   constructor(
     private navCtrl: NavController,
     private outorgaService: OutorgaService,
-    private overlayService: OverlayService
+    private overlayService: OverlayService,
+    private usuarioService: UsuarioService
   ) {}
 
   async ngOnInit(): Promise<void> {
     const loading = await this.overlayService.loading();
-    this.outorgaService.init();
-    this.outorgas$ = this.outorgaService.getAll();
-    this.outorgas$.pipe(take(1)).subscribe(() => loading.dismiss());
+    if (this.usuarioService.admin) {
+      this.outorgaService.initOutorga();
+      this.outorgas$ = this.outorgaService.getAll();
+      this.outorgas$.pipe(take(1)).subscribe(() => loading.dismiss());
+    }
+    else {
+      this.outorgaService.init();
+      this.outorgas$ = this.outorgaService.getAll();
+      this.outorgas$.pipe(take(1)).subscribe(() => loading.dismiss());
+    }
   }
 
   atualizar(outorga: Outorga): void {

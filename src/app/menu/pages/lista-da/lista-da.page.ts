@@ -5,6 +5,7 @@ import { NavController } from '@ionic/angular';
 import { OverlayService } from 'src/app/core/services/overlay.service';
 import { DeclaracaoAmbiental } from '../../models/da.model';
 import { DaService } from 'src/app/core/services/da.service';
+import { UsuarioService } from 'src/app/core/services/usuario.service';
 
 
 @Component({
@@ -18,14 +19,23 @@ export class ListaDAPage implements OnInit {
   constructor(
     private navCtrl: NavController,
     private daService: DaService,
-    private overlayService: OverlayService
+    private overlayService: OverlayService,
+    private usuarioService: UsuarioService
   ) {}
 
   async ngOnInit(): Promise<void> {
     const loading = await this.overlayService.loading();
-    this.daService.init();
-    this.das$ = this.daService.getAll();
-    this.das$.pipe(take(1)).subscribe(() => loading.dismiss());
+    if (this.usuarioService.admin) {
+      this.daService.initDA();
+      this.das$ = this.daService.getAll();
+      this.das$.pipe(take(1)).subscribe(() => loading.dismiss());
+    }
+    else {
+      this.daService.init();
+      this.das$ = this.daService.getAll();
+      this.das$.pipe(take(1)).subscribe(() => loading.dismiss());
+    }
+
   }
 
   atualizar(da: DeclaracaoAmbiental): void {

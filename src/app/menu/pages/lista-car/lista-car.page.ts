@@ -5,6 +5,7 @@ import { NavController } from '@ionic/angular';
 import { OverlayService } from 'src/app/core/services/overlay.service';
 import { CadastroAmbientalRural } from '../../models/car.model';
 import { CarService } from 'src/app/core/services/car.service';
+import { UsuarioService } from 'src/app/core/services/usuario.service';
 
 
 @Component({
@@ -18,14 +19,23 @@ export class ListaCARPage implements OnInit {
   constructor(
     private navCtrl: NavController,
     private cadastroAmbientalRuralService: CarService,
+    private usuarioService: UsuarioService,
     private overlayService: OverlayService
   ) {}
 
   async ngOnInit(): Promise<void> {
     const loading = await this.overlayService.loading();
-    this.cadastroAmbientalRuralService.init();
-    this.cadastrosAmbientaisRurais$ = this.cadastroAmbientalRuralService.getAll();
-    this.cadastrosAmbientaisRurais$.pipe(take(1)).subscribe(() => loading.dismiss());
+    if (this.usuarioService.admin) {
+      this.cadastroAmbientalRuralService.initCAR();
+      this.cadastrosAmbientaisRurais$ = this.cadastroAmbientalRuralService.getAll();
+      this.cadastrosAmbientaisRurais$.pipe(take(1)).subscribe(() => loading.dismiss());
+    }
+    else {
+      this.cadastroAmbientalRuralService.init();
+      this.cadastrosAmbientaisRurais$ = this.cadastroAmbientalRuralService.getAll();
+      this.cadastrosAmbientaisRurais$.pipe(take(1)).subscribe(() => loading.dismiss());
+    }
+
   }
 
   atualizar(cadastroAmbientalRural: CadastroAmbientalRural): void {
