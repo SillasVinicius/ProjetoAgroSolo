@@ -7,7 +7,8 @@
     <ion-icon slot="icon-only" name="more"></ion-icon>
   </ion-button>
   <ion-avatar>
-    <img [src]="cliente.foto">
+    <img [src]="cliente.foto" *ngIf="cliente.foto">
+    <img src="../../../../assets/img/avatar.svg" *ngIf="!cliente.foto">
   </ion-avatar>
   <h5 style="padding-left: 5%;">{{ cliente.nome }}</h5>
 </ion-item>

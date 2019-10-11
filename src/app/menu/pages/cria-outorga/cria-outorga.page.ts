@@ -10,6 +10,7 @@ import { OutorgaService } from 'src/app/core/services/outorga.service';
 import { ClienteService } from 'src/app/core/services/cliente.service';
 import { Cliente } from '../../models/cliente.model';
 import { trigger, state, transition, style, animate } from '@angular/animations';
+import { UsuarioService } from 'src/app/core/services/usuario.service';
 
 @Component({
   selector: 'app-cria-outorga',
@@ -64,17 +65,29 @@ export class CriaOutorgaPage implements OnInit {
     private route: ActivatedRoute,
     private outorgaService: OutorgaService,
     private clienteService: ClienteService,
+    private usuarioService: UsuarioService,
     private storage: AngularFireStorage  ) {}
 
   // metodo que é chamado quando a pagina é carregada
   ngOnInit() {
     this.criaFormulario();
-    this.clienteService.init();
-    this.clienteService.getAll().subscribe((r: Cliente[]) => {
-      for (let i = 0; i < r.length; i++) {
-          this.clientes[i] = r[i];
-      }
-    });
+    if (this.usuarioService.admin) {
+      this.clienteService.initCliente();
+      this.clienteService.getAll().subscribe((r: Cliente[]) => {
+        for (let i = 0; i < r.length; i++) {
+            this.clientes[i] = r[i];
+        }
+      });
+    }
+    else {
+      this.clienteService.init();
+      this.clienteService.getAll().subscribe((r: Cliente[]) => {
+        for (let i = 0; i < r.length; i++) {
+            this.clientes[i] = r[i];
+        }
+      });
+    }
+
     console.log(this.clientes);
     this.clienteService.id = '';
     this.acao();
