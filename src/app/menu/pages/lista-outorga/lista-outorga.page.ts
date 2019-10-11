@@ -49,6 +49,8 @@ export class ListaOutorgaPage implements OnInit {
           handler: async () => {
             await this.outorgaService.init();
             await this.outorgaService.delete(outorga);
+            await this.outorgaService.initOutorga();
+            await this.outorgaService.delete(outorga);
             await this.overlayService.toast({
               message: `Outorga "${outorga.descricao}" excluido!`
             });

@@ -51,6 +51,8 @@ export class ListaCARPage implements OnInit {
           handler: async () => {
             await this.cadastroAmbientalRuralService.init();
             await this.cadastroAmbientalRuralService.delete(cadastroAmbientalRural);
+            await this.cadastroAmbientalRuralService.initCAR();
+            await this.cadastroAmbientalRuralService.delete(cadastroAmbientalRural);
             await this.overlayService.toast({
               message: `cadastro Ambiental Rural "${cadastroAmbientalRural.descricao}" excluido!`
             });

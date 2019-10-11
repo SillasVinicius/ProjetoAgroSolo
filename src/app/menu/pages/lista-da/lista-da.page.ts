@@ -51,6 +51,8 @@ export class ListaDAPage implements OnInit {
           handler: async () => {
             await this.daService.init();
             await this.daService.delete(da);
+            await this.daService.initDA();
+            await this.daService.delete(da);
             await this.overlayService.toast({
               message: `Declaracao Ambiental "${da.descricao}" excluida!`
             });

@@ -50,6 +50,8 @@ export class ListaLAPage implements OnInit {
           handler: async () => {
             await this.licencaAmbientalService.init();
             await this.licencaAmbientalService.delete(licencaAmbiental);
+            await this.licencaAmbientalService.initLA();
+            await this.licencaAmbientalService.delete(licencaAmbiental);
             await this.overlayService.toast({
               message: `licenca ambiental "${licencaAmbiental.descricao}" excluida!`
             });
