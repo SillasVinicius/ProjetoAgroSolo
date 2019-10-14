@@ -10,6 +10,7 @@ import { Observable } from 'rxjs';
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 import { File } from '@ionic-native/file/ngx';
 import { trigger, state, transition, style, animate } from '@angular/animations';
+import { UsuarioService } from 'src/app/core/services/usuario.service';
 
 
 
@@ -62,14 +63,23 @@ export class CriaClientePage implements OnInit {
     private storage: AngularFireStorage,
     private camera: Camera,
     private platform: Platform,
-    private file: File
+    private file: File,
+    private usuarioService: UsuarioService,
   ) {}
 
   // metodo que é chamado quando a pagina é carregada
   ngOnInit() {
     this.criaFormulario();
-    this.clienteService.init();
-    this.clienteService.id = '';
+    if (this.usuarioService.admin) {
+      this.clienteService.initCliente();
+      console.log('this.clienteService.initCliente();');
+
+    }
+    else {
+      this.clienteService.init();
+      console.log('this.clienteService.init();');
+    }
+
     this.acao();
   }
 
