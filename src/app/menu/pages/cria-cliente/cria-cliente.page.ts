@@ -116,7 +116,7 @@ export class CriaClientePage implements OnInit {
 
   async uploadFileTo(file: Object){
 
-      const ref2 = this.storage.ref(`/users/${this.clienteService.usuarioId}/cliente/${this.clienteService.id}/imagem.jpg`);
+      const ref2 = this.storage.ref(`/users/${this.clienteService.usuarioId}/cliente/${this.clienteService.id}/${this.fileName}`);
       const task2 = ref2.put(file);
 
       task2.snapshotChanges().pipe(
@@ -143,7 +143,7 @@ export class CriaClientePage implements OnInit {
 
   async uploadFileToUpdate(file: Object){
 
-      const ref2 = this.storage.ref(`/users/${this.clienteService.usuarioId}/cliente/${this.clienteService.id}/imagem.jpg`);
+      const ref2 = this.storage.ref(`/users/${this.clienteService.usuarioId}/cliente/${this.clienteService.id}/${this.fileName}`);
       const task2 = ref2.put(file);
 
       task2.snapshotChanges().pipe(

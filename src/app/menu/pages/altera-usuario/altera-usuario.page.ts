@@ -143,7 +143,7 @@ export class AlteraUsuarioPage implements OnInit {
 
   async uploadFileTo(file: Object){
 
-      const ref2 = this.storage.ref(`/users/${this.updateUsuarioId}/fotoPerfil/imagem.jpg`);
+      const ref2 = this.storage.ref(`/users/${this.updateUsuarioId}/fotoPerfil/${this.fileName}`);
       const task2 = ref2.put(file);
 
       task2.snapshotChanges().pipe(
