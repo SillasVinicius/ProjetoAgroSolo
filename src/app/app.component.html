@@ -8,53 +8,31 @@
     type="overlay"
     contentId="menuContent"
     [disabled]="true"
-    #menu
   >
     <ion-header>
       <ion-toolbar color="primary">
-          <img src="../assets/img/logo2.png" style="width:30%; heigth:30%; margin-left: 5%;">
-          <ion-button slot="end" fill="clear" (click)="menu.close()"><ion-icon name="close" color="white"></ion-icon></ion-button>
+        <ion-title>Menu</ion-title>
       </ion-toolbar>
     </ion-header>
     <ion-content>
-
-    <div *ngFor="let p of pages">
-
-      <!-- Standard Menu Item -->
-      <ion-menu-toggle *ngIf="p.url">
-        <ion-item [routerLink]="p.url" routerDirection="p.direction" routerLinkActive="active">
-          <ion-icon [name]="p.icon" slot="start"></ion-icon>
-          <ion-label>
-            {{ p.title }}
-          </ion-label>
-        </ion-item>
-      </ion-menu-toggle>
-      <!-- Item with Children -->
-
-      <ion-item button *ngIf="p.children?.length > 0" (click)="p.open = !p.open" [class.parent-active]="p.open" detail="false">
-        <ion-icon name="flower" slot="start"></ion-icon>
-        <ion-label>
-          {{ p.title }}
-        </ion-label>
-        <ion-icon size="small" slot="end" name="arrow-dropdown" *ngIf="!p.open"></ion-icon>
-        <ion-icon size="small" slot="end" name="arrow-dropup" *ngIf="p.open"></ion-icon>
-      </ion-item>
-
-      <!-- Children List for clicked Item -->
-      <ion-list *ngIf="p.open">
-        <ion-menu-toggle>
-          <ion-item *ngFor="let sub of p.children" class="sub-item" [routerLink]="sub.url" routerDirection="root"
-            routerLinkActive="active">
-            <ion-icon [name]="sub.icon" slot="start"></ion-icon>
-            <ion-label>
-              {{ sub.title }}
-            </ion-label>
+      <ion-list>
+        <ion-menu-toggle autoHide="false">
+          <ion-item
+            button
+            *ngFor="let p of pages"
+            [routerLink]="p.url"
+            [routerDirection]="p.direction"
+          >
+            <ion-icon
+              slot="start"
+              [name]="p.icon"
+              color="primary"
+            ></ion-icon>
+            <ion-label>{{ p.text }}</ion-label>
           </ion-item>
         </ion-menu-toggle>
       </ion-list>
-
-    </div>
-  </ion-content>
+    </ion-content>
   </ion-menu>
   <ion-router-outlet id="menuContent"></ion-router-outlet>
 </ion-split-pane>

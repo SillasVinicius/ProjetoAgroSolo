@@ -9,13 +9,28 @@ import { AngularFireStorage } from '@angular/fire/storage';
 import { Observable } from 'rxjs';
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 import { File } from '@ionic-native/file/ngx';
+import { trigger, state, transition, style, animate } from '@angular/animations';
 
 
 
 @Component({
   selector: 'app-cria-cliente',
   templateUrl: './cria-cliente.page.html',
-  styleUrls: ['./cria-cliente.page.scss']
+  styleUrls: ['./cria-cliente.page.scss'],
+  animations: [
+    trigger('tamanhoArquivo', [
+      state('semArquivo', style({ 'height': '100px'})),
+      state('comArquivo', style({ 'height': '250px'})),
+      transition('antes => depois', [style({ transition: '0.2s' }), animate('100ms 0s ease-in')]),
+      transition('depois => antes', [style({ transition: '0.2s' }), animate('100ms 0s ease-in')])
+    ]),
+    trigger('marginBotao', [
+      state('semArquivo', style({ 'margin-top': '2px'})),
+      state('comArquivo', style({ 'margin-top': '30px'})),
+      transition('antes => depois', [style({ transition: '0.1s' }), animate('100ms 0s ease-in')]),
+      transition('depois => antes', [style({ transition: '0.1s' }), animate('100ms 0s ease-in')])
+    ]),
+  ]
 })
 export class CriaClientePage implements OnInit {
   // Cliente
@@ -33,8 +48,9 @@ export class CriaClientePage implements OnInit {
   public uploadPercent: Observable<number>;
   public downloadUrl: Observable<string>;
   public urlFoto: string;
-  imagesBlob: Observable<Blob[]>;
-  imageBlob: Blob;
+  arquivos: Object;
+  files2: Observable<any[]>;
+  fileName = '';
 
   // Dependencias
   constructor(
@@ -57,43 +73,28 @@ export class CriaClientePage implements OnInit {
     this.acao();
   }
 
-  async openGalery(){
-    const options: CameraOptions = {
-      quality: 100,
-      destinationType: this.camera.DestinationType.FILE_URI,
-      sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
-      correctOrientation: true
-    };
-
+  async openGalery(event: FileList){
     try {
-      const fileUrl: string = await this.camera.getPicture(options);
-      let file: string;
-
-      if (this.platform.is('ios')) {
-        file = fileUrl.split('/').pop();
-      } else {
-        file= fileUrl.substring(fileUrl.lastIndexOf('/') + 1, fileUrl.indexOf('?'));
-      }
-
-      const path: string = fileUrl.substring(0, fileUrl.lastIndexOf('/'));
-
-      const buffer: ArrayBuffer = await this.file.readAsArrayBuffer(path, file);
-
-      const blob: Blob = new Blob([buffer], {type: "image/jpeg"});
-
-      this.imageBlob = blob;
-
-      this.uploadPicture(blob);
+      const file = event.item(0);
+        if (file.type.split('/')[0] !== 'image') {
+          await this.overlayService.toast({
+            message: 'tipo de arquivo não pode ser enviado por esse campo :('
+          });
+          return;
+        }
+      this.fileName = file.name;
+      this.arquivos = file;
+      this.uploadFile(file);
 
     }catch(error){
       console.error(error);
     }
   }
 
-  async uploadPicture(blob: Blob){
-      const ref = this.storage.ref(`${this.clienteService.usuarioId}.jpg`);;
-      const task = ref.put(blob);
-
+  async uploadFile(file: Object){
+      const ref = this.storage.ref(`${this.fileName}`);
+      const task = ref.put(file);
+      //
       this.uploadPercent = task.percentageChanges();
       task.snapshotChanges().pipe(
         finalize(async () => {
@@ -103,17 +104,20 @@ export class CriaClientePage implements OnInit {
 
           this.downloadUrl = ref.getDownloadURL();
           this.liberaArquivo = true;
-          this.liberaAlterar = true;
+
+          this.downloadUrl.subscribe(async r => {
+            this.urlFoto = r;
+          });
 
           loading.dismiss();
         })
       ).subscribe();
   }
 
-  async uploadPictureTo(blob: Blob){
+  async uploadFileTo(file: Object){
 
       const ref2 = this.storage.ref(`/users/${this.clienteService.usuarioId}/cliente/${this.clienteService.id}/imagem.jpg`);
-      const task2 = ref2.put(blob);
+      const task2 = ref2.put(file);
 
       task2.snapshotChanges().pipe(
         finalize(async () => {
@@ -137,10 +141,10 @@ export class CriaClientePage implements OnInit {
       ).subscribe();
   }
 
-  async uploadPictureToUpdate(blob: Blob){
+  async uploadFileToUpdate(file: Object){
 
       const ref2 = this.storage.ref(`/users/${this.clienteService.usuarioId}/cliente/${this.clienteService.id}/imagem.jpg`);
-      const task2 = ref2.put(blob);
+      const task2 = ref2.put(file);
 
       task2.snapshotChanges().pipe(
         finalize(async () => {
@@ -165,7 +169,7 @@ export class CriaClientePage implements OnInit {
   }
 
   deletePicture(){
-    const ref = this.storage.ref(`${this.clienteService.usuarioId}.jpg`);
+    const ref = this.storage.ref(`${this.fileName}`);
     const task = ref.delete();
   }
 
@@ -257,7 +261,7 @@ export class CriaClientePage implements OnInit {
 
         this.deletePicture();
 
-        this.uploadPictureTo(this.imageBlob);
+        this.uploadFileTo(this.arquivos);
 
 
 
@@ -266,7 +270,7 @@ export class CriaClientePage implements OnInit {
 
         this.deletePicture();
 
-        this.uploadPictureToUpdate(this.imageBlob);
+        this.uploadFileToUpdate(this.arquivos);
 
         this.AtualizaListaGlobal();
 

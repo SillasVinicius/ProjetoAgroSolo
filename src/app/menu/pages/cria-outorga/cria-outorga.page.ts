@@ -18,7 +18,7 @@ import { UsuarioService } from 'src/app/core/services/usuario.service';
   styleUrls: ['./cria-outorga.page.scss'],
   animations: [
     trigger('tamanhoArquivo', [
-      state('semArquivo', style({ 'height': '67px'})),
+      state('semArquivo', style({ 'height': '100px'})),
       state('comArquivo', style({ 'height': '210px'})),
       transition('antes => depois', [style({ transition: '0.2s' }), animate('100ms 0s ease-in')]),
       transition('depois => antes', [style({ transition: '0.2s' }), animate('100ms 0s ease-in')])

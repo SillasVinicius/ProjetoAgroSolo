@@ -9,31 +9,46 @@
 </ion-header>
 <ion-content padding>
   <form [formGroup]="clienteForm" (submit)="onSubmit()" novalidate>
-    <ion-card>
-      <ion-grid>
+    <!-- inicio arquivo -->
+    <ion-card [@tamanhoArquivo]="liberaArquivo ? 'comArquivo' : 'semArquivo'">
+      <ion-grid >
         <ion-row align-items-center>
           <ion-col
             text-center
             class="teste"
           >
-            <ion-avatar>
-              <img [src]="downloadUrl | async" *ngIf="downloadUrl | async">
-              <img src="../../../assets/img/avatar.svg" *ngIf="!liberaAlterar">
-            </ion-avatar>
+          <ion-card
+            text-center
+            *ngIf="liberaArquivo"
+          >
+            <ion-card-header>
+              <ion-avatar>
+                <img [src]="downloadUrl | async" *ngIf="downloadUrl | async">
+                <img src="../../../assets/img/avatar.svg" *ngIf="!liberaArquivo">
+              </ion-avatar>
+            </ion-card-header>
+          </ion-card>
           </ion-col>
         </ion-row>
       </ion-grid>
 
-      <div class="fileUpload" text-center>
+      <div class="fileUpload" text-center >
         <div *ngIf="uploadPercent | async as pct">
           Progress: {{ pct | number }}%
           <ion-progress-bar value="{{ pct / 100 }}"></ion-progress-bar>
         </div>
-        <ion-button (click)="openGalery()" class="upload" fill="clear">
-            Escolher foto
-        </ion-button>
+        <div [@marginBotao]="liberaArquivo ? 'comArquivo' : 'semArquivo'">
+          <label for="uploadBtn" class="btn">Escolher Foto</label>
+          <input
+            class="upload"
+            id="uploadBtn"
+            type="file"
+            (change)="openGalery($event.target.files)"
+          >
+        </div>
       </div>
     </ion-card>
+    <!-- fim arquivo -->
     <ion-item>
       <ion-label position="floating" color="primary">Nome</ion-label>
       <ion-input
