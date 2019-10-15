@@ -2,6 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { LicencaAmbiental } from '../../models/la.model';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 import { UsuarioService } from 'src/app/core/services/usuario.service';
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-lista-la-item',
@@ -10,7 +11,7 @@ import { UsuarioService } from 'src/app/core/services/usuario.service';
 })
 export class ListaLaItemComponent implements OnInit {
 
-  constructor(private iab: InAppBrowser, private usuarioService: UsuarioService){}
+  constructor(private iab: InAppBrowser, private usuarioService: UsuarioService, public alertController: AlertController){}
 
   data: Date = new Date();
   dia = this.data.getDate();
@@ -57,7 +58,27 @@ export class ListaLaItemComponent implements OnInit {
     else {
       this.admin = false;
     }
+    if (diasVenc === 130) {
+      this.presentAlert('130');
+    }
+    if (diasVenc === 60) {
+      this.presentAlert('60');
+    }
+    if (diasVenc === 15) {
+      this.presentAlert('15');
+    }
   }
+
+  async presentAlert(dias: string) {
+     const alert = await this.alertController.create({
+       header: 'AVISO',
+       subHeader: 'Licença Ambiental Irá Vencer!',
+       message: `A Licença Ambiental '${this.licencaAmbiental.descricao}' vence em ${dias} dias!`,
+       buttons: ['OK']
+     });
+
+     await alert.present();
+   }
 
   abrir(){
     this.clicado = true;

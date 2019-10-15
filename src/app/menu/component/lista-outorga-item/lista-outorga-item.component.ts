@@ -2,6 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Outorga } from '../../models/outorga.model';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 import { UsuarioService } from 'src/app/core/services/usuario.service';
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-lista-outorga-item',
@@ -10,7 +11,7 @@ import { UsuarioService } from 'src/app/core/services/usuario.service';
 })
 export class ListaOutorgaItemComponent implements OnInit{
 
-  constructor(private iab: InAppBrowser, private usuarioService: UsuarioService){}
+  constructor(private iab: InAppBrowser, private usuarioService: UsuarioService, public alertController: AlertController){}
 
   data: Date = new Date();
   dia = this.data.getDate();
@@ -28,7 +29,7 @@ export class ListaOutorgaItemComponent implements OnInit{
   @Output() update = new EventEmitter<Outorga>();
   @Output() delete = new EventEmitter<Outorga>();
 
-  ngOnInit(){
+  async ngOnInit(){
     this.clicado = false;
     let diasVenc: number = Number.parseInt(this.retornaDiasVencimento());
     if (diasVenc === 0) {
@@ -59,7 +60,25 @@ export class ListaOutorgaItemComponent implements OnInit{
       else {
         this.admin = false;
       }
+
+      if (diasVenc === 30) {
+        this.presentAlert('30');
+      }
+      if (diasVenc === 15) {
+        this.presentAlert('15');
+      }
   }
+
+  async presentAlert(dias: string) {
+     const alert = await this.alertController.create({
+       header: 'AVISO',
+       subHeader: 'Outorga Irá Vencer!',
+       message: `A outorga '${this.outorga.descricao}' vence em ${dias} dias!`,
+       buttons: ['OK']
+     });
+
+     await alert.present();
+   }
 
   openLink(){
     this.iab.create(`${this.outorga.arquivo}`, `_system`);
