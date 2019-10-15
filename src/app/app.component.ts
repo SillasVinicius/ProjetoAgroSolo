@@ -21,8 +21,8 @@ export class AppComponent {
   initializeApp() {
     this.pages = [
       { url: '/menu', icon: 'home', text: 'Home', direction: 'back' },
-      { url: '/menu/cliente', icon: 'create', text: 'Cliente', direction: 'forward' },
-      { url: '/menu/outorga', icon: 'albums', text: 'Outorga', direction: 'forward' },
+      { url: '/menu/cliente', icon: 'person', text: 'Cliente', direction: 'forward' },
+      // { url: '/menu/outorga', icon: 'albums', text: 'Outorga', direction: 'forward' },
       { url: '/menu/ambiental', icon: 'flower', text: 'Ambiental', direction: 'forward' }
 
     ];

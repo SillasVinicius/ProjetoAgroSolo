@@ -2,17 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { OverlayService } from 'src/app/core/services/overlay.service';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { NavController, Platform } from '@ionic/angular';
+import { NavController } from '@ionic/angular';
 import { finalize, take } from 'rxjs/operators';
 import { ClienteService } from 'src/app/core/services/cliente.service';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { Observable } from 'rxjs';
-import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
-import { File } from '@ionic-native/file/ngx';
 import { trigger, state, transition, style, animate } from '@angular/animations';
 import { UsuarioService } from 'src/app/core/services/usuario.service';
-
-
 
 @Component({
   selector: 'app-cria-cliente',
@@ -37,6 +33,8 @@ export class CriaClientePage implements OnInit {
   // Cliente
   clienteForm: FormGroup;
   clienteId: string = undefined;
+  admin: boolean = false;
+  update: boolean = false;
 
   // Validacao
   botaoTitle = '...';
@@ -61,9 +59,6 @@ export class CriaClientePage implements OnInit {
     private route: ActivatedRoute,
     private clienteService: ClienteService,
     private storage: AngularFireStorage,
-    private camera: Camera,
-    private platform: Platform,
-    private file: File,
     private usuarioService: UsuarioService,
   ) {}
 
@@ -73,11 +68,12 @@ export class CriaClientePage implements OnInit {
     if (this.usuarioService.admin) {
       this.clienteService.initCliente();
       console.log('this.clienteService.initCliente();');
-
+      this.admin = true;
     }
     else {
       this.clienteService.init();
       console.log('this.clienteService.init();');
+      this.admin = false;
     }
 
     this.acao();
@@ -221,11 +217,13 @@ export class CriaClientePage implements OnInit {
   acao(): void {
     const clienteId = this.route.snapshot.paramMap.get('id');
     if (!clienteId) {
+      this.update = false;
       this.pageTitle = 'Cadastrar Cliente';
       this.botaoTitle = 'CADASTRAR';
       this.toastMessage = 'Criando...';
       return;
     }
+    this.update = true;
     this.clienteId = clienteId;
     this.pageTitle = 'Atualizar Cliente';
     this.botaoTitle = 'ATUALIZAR';

@@ -17,6 +17,9 @@ export class HomeAmbientalPage implements OnInit {
   linkCAR() {
     this.navCtrl.navigateForward('/menu/ambiental/CadastroAmbientalRural');
   }
+  linkOutorga() {
+    this.navCtrl.navigateForward('/menu/outorga');
+  }
   ngOnInit() {
   }
 

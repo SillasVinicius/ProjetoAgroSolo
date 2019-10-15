@@ -39,7 +39,8 @@ export class CriaDaPage implements OnInit {
     // Declaração Ambiental
     declaracaoAmbientalForm: FormGroup;
     declaracaoAmbientalId: string = undefined;
-
+    admin: boolean = false;
+    update: boolean = false;
     //cliente
 
     clientes: Cliente[] = [];
@@ -82,6 +83,7 @@ export class CriaDaPage implements OnInit {
               this.clientes[i] = r[i];
           }
         });
+        this.admin = true;
       }
       else {
         this.clienteService.init();
@@ -90,6 +92,7 @@ export class CriaDaPage implements OnInit {
               this.clientes[i] = r[i];
           }
         });
+        this.admin = false;
       }
 
       console.log(this.clientes);
@@ -123,11 +126,13 @@ export class CriaDaPage implements OnInit {
     acao(): void {
       const declaracaoAmbientalId = this.route.snapshot.paramMap.get('id');
       if (!declaracaoAmbientalId) {
+        this.update = false;
         this.pageTitle = 'Cadastrar Declaração Ambiental';
         this.botaoTitle = 'CADASTRAR';
         this.toastMessage = 'Criando...';
         return;
       }
+      this.update = true;
       this.declaracaoAmbientalId = declaracaoAmbientalId;
       this.pageTitle = 'Atualizar Declaração Ambiental';
       this.botaoTitle = 'ATUALIZAR';
@@ -137,7 +142,7 @@ export class CriaDaPage implements OnInit {
         .pipe(take(1))
         .subscribe(({ descricao, dataDeVencimento, clienteId  }) => {
           this.declaracaoAmbientalForm.get('descricao').setValue(descricao),
-            this.declaracaoAmbientalForm.get('dataDeVencimento').setValue(dataDeVencimento)
+            this.declaracaoAmbientalForm.get('dataDeVencimento').setValue(dataDeVencimento),
             this.declaracaoAmbientalForm.get('idCliente').setValue(clienteId)
         });
     }

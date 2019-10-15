@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Outorga } from '../../models/outorga.model';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
+import { UsuarioService } from 'src/app/core/services/usuario.service';
 
 @Component({
   selector: 'app-lista-outorga-item',
@@ -9,7 +10,7 @@ import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 })
 export class ListaOutorgaItemComponent implements OnInit{
 
-  constructor(private iab: InAppBrowser){}
+  constructor(private iab: InAppBrowser, private usuarioService: UsuarioService){}
 
   data: Date = new Date();
   dia = this.data.getDate();
@@ -19,6 +20,8 @@ export class ListaOutorgaItemComponent implements OnInit{
 
   msgVencimento: string = ''
   cor: string = ''
+
+  admin: boolean = false;
 
   clicado: boolean = false;
   @Input() outorga: Outorga;
@@ -49,6 +52,13 @@ export class ListaOutorgaItemComponent implements OnInit{
       this.msgVencimento = `Venceu a ${diasSemMenos} dias!`;
       this.cor = 'danger';
     }
+
+      if (this.usuarioService.admin) {
+        this.admin = true;
+      }
+      else {
+        this.admin = false;
+      }
   }
 
   openLink(){

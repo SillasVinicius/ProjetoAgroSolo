@@ -36,7 +36,8 @@ export class CriaOutorgaPage implements OnInit {
   // outorga
   outorgaForm: FormGroup;
   outorgaId: string = undefined;
-
+  admin: boolean = false;
+  update: boolean = false;
   //cliente
 
   clientes: Cliente[] = [];
@@ -78,6 +79,8 @@ export class CriaOutorgaPage implements OnInit {
             this.clientes[i] = r[i];
         }
       });
+
+      this.admin = true;
     }
     else {
       this.clienteService.init();
@@ -86,6 +89,8 @@ export class CriaOutorgaPage implements OnInit {
             this.clientes[i] = r[i];
         }
       });
+
+      this.admin = false;
     }
 
     console.log(this.clientes);
@@ -119,11 +124,13 @@ export class CriaOutorgaPage implements OnInit {
   acao(): void {
     const outorgaId = this.route.snapshot.paramMap.get('id');
     if (!outorgaId) {
+      this.update = false;
       this.pageTitle = 'Cadastrar Outorga';
       this.botaoTitle = 'CADASTRAR';
       this.toastMessage = 'Criando...';
       return;
     }
+    this.update = true;
     this.outorgaId = outorgaId;
     this.pageTitle = 'Atualizar Outorga';
     this.botaoTitle = 'ATUALIZAR';
@@ -133,7 +140,7 @@ export class CriaOutorgaPage implements OnInit {
       .pipe(take(1))
       .subscribe(({ descricao, dataDeVencimento, clienteId  }) => {
         this.outorgaForm.get('descricao').setValue(descricao),
-          this.outorgaForm.get('dataDeVencimento').setValue(dataDeVencimento)
+          this.outorgaForm.get('dataDeVencimento').setValue(dataDeVencimento),
           this.outorgaForm.get('idCliente').setValue(clienteId)
       });
   }

@@ -10,6 +10,7 @@
 <ion-content padding>
   <form [formGroup]="clienteForm" (submit)="onSubmit()" novalidate>
     <!-- inicio arquivo -->
+    <div *ngIf="!admin || !update">
     <ion-card [@tamanhoArquivo]="liberaArquivo ? 'comArquivo' : 'semArquivo'">
       <ion-grid >
         <ion-row align-items-center>
@@ -48,6 +49,7 @@
         </div>
       </div>
     </ion-card>
+    </div>
     <!-- fim arquivo -->
     <ion-item>
       <ion-label position="floating" color="primary">Nome</ion-label>
@@ -125,114 +127,7 @@
     >
       Prod.Agropecuária Inválida!
     </ion-note>
-    <!-- inicio imagem -->
-    <!-- <ion-card text-center *ngIf="!isUploading && !isUploaded">
-      <ion-card-header>
-        <ion-card-title style="font-size: 20px;">Adicione uma Foto</ion-card-title>
-      </ion-card-header>
-      <ion-card-content>
-        <div class="fileUpload">
-          <label for="uploadBtn">Adicionar</label>
-          <input
-            id="uploadBtn"
-            type="file"
-            class="upload"
-            (change)="uploadFile($event.target.files)"
-          />
-        </div>
-      </ion-card-content>
-    </ion-card>
-    <ion-card text-center *ngIf="isUploading && !isUploaded">
-      <ion-card-header>
-        <ion-card-title style="font-size: 15px;">
-          Imagem selecionada:
-          <b>{{ fileName }}</b>
-        </ion-card-title>
-      </ion-card-header>
-    </ion-card> -->
-
-    <!-- fim imagem -->
-    <!-- inicio arquivo -->
-    <!-- <ion-card
-      text-center
-      *ngIf="!isUploading2 && !isUploaded2"
-    >
-      <ion-card-header>
-        <ion-card-title style="font-size: 20px;">Adicione um Arquivo</ion-card-title>
-      </ion-card-header>
-      <ion-card-content>
-        <div class="fileUpload">
-          <label for="uploadBtn2">Adicionar</label>
-          <input
-            id="uploadBtn2"
-            type="file"
-            class="upload"
-            (change)="uploadFile2($event.target.files)"
-          >
-        </div>
-      </ion-card-content>
-    </ion-card>
-    <ion-card
-      text-center
-      *ngIf="isUploading2 && !isUploaded2"
-    >
-      <ion-card-header>
-        <ion-card-title style="font-size: 15px;">
-          Arquivo selecionado:
-          <b>{{ fileName2 }}</b>
-        </ion-card-title>
-      </ion-card-header>
-      <ion-card-content>
-        <div *ngIf="percentage2 | async as pct">
-          Progress: {{ pct | number }}%
-          <ion-progress-bar value="{{ pct / 100 }}"></ion-progress-bar>
-        </div>
-        <div *ngIf="snapshot2 | async as snap">
-          File Size: {{ snap.totalBytes | fileSizePipe }} Transfered:
-          {{ snap.bytesTransferred | fileSizePipe }}
-          <div *ngIf="snapshot2 && snap.bytesTransferred != snap.totalBytes">
-            <ion-button
-              color="warning"
-              size="small"
-              (click)="task2.pause()"
-              class="button is-warning"
-            >
-              Pause
-            </ion-button>
-            <ion-button
-              size="small"
-              (click)="task2.resume()"
-              class="button is-info"
-            >
-              Resume
-            </ion-button>
-            <ion-button
-              color="danger"
-              size="small"
-              (click)="task2.cancel()"
-              class="button is-danger"
-            >
-              Cancel
-            </ion-button>
-          </div>
-        </div>
-      </ion-card-content>
-    </ion-card>
-    <ion-card
-      text-center
-      *ngIf="!isUploading2 && isUploaded2"
-    >
-      <ion-card-header>
-        <ion-card-title style="font-size: 20px;">Arquivo Adicionado!</ion-card-title>
-      </ion-card-header>
-      <ion-card-content>
-        <div *ngIf="UploadedFileURL2 | async as url">
-          <img [src]="url">
-        </div>
-        File Size: {{ fileSize | fileSizePipe }}
-      </ion-card-content>
-    </ion-card> -->
-    <!-- fim arquivo -->
+    <div *ngIf="!admin || !update">
     <ion-button expand="full" type="submit" *ngIf="clienteForm.valid && liberaArquivo" style="margin-top: 15%;">
       {{ botaoTitle }}
     </ion-button>
@@ -248,5 +143,6 @@
     >
       {{ botaoTitle }}
     </ion-button>
+    </div>
   </form>
 </ion-content>

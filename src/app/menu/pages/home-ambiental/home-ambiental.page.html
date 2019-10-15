@@ -21,13 +21,32 @@
 <ion-content>
   <ion-grid style="margin:0px; padding: 0px;">
     <ion-row align-items-center>
-       <ion-col text-center style="width:100%; background: #a2bd31;" (click)="linkLA()">
+       <ion-col text-center style="width:100%; background:  #a2bd31;" (click)="linkOutorga()">
         <ion-button
           shape="round"
           size="large"
           class="btn-ambiental"
           fill="clear"
           style="color: #00643a;"
+        >
+          <ion-icon
+            slot="start"
+            name="browsers"
+          ></ion-icon>
+          Outorga
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <ion-grid style="margin:0px; padding: 0px;">
+    <ion-row align-items-center>
+       <ion-col text-center style="width:100%; background: #006453;" (click)="linkLA()">
+        <ion-button
+          shape="round"
+          size="large"
+          class="btn-ambiental"
+          fill="clear"
+          style="color: white;"
         >
           <ion-icon
             slot="start"

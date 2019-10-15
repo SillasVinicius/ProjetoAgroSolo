@@ -65,6 +65,7 @@
       </ion-note>
     </ion-item>
     <!-- inicio arquivo -->
+    <div *ngIf="!admin || !update">
     <ion-card [@tamanhoArquivo]="liberaArquivo ? 'comArquivo' : 'semArquivo'">
       <ion-grid >
         <ion-row align-items-center>
@@ -103,20 +104,23 @@
         </div>
       </div>
     </ion-card>
+    </div>
     <!-- fim arquivo -->
-    <ion-button expand="full" type="submit" *ngIf="licencaAmbientalForm.valid && liberaArquivo">
-      {{ botaoTitle }}
-    </ion-button>
-    <ion-button
-      expand="full"
-      [disabled]="true"
-      *ngIf="
-        (!licencaAmbientalForm.valid && !liberaArquivo) ||
-        (!licencaAmbientalForm.valid && liberaArquivo) ||
-        (licencaAmbientalForm.valid && !liberaArquivo)
-      "
-    >
-      {{ botaoTitle }}
-    </ion-button>
+    <div *ngIf="!admin || !update">
+      <ion-button expand="full" type="submit" *ngIf="licencaAmbientalForm.valid && liberaArquivo">
+        {{ botaoTitle }}
+      </ion-button>
+      <ion-button
+        expand="full"
+        [disabled]="true"
+        *ngIf="
+          (!licencaAmbientalForm.valid && !liberaArquivo) ||
+          (!licencaAmbientalForm.valid && liberaArquivo) ||
+          (licencaAmbientalForm.valid && !liberaArquivo)
+        "
+      >
+        {{ botaoTitle }}
+      </ion-button>
+    </div>
   </form>
 </ion-content>

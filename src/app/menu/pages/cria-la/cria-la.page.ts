@@ -38,6 +38,8 @@ export class CriaLaPage implements OnInit {
       // Licença Ambiental
       licencaAmbientalForm: FormGroup;
       licencaAmbientalId: string = undefined;
+      admin: boolean = false;
+      update: boolean = false;
 
       //cliente
 
@@ -80,6 +82,8 @@ export class CriaLaPage implements OnInit {
                 this.clientes[i] = r[i];
             }
           });
+
+          this.admin = true;
         }
         else {
           this.clienteService.init();
@@ -88,6 +92,7 @@ export class CriaLaPage implements OnInit {
                 this.clientes[i] = r[i];
             }
           });
+          this.admin = false;
         }
 
         console.log(this.clientes);
@@ -120,11 +125,13 @@ export class CriaLaPage implements OnInit {
       acao(): void {
         const licencaAmbientalId = this.route.snapshot.paramMap.get('id');
         if (!licencaAmbientalId) {
+          this.update = false;
           this.pageTitle = 'Cadastrar Licença Ambiental';
           this.botaoTitle = 'CADASTRAR';
           this.toastMessage = 'Criando...';
           return;
         }
+        this.update = true;
         this.licencaAmbientalId = licencaAmbientalId;
         this.pageTitle = 'Atualizar Licença Ambiental';
         this.botaoTitle = 'ATUALIZAR';

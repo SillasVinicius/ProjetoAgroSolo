@@ -6,18 +6,21 @@
   <ion-button (click)="sliding.close(); fechar()" fill="clear" *ngIf="clicado">
     <ion-icon slot="icon-only" name="more"></ion-icon>
   </ion-button>
-  <ion-avatar>
+  <ion-avatar *ngIf="!admin">
     <img [src]="cliente.foto" *ngIf="cliente.foto">
     <img src="../../../../assets/img/avatar.svg" *ngIf="!cliente.foto">
   </ion-avatar>
   <h5 style="padding-left: 5%;">{{ cliente.nome }}</h5>
 </ion-item>
   <ion-item-options side="start">
-    <ion-item-option color="danger" (click)="delete.emit(cliente); sliding.close()">
+    <ion-item-option color="danger" (click)="delete.emit(cliente); sliding.close()" *ngIf="!admin">
       <ion-icon slot="icon-only" name="trash"></ion-icon>
     </ion-item-option>
-    <ion-item-option color="tertiary" (click)="update.emit(cliente); sliding.close()">
+    <ion-item-option color="tertiary" (click)="update.emit(cliente); sliding.close()" *ngIf="!admin">
       <ion-icon slot="icon-only" name="create"></ion-icon>
+    </ion-item-option>
+    <ion-item-option color="tertiary" (click)="update.emit(cliente); sliding.close()" *ngIf="admin">
+      <ion-icon slot="icon-only" name="eye"></ion-icon>
     </ion-item-option>
   </ion-item-options>
 </ion-item-sliding>

@@ -38,7 +38,8 @@ export class CriaCarPage implements OnInit {
       // cadastro Rural Ambiental
       cadastroRuralAmbientalForm: FormGroup;
       cadastroRuralAmbientalId: string = undefined;
-
+      admin: boolean = false;
+      update: boolean = false;
       //cliente
 
       clientes: Cliente[] = [];
@@ -80,6 +81,8 @@ export class CriaCarPage implements OnInit {
                 this.clientes[i] = r[i];
             }
           });
+
+          this.admin = true;
         }
         else {
           this.clienteService.init();
@@ -88,6 +91,7 @@ export class CriaCarPage implements OnInit {
                 this.clientes[i] = r[i];
             }
           });
+          this.admin = false;
         }
 
         console.log(this.clientes);
@@ -115,11 +119,13 @@ export class CriaCarPage implements OnInit {
       acao(): void {
         const declaracaoAmbientalId = this.route.snapshot.paramMap.get('id');
         if (!declaracaoAmbientalId) {
+          this.update = false;
           this.pageTitle = 'Cadastrar C.A.R';
           this.botaoTitle = 'CADASTRAR';
           this.toastMessage = 'Criando...';
           return;
         }
+        this.update = true;
         this.cadastroRuralAmbientalId = declaracaoAmbientalId;
         this.pageTitle = 'Atualizar C.A.R';
         this.botaoTitle = 'ATUALIZAR';

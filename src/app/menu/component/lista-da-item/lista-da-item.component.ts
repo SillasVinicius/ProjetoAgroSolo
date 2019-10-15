@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { DeclaracaoAmbiental } from '../../models/da.model';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
+import { UsuarioService } from 'src/app/core/services/usuario.service';
 
 @Component({
   selector: 'app-lista-da-item',
@@ -8,7 +9,7 @@ import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
   styleUrls: ['./lista-da-item.component.scss'],
 })
 export class ListaDaItemComponent implements OnInit {
-  constructor(private iab: InAppBrowser){}
+  constructor(private iab: InAppBrowser, private usuarioService: UsuarioService){}
 
   data: Date = new Date();
   dia = this.data.getDate();
@@ -21,6 +22,7 @@ export class ListaDaItemComponent implements OnInit {
 
 
   clicado: boolean = false;
+  admin: boolean = false;
   @Input() declaracaoAmbiental: DeclaracaoAmbiental;
   @Output() update = new EventEmitter<DeclaracaoAmbiental>();
   @Output() delete = new EventEmitter<DeclaracaoAmbiental>();
@@ -48,6 +50,12 @@ export class ListaDaItemComponent implements OnInit {
       let diasSemMenos = this.retornaDiasVencimento().replace('-','');
       this.msgVencimento = `Venceu a ${diasSemMenos} dias!`;
       this.cor = 'danger';
+    }
+    if (this.usuarioService.admin) {
+      this.admin = true;
+    }
+    else {
+      this.admin = false;
     }
   }
 

@@ -66,58 +66,62 @@
       </ion-note>
     </ion-item>
     <!-- inicio arquivo -->
-    <ion-card [@tamanhoArquivo]="liberaArquivo ? 'comArquivo' : 'semArquivo'">
-      <ion-grid >
-        <ion-row align-items-center>
-          <ion-col
-            text-center
-            class="teste"
-          >
-          <ion-card
-            text-center
-            *ngIf="liberaArquivo"
-          >
-            <ion-card-header>
-              <ion-card-title style="font-size: 15px;">
-                Arquivo selecionado:
-                <a [href]="urlFoto" target="_blank"><b>{{ fileName }}</b></a>
-              </ion-card-title>
-            </ion-card-header>
-          </ion-card>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
+    <div *ngIf="!admin || !update">
+      <ion-card [@tamanhoArquivo]="liberaArquivo ? 'comArquivo' : 'semArquivo'">
+        <ion-grid >
+          <ion-row align-items-center>
+            <ion-col
+              text-center
+              class="teste"
+            >
+            <ion-card
+              text-center
+              *ngIf="liberaArquivo"
+            >
+              <ion-card-header>
+                <ion-card-title style="font-size: 15px;">
+                  Arquivo selecionado:
+                  <a [href]="urlFoto" target="_blank"><b>{{ fileName }}</b></a>
+                </ion-card-title>
+              </ion-card-header>
+            </ion-card>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
 
-      <div class="fileUpload" text-center >
-        <div *ngIf="uploadPercent | async as pct">
-          Progress: {{ pct | number }}%
-          <ion-progress-bar value="{{ pct / 100 }}"></ion-progress-bar>
+        <div class="fileUpload" text-center >
+          <div *ngIf="uploadPercent | async as pct">
+            Progress: {{ pct | number }}%
+            <ion-progress-bar value="{{ pct / 100 }}"></ion-progress-bar>
+          </div>
+          <div [@marginBotao]="liberaArquivo ? 'comArquivo' : 'semArquivo'">
+            <label for="uploadBtn" class="btn">Escolher Arquivo</label>
+            <input
+              class="upload"
+              id="uploadBtn"
+              type="file"
+              (change)="openGalery($event.target.files)"
+            >
+          </div>
         </div>
-        <div [@marginBotao]="liberaArquivo ? 'comArquivo' : 'semArquivo'">
-          <label for="uploadBtn" class="btn">Escolher Arquivo</label>
-          <input
-            class="upload"
-            id="uploadBtn"
-            type="file"
-            (change)="openGalery($event.target.files)"
-          >
-        </div>
-      </div>
-    </ion-card>
+      </ion-card>
+    </div>
     <!-- fim arquivo -->
-    <ion-button expand="full" type="submit" *ngIf="outorgaForm.valid && liberaArquivo">
-      {{ botaoTitle }}
-    </ion-button>
-    <ion-button
-      expand="full"
-      [disabled]="true"
-      *ngIf="
-        (!outorgaForm.valid && !liberaArquivo) ||
-        (!outorgaForm.valid && liberaArquivo) ||
-        (outorgaForm.valid && !liberaArquivo)
-      "
-    >
-      {{ botaoTitle }}
-    </ion-button>
+    <div *ngIf="!admin || !update">
+      <ion-button expand="full" type="submit" *ngIf="outorgaForm.valid && liberaArquivo">
+        {{ botaoTitle }}
+      </ion-button>
+      <ion-button
+        expand="full"
+        [disabled]="true"
+        *ngIf="
+          (!outorgaForm.valid && !liberaArquivo) ||
+          (!outorgaForm.valid && liberaArquivo) ||
+          (outorgaForm.valid && !liberaArquivo)
+        "
+      >
+        {{ botaoTitle }}
+      </ion-button>
+    </div>
   </form>
 </ion-content>
