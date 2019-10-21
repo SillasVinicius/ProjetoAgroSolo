@@ -171,9 +171,16 @@ export class CriaCarPage implements OnInit {
 
             this.uploadFileTo(this.arquivos);
           } else {
-            this.deletePicture();
+            // this.deletePicture();
+            //
+            // this.uploadFileToUpdate(this.arquivos);
 
-            this.uploadFileToUpdate(this.arquivos);
+            this.cadastroRuralAmbientalService.init();
+            const atualizar = await this.cadastroRuralAmbientalService.update({
+              id: this.cadastroRuralAmbientalId,
+              descricao: this.cadastroRuralAmbientalForm.get('descricao').value,
+              clienteId: this.cadastroRuralAmbientalForm.get('idCliente').value
+            });
 
             this.AtualizaListaGlobal();
           }

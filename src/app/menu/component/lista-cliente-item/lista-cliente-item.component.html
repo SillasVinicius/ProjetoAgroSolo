@@ -1,10 +1,10 @@
 <ion-item-sliding #sliding>
   <ion-item>
     <ion-button (click)="sliding.open(); abrir()" fill="clear" *ngIf="!clicado">
-    <ion-icon slot="icon-only" name="more"></ion-icon>
+    <ion-icon slot="icon-only" name="menu"></ion-icon>
   </ion-button>
   <ion-button (click)="sliding.close(); fechar()" fill="clear" *ngIf="clicado">
-    <ion-icon slot="icon-only" name="more"></ion-icon>
+    <ion-icon slot="icon-only" name="menu"></ion-icon>
   </ion-button>
   <ion-avatar *ngIf="!admin">
     <img [src]="cliente.foto" *ngIf="cliente.foto">

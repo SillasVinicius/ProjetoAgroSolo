@@ -179,9 +179,17 @@ export class CriaDaPage implements OnInit {
           this.uploadFileTo(this.arquivos);
 
         } else {
-          this.deletePicture();
+          // this.deletePicture();
+          //
+          // this.uploadFileToUpdate(this.arquivos);
 
-          this.uploadFileToUpdate(this.arquivos);
+          this.declaracaoAmbientalService.init();
+          const atualizar = await this.declaracaoAmbientalService.update({
+            id: this.declaracaoAmbientalId,
+            descricao: this.declaracaoAmbientalForm.get('descricao').value,
+            dataDeVencimento: this.declaracaoAmbientalForm.get('dataDeVencimento').value,
+            clienteId: this.declaracaoAmbientalForm.get('idCliente').value
+          });
 
           this.AtualizaListaGlobal();
         }

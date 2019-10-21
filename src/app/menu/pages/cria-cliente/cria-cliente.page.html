@@ -10,7 +10,7 @@
 <ion-content padding>
   <form [formGroup]="clienteForm" (submit)="onSubmit()" novalidate>
     <!-- inicio arquivo -->
-    <div *ngIf="!admin || !update">
+    <div *ngIf="!update">
     <ion-card [@tamanhoArquivo]="liberaArquivo ? 'comArquivo' : 'semArquivo'">
       <ion-grid >
         <ion-row align-items-center>
@@ -127,22 +127,35 @@
     >
       Prod.Agropecuária Inválida!
     </ion-note>
-    <div *ngIf="!admin || !update">
-    <ion-button expand="full" type="submit" *ngIf="clienteForm.valid && liberaArquivo" style="margin-top: 15%;">
-      {{ botaoTitle }}
-    </ion-button>
-    <ion-button
-    style="margin-top: 15%;"
-      expand="full"
-      [disabled]="true"
-      *ngIf="
-        (!clienteForm.valid && !liberaArquivo) ||
-        (!clienteForm.valid && liberaArquivo) ||
-        (clienteForm.valid && !liberaArquivo)
-      "
-    >
-      {{ botaoTitle }}
-    </ion-button>
+    <div *ngIf="!update">
+      <ion-button expand="full" type="submit" *ngIf="clienteForm.valid && liberaArquivo" style="margin-top: 15%;">
+        CADASTRAR
+      </ion-button>
+      <ion-button
+      style="margin-top: 15%;"
+        expand="full"
+        [disabled]="true"
+        *ngIf="
+          (!clienteForm.valid && !liberaArquivo) ||
+          (!clienteForm.valid && liberaArquivo) ||
+          (clienteForm.valid && !liberaArquivo)
+        "
+      >
+        CADASTRAR
+      </ion-button>
+    </div>
+    <div *ngIf="!admin && update">
+      <ion-button expand="full" type="submit" *ngIf="clienteForm.valid" style="margin-top: 15%;">
+        ATUALIZAR
+      </ion-button>
+      <ion-button
+      style="margin-top: 15%;"
+        expand="full"
+        [disabled]="true"
+        *ngIf="!clienteForm.valid"
+      >
+        ATUALIZAR
+      </ion-button>
     </div>
   </form>
 </ion-content>

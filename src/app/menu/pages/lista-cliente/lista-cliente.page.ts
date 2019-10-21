@@ -33,6 +33,7 @@ export class ListaClientePage implements OnInit {
       this.clientes$ = this.clienteService.getAll();
       this.clientes$.pipe(take(1)).subscribe(() => loading.dismiss());
     }
+    console.log(this.clientes$);
   }
 
   atualizar(cliente: Cliente): void {

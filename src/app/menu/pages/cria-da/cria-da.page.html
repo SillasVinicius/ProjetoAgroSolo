@@ -66,7 +66,7 @@
       </ion-note>
     </ion-item>
     <!-- inicio arquivo -->
-    <div *ngIf="!admin || !update">
+    <div *ngIf="!update">
     <ion-card [@tamanhoArquivo]="liberaArquivo ? 'comArquivo' : 'semArquivo'">
       <ion-grid >
         <ion-row align-items-center>
@@ -107,21 +107,33 @@
     </ion-card>
     </div>
     <!-- fim arquivo -->
-    <div *ngIf="!admin || !update">
-    <ion-button expand="full" type="submit" *ngIf="declaracaoAmbientalForm.valid && liberaArquivo">
-      {{ botaoTitle }}
-    </ion-button>
-    <ion-button
-      expand="full"
-      [disabled]="true"
-      *ngIf="
-        (!declaracaoAmbientalForm.valid && !liberaArquivo) ||
-        (!declaracaoAmbientalForm.valid && liberaArquivo) ||
-        (declaracaoAmbientalForm.valid && !liberaArquivo)
-      "
-    >
-      {{ botaoTitle }}
-    </ion-button>
+    <div *ngIf="!update">
+      <ion-button expand="full" type="submit" *ngIf="declaracaoAmbientalForm.valid && liberaArquivo">
+        CADASTRAR
+      </ion-button>
+      <ion-button
+        expand="full"
+        [disabled]="true"
+        *ngIf="
+          (!declaracaoAmbientalForm.valid && !liberaArquivo) ||
+          (!declaracaoAmbientalForm.valid && liberaArquivo) ||
+          (declaracaoAmbientalForm.valid && !liberaArquivo)
+        "
+      >
+        CADASTRAR
+      </ion-button>
+    </div>
+    <div *ngIf="!admin && update">
+      <ion-button expand="full" type="submit" *ngIf="declaracaoAmbientalForm.valid">
+        ATUALIZAR
+      </ion-button>
+      <ion-button
+        expand="full"
+        [disabled]="true"
+        *ngIf="!declaracaoAmbientalForm.valid"
+      >
+        ATUALIZAR
+      </ion-button>
     </div>
   </form>
 </ion-content>

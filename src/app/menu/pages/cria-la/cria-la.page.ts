@@ -182,9 +182,17 @@ export class CriaLaPage implements OnInit {
 
           } else {
 
-            this.deletePicture();
+            // this.deletePicture();
+            //
+            // this.uploadFileToUpdate(this.arquivos);
 
-            this.uploadFileToUpdate(this.arquivos);
+            this.licencaAmbientalService.init();
+            const atualizar = await this.licencaAmbientalService.update({
+              id: this.licencaAmbientalId,
+              descricao: this.licencaAmbientalForm.get('descricao').value,
+              dataDeVencimento: this.licencaAmbientalForm.get('dataDeVencimento').value,
+              clienteId: this.licencaAmbientalForm.get('idCliente').value
+            });
 
             this.AtualizaListaGlobal();
 

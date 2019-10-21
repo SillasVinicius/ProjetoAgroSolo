@@ -20,7 +20,9 @@ import { BrMaskerModule } from 'br-mask';
     BrowserAnimationsModule,
     AngularFireStorageModule,
     AngularFireModule.initializeApp(environment.firebase),
-    AngularFirestoreModule,
+    AngularFirestoreModule.enablePersistence({
+      experimentalTabSynchronization: true
+    }),
     BrMaskerModule
   ],
   exports: [BrowserModule, IonicModule, BrowserAnimationsModule],

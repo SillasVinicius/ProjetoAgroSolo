@@ -1,10 +1,10 @@
 <ion-item-sliding #sliding >
   <ion-item (onload)="sliding.open()">
     <ion-button (click)="sliding.open(); abrir()" fill="clear" *ngIf="!clicado">
-    <ion-icon slot="icon-only" name="more"></ion-icon>
+    <ion-icon slot="icon-only" name="menu"></ion-icon>
   </ion-button>
   <ion-button (click)="sliding.close(); fechar()" fill="clear" *ngIf="clicado">
-    <ion-icon slot="icon-only" name="more"></ion-icon>
+    <ion-icon slot="icon-only" name="menu"></ion-icon>
   </ion-button>
   {{ licencaAmbiental.descricao }}
   <ion-item slot="end" style="margin: 0; padding: 0; width: 160px; font-size: 65%; ">{{ msgVencimento }} <ion-icon slot="end" name="alert" [color]="cor"></ion-icon></ion-item>

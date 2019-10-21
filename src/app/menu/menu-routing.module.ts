@@ -52,6 +52,10 @@ const routes: Routes = [
         loadChildren: './ambiental-routing.module#AmbientalRoutingModule'
       },
       {
+        path: 'dadosPessoais',
+        loadChildren: './pages/dados-pessoais/dados-pessoais.module#DadosPessoaisPageModule'
+      },
+      {
         path: '',
         loadChildren: './pages/home/home.module#HomePageModule'
       }

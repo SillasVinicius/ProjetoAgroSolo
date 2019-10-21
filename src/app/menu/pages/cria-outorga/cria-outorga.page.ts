@@ -178,9 +178,17 @@ export class CriaOutorgaPage implements OnInit {
 
       } else {
 
-        this.deletePicture();
+        // this.deletePicture();
+        //
+        // this.uploadFileToUpdate(this.arquivos);
 
-        this.uploadFileToUpdate(this.arquivos);
+        this.outorgaService.init();
+        const atualizar = await this.outorgaService.update({
+          id: this.outorgaId,
+          descricao: this.outorgaForm.get('descricao').value,
+          dataDeVencimento: this.outorgaForm.get('dataDeVencimento').value,
+          clienteId: this.outorgaForm.get('idCliente').value
+        });
 
         this.AtualizaListaGlobal();
       }

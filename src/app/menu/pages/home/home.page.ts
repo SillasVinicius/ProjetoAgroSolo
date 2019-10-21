@@ -18,6 +18,9 @@ export class HomePage implements OnInit {
   linkCliente() {
     this.navCtrl.navigateForward('/menu/cliente');
   }
+  linkDadosPessoais() {
+    this.navCtrl.navigateForward('/menu/dadosPessoais');
+  }
   linkAmbiental() {
     this.navCtrl.navigateForward('/menu/ambiental');
   }

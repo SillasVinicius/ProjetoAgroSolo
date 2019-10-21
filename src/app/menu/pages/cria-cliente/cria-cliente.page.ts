@@ -276,9 +276,18 @@ export class CriaClientePage implements OnInit {
 
       } else {
 
-        this.deletePicture();
+        // this.deletePicture();
+        //
+        // this.uploadFileToUpdate(this.arquivos);
 
-        this.uploadFileToUpdate(this.arquivos);
+        this.clienteService.init();
+        const cliente = await this.clienteService.update({
+          id: this.clienteId,
+          cpf: this.clienteForm.get('cpf').value,
+          nome: this.clienteForm.get('nome').value,
+          patrimonio: this.clienteForm.get('patrimonio').value,
+          pdtvAgro: this.clienteForm.get('pdtvAgro').value
+        });
 
         this.AtualizaListaGlobal();
 
