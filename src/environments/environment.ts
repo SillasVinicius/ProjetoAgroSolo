@@ -5,13 +5,14 @@
 export const environment = {
   production: false,
   firebase: {
-    apiKey: 'AIzaSyDXI4oKUtQB00mbxl4lLMyb3xaJoD_1TM4',
-    authDomain: 'agrosolo-a5c19.firebaseapp.com',
-    databaseURL: 'https://agrosolo-a5c19.firebaseio.com',
-    projectId: 'agrosolo-a5c19',
-    storageBucket: 'agrosolo-a5c19.appspot.com',
-    messagingSenderId: '842160787962',
-    appId: '1:842160787962:web:9a6aadedee803a2a'
+    apiKey: "AIzaSyDYHdoBTRgA2yRWQDFzc2R-Q1ZvU9sLqTw",
+   authDomain: "agrosolo-34e94.firebaseapp.com",
+   databaseURL: "https://agrosolo-34e94.firebaseio.com",
+   projectId: "agrosolo-34e94",
+   storageBucket: "agrosolo-34e94.appspot.com",
+   messagingSenderId: "941171538403",
+   appId: "1:941171538403:web:cbfc1808a81465657fc8d6",
+   measurementId: "G-WDSZVVCFHE"
   }
 };
 
