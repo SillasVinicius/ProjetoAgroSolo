@@ -127,6 +127,25 @@
     >
       Prod.Agropecuária Inválida!
     </ion-note>
+
+
+    <ion-item>
+      <ion-label position="floating" color="primary">Informações Adicionais</ion-label>
+      <ion-textarea
+        formControlName="informacoesAdicionais"
+        color="primary"
+      ></ion-textarea>
+    </ion-item>
+    <ion-note
+      slot="end"
+      color="danger"
+      *ngIf="informacoesAdicionais.dirty && (informacoesAdicionais.hasError('minlength') || informacoesAdicionais.hasError('maxlength'))"
+    >
+      Máximo 400 caracteres!
+    </ion-note>
+
+
+
     <div *ngIf="!update">
       <ion-button expand="full" type="submit" *ngIf="clienteForm.valid && liberaArquivo" style="margin-top: 15%;">
         CADASTRAR

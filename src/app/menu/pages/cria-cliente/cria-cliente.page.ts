@@ -140,7 +140,8 @@ export class CriaClientePage implements OnInit {
               nome: this.clienteForm.get('nome').value,
               foto: r,
               patrimonio: this.clienteForm.get('patrimonio').value,
-              pdtvAgro: this.clienteForm.get('pdtvAgro').value
+              pdtvAgro: this.clienteForm.get('pdtvAgro').value,
+              informacoesAdicionais: this.clienteForm.get('informacoesAdicionais').value
             });
           });
         })
@@ -167,7 +168,8 @@ export class CriaClientePage implements OnInit {
               nome: this.clienteForm.get('nome').value,
               foto: r,
               patrimonio: this.clienteForm.get('patrimonio').value,
-              pdtvAgro: this.clienteForm.get('pdtvAgro').value
+              pdtvAgro: this.clienteForm.get('pdtvAgro').value,
+              informacoesAdicionais: this.clienteForm.get('informacoesAdicionais').value
             });
           });
         })
@@ -195,7 +197,8 @@ export class CriaClientePage implements OnInit {
       pdtvAgro: this.formBuilder.control('', [
         Validators.required,
         Validators.minLength(3)
-      ])
+      ]),
+      informacoesAdicionais: this.formBuilder.control('', [Validators.minLength(0),Validators.maxLength(400)])
     });
   }
 
@@ -211,6 +214,9 @@ export class CriaClientePage implements OnInit {
   }
   get patrimonio(): FormControl {
     return this.clienteForm.get('patrimonio') as FormControl;
+  }
+  get informacoesAdicionais(): FormControl {
+    return this.clienteForm.get('informacoesAdicionais') as FormControl;
   }
 
   // verifica se a acao é de criação ou atualização
@@ -231,11 +237,12 @@ export class CriaClientePage implements OnInit {
     this.clienteService
       .get(clienteId)
       .pipe(take(1))
-      .subscribe(({ nome, cpf, patrimonio, pdtvAgro}) => {
+      .subscribe(({ nome, cpf, patrimonio, pdtvAgro, informacoesAdicionais}) => {
         this.clienteForm.get('nome').setValue(nome),
           this.clienteForm.get('cpf').setValue(cpf),
           this.clienteForm.get('patrimonio').setValue(patrimonio),
-          this.clienteForm.get('pdtvAgro').setValue(pdtvAgro)
+          this.clienteForm.get('pdtvAgro').setValue(pdtvAgro),
+          this.clienteForm.get('informacoesAdicionais').setValue(informacoesAdicionais)
       });
   }
 
@@ -251,7 +258,8 @@ export class CriaClientePage implements OnInit {
       cpf: this.clienteForm.get('cpf').value,
       nome: this.clienteForm.get('nome').value,
       patrimonio: this.clienteForm.get('patrimonio').value,
-      pdtvAgro: this.clienteForm.get('pdtvAgro').value
+      pdtvAgro: this.clienteForm.get('pdtvAgro').value,
+      informacoesAdicionais: this.clienteForm.get('informacoesAdicionais').value
     });
   }
 
@@ -286,7 +294,8 @@ export class CriaClientePage implements OnInit {
           cpf: this.clienteForm.get('cpf').value,
           nome: this.clienteForm.get('nome').value,
           patrimonio: this.clienteForm.get('patrimonio').value,
-          pdtvAgro: this.clienteForm.get('pdtvAgro').value
+          pdtvAgro: this.clienteForm.get('pdtvAgro').value,
+          informacoesAdicionais: this.clienteForm.get('informacoesAdicionais').value
         });
 
         this.AtualizaListaGlobal();

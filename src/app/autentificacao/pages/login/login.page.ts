@@ -63,8 +63,8 @@ export class LoginPage implements OnInit {
 
   ngOnInit() {
     this.loginForm = this.formBuilder.group({
-      senha: this.formBuilder.control('123456', [Validators.required, Validators.minLength(6)]),
-      email: this.formBuilder.control('sillas@gmail.com', [Validators.required, Validators.email]),
+      senha: this.formBuilder.control('', [Validators.required, Validators.minLength(6)]),
+      email: this.formBuilder.control('', [Validators.required, Validators.email]),
       admin: this.formBuilder.control(false, [])
     });
 
@@ -72,6 +72,8 @@ export class LoginPage implements OnInit {
     this.version = packageJsonInfo.version;
     this.author = packageJsonInfo.author;
   }
+
+
 
   get cpf(): FormControl {
     return this.loginForm.get('cpf') as FormControl;
@@ -146,7 +148,8 @@ export class LoginPage implements OnInit {
           });
           this.usuarioService.logado = false;
         }
-      });
+      },
+    );
     } catch (error) {
       await this.overlayService.toast({
         message: error.message
