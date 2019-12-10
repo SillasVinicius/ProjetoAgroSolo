@@ -9,17 +9,35 @@ import { AngularFireStorage } from '@angular/fire/storage';
 import { Observable } from 'rxjs';
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 import { File } from '@ionic-native/file/ngx';
+import { trigger, state, transition, style, animate } from '@angular/animations';
+import { ClienteService } from 'src/app/core/services/cliente.service';
 
 @Component({
   selector: 'app-cria-usuario',
   templateUrl: './cria-usuario.page.html',
   styleUrls: ['./cria-usuario.page.scss'],
+  animations: [
+    trigger('tamanhoArquivo', [
+      state('semArquivo', style({ 'height': '100px'})),
+      state('comArquivo', style({ 'height': '250px'})),
+      transition('antes => depois', [style({ transition: '0.2s' }), animate('100ms 0s ease-in')]),
+      transition('depois => antes', [style({ transition: '0.2s' }), animate('100ms 0s ease-in')])
+    ]),
+    trigger('marginBotao', [
+      state('semArquivo', style({ 'margin-top': '2px'})),
+      state('comArquivo', style({ 'margin-top': '30px'})),
+      transition('antes => depois', [style({ transition: '0.1s' }), animate('100ms 0s ease-in')]),
+      transition('depois => antes', [style({ transition: '0.1s' }), animate('100ms 0s ease-in')])
+    ]),
+  ]
 })
 export class CriaUsuarioPage implements OnInit {
 
-  // Cliente
+  // usuario
   usuarioForm: FormGroup;
   usuarioId: string = undefined;
+  admin: boolean = false;
+  update: boolean = false;
 
   // Validacao
   botaoTitle = '...';
@@ -32,8 +50,9 @@ export class CriaUsuarioPage implements OnInit {
   public uploadPercent: Observable<number>;
   public downloadUrl: Observable<string>;
   public urlFoto: string;
-  imagesBlob: Observable<Blob[]>;
-  imageBlob: Blob;
+  arquivos: Object;
+  files2: Observable<any[]>;
+  fileName = '';
 
   // Dependencias
   constructor(
@@ -45,75 +64,74 @@ export class CriaUsuarioPage implements OnInit {
     private storage: AngularFireStorage,
     private camera: Camera,
     private platform: Platform,
-    private file: File
+    private file: File,
+    private clienteService: ClienteService,
   ) {}
 
   // metodo que é chamado quando a pagina é carregada
   ngOnInit() {
     this.criaFormulario();
-    this.usuarioService.init();
-    this.usuarioService.id = '';
+
+    if (this.usuarioService.admin) {
+      this.usuarioService.init();
+      console.log('this.usuarioService.init();');
+      this.admin = true;
+    }
+    else {
+      this.usuarioService.init();
+      console.log('this.usuarioService.init();');
+      this.admin = false;
+    }
+
     this.acao();
   }
 
 
-    async openGalery(){
-      const options: CameraOptions = {
-        quality: 100,
-        destinationType: this.camera.DestinationType.FILE_URI,
-        sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
-        correctOrientation: true
-      };
-
-      try {
-        const fileUrl: string = await this.camera.getPicture(options);
-        let file: string;
-
-        if (this.platform.is('ios')) {
-          file = fileUrl.split('/').pop();
-        } else {
-          file= fileUrl.substring(fileUrl.lastIndexOf('/') + 1, fileUrl.indexOf('?'));
+  async openGalery(event: FileList){
+    try {
+      const file = event.item(0);
+        if (file.type.split('/')[0] !== 'image') {
+          await this.overlayService.toast({
+            message: 'tipo de arquivo não pode ser enviado por esse campo :('
+          });
+          return;
         }
+      this.fileName = file.name;
+      this.arquivos = file;
+      this.uploadFile(file);
 
-        const path: string = fileUrl.substring(0, fileUrl.lastIndexOf('/'));
-
-        const buffer: ArrayBuffer = await this.file.readAsArrayBuffer(path, file);
-
-        const blob: Blob = new Blob([buffer], {type: "image/jpeg"});
-
-        this.imageBlob = blob;
-
-        this.uploadPicture(blob);
-
-      }catch(error){
-        console.error(error);
-      }
+    }catch(error){
+      console.error(error);
     }
+  }
 
-    async uploadPicture(blob: Blob){
-        const ref = this.storage.ref(`${this.usuarioId}.jpg`);;
-        const task = ref.put(blob);
+  async uploadFile(file: Object){
+      const ref = this.storage.ref(`${this.fileName}`);
+      const task = ref.put(file);
+      //
+      this.uploadPercent = task.percentageChanges();
+      task.snapshotChanges().pipe(
+        finalize(async () => {
+          const loading = await this.overlayService.loading({
+            message: "Carregando Foto..."
+          });
 
-        this.uploadPercent = task.percentageChanges();
-        task.snapshotChanges().pipe(
-          finalize(async () => {
-            const loading = await this.overlayService.loading({
-              message: "Carregando Foto..."
-            });
+          this.downloadUrl = ref.getDownloadURL();
+          this.liberaArquivo = true;
 
-            this.downloadUrl = ref.getDownloadURL();
-            this.liberaArquivo = true;
-            this.liberaAlterar = true;
+          this.downloadUrl.subscribe(async r => {
+            this.urlFoto = r;
+          });
 
-            loading.dismiss();
-          })
-        ).subscribe();
-    }
+          loading.dismiss();
+        })
+      ).subscribe();
+  }
 
-    async uploadPictureTo(blob: Blob){
+    async uploadFileTo(file: Object){
 
-        const ref2 = this.storage.ref(`/users/${this.usuarioId}/fotoPerfil/imagem.jpg`);
-        const task2 = ref2.put(blob);
+        const ref2 = this.storage.ref(`/users/${this.usuarioService.id}/usuario/${this.usuarioService.id}/${this.fileName}`);
+        const task2 = ref2.put(file);
 
         try{
 
@@ -148,10 +166,10 @@ export class CriaUsuarioPage implements OnInit {
 
     }
 
-    async uploadPictureToUpdate(blob: Blob){
+    async uploadFileToUpdate(file: Object){
 
-        const ref2 = this.storage.ref(`/users/${this.usuarioId}/fotoPerfil/imagem.jpg`);
-        const task2 = ref2.put(blob);
+        const ref2 = this.storage.ref(`/users/${this.usuarioService.id}/usuario/${this.usuarioService.id}/${this.fileName}`);
+        const task2 = ref2.put(file);
 
         task2.snapshotChanges().pipe(
           finalize(async () => {
@@ -179,7 +197,7 @@ export class CriaUsuarioPage implements OnInit {
     }
 
     deletePicture(){
-      const ref = this.storage.ref(`${this.usuarioId}.jpg`);;
+      const ref = this.storage.ref(`${this.fileName}`);;
       const task = ref.delete();
     }
 
@@ -261,6 +279,28 @@ export class CriaUsuarioPage implements OnInit {
       });
   }
 
+
+  async cadastraListaGlobal(id: string) {
+    this.usuarioService.init();
+    const usuario = await this.usuarioService.createGlobal(this.usuarioForm.value, id);
+  }
+
+  async AtualizaListaGlobal() {
+    this.usuarioService.init();
+    const usuario = await this.usuarioService.update({
+      id: this.usuarioId,
+      cpf: this.usuarioForm.get('cpf').value,
+      nome: this.usuarioForm.get('nome').value,
+      senha: this.usuarioForm.get('senha').value,
+      rg: this.usuarioForm.get('rg').value,
+      email: this.usuarioForm.get('email').value,
+      telefone: this.usuarioForm.get('telefone').value,
+      dataNascimento: this.usuarioForm.get('dataNascimento').value
+
+    });
+  }
+
+
   // método que envia os dados do formulário para o banco de dados
   async onSubmit(): Promise<void> {
     const loading = await this.overlayService.loading({
@@ -274,14 +314,15 @@ export class CriaUsuarioPage implements OnInit {
 
         this.deletePicture();
 
-        this.uploadPictureTo(this.imageBlob);
+        this.uploadFileTo(this.arquivos);
 
 
       } else {
 
-        this.deletePicture();
+        //this.deletePicture();
 
-        this.uploadPictureToUpdate(this.imageBlob);
+        //this.uploadPictureToUpdate(this.imageBlob);
+
 
 
       }
