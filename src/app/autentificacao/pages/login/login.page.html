@@ -85,7 +85,6 @@
                 <ion-input
                   color="primary"
                   formControlName="rg"
-                  [brmasker]="{len: 8, type: 'num'}"
                 ></ion-input>
                 <ion-note
                   slot="end"
@@ -208,11 +207,7 @@
             {{ configs.acao }}
             </ion-button>
           </form>
-          <ion-button
-            expand="block"
-            fill="clear"
-            (click)="mudarAcaoForm()"
-          >
+          <ion-button expand="block" fill="clear" (click)="mudarAcaoForm()">
           <strong>{{ configs.novaAcao }}</strong>
           </ion-button>
         </div>

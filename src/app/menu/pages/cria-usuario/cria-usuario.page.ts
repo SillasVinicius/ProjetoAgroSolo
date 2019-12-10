@@ -192,8 +192,7 @@ export class CriaUsuarioPage implements OnInit {
       nome: this.formBuilder.control('', [Validators.required, Validators.minLength(3)]),
       rg: this.formBuilder.control('', [
         Validators.required,
-        Validators.minLength(8),
-        Validators.maxLength(8)
+        Validators.minLength(1),
       ]),
       cpf: this.formBuilder.control('', [
         Validators.required,

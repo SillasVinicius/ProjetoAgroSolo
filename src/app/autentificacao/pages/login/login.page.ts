@@ -38,8 +38,7 @@ export class LoginPage implements OnInit {
   private nomeControl = new FormControl('', [Validators.required, Validators.minLength(3)]);
   private rgControl = new FormControl('', [
     Validators.required,
-    Validators.minLength(8),
-    Validators.maxLength(8)
+    Validators.minLength(1)
   ]);
   private cpfControl = new FormControl('', [
     Validators.required,
@@ -103,6 +102,15 @@ export class LoginPage implements OnInit {
     this.configs.acao = login ? 'Login' : 'Cadastrar';
     this.configs.novaAcao = login ? 'Criar Conta!' : 'Já tenho uma conta!';
     if (!login) {
+
+      // this.nomeControl.setValue(null);
+      // this.rgControl.setValue(null);
+      // this.cpfControl.setValue(null);
+      // this.telefoneControl.setValue(null);
+      // this.dataNascimentoControl.setValue(null);
+      // this.email.setValue(null);
+      // this.senha.setValue(null);
+      //
       this.loginForm.addControl('nome', this.nomeControl);
       this.loginForm.addControl('rg', this.rgControl);
       this.loginForm.addControl('cpf', this.cpfControl);
@@ -128,7 +136,7 @@ export class LoginPage implements OnInit {
     try {
       this.user = await this.usuarioService.loginDb(
         this.loginForm.get('email').value,
-        this.loginForm.get('senha').value
+        this.loginForm.get('senha').value,
       );
       this.user.subscribe(async (r: Usuario[]) => {
         if (r.length >= 1) {
@@ -171,6 +179,9 @@ export class LoginPage implements OnInit {
       this.navCtrl.navigateForward('/menu');
       this.usuarioService.logado = true;
       this.usuarioService.nomeUser = this.loginForm.get('nome').value;
+      // setar tela de login após cadastro;
+      this.configs.acao = 'Login';
+      this.mudarAcaoForm();
     } catch (error) {
       await this.overlayService.toast({
         message: error.message
