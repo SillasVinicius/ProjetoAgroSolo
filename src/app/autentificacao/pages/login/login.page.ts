@@ -102,20 +102,12 @@ export class LoginPage implements OnInit {
     this.configs.acao = login ? 'Login' : 'Cadastrar';
     this.configs.novaAcao = login ? 'Criar Conta!' : 'Já tenho uma conta!';
     if (!login) {
-
-      // this.nomeControl.setValue(null);
-      // this.rgControl.setValue(null);
-      // this.cpfControl.setValue(null);
-      // this.telefoneControl.setValue(null);
-      // this.dataNascimentoControl.setValue(null);
-      // this.email.setValue(null);
-      // this.senha.setValue(null);
-      //
       this.loginForm.addControl('nome', this.nomeControl);
       this.loginForm.addControl('rg', this.rgControl);
       this.loginForm.addControl('cpf', this.cpfControl);
       this.loginForm.addControl('telefone', this.telefoneControl);
       this.loginForm.addControl('dataNascimento', this.dataNascimentoControl);
+      this.loginForm.reset();
     } else {
       this.loginForm.removeControl('nome');
       this.loginForm.removeControl('rg');
