@@ -29,8 +29,7 @@ export class LoginPage implements OnInit {
   numberPattern = /^[0-9]*$/;
   configs = {
     login: true,
-    acao: 'Login',
-    novaAcao: 'Criar conta!'
+    acao: 'Login'
   };
 
   private user: Observable<Usuario[]>;
@@ -100,7 +99,7 @@ export class LoginPage implements OnInit {
     this.configs.login = !this.configs.login;
     const { login } = this.configs;
     this.configs.acao = login ? 'Login' : 'Cadastrar';
-    this.configs.novaAcao = login ? 'Criar Conta!' : 'Já tenho uma conta!';
+
     if (!login) {
       this.loginForm.addControl('nome', this.nomeControl);
       this.loginForm.addControl('rg', this.rgControl);
@@ -160,48 +159,17 @@ export class LoginPage implements OnInit {
     }
   }
 
-  async cadastro(): Promise<void> {
-    const loading = await this.overlayService.loading({
-      message: 'Cadastrando...'
-    });
-    try {
-      this.loginForm.get('dataNascimento').setValue(this.retornaDataNascimento(this.loginForm.get('dataNascimento').value));
-      const usuario = await this.usuarioService.create(this.loginForm.value);
-      console.log('Usuário Criado', usuario);
-      this.navCtrl.navigateForward('/menu');
-      this.usuarioService.logado = true;
-      this.usuarioService.nomeUser = this.loginForm.get('nome').value;
-      // setar tela de login após cadastro;
-      this.configs.acao = 'Login';
-      this.mudarAcaoForm();
-    } catch (error) {
-      await this.overlayService.toast({
-        message: error.message
-      });
-      this.usuarioService.logado = false;
-      console.log('Erro ao criar usuário: ', error);
-    } finally {
-      loading.dismiss();
-    }
-  }
+
 
   onSubmit() {
     if (this.configs.login) {
       this.login();
     } else {
-      this.cadastro();
+      
     }
   }
 
 
-  retornaDataNascimento(data: string): string {
-    //2019-10-04T08:45:55.822-03:00
-    let ano: string = data.substring(0,4);
-    let mes: string = data.substring(5,7);
-    let dia: string = data.substring(8,10);
 
-    return `${dia}/${mes}/${ano}`;
-
-  }
 
 }

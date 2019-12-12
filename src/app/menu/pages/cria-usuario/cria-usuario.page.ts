@@ -256,13 +256,13 @@ export class CriaUsuarioPage implements OnInit {
   acao(): void {
     const usuarioId = this.route.snapshot.paramMap.get('id');
     if (!usuarioId) {
-      this.pageTitle = 'Cadastrar Usuário';
+      this.pageTitle = 'Cadastrar Administrador';
       this.botaoTitle = 'CADASTRAR';
       this.toastMessage = 'Criando...';
       return;
     }
     this.usuarioId = usuarioId;
-    this.pageTitle = 'Atualizar Usuário';
+    this.pageTitle = 'Atualizar Administrador';
     this.botaoTitle = 'ATUALIZAR';
     this.toastMessage = 'Atualizando...';
     this.usuarioService
@@ -326,13 +326,13 @@ export class CriaUsuarioPage implements OnInit {
 
 
       }
-      console.log('Usuário Criado', usuario);
+      console.log('Administrador Criado', usuario);
       this.navCtrl.navigateBack('/menu/usuario');
     } catch (error) {
       await this.overlayService.toast({
         message: error.message
       });
-      console.log('Erro ao criar cliente: ', error);
+      console.log('Erro ao criar administrador: ', error);
     } finally {
       loading.dismiss();
     }

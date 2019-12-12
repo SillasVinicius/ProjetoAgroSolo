@@ -4,6 +4,11 @@ export interface Cliente {
   cpf: string;
   patrimonio: string;
   pdtvAgro: string;
+  rg: string;
+  telefone: string;
+  dataNascimento: string;
+  email: string;
+  senha: string;
   informacoesAdicionais?: string;
   foto?: string;
 }

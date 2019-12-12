@@ -91,6 +91,64 @@
     >
       Cpf Inválido!
     </ion-note>
+
+    <ion-item>
+      <ion-label position="floating" color="primary">RG</ion-label>
+      <ion-input
+        color="primary"
+        formControlName="rg"
+      ></ion-input>
+      <ion-note
+        slot="end"
+        color="danger"
+        *ngIf="rg.dirty && rg.hasError('required')"
+      >
+        RG Obrigatório!
+      </ion-note>
+      <ion-note
+        slot="end"
+        color="danger"
+        *ngIf="rg.dirty && (rg.hasError('minlength') || rg.hasError('maxlength'))"
+      >
+        RG inválido!
+      </ion-note>
+    </ion-item>
+
+
+    <ion-item>
+      <ion-label position="floating" color="primary">Telefone</ion-label>
+       <ion-input
+        type="text"
+        color="primary"
+        formControlName="telefone"
+        [brmasker]="{phone: true}">
+      </ion-input>
+    </ion-item>
+    <ion-note
+      slot="start"
+      color="danger"
+      *ngIf="telefone.dirty && telefone.hasError('required')"
+    >
+      Telefone Obrigatório!
+    </ion-note>
+    <ion-note
+      slot="start"
+      color="danger"
+      *ngIf="
+        telefone.dirty &&
+        (telefone.hasError('minlength') || telefone.hasError('maxlength'))
+      "
+    >
+      Telefone inválido!
+    </ion-note>
+
+
+    <ion-item>
+      <ion-label position="floating" color="primary">Data de Nascimento</ion-label>
+      <ion-datetime displayFormat="DD/MM/YYYY" formControlName="dataNascimento" placeholder="Selecione uma data..."></ion-datetime>
+    </ion-item>
+
+
     <ion-item>
       <ion-label position="floating" color="primary">Patrimônio <span style="font-size: 12px">(R$) Real</span></ion-label>
       <ion-input formControlName="patrimonio" color="primary" [brmasker]="{money: true, thousand: ',',  decimalCaracter: '.', decimal: '3'}"></ion-input>
@@ -145,7 +203,59 @@
       Máximo 400 caracteres!
     </ion-note>
 
+    <br>
 
+    <ion-text style="text-align:center" color="primary">
+      <h4>Informações de Login</h4>
+    </ion-text>
+
+    <ion-item>
+      <ion-label position="floating" color="primary">Email</ion-label>
+      <ion-input
+        type="email"
+        inputmode="email"
+        color="primary"
+        formControlName="email"
+        autoFocus="true"
+      ></ion-input>
+      <ion-note
+        slot="end"
+        color="danger"
+        *ngIf="email.dirty && email.hasError('required')"
+      >
+        Email Obrigatório!
+      </ion-note>
+      <ion-note
+        slot="end"
+        color="danger"
+        *ngIf="email.dirty && email.hasError('email')"
+      >
+        Email inválido!
+      </ion-note>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating" color="primary">Senha</ion-label>
+      <ion-input
+        type="password"
+        color="primary"
+        formControlName="senha"
+      ></ion-input>
+      <ion-note
+        slot="end"
+        color="danger"
+        *ngIf="senha.dirty && senha.hasError('required')"
+      >
+        Senha Obrigatória!
+      </ion-note>
+      <ion-note
+        slot="end"
+        color="danger"
+        *ngIf="senha.dirty && senha.hasError('minlength')"
+      >
+        Mínimo 6 caracteres
+      </ion-note>
+    </ion-item>
 
     <div *ngIf="!update">
       <ion-button expand="full" type="submit" *ngIf="clienteForm.valid && liberaArquivo" style="margin-top: 15%;">
