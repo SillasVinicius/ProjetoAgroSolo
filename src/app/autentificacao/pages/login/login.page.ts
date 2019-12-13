@@ -165,7 +165,7 @@ export class LoginPage implements OnInit {
     if (this.configs.login) {
       this.login();
     } else {
-      
+
     }
   }
 
