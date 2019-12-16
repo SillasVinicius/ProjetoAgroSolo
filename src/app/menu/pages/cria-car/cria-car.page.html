@@ -46,12 +46,10 @@
         <ion-row align-items-center>
           <ion-col
             text-center
-            class="teste"
-          >
+            class="teste">
           <ion-card
             text-center
-            *ngIf="liberaArquivo"
-          >
+            *ngIf="liberaArquivo">
             <ion-card-header>
               <ion-card-title style="font-size: 15px;">
                 Arquivo selecionado:
@@ -63,7 +61,7 @@
         </ion-row>
       </ion-grid>
 
-      <div class="fileUpload" text-center >
+      <div class="fileUpload" text-center>
         <div *ngIf="uploadPercent | async as pct">
           Progress: {{ pct | number }}%
           <ion-progress-bar value="{{ pct / 100 }}"></ion-progress-bar>

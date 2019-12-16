@@ -1,9 +1,85 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>credito</ion-title>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/menu/listaCreditoFinanceiro"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{ pageTitle }}</ion-title>    
   </ion-toolbar>
 </ion-header>
+<ion-item *ngIf="clientes.length === 0" style="position: absolute; margin-top: 20%;" lines="none">Não foi encontrado nennhum Cadastro de Crédito vinculado ao Cliente!</ion-item>
+<ion-content padding *ngIf="clientes.length > 0">
+  <form [formGroup]="cadastroCreditoFinanceiroForm" (submit)="onSubmit()" novalidate>
+    <ion-item>
+      <ion-label position="floating" color="primary">Cliente</ion-label>
+      <ion-select interface="popover" #selectCliente formControlName="idCliente">
+        <ion-select-option *ngFor="let cliente of clientes" [value]="cliente.id">{{ cliente.nome }}</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <ion-note slot="start" color="danger" *ngIf="idCliente.hasError('required')">
+    Cliente Obrigatório!
+    </ion-note>
+  
+    <ion-item>
+      <ion-label position="floating" color="primary">Data de Aprovação do Crédito Financeiro</ion-label>
+  <ion-input type="date" placeholder="Data de Aprovação do Crédito" color="primary" formControlName="dataAprovacaoCredito"></ion-input>
+  <ion-note slot="end" color="danger" *ngIf="dataAprovacaoCredito.dirty && dataAprovacaoCredito.hasError('required)">
+  Data Obrigatório!
+  </ion-note>
+  <ion-note
+    slot="end"
+    color="danger"
+    *ngIf="dataAprovacaoCredito.dirty && (dataAprovacaoCredito.hasError('minlength') || dataAprovacaoCredito.hasError('maxlength'))">
+    Data Inválida!
+      </ion-note>
+ </ion-item>
+ <ion-item>
+  <ion-label position="floating" color="primary">Data de Expiração do Crédito Financeiro</ion-label>
+  <ion-input type="date" placeholder="Data de Expiração do Crédito" color="primary" formControlName="dataExpiracaoCredito"></ion-input>
+  <ion-note slot="end" color="danger" *ngIf="dataExpiracaoCredito.dirty && dataExpiracaoCredito.hasError('required)">
+  Data Obrigatória!
+  </ion-note>
+  <ion-note
+    slot="end"
+    color="danger"
+    *ngIf="dataExpiracaoCredito.dirty && (dataExpiracaoCredito.hasError('minlength') || dataExpiracaoCredito.hasError('maxlength'))">
+    Data Inválida!
+      </ion-note>
+ </ion-item>
 
-<ion-content>
-
+    <ion-item>
+      <ion-label position="floating" color="primary">Valor do Crédito<span style="font-size: 12px">(R$) Real</span></ion-label>
+      <ion-input type="double" color="primary" formControlName="valorCredito"></ion-input>
+    </ion-item>
+    <div class="fileUpload" text-center>
+      <div *ngIf="uploadaPercent | async as pct">
+          Progress: {{ pct | number }}%
+          <ion-progress-bar value="{{ pct / 100 }}"><ion-progress-bar> 
+      </div>
+      <div [@marginBotao]="liberaArquivo ? 'comArquivo' : 'semArquivo'">
+          <label for="uploadBtn" class="btn">Escolher Arquivo</label>
+          <input
+              class="upload"
+              id="uploadBtn"
+              type="file"
+              (change)="openGalery($event.target.files)">
+          </input>
+     </div>
+  </div>
+  <div *ngIf="!update">
+    <ion-button expand="full" type="submit" *ngIf="cadastroCreditoFinanceiroForm.valid && liberaArquivo">
+         CADASTRAR
+    </ion-button>
+    <ion-button expand="full" [disabled]="true" *ngIf="(!creditoFinanceiroForm.valid && !liberaArquivo) || (!creditoFinanceiroForm.valid && liberaArquivo) || (licencaAmbientalForm.valid && !liberaArquivo)">
+         CADASTRAR
+    </ion-button>
+  </div>
+  <div *ngIf="!admin && update">
+    <ion-button expand="full" type="submit" *ngIf="cadastroFinanceiroForm.valid">
+        ATUALIZAR
+    </ion-button>
+    <ion-button expand="full" [disabled]="true" *ngIf="!cadastroFinanceiroForm.valid">
+        ATUALIZAR
+    </ion-button>
+  </div>
+</form>
 </ion-content>

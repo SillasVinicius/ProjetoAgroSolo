@@ -46,7 +46,12 @@ const routes: Routes = [
       {
         path: '',
         loadChildren: './pages/home-ambiental/home-ambiental.module#HomeAmbientalPageModule'
+      },
+      {
+        path: 'CadastroCreditoFinanceiro',
+        loadChildren: './pages/home-ambiental/home-ambiental.module#CadastroCreditoPageModule'
       }
+      
     ]
   }
 ];

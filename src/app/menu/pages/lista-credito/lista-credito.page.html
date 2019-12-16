@@ -1,0 +1,33 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <app-menu-toogle
+      slot="start"
+      menu="main-menu"
+    ></app-menu-toogle>
+    <ion-title>Cadastro Crédito Financeiro</ion-title>    
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-list *ngIf="CadastroCreditoFinanceiro$ | async as CadastroCreditoFinanceiro">
+    <ng-container *ngIf="CadastroCreditoFinanceiro.length > 0; else CadastroCreditoFinanceiro">
+      <app-lista-la-item
+        *ngFor="let CadastroCreditoFinanceiro of CadastroCreditoFinanceiro"
+        [cadastroFinanceiro]="CadastroCreditoFinanceiro"
+        (update)="atualizar($event)"
+        (delete)="deletar($event)"></app-lista-la-item>
+    </ng-container>
+    <ng-template #semCadastroFinanceiro>
+      <ion-item lines="none">Sem Cadastro de Crédito Financeiro...</ion-item>
+    </ng-template>
+  </ion-list>
+  <ion-fab
+    vertical="bottom"
+    horizontal="end"
+    slot="fixed">
+    <ion-fab-button
+      [routerLink]="['/menu/ambiental/CadastroCreditoFinanceiro']"
+      routerDirection="forward">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

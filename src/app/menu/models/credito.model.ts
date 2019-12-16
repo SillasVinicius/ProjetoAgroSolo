@@ -3,6 +3,6 @@ export interface Credito{
     cliente: string;
     dataAprovacaoCredito: string;
     dataExpiracaoCredito: string;
-    ValorCredito: string;
+    valorCredito: string;
     arquivo?: string;
 }
