@@ -115,10 +115,8 @@ export class CriaUsuarioPage implements OnInit {
           const loading = await this.overlayService.loading({
             message: "Carregando Foto..."
           });
-
           this.downloadUrl = ref.getDownloadURL();
           this.liberaArquivo = true;
-
           this.downloadUrl.subscribe(async r => {
             this.urlFoto = r;
           });
@@ -147,12 +145,8 @@ export class CriaUsuarioPage implements OnInit {
                 const usuario = await this.usuarioService.update({
                 id: this.usuarioService.id,
                 nome: this.usuarioForm.get('nome').value,
-                cpf: this.usuarioForm.get('cpf').value,
-                dataNascimento: this.retornaDataNascimento(this.usuarioForm.get('dataNascimento').value),
-                rg: this.usuarioForm.get('rg').value,
                 email: this.usuarioForm.get('email').value,
                 senha: this.usuarioForm.get('senha').value,
-                telefone: this.usuarioForm.get('telefone').value,
                 foto: r
               });
               });
@@ -183,12 +177,8 @@ export class CriaUsuarioPage implements OnInit {
               const usuario = await this.usuarioService.update({
               id: this.usuarioId,
               nome: this.usuarioForm.get('nome').value,
-              cpf: this.usuarioForm.get('cpf').value,
-              dataNascimento: this.retornaDataNascimento(this.usuarioForm.get('dataNascimento').value),
-              rg: this.usuarioForm.get('rg').value,
               email: this.usuarioForm.get('email').value,
               senha: this.usuarioForm.get('senha').value,
-              telefone: this.usuarioForm.get('telefone').value,
               foto: r
             });
             });
@@ -208,74 +198,45 @@ export class CriaUsuarioPage implements OnInit {
       senha: this.formBuilder.control('', [Validators.required, Validators.minLength(6)]),
       email: this.formBuilder.control('', [Validators.required, Validators.email]),
       nome: this.formBuilder.control('', [Validators.required, Validators.minLength(3)]),
-      rg: this.formBuilder.control('', [
-        Validators.required,
-        Validators.minLength(1),
-      ]),
-      cpf: this.formBuilder.control('', [
-        Validators.required,
-        Validators.minLength(14),
-        Validators.maxLength(18)
-      ]),
-      dataNascimento: this.formBuilder.control('', [
-        Validators.required
-      ]),
-      telefone: this.formBuilder.control('', [
-        Validators.required,
-        Validators.minLength(14),
-        Validators.maxLength(15)
-      ]),
       admin: this.formBuilder.control(false, [])
     });
   }
 
   // metodos get que pegam o valor do input no formulário
-  get cpf(): FormControl {
-    return this.usuarioForm.get('cpf') as FormControl;
-  }
+
   get senha(): FormControl {
     return this.usuarioForm.get('senha') as FormControl;
   }
   get nome(): FormControl {
     return this.usuarioForm.get('nome') as FormControl;
   }
-  get rg(): FormControl {
-    return this.usuarioForm.get('rg') as FormControl;
-  }
+
   get email(): FormControl {
     return this.usuarioForm.get('email') as FormControl;
   }
-  get telefone(): FormControl {
-    return this.usuarioForm.get('telefone') as FormControl;
-  }
-  get dataNascimento(): FormControl {
-    return this.usuarioForm.get('dataNascimento') as FormControl;
-  }
+
+
 
   // verifica se a acao é de criação ou atualização
   acao(): void {
     const usuarioId = this.route.snapshot.paramMap.get('id');
     if (!usuarioId) {
-      this.pageTitle = 'Cadastrar Usuário';
+      this.pageTitle = 'Cadastrar Administrador';
       this.botaoTitle = 'CADASTRAR';
       this.toastMessage = 'Criando...';
       return;
     }
     this.usuarioId = usuarioId;
-    this.pageTitle = 'Atualizar Usuário';
+    this.pageTitle = 'Atualizar Administrador';
     this.botaoTitle = 'ATUALIZAR';
     this.toastMessage = 'Atualizando...';
     this.usuarioService
       .get(usuarioId)
       .pipe(take(1))
-      .subscribe(({ nome, cpf, email, dataNascimento, rg, senha, telefone }) => {
-        this.usuarioForm.get('cpf').setValue(cpf),
+      .subscribe(({ nome, email, senha }) => {
           this.usuarioForm.get('senha').setValue(senha),
           this.usuarioForm.get('nome').setValue(nome),
-          this.usuarioForm.get('rg').setValue(rg),
-          this.usuarioForm.get('email').setValue(email),
-          this.usuarioForm.get('telefone').setValue(telefone),
-          this.usuarioForm.get('dataNascimento').setValue(this.retornaDataMMDDYYYY(dataNascimento))
+          this.usuarioForm.get('email').setValue(email)
       });
   }
 
@@ -289,14 +250,9 @@ export class CriaUsuarioPage implements OnInit {
     this.usuarioService.init();
     const usuario = await this.usuarioService.update({
       id: this.usuarioId,
-      cpf: this.usuarioForm.get('cpf').value,
       nome: this.usuarioForm.get('nome').value,
       senha: this.usuarioForm.get('senha').value,
-      rg: this.usuarioForm.get('rg').value,
       email: this.usuarioForm.get('email').value,
-      telefone: this.usuarioForm.get('telefone').value,
-      dataNascimento: this.usuarioForm.get('dataNascimento').value
-
     });
   }
 
@@ -309,14 +265,9 @@ export class CriaUsuarioPage implements OnInit {
     try {
       const usuario = '';
       if (!this.usuarioId) {
-        this.usuarioForm.get('dataNascimento').setValue(this.retornaDataNascimento(this.usuarioForm.get('dataNascimento').value));
         const usuario = await this.usuarioService.create(this.usuarioForm.value);
-
         this.deletePicture();
-
         this.uploadFileTo(this.arquivos);
-
-
       } else {
 
         //this.deletePicture();
@@ -326,13 +277,13 @@ export class CriaUsuarioPage implements OnInit {
 
 
       }
-      console.log('Usuário Criado', usuario);
+      console.log('Administrador Criado', usuario);
       this.navCtrl.navigateBack('/menu/usuario');
     } catch (error) {
       await this.overlayService.toast({
         message: error.message
       });
-      console.log('Erro ao criar cliente: ', error);
+      console.log('Erro ao criar administrador: ', error);
     } finally {
       loading.dismiss();
     }

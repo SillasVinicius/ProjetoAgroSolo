@@ -141,7 +141,12 @@ export class CriaClientePage implements OnInit {
               foto: r,
               patrimonio: this.clienteForm.get('patrimonio').value,
               pdtvAgro: this.clienteForm.get('pdtvAgro').value,
-              informacoesAdicionais: this.clienteForm.get('informacoesAdicionais').value
+              informacoesAdicionais: this.clienteForm.get('informacoesAdicionais').value,
+              rg: this.clienteForm.get('rg').value,
+              dataNascimento: this.clienteForm.get('dataNascimento').value,
+              telefone: this.clienteForm.get('telefone').value,
+              email: this.clienteForm.get('email').value,
+              senha: this.clienteForm.get('senha').value,
             });
           });
         })
@@ -165,7 +170,12 @@ export class CriaClientePage implements OnInit {
             const cliente = await this.clienteService.update({
               id: this.clienteId,
               cpf: this.clienteForm.get('cpf').value,
+              rg: this.clienteForm.get('rg').value,
+              dataNascimento: this.clienteForm.get('dataNascimento').value,
+              telefone: this.clienteForm.get('telefone').value,
+              email: this.clienteForm.get('email').value,
               nome: this.clienteForm.get('nome').value,
+              senha: this.clienteForm.get('senha').value,
               foto: r,
               patrimonio: this.clienteForm.get('patrimonio').value,
               pdtvAgro: this.clienteForm.get('pdtvAgro').value,
@@ -190,6 +200,26 @@ export class CriaClientePage implements OnInit {
         Validators.minLength(14),
         Validators.maxLength(18)
       ]),
+      rg: this.formBuilder.control('', [
+        Validators.required,
+        Validators.minLength(1),
+      ]),
+      telefone: this.formBuilder.control('', [
+        Validators.required,
+        Validators.minLength(14),
+        Validators.maxLength(15)
+      ]),
+      dataNascimento: this.formBuilder.control('', [
+        Validators.required,
+      ]),
+      email: this.formBuilder.control('', [
+        Validators.required,
+        Validators.email
+      ]),
+      senha: this.formBuilder.control('', [
+        Validators.required,
+        Validators.minLength(6),
+      ]),
       patrimonio: this.formBuilder.control('', [
         Validators.required,
         Validators.minLength(3)
@@ -211,6 +241,21 @@ export class CriaClientePage implements OnInit {
   }
   get nome(): FormControl {
     return this.clienteForm.get('nome') as FormControl;
+  }
+  get rg(): FormControl {
+    return this.clienteForm.get('rg') as FormControl;
+  }
+  get telefone(): FormControl {
+    return this.clienteForm.get('telefone') as FormControl;
+  }
+  get dataNascimento(): FormControl {
+    return this.clienteForm.get('dataNascimento') as FormControl;
+  }
+  get email(): FormControl {
+    return this.clienteForm.get('email') as FormControl;
+  }
+  get senha(): FormControl {
+    return this.clienteForm.get('senha') as FormControl;
   }
   get patrimonio(): FormControl {
     return this.clienteForm.get('patrimonio') as FormControl;
@@ -237,12 +282,17 @@ export class CriaClientePage implements OnInit {
     this.clienteService
       .get(clienteId)
       .pipe(take(1))
-      .subscribe(({ nome, cpf, patrimonio, pdtvAgro, informacoesAdicionais}) => {
+      .subscribe(({ nome, cpf, patrimonio, pdtvAgro, informacoesAdicionais, rg, telefone, dataNascimento, email, senha}) => {
         this.clienteForm.get('nome').setValue(nome),
           this.clienteForm.get('cpf').setValue(cpf),
           this.clienteForm.get('patrimonio').setValue(patrimonio),
           this.clienteForm.get('pdtvAgro').setValue(pdtvAgro),
-          this.clienteForm.get('informacoesAdicionais').setValue(informacoesAdicionais)
+          this.clienteForm.get('informacoesAdicionais').setValue(informacoesAdicionais),
+          this.clienteForm.get('rg').setValue(rg),
+          this.clienteForm.get('telefone').setValue(telefone),
+          this.clienteForm.get('dataNascimento').setValue(dataNascimento),
+          this.clienteForm.get('email').setValue(email),
+          this.clienteForm.get('senha').setValue(senha)
       });
   }
 
@@ -259,7 +309,12 @@ export class CriaClientePage implements OnInit {
       nome: this.clienteForm.get('nome').value,
       patrimonio: this.clienteForm.get('patrimonio').value,
       pdtvAgro: this.clienteForm.get('pdtvAgro').value,
-      informacoesAdicionais: this.clienteForm.get('informacoesAdicionais').value
+      informacoesAdicionais: this.clienteForm.get('informacoesAdicionais').value,
+      rg: this.clienteForm.get('rg').value,
+      telefone: this.clienteForm.get('telefone').value,
+      dataNascimento: this.clienteForm.get('dataNascimento').value,
+      email: this.clienteForm.get('email').value,
+      senha: this.clienteForm.get('senha').value,
     });
   }
 
@@ -295,7 +350,12 @@ export class CriaClientePage implements OnInit {
           nome: this.clienteForm.get('nome').value,
           patrimonio: this.clienteForm.get('patrimonio').value,
           pdtvAgro: this.clienteForm.get('pdtvAgro').value,
-          informacoesAdicionais: this.clienteForm.get('informacoesAdicionais').value
+          informacoesAdicionais: this.clienteForm.get('informacoesAdicionais').value,
+          rg: this.clienteForm.get('rg').value,
+          telefone: this.clienteForm.get('telefone').value,
+          dataNascimento: this.clienteForm.get('dataNascimento').value,
+          email: this.clienteForm.get('email').value,
+          senha: this.clienteForm.get('senha').value,
         });
 
         this.AtualizaListaGlobal();

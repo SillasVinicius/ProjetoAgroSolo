@@ -158,12 +158,12 @@ export class AlteraUsuarioPage implements OnInit {
             const usuario = await this.usuarioService.update({
             id: this.updateUsuarioId,
             nome: this.updateUsuarioForm.get('nome').value,
-            cpf: this.updateUsuarioForm.get('cpf').value,
-            dataNascimento: this.retornaDataNascimento(this.updateUsuarioForm.get('dataNascimento').value),
-            rg: this.updateUsuarioForm.get('rg').value,
+
+
+
             email: this.updateUsuarioForm.get('email').value,
             senha: this.updateUsuarioForm.get('senha').value,
-            telefone: this.updateUsuarioForm.get('telefone').value,
+
             foto: r
           });
           });
@@ -181,25 +181,8 @@ export class AlteraUsuarioPage implements OnInit {
     this.updateUsuarioForm = this.formBuilder.group({
       senha: this.formBuilder.control('', [Validators.required, Validators.minLength(6)]),
       email: this.formBuilder.control('', [Validators.required, Validators.email]),
-      nome: this.formBuilder.control('', [Validators.required, Validators.minLength(3)]),
-      rg: this.formBuilder.control('', [
-        Validators.required,
-        Validators.minLength(8),
-        Validators.maxLength(8)
-      ]),
-      cpf: this.formBuilder.control('', [
-        Validators.required,
-        Validators.minLength(14),
-        Validators.maxLength(18)
-      ]),
-      dataNascimento: this.formBuilder.control('', [
-        Validators.required
-      ]),
-      telefone: this.formBuilder.control('', [
-        Validators.required,
-        Validators.minLength(14),
-        Validators.maxLength(15)
-      ])
+      nome: this.formBuilder.control('', [Validators.required, Validators.minLength(3)])
+
     });
   }
 
@@ -210,39 +193,29 @@ export class AlteraUsuarioPage implements OnInit {
     this.usuarioService
       .get(updateUsuarioId)
       .pipe(take(1))
-      .subscribe(({ nome, cpf, email, dataNascimento, rg, senha, telefone }) => {
-        this.updateUsuarioForm.get('cpf').setValue(cpf),
+      .subscribe(({ nome, email, senha }) => {
+
           this.updateUsuarioForm.get('senha').setValue(senha),
           this.updateUsuarioForm.get('nome').setValue(nome),
-          this.updateUsuarioForm.get('rg').setValue(rg),
-          this.updateUsuarioForm.get('email').setValue(email),
-          this.updateUsuarioForm.get('telefone').setValue(telefone),
-          this.updateUsuarioForm.get('dataNascimento').setValue(this.retornaDataMMDDYYYY(dataNascimento))
+
+          this.updateUsuarioForm.get('email').setValue(email)
+
+
       });
   }
 
   // metodos get que pegam o valor do input no formulário
-  get cpf(): FormControl {
-    return this.updateUsuarioForm.get('cpf') as FormControl;
-  }
+  
   get senha(): FormControl {
     return this.updateUsuarioForm.get('senha') as FormControl;
   }
   get nome(): FormControl {
     return this.updateUsuarioForm.get('nome') as FormControl;
   }
-  get rg(): FormControl {
-    return this.updateUsuarioForm.get('rg') as FormControl;
-  }
   get email(): FormControl {
     return this.updateUsuarioForm.get('email') as FormControl;
   }
-  get telefone(): FormControl {
-    return this.updateUsuarioForm.get('telefone') as FormControl;
-  }
-  get dataNascimento(): FormControl {
-    return this.updateUsuarioForm.get('dataNascimento') as FormControl;
-  }
+
 
   // método que envia os dados do formulário para o banco de dados
   async onSubmit(): Promise<void> {
