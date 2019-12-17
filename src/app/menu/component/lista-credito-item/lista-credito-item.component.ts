@@ -1,9 +1,10 @@
-import { Component, OnInit, Input, Output } from '@angular/core';
-import { AlertController } from '@ionic/angular';
-import { UsuarioService } from 'src/app/core/services/usuario.service';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
+import { UsuarioService } from 'src/app/core/services/usuario.service';
+import { AlertController } from '@ionic/angular';
+
 import { Credito } from '../../models/credito.model';
-import { EventEmitter } from 'events';
+
 
 @Component({
   selector: 'app-lista-credito-item',
@@ -74,7 +75,7 @@ export class ListaCreditoItemComponent implements OnInit {
      const alert = await this.alertController.create({
        header: 'AVISO',
        subHeader: 'Limite de Crédito Irá Vencer!',
-       message: `O Limite de Crédito'${this.cadastroCreditoFinanceiro.msgVencimento}' vence em ${dias} dias!`,
+       message: `O Limite de Crédito'${this.cadastroCreditoFinanceiro.valorCredito}' vence em ${dias} dias!`,
        buttons: ['OK']
      });
 

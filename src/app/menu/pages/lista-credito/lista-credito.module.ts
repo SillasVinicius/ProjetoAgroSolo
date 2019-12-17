@@ -6,6 +6,8 @@ import { Routes, RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 
 import { ListaCreditoPage } from './lista-credito.page';
+import { ComponentsModule } from '../../component/components.module';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 const routes: Routes = [
   {
@@ -19,6 +21,8 @@ const routes: Routes = [
     CommonModule,
     FormsModule,
     IonicModule,
+    ComponentsModule,
+    SharedModule,
     RouterModule.forChild(routes)
   ],
   declarations: [ListaCreditoPage]

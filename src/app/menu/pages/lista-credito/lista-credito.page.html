@@ -10,11 +10,11 @@
 <ion-content>
   <ion-list *ngIf="CadastroCreditoFinanceiro$ | async as CadastroCreditoFinanceiro">
     <ng-container *ngIf="CadastroCreditoFinanceiro.length > 0; else CadastroCreditoFinanceiro">
-      <app-lista-la-item
+      <app-lista-credito-item
         *ngFor="let CadastroCreditoFinanceiro of CadastroCreditoFinanceiro"
-        [cadastroFinanceiro]="CadastroCreditoFinanceiro"
+        [cadastroCreditoFinanceiro]="CadastroCreditoFinanceiro"
         (update)="atualizar($event)"
-        (delete)="deletar($event)"></app-lista-la-item>
+        (delete)="deletar($event)"></app-lista-credito-item>
     </ng-container>
     <ng-template #semCadastroFinanceiro>
       <ion-item lines="none">Sem Cadastro de Crédito Financeiro...</ion-item>
@@ -25,7 +25,7 @@
     horizontal="end"
     slot="fixed">
     <ion-fab-button
-      [routerLink]="['/menu/ambiental/CadastroCreditoFinanceiro']"
+      [routerLink]="['/menu/cadastroCredito']"
       routerDirection="forward">
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>

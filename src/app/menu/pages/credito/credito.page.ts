@@ -15,9 +15,9 @@ import { CreditoService } from 'src/app/core/services/credito.service';
 
 
 @Component({
-  selector: 'app-cria-la',
-  templateUrl: './cria-la.page.html',
-  styleUrls: ['./cria-la.page.scss'],
+  selector: 'credito',
+  templateUrl: './credito.page.html',
+  styleUrls: ['./credito.page.scss'],
   animations: [
     trigger('tamanhoArquivo', [
       state('semArquivo', style({ 'height': '67px'})),

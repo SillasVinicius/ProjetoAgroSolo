@@ -44,14 +44,15 @@ const routes: Routes = [
         loadChildren: './pages/lista-car/lista-car.module#ListaCARPageModule'
       },
       {
-        path: '',
-        loadChildren: './pages/home-ambiental/home-ambiental.module#HomeAmbientalPageModule'
+        path: 'CadastroFinanceiro',
+        loadChildren: './pages/lista-credito/lista-credito.module#ListaCreditoPageModule'
       },
       {
-        path: 'CadastroCreditoFinanceiro',
-        loadChildren: './pages/home-ambiental/home-ambiental.module#CadastroCreditoPageModule'
+        path: '',
+        loadChildren: './pages/home-ambiental/home-ambiental.module#HomeAmbientalPageModule'
       }
-      
+    
+    
     ]
   }
 ];
