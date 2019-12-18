@@ -15,7 +15,6 @@
       <ion-select interface="popover" #selectCliente formControlName="idCliente">
         <ion-select-option *ngFor="let cliente of clientes" [value]="cliente.id">{{cliente.nome}}</ion-select-option>
       </ion-select>
-
     </ion-item>
     <ion-note
       slot="start"

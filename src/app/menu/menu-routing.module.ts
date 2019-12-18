@@ -20,18 +20,9 @@ const routes: Routes = [
         loadChildren: './pages/cria-outorga/cria-outorga.module#CriaOutorgaPageModule'
       },
       {
-        path: 'updateCredito/:id',
-        loadChildren: './pages/cria-credito/cria-credito.module#CriaCreditoPageModule'
-      },
-      {
-        path: 'cadastroCredito',
-        loadChildren: './pages/credito/credito.module#CreditoPageModule'
-      },
-      {
         path: 'updateOutorga/:id',
         loadChildren: './pages/cria-outorga/cria-outorga.module#CriaOutorgaPageModule'
       },
-      
       {
         path: 'updateCliente/:id',
         loadChildren: './pages/cria-cliente/cria-cliente.module#CriaClientePageModule'
@@ -71,8 +62,12 @@ const routes: Routes = [
       {
         path: '',
         loadChildren: './pages/home/home.module#HomePageModule'
+      },
+      {
+        path: 'updateCredito/:id',
+        loadChildren: './pages/credito/credito.module#CreditoPageModule'
       }
-
+      
     ]
   }
 ];

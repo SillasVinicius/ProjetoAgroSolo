@@ -15,7 +15,7 @@ import { take } from 'rxjs/operators';
 export class ListaCreditoPage implements OnInit {
 
   
-  credito$: Observable<Credito[]>;
+  creditos$: Observable<Credito[]>;
   constructor(
     private navCtrl: NavController,
     private creditoService: CreditoService,
@@ -27,13 +27,13 @@ export class ListaCreditoPage implements OnInit {
     const loading = await this.overlayService.loading();
     if (this.usuarioService.admin) {
       this.creditoService.initCredito();
-      this.credito$ = this.creditoService.getAll();
-      this.credito$.pipe(take(1)).subscribe(() => loading.dismiss());
+      this.creditos$ = this.creditoService.getAll();
+      this.creditos$.pipe(take(1)).subscribe(() => loading.dismiss());
     }
     else {
       this.creditoService.init();
-      this.credito$ = this.creditoService.getAll();
-      this.credito$.pipe(take(1)).subscribe(() => loading.dismiss());
+      this.creditos$ = this.creditoService.getAll();
+      this.creditos$.pipe(take(1)).subscribe(() => loading.dismiss());
     }
   }
 

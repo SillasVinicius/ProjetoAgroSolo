@@ -16,19 +16,19 @@ export class CreditoService extends Firestore<Credito>{
   }  
 
   init(): void {
-    this.setCollection(`/users/${this.usuarioService.id}/CadastroCreditoFinanceiro`, ref => ref.orderBy('dataAprovacaoCredito', 'desc'));
+    this.setCollection(`/users/${this.usuarioService.id}/credito`, ref => ref.orderBy('dataAprovacaoCredito', 'desc'));
+  }
+
+  initLA(): void {
+    this.setCollection('/cadastroCredito');
   }
 
   initCredito(): void {
     this.setCollection('/credito');
-  }
+  }  
 
-  initLA(): void {
-    this.setCollection('/CadastroCreditoFinanceiro');
-  }
-
-  setCollectionArquivo(la: string) {
-    this.setCollection(`/users/${this.usuarioId}/CadastroCreditoFinanceirol/${la}/arquivos`);
+  setCollectionArquivo(cliente: string) {
+    this.setCollection(`/users/${this.usuarioId}/credito/${cliente}/arquivos`);
   }
 
   criarId(): string {

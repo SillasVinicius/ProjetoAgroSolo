@@ -1,6 +1,6 @@
 export interface Credito{
     id: string;
-    cliente: string;
+    clienteId: string;
     dataAprovacaoCredito: string;
     dataExpiracaoCredito: string;
     valorCredito: string;
