@@ -44,6 +44,18 @@ const routes: Routes = [
         loadChildren: './pages/lista-car/lista-car.module#ListaCARPageModule'
       },
       {
+        path: 'RelatorioCadastroAmbientalRural',
+        loadChildren: './pages/relatorio-car/relatorio-car.module#RelatorioCarPageModule'
+      },
+      {
+        path: 'RelatorioDa',
+        loadChildren: './pages/relatorio-da/relatorio-da.module#RelatorioDaPageModule'
+      },
+      {
+        path: 'RelatorioLa',
+        loadChildren: './pages/relatorio-la/relatorio-la.module#RelatorioLaPageModule'
+      },
+      {
         path: '',
         loadChildren: './pages/home-ambiental/home-ambiental.module#HomeAmbientalPageModule'
       }

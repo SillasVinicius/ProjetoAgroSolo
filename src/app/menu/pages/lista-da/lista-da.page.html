@@ -1,9 +1,6 @@
 <ion-header>
   <ion-toolbar color="primary">
-    <app-menu-toogle
-      slot="start"
-      menu="main-menu"
-    ></app-menu-toogle>
+    <app-menu-toogle slot="start" menu="main-menu"></app-menu-toogle>
     <ion-title>D. Ambientais</ion-title>
     <!-- <app-logout-button
       slot="end"
@@ -14,26 +11,18 @@
 <ion-content>
   <ion-list *ngIf="das$ | async as das">
     <ng-container *ngIf="das.length > 0; else semDas">
-      <app-lista-da-item
-        *ngFor="let da of das"
-        [declaracaoAmbiental]="da"
-        (update)="atualizar($event)"
-        (delete)="deletar($event)"
-      ></app-lista-da-item>
+      <app-lista-da-item *ngFor="let da of das" [declaracaoAmbiental]="da" (update)="atualizar($event)"
+        (delete)="deletar($event)"></app-lista-da-item>
     </ng-container>
     <ng-template #semDas>
       <ion-item lines="none">Sem Declarações Ambientais cadastradas...</ion-item>
     </ng-template>
   </ion-list>
-  <ion-fab
-    vertical="bottom"
-    horizontal="end"
-    slot="fixed"
-  >
-    <ion-fab-button
-      [routerLink]="['/menu/ambiental/CadastroDeclaracaoAmbiental']"
-      routerDirection="forward"
-    >
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button [routerLink]="['/menu/ambiental/RelatorioDa']" routerDirection="forward">
+      <ion-icon name="print"></ion-icon>
+    </ion-fab-button><br>
+    <ion-fab-button [routerLink]="['/menu/ambiental/CadastroDeclaracaoAmbiental']" routerDirection="forward">
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
   </ion-fab>

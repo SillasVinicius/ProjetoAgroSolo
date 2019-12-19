@@ -1,5 +1,5 @@
 {
-  "name": "AgroSolo",
+  "name": "agrosolo",
   "version": "0.5.0",
   "author": "HMS Consulting",
   "homepage": "https://www.hmsconsulting.com.br",
@@ -55,6 +55,7 @@
     "cordova-sqlite-storage": "3.3.0",
     "core-js": "^2.5.4",
     "firebase": "^5.9.4",
+    "grpc": "^1.24.2",
     "json-server": "^0.15.0",
     "jsonwebtoken": "^8.5.1",
     "rxjs": "~6.5.1",
@@ -121,5 +122,14 @@
       "browser",
       "android"
     ]
+  },
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SillasVinicius/ProjetoAgroSolo.git"
+  },
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SillasVinicius/ProjetoAgroSolo/issues"
   }
 }

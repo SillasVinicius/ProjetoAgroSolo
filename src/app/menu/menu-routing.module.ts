@@ -56,6 +56,14 @@ const routes: Routes = [
         loadChildren: './pages/dados-pessoais/dados-pessoais.module#DadosPessoaisPageModule'
       },
       {
+        path: 'relatoriocliente',
+        loadChildren: './pages/relatorio-cliente/relatorio-cliente.module#RelatorioClientePageModule'
+      },
+      {
+        path: 'relatoriooutorga',
+        loadChildren: './pages/relatorio-outorga/relatorio-outorga.module#RelatorioOutorgaPageModule'
+      },
+      {
         path: '',
         loadChildren: './pages/home/home.module#HomePageModule'
       }

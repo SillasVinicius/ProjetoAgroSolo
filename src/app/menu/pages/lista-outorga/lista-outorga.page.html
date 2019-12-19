@@ -1,9 +1,6 @@
 <ion-header>
   <ion-toolbar color="primary">
-    <app-menu-toogle
-      slot="start"
-      menu="main-menu"
-    ></app-menu-toogle>
+    <app-menu-toogle slot="start" menu="main-menu"></app-menu-toogle>
     <ion-title>Outorgas</ion-title>
     <!-- <app-logout-button
       slot="end"
@@ -14,26 +11,18 @@
 <ion-content>
   <ion-list *ngIf="outorgas$ | async as outorgas">
     <ng-container *ngIf="outorgas.length > 0; else semOutorgas">
-      <app-lista-outorga-item
-        *ngFor="let outorga of outorgas"
-        [outorga]="outorga"
-        (update)="atualizar($event)"
-        (delete)="deletar($event)"
-      ></app-lista-outorga-item>
+      <app-lista-outorga-item *ngFor="let outorga of outorgas" [outorga]="outorga" (update)="atualizar($event)"
+        (delete)="deletar($event)"></app-lista-outorga-item>
     </ng-container>
     <ng-template #semOutorgas>
       <ion-item lines="none">Sem Outorgas cadastradas...</ion-item>
     </ng-template>
   </ion-list>
-  <ion-fab
-    vertical="bottom"
-    horizontal="end"
-    slot="fixed"
-  >
-    <ion-fab-button
-      [routerLink]="['/menu/cadastroOutorga']"
-      routerDirection="forward"
-    >
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button [routerLink]="['/menu/relatoriooutorga']" routerDirection="forward">
+      <ion-icon name="print"></ion-icon>
+    </ion-fab-button><br>
+    <ion-fab-button [routerLink]="['/menu/cadastroOutorga']" routerDirection="forward">
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
   </ion-fab>

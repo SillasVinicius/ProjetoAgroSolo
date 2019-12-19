@@ -1,9 +1,6 @@
 <ion-header>
   <ion-toolbar color="primary">
-    <app-menu-toogle
-      slot="start"
-      menu="main-menu"
-    ></app-menu-toogle>
+    <app-menu-toogle slot="start" menu="main-menu"></app-menu-toogle>
     <ion-title>C.A.R</ion-title>
     <!-- <app-logout-button
       slot="end"
@@ -14,26 +11,19 @@
 <ion-content>
   <ion-list *ngIf="cadastrosAmbientaisRurais$ | async as cadastrosAmbientaisRurais">
     <ng-container *ngIf="cadastrosAmbientaisRurais.length > 0; else semCadastrosAmbientaisRurais">
-      <app-lista-car-item
-        *ngFor="let cadastroAmbientalRural of cadastrosAmbientaisRurais"
-        [cadastroAmbientalRural]="cadastroAmbientalRural"
-        (update)="atualizar($event)"
-        (delete)="deletar($event)"
-      ></app-lista-car-item>
+      <app-lista-car-item *ngFor="let cadastroAmbientalRural of cadastrosAmbientaisRurais"
+        [cadastroAmbientalRural]="cadastroAmbientalRural" (update)="atualizar($event)" (delete)="deletar($event)">
+      </app-lista-car-item>
     </ng-container>
     <ng-template #semCadastrosAmbientaisRurais>
       <ion-item lines="none">Sem cadastros Ambientais Rurais cadastradas...</ion-item>
     </ng-template>
   </ion-list>
-  <ion-fab
-    vertical="bottom"
-    horizontal="end"
-    slot="fixed"
-  >
-  <ion-fab-button
-    [routerLink]="['/menu/ambiental/AddCadastroAmbientalRural']"
-    routerDirection="forward"
-  >
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button [routerLink]="['/menu/ambiental/RelatorioCadastroAmbientalRural']" routerDirection="forward">
+      <ion-icon name="print"></ion-icon>
+    </ion-fab-button><br>
+    <ion-fab-button [routerLink]="['/menu/ambiental/AddCadastroAmbientalRural']" routerDirection="forward">
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
   </ion-fab>
