@@ -30,6 +30,15 @@ export class HomePage implements OnInit {
   linkAlterarUsuario() {
     this.navCtrl.navigateForward(`/menu/updateUsuario/${this.usuario.id}`);
   }
+  linkOutorgas(){
+    this.navCtrl.navigateForward('/menu/outorga')
+  }
+  linkAmbientais(){
+    this.navCtrl.navigateForward("/menu/LicencaAmbiental")
+  }
+  linkDeclaracoes(){
+    this.navCtrl.navigateForward("/menu/DeclaracaoAmbiental")
+  }
   ngOnInit() {
     this.nomeUser = this.usuario.nomeUser;
     this.urlFoto = this.usuario.urlFoto;

@@ -1,4 +1,5 @@
-<ion-header class="header">
+<ion-content>
+<ion-header class="header" style="height: 30px;">
   <ion-toolbar color="primary">
     <app-menu-toogle
       slot="start"
@@ -8,43 +9,11 @@
     <app-logout-button
       slot="end"
       menu="main-menu"
-    ></app-logout-button>
+    ></app-logout-button>   
   </ion-toolbar>
-  <ion-grid>
-    <ion-row align-items-center>
-      <ion-col
-        text-center
-      >
-      <ion-chip class="rgba3" style="background: #00331e; height:45px;" *ngIf="!admin">
-          <ion-avatar style="height: 35px; width: 35px;">
-            <img [src]="urlFoto" *ngIf="urlFoto">
-            <img src="../../../assets/img/avatar.svg" *ngIf="!urlFoto">
-          </ion-avatar>
-          <ion-label>{{nomeUser}}
-          </ion-label>
-          <ion-avatar (click)="linkAlterarUsuario()" style="height: 35px; width: 35px;">
-            <img src="../../../assets/img/settings.svg">
-          </ion-avatar>
-      </ion-chip>
-
-      <ion-chip class="rgba3" style="background: gray; height:45px;" *ngIf="admin">
-          <ion-avatar style="height: 35px; width: 35px;">
-            <img [src]="urlFoto" *ngIf="urlFoto">
-            <img src="../../../assets/img/avatar.svg" *ngIf="!urlFoto">
-          </ion-avatar>
-          <ion-label>{{nomeUser}} / Admin
-          </ion-label>
-          <ion-avatar (click)="linkAlterarUsuario()" style="height: 35px; width: 35px;">
-            <img src="../../../assets/img/settings.svg">
-          </ion-avatar>
-      </ion-chip>
-
-      </ion-col>
-    </ion-row>
-  </ion-grid>
 </ion-header>
-<ion-content>
-  <ion-grid style="margin:0px; padding: 0px;">
+
+  <!--<ion-grid style="margin:0px; padding: 0px;">
     <ion-row align-items-center>
       <ion-col text-center style="width:100%; background: #a2bd31;" (click)="linkCliente()">
         <ion-button
@@ -97,6 +66,7 @@
           Ambiental
         </ion-button>
       </ion-col>
+
     </ion-row>
   </ion-grid>
   <ion-grid style="margin:0px; padding: 0px;" *ngIf="admin">
@@ -116,6 +86,139 @@
         </ion-button>
       </ion-col>
     </ion-row>
+  </ion-grid>-->
+  
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+
+      </ion-col>
+        <div class="chip-user">
+          <ion-col
+            text-center
+          >
+          <ion-chip class="rgba3" style="background: #00331e; height:45px;" *ngIf="!admin">
+              <ion-avatar style="height: 35px; width: 35px;">
+                <img [src]="urlFoto" *ngIf="urlFoto">
+                <img src="../../../assets/img/avatar.svg" *ngIf="!urlFoto">
+              </ion-avatar>
+              <ion-label>{{nomeUser}}
+              </ion-label>
+              <ion-avatar (click)="linkAlterarUsuario()" style="height: 35px; width: 35px;">
+                <img src="../../../assets/img/settings.svg">
+              </ion-avatar>
+          </ion-chip>
+      
+          <ion-chip class="rgba3" style="background: gray; height:45px;" *ngIf="admin">
+              <ion-avatar style="height: 35px; width: 35px;">
+                <img [src]="urlFoto" *ngIf="urlFoto">
+                <img src="../../../assets/img/avatar.svg" *ngIf="!urlFoto">
+              </ion-avatar>
+              <ion-label>{{nomeUser}} / Admin
+              </ion-label>
+              <ion-avatar (click)="linkAlterarUsuario()" style="height: 35px; width: 35px;">
+                <img src="../../../assets/img/settings.svg">
+              </ion-avatar>
+          </ion-chip>
+    
+          </ion-col>
+        </div>
+      <ion-col>
+
+      </ion-col>
+    </ion-row>
   </ion-grid>
-</ion-content>
+  
+<div class="caixas">
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+    <ion-card  class="caixa" style="background-color: #a2bd31; color: #00643a;">
+      <ion-card-header>
+        <ion-card-subtitle style="color:#00643a; text-align:center;"><strong>Total de Clientes Cadastrados</strong></ion-card-subtitle>
+      </ion-card-header>
+      <ion-card-content style="text-align:center;">
+        30
+      </ion-card-content>
+    </ion-card>
+  </ion-col>
+  <ion-col>
+        <ion-card class="caixa" (click)="linkAlterarUsuario()"  style="background-color: #a2bd31; color: #00643a;">
+          <ion-card-header>
+            <ion-card-subtitle style="color:#00643a; text-align:center;"><strong>Total de Aniversários do Mês</strong></ion-card-subtitle>
+          </ion-card-header>
+          <ion-card-content style="text-align:center;">
+           30
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+      
+      <ion-col>
+        <ion-card class="caixa" style="background-color: #00643a; color: white;">
+          <ion-card-header>
+            <ion-card-subtitle style="color:white; text-align:center;"><strong>Aniversariantes do Dia</strong></ion-card-subtitle>
+          </ion-card-header>
+          <ion-card-content style="text-align:center;">
+            30
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+      </ion-row>
+  </ion-grid>
+  
+
+<ion-grid>
+  <ion-row>
+            
+  <ion-col>
+    <ion-card (click)="linkOutorgas()" class="caixa" style="background-color: #00643a; color: white;">
+      <ion-card-header>
+        <ion-card-subtitle style="color:white; text-align:center;"><strong>Outorgas a Vencer</strong></ion-card-subtitle>
+      </ion-card-header>
+      <ion-card-content >
+        asdf
+        asdfknasjhbfsadf
+        jsdhfiasdhfiuasdhfusadhf
+        sdahfiusdahfiusdhuisdhf
+      </ion-card-content>
+    </ion-card>  
+  </ion-col>
+    <ion-col>
+    <ion-card (click)="linkDeclaracoes()" class="caixa" style="background-color: #001a0f; color: white;">
+      <ion-card-header>
+        <ion-card-subtitle style="color:white; text-align:center;"><strong>Declarações Ambientais a Vencer</strong></ion-card-subtitle>
+      </ion-card-header>
+      <ion-card-content>
+        asdf
+        asdfknasjhbfsadf
+        jsdhfiasdhfiuasdhfusadhf
+        sdahfiusdahfiusdhuisdhf
+      </ion-card-content>
+    </ion-card>  
+    </ion-col>
+    
+    <ion-col>
+    <ion-card (click)="linkAmbientais()" class="caixa" style="background-color: #001a0f; color: white;">
+      <ion-card-header>
+        <ion-card-subtitle style="color:white; text-align:center;"><strong>Licenças Ambientais a Vencer</strong></ion-card-subtitle>
+      </ion-card-header>
+      <ion-card-content>
+        asdf
+        asdfknasjhbfsadf
+        jsdhfiasdhfiuasdhfusadhf
+        sdahfiusdahfiusdhuisdhf
+      </ion-card-content>
+    </ion-card>
+  </ion-col>
+</ion-row>
+</ion-grid>
+
+  </div>
+
+
   <img src="../../../../assets/img/grama.png" alt="" style="margin-bottom: 0px;">
+</ion-content>
+
+
+
+
