@@ -50,8 +50,12 @@
     <ion-item>
       <ion-label position="floating" color="primary">Valor do Crédito<span style="font-size: 12px">(R$) Real</span>
       </ion-label>
-      <ion-input type="double" color="primary" formControlName="valorCredito"></ion-input>
+      <ion-input 
+      formControlName="valorCredito" color="primary"
+      ></ion-input>
     </ion-item>
+    
+   
     <!-- inicio arquivo -->
     <div *ngIf="!update">
       <ion-card [@tamanhoArquivo]="liberaArquivo ? 'comArquivo' : 'semArquivo'">
@@ -84,11 +88,11 @@
     <!-- fim arquivo -->
 
     <div *ngIf="!update">
-      <ion-button expand="full" type="submit" *ngIf="cadastroCredito.valid && liberaArquivo">
+      <ion-button expand="full" type="submit" *ngIf="cadastroCreditoFinanceiro.valid && liberaArquivo">
         CADASTRAR
       </ion-button>
       <ion-button expand="full" [disabled]="true"
-        *ngIf="(!cadastroCredito.valid && !liberaArquivo) || (!cadastroCredito.valid && liberaArquivo) || (cadastroCredito.valid && !liberaArquivo)">
+        *ngIf="(!cadastroCreditoFinanceiro.valid && !liberaArquivo) || (!cadastroCreditoFinanceiro.valid && liberaArquivo) || (cadastroCreditoFinanceiro.valid && !liberaArquivo)">
         CADASTRAR
       </ion-button>
     </div>

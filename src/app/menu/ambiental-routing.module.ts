@@ -52,6 +52,10 @@ const routes: Routes = [
         loadChildren: './pages/credito/credito.module#CreditoPageModule'
       },
       {
+        path: 'UpdateCadastroCreditoFinanceiro/:id',
+        loadChildren: './pages/credito/credito.module#CreditoPageModule'
+      },
+      {
         path: '',
         loadChildren: './pages/home-ambiental/home-ambiental.module#HomeAmbientalPageModule'
       }

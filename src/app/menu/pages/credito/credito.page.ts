@@ -55,7 +55,8 @@ export class CreditoPage implements OnInit {
 
       // ARQUIVOS
       public uploadPercent: Observable<number>;
-      public downloadUrl: Observable<string>;    
+      public downloadUrl: Observable<string>;  
+      public urlFoto: string;  
       arquivos: Object;
       files2: Observable<any[]>;
       fileName = '';
@@ -65,11 +66,11 @@ export class CreditoPage implements OnInit {
         private formBuilder: FormBuilder,
         private overlayService: OverlayService,
         private navCtrl: NavController,
-        private route: ActivatedRoute,        
+        private route: ActivatedRoute, 
+        private creditoService: CreditoService,       
         private clienteService: ClienteService,
         private usuarioService: UsuarioService,
-        private storage: AngularFireStorage,
-        private creditoService: CreditoService  ) {}
+        private storage: AngularFireStorage ) {}
 
       // metodo que é chamado quando a pagina é carregada
       ngOnInit() {
@@ -150,7 +151,7 @@ export class CreditoPage implements OnInit {
 
       async cadastraListaGlobal(id: string) {
         this.creditoService.initLA();
-        const credito = await this.creditoService.createGlobal(this.cadastroCreditoFinanceiro.value, id);
+        const cadastroCredito = await this.creditoService.createGlobal(this.cadastroCreditoFinanceiro.value, id);
       }
 
       async AtualizaListaGlobal() {
@@ -170,14 +171,16 @@ export class CreditoPage implements OnInit {
           message: this.toastMessage
         });
         try {
-          const credito = '';
+          const cadastroCredito = '';
           if (!this.creditoId) {
 
             this.creditoService.init();
 
-            const credito = await this.creditoService.create(this.cadastroCreditoFinanceiro.value);
+            const cadastroCredito = await this.creditoService.create(this.cadastroCreditoFinanceiro.value);
 
-            this.cadastraListaGlobal(this.creditoService.id);          
+            this.cadastraListaGlobal(this.creditoService.id);    
+            
+            this.deletePicture();
 
             this.uploadFileTo(this.arquivos);
 
@@ -199,8 +202,8 @@ export class CreditoPage implements OnInit {
             this.AtualizaListaGlobal();
 
           }
-          console.log('Cadastro Financeiro Criado', credito);
-          this.navCtrl.navigateBack('/menu/ambiental/credito');
+          console.log('Cadastro Financeiro Criado', cadastroCredito);
+          this.navCtrl.navigateBack('/menu/ambiental/listaCreditoFinanceiro');
         } catch (error) {
           await this.overlayService.toast({
             message: error.message
@@ -209,37 +212,78 @@ export class CreditoPage implements OnInit {
         } finally {
           loading.dismiss();
         }
-      }        
-
-      async uploadFileTo(file: Object){
-
-          const ref2 = this.storage.ref(`/users/${this.creditoService.usuarioId}/credito/${this.creditoService.id}/arquivos/${this.fileName}`);
-          const task2 = ref2.put(file);
-
-          task2.snapshotChanges().pipe(
-            finalize(async () => {
-
-              this.downloadUrl = ref2.getDownloadURL();
-              this.liberaArquivo = true;
-
-              this.downloadUrl.subscribe(async r => {
-                this.creditoService.init();
-                const atualizarFoto = await this.creditoService.update({
-                  id: this.creditoService.id,
-                  dataAprovacaoCredito: this.cadastroCreditoFinanceiro.get('dataAprovacaoCredito').value,
-                  dataExpiracaoCredito: this.cadastroCreditoFinanceiro.get('dataExpiracaoCredito').value,
-                  valorCredito: this.cadastroCreditoFinanceiro.get('valorCredito').value,
-                  clienteId: this.cadastroCreditoFinanceiro.get('clienteId').value,
-                  arquivo: r
-                });
-              });
-            })
-          ).subscribe();
       }  
+      
+      async openGalery(event: FileList){
+        try {
+          const file = event.item(0);
+            if (file.type.split('/')[0] === 'image') {
+              await this.overlayService.toast({
+                message: 'tipo de arquivo não pode ser enviado por esse campo :('
+              });
+              return;
+            }
+          this.fileName = file.name;
+          this.arquivos = file;
+          this.uploadFile(file);
+
+        }catch(error){
+          console.error(error);
+        }
+      }
+
+      async uploadFile(file: Object){
+        const ref = this.storage.ref(`${this.fileName}`);
+        const task = ref.put(file);
+        //
+        this.uploadPercent = task.percentageChanges();
+        task.snapshotChanges().pipe(
+          finalize(async () => {
+            const loading = await this.overlayService.loading({
+              message: "Carregando Foto..."
+            });
+
+            this.downloadUrl = ref.getDownloadURL();
+            this.liberaArquivo = true;
+
+            this.downloadUrl.subscribe(async r => {
+              this.urlFoto = r;
+            });
+
+            loading.dismiss();
+          })
+        ).subscribe();
+    }
+
+    async uploadFileTo(file: Object){
+
+      const ref2 = this.storage.ref(`/users/${this.creditoService.usuarioId}/CadastroRuralAmbiental/${this.creditoService.id}/arquivos/${this.fileName}`);
+      const task2 = ref2.put(file);
+
+      task2.snapshotChanges().pipe(
+        finalize(async () => {
+
+          this.downloadUrl = ref2.getDownloadURL();
+          this.liberaArquivo = true;
+
+          this.downloadUrl.subscribe(async r => {
+            this.creditoService.init();
+            const atualizarFoto = await this.creditoService.update({
+              id: this.creditoService.id,  
+                dataAprovacaoCredito: this.cadastroCreditoFinanceiro.get('dataAprovacaoCredito').value,  
+                dataExpiracaoCredito: this.cadastroCreditoFinanceiro.get('dataExpiracaoCredito').value, 
+                valorCredito: this.cadastroCreditoFinanceiro.get('valorCredito').value,
+                clienteId: this.cadastroCreditoFinanceiro.get('clienteId').value,
+                arquivo: r                
+            });
+          });
+        })
+      ).subscribe();
+  }
 
       async uploadFileToUpdate(file: Object){
 
-        const ref2 = this.storage.ref(`/users/${this.usuarioService.id}/credito/${this.usuarioService.id}/arquivos/${this.fileName}`);
+        const ref2 = this.storage.ref(`/users/${this.creditoService.id}/cadastroCredito/${this.creditoService.id}/arquivos/${this.fileName}`);
         const task2 = ref2.put(file);
 
         task2.snapshotChanges().pipe(
@@ -251,7 +295,7 @@ export class CreditoPage implements OnInit {
             this.downloadUrl.subscribe(async r => {
               this.creditoService.init();
               const atualizarFoto = await this.creditoService.update({
-                id: this.creditoId,  
+                id: this.creditoService.id,  
                 dataAprovacaoCredito: this.cadastroCreditoFinanceiro.get('dataAprovacaoCredito').value,  
                 dataExpiracaoCredito: this.cadastroCreditoFinanceiro.get('dataExpiracaoCredito').value, 
                 valorCredito: this.cadastroCreditoFinanceiro.get('valorCredito').value,

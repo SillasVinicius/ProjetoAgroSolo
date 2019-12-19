@@ -1,27 +1,29 @@
-<ion-item-sliding #sliding>
+<ion-item-sliding #sliding >
   <ion-item (onload)="sliding.open()">
-    <ion-button (click)="sliding.open(); abrir() " *ngIf=!clicado>
-      <ion-icon slot="icon-only" name="menu"></ion-icon>
-    </ion-button>
-    <ion-button (click)="sliding.close(); fechar() " *ngIf=!clicado>
-      <ion-icon slot="icon-only" name="menu" ></ion-icon>
-    </ion-button>
-  {{ cadastroCreditoFinanceiro.cliente }}  
+    <ion-button (click)="sliding.open(); abrir()" fill="clear" *ngIf="!clicado">
+    <ion-icon slot="icon-only" name="menu"></ion-icon>
+  </ion-button>
+  <ion-button (click)="sliding.close(); fechar()" fill="clear" *ngIf="clicado">
+    <ion-icon slot="icon-only" name="menu"></ion-icon>
+  </ion-button>
+    {{ cadastroCreditoFinanceiro.cliente }}
   </ion-item>
-  <ion-item slot="end" style="margin: 0; padding: 0; width: 160px; font-size: 65%; ">{{ msgVencimento }} <ion-icon ion-icon slot="end" name="alert" [color]="cor"></ion-icon></ion-item>
+  <ion-item slot="end" style="margin: 0; padding: 0; width: 160px; font-size: 65%; ">{{ msgVencimento }} <ion-icon
+      ion-icon slot="end" name="alert" [color]="cor"></ion-icon>
+  </ion-item>
 
-<ion-item-options side="start">
-  <ion-item-option color="danger" (click)="delete.emit(cadastroCreditoFinanceiro); sliding.close()" *ngIf="!admin">
-    <ion-icon slot="icon-only" name="trash"></ion-icon>
-  </ion-item-option>
-  <ion-item-option color="tertiary" (click)="update.emit(cadastroCreditoFinanceiro); sliding.close()" *ngIf="!admin">
-    <ion-icon slot="icon-only" name="create"></ion-icon>
-  </ion-item-option>
-  <ion-item-option color="tertiary" (click)="update.emit(cadastroCreditoFinanceiro); sliding.close()" *ngIf="admin">
-    <ion-icon slot="icon-only" name="eye"></ion-icon>
-  </ion-item-option>
-  <ion-item-option color="primary" (click)="openLink(); sliding.close()" *ngIf="!admin">
-    <ion-icon slot="icon-only" name="cloud-download"></ion-icon>
-  </ion-item-option>
-</ion-item-options>
+  <ion-item-options side="start">
+    <ion-item-option color="danger" (click)="delete.emit(cadastroCredito); sliding.close()" *ngIf="!admin">
+      <ion-icon slot="icon-only" name="trash"></ion-icon>
+    </ion-item-option>
+    <ion-item-option color="tertiary" (click)="update.emit(cadastroCredito); sliding.close()" *ngIf="!admin">
+      <ion-icon slot="icon-only" name="create"></ion-icon>
+    </ion-item-option>
+    <ion-item-option color="tertiary" (click)="update.emit(cadastroCredito); sliding.close()" *ngIf="admin">
+      <ion-icon slot="icon-only" name="eye"></ion-icon>
+    </ion-item-option>
+    <ion-item-option color="primary" (click)="openLink(); sliding.close()" *ngIf="!admin">
+      <ion-icon slot="icon-only" name="cloud-download"></ion-icon>
+    </ion-item-option>
+  </ion-item-options>
 </ion-item-sliding>

@@ -2,7 +2,6 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 import { UsuarioService } from 'src/app/core/services/usuario.service';
 import { AlertController } from '@ionic/angular';
-
 import { Credito } from '../../models/credito.model';
 
 
@@ -19,7 +18,7 @@ export class ListaCreditoItemComponent implements OnInit {
   dia = this.data.getDate();
   mes = this.data.getMonth() + 1;
   ano = this.data.getFullYear();
-  dataAtual = [this.mes, this.dia , this.ano].join('/');
+  dataAtual = [this.mes, this.dia, this.ano].join('/');
 
   msgVencimento: string = ''
   cor: string = ''
@@ -30,27 +29,27 @@ export class ListaCreditoItemComponent implements OnInit {
   @Output() update = new EventEmitter<Credito>();
   @Output() delete = new EventEmitter<Credito>();
 
-  ngOnInit(){
+  ngOnInit() {
     this.clicado = false;
     let diasVenc: number = Number.parseInt(this.retornaDiasVencimento());
     if (diasVenc === 0) {
-        this.msgVencimento = "Vence hoje!";
-        this.cor = 'danger';
+      this.msgVencimento = "Vence hoje!";
+      this.cor = 'danger';
     }
     else if (diasVenc > 0) {
-        this.msgVencimento = `Vence em ${diasVenc} dias!`;
-        if (diasVenc === 1) {
-          this.cor = 'danger';
-        }
-        else if (diasVenc <= 5) {
-          this.cor = 'warning';
-        }
-        else{
-          this.cor = 'success';
-        }
+      this.msgVencimento = `Vence em ${diasVenc} dias!`;
+      if (diasVenc === 1) {
+        this.cor = 'danger';
+      }
+      else if (diasVenc <= 5) {
+        this.cor = 'warning';
+      }
+      else {
+        this.cor = 'success';
+      }
     }
     else {
-      let diasSemMenos = this.retornaDiasVencimento().replace('-','');
+      let diasSemMenos = this.retornaDiasVencimento().replace('-', '');
       this.msgVencimento = `Venceu a ${diasSemMenos} dias!`;
       this.cor = 'danger';
     }
@@ -72,29 +71,29 @@ export class ListaCreditoItemComponent implements OnInit {
   }
 
   async presentAlert(dias: string) {
-     const alert = await this.alertController.create({
-       header: 'AVISO',
-       subHeader: 'Limite de Crédito Irá Vencer!',
-       message: `O Limite de Crédito'${this.cadastroCreditoFinanceiro.valorCredito}' vence em ${dias} dias!`,
-       buttons: ['OK']
-     });
+    const alert = await this.alertController.create({
+      header: 'AVISO',
+      subHeader: 'Limite de Crédito Irá Vencer!',
+      message: `O Limite de Crédito'${this.cadastroCreditoFinanceiro.valorCredito}' vence em ${dias} dias!`,
+      buttons: ['OK']
+    });
 
-     await alert.present();
-   }
+    await alert.present();
+  }
 
-  abrir(){
+  abrir() {
     this.clicado = true;
   }
 
-  fechar(){
+  fechar() {
     this.clicado = false;
   }
 
-  openLink(){
+  openLink() {
     this.iab.create(`${this.cadastroCreditoFinanceiro.arquivo}`, `_system`);
   }
 
-  retornaDiasVencimento(): string{
+  retornaDiasVencimento(): string {
 
 
     let dataAprovacaoCredito = new Date(this.cadastroCreditoFinanceiro.dataExpiracaoCredito);
@@ -104,21 +103,21 @@ export class ListaCreditoItemComponent implements OnInit {
 
     //console.log(dataInicialFormatada + " - " + dataFinalFormatada);
 
-    var dataAprovacaoCreditoMilissegundos = new Date(dataAprovacaoCredito).getTime();
-    var dataExpiracaoMilissegundos = new Date(dataExpiracaoFormatada).getTime();
+    var dataAprovacaoCreditoMilissegundos = new Date(dataAprovacaoCreditoFormatada).getTime();
+    var dataExpiracaoCreditoMilissegundos = new Date(dataExpiracaoFormatada).getTime();
 
     //console.log(dataInicialMilissegundos + ' - ' + dataFinalMilissegundos);
 
     // Transforme 1 dia em milissegundos
-    var umDiaMilissegundos = 1000*60*60*24;
+    var umDiaMilissegundos = 1000 * 60 * 60 * 24;
 
     // Calcule a diferença em milissegundos
-    var diferencaMilissegundos = dataExpiracaoMilissegundos  - dataAprovacaoCreditoMilissegundos;
+    var diferencaMilissegundos = dataExpiracaoCreditoMilissegundos - dataAprovacaoCreditoMilissegundos;
 
     // Converta novamente para data
-    var diferencaData = Math.round(diferencaMilissegundos/umDiaMilissegundos);
+    var diferencaData = Math.round(diferencaMilissegundos / umDiaMilissegundos);
 
-    return ""+diferencaData;
+    return "" + diferencaData;
   }
 
 }

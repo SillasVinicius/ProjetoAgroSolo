@@ -15,7 +15,7 @@ import { take } from 'rxjs/operators';
 export class ListaCreditoPage implements OnInit {
 
   
-  creditos$: Observable<Credito[]>;
+  cadastrosDeCreditos$: Observable<Credito[]>;
   constructor(
     private navCtrl: NavController,
     private creditoService: CreditoService,
@@ -27,18 +27,18 @@ export class ListaCreditoPage implements OnInit {
     const loading = await this.overlayService.loading();
     if (this.usuarioService.admin) {
       this.creditoService.initCredito();
-      this.creditos$ = this.creditoService.getAll();
-      this.creditos$.pipe(take(1)).subscribe(() => loading.dismiss());
+      this.cadastrosDeCreditos$ = this.creditoService.getAll();
+      this.cadastrosDeCreditos$.pipe(take(1)).subscribe(() => loading.dismiss());
     }
     else {
       this.creditoService.init();
-      this.creditos$ = this.creditoService.getAll();
-      this.creditos$.pipe(take(1)).subscribe(() => loading.dismiss());
+      this.cadastrosDeCreditos$ = this.creditoService.getAll();
+      this.cadastrosDeCreditos$.pipe(take(1)).subscribe(() => loading.dismiss());
     }
   }
 
   atualizar(credito: Credito): void {
-    this.navCtrl.navigateForward(`/menu/updateCredito/${credito.id}`);
+    this.navCtrl.navigateForward(`/menu/ambiental/UpdateCadastroCreditoFinanceiro/${credito.id}`);
   }
 
   async deletar(credito: Credito): Promise<void> {

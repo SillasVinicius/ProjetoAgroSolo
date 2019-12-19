@@ -68,7 +68,7 @@ export class CriaCarPage implements OnInit {
         private route: ActivatedRoute,
         private cadastroRuralAmbientalService: CarService,
         private clienteService: ClienteService,
-          private usuarioService: UsuarioService,
+        private usuarioService: UsuarioService,
         private storage: AngularFireStorage  ) {}
 
       // metodo que é chamado quando a pagina é carregada
