@@ -134,10 +134,10 @@
       </ion-button>
     </div>
     <div *ngIf="!admin && update">
-      <ion-button expand="full" type="submit" *ngIf="cadastroCredito.valid">
+      <ion-button expand="full" type="submit" *ngIf="cadastroCreditoFinanceiro.valid">
         ATUALIZAR
       </ion-button>
-      <ion-button expand="full" [disabled]="true" *ngIf="!cadastroCredito.valid">
+      <ion-button expand="full" [disabled]="true" *ngIf="!cadastroCreditoFinanceiro.valid">
         ATUALIZAR
       </ion-button>
     </div>
