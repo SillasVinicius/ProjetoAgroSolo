@@ -101,15 +101,22 @@ export class CreditoPage implements OnInit {
       }
       // Cria formulários
       criaFormulario(): void {
-        this.cadastroCreditoFinanceiro = this.formBuilder.group({          
+        this.cadastroCreditoFinanceiro = this.formBuilder.group({ 
+          descricao: this.formBuilder.control('', [Validators.required, Validators.minLength(3)]),         
           dataAprovacaoCredito: this.formBuilder.control('', [Validators.required, Validators.minLength(10), Validators.maxLength(10)]),
           dataExpiracaoCredito: this.formBuilder.control('', [Validators.required, Validators.minLength(10), Validators.maxLength(10)]),
-          valorCredito: this.formBuilder.control('', [Validators.required]),
+          valorCredito: this.formBuilder.control('', [
+            Validators.required,
+            Validators.minLength(3)
+          ]),
           clienteId: this.formBuilder.control('', [Validators.required])
         });
       }
 
       // metodos get que pegam o valor do input no formulário
+      get descricao(): FormControl {
+        return this.cadastroCreditoFinanceiro.get('descricao') as FormControl;
+      }
       get dataAprovacaoCredito(): FormControl {
         return this.cadastroCreditoFinanceiro.get('dataAprovacaoCredito') as FormControl;
       }
@@ -141,10 +148,11 @@ export class CreditoPage implements OnInit {
         this.creditoService
           .get(creditoId)
           .pipe(take(1))
-          .subscribe(({ dataAprovacaoCredito, dataExpiracaoCredito, valorCredito, clienteId  }) => {
+          .subscribe(({ descricao, dataAprovacaoCredito, dataExpiracaoCredito, valorCredito, clienteId  }) => {
             this.cadastroCreditoFinanceiro.get('dataAprovacaoCredito').setValue(dataAprovacaoCredito),
               this.cadastroCreditoFinanceiro.get('dataExpiracaoCredito').setValue(dataExpiracaoCredito),
               this.cadastroCreditoFinanceiro.get('valorCredito').setValue(valorCredito),
+              this.cadastroCreditoFinanceiro.get('descricao').setValue(descricao),
               this.cadastroCreditoFinanceiro.get('clienteId').setValue(clienteId)
           });
       }
@@ -158,6 +166,7 @@ export class CreditoPage implements OnInit {
         this.creditoService.initLA();
         const atualizarFoto = await this.creditoService.update({
           id: this.creditoId,
+          descricao: this.cadastroCreditoFinanceiro.get('descricao').value,
           dataAprovacaoCredito: this.cadastroCreditoFinanceiro.get('dataAprovacaoCredito').value,
           dataExpiracaoCredito: this.cadastroCreditoFinanceiro.get(' dataExpiracaoCredito').value,
           valorCredito: this.cadastroCreditoFinanceiro.get('valorCredito').value,
@@ -194,6 +203,7 @@ export class CreditoPage implements OnInit {
             const atualizar = await this.creditoService.update({
               id: this.creditoId,
               dataAprovacaoCredito: this.cadastroCreditoFinanceiro.get('dataAprovacaoCredito').value,
+              descricao: this.cadastroCreditoFinanceiro.get('descricao').value,
               dataExpiracaoCredito: this.cadastroCreditoFinanceiro.get('dataExpiracaoCredito').value,
               valorCredito: this.cadastroCreditoFinanceiro.get('valorCredito').value,
               clienteId: this.cadastroCreditoFinanceiro.get('clienteId').value
@@ -274,6 +284,7 @@ export class CreditoPage implements OnInit {
                 dataExpiracaoCredito: this.cadastroCreditoFinanceiro.get('dataExpiracaoCredito').value, 
                 valorCredito: this.cadastroCreditoFinanceiro.get('valorCredito').value,
                 clienteId: this.cadastroCreditoFinanceiro.get('clienteId').value,
+                descricao: this.cadastroCreditoFinanceiro.get('descricao').value,
                 arquivo: r                
             });
           });
@@ -300,6 +311,7 @@ export class CreditoPage implements OnInit {
                 dataExpiracaoCredito: this.cadastroCreditoFinanceiro.get('dataExpiracaoCredito').value, 
                 valorCredito: this.cadastroCreditoFinanceiro.get('valorCredito').value,
                 clienteId: this.cadastroCreditoFinanceiro.get('clienteId').value,
+                descricao: this.cadastroCreditoFinanceiro.get('descricao').value,
                 arquivo: r                
               });
             });

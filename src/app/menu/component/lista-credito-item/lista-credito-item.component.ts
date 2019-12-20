@@ -96,8 +96,8 @@ export class ListaCreditoItemComponent implements OnInit {
   retornaDiasVencimento(): string {
 
 
-    let dataAprovacaoCredito = new Date(this.cadastroCreditoFinanceiro.dataExpiracaoCredito);
-    let dataExpiracaoFormatada = (dataAprovacaoCredito.getMonth() + 1) + "/" + (dataAprovacaoCredito.getDate() + 1) + "/" + dataAprovacaoCredito.getFullYear();
+    let dataExpiracaoCredito = new Date(this.cadastroCreditoFinanceiro.dataExpiracaoCredito);
+    let dataExpiracaoFormatada = (dataExpiracaoCredito.getMonth() + 1) + "/" + (dataExpiracaoCredito.getDate() + 1) + "/" + dataExpiracaoCredito.getFullYear();
     let dataAprovacaoCreditoFormatada = this.dataAtual;
 
 
