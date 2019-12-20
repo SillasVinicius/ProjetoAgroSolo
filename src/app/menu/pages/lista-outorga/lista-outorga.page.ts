@@ -14,6 +14,8 @@ import { UsuarioService } from 'src/app/core/services/usuario.service';
 })
 export class ListaOutorgaPage implements OnInit {
 
+  Outorga = [];
+
   outorgas$: Observable<Outorga[]>;
   constructor(
     private navCtrl: NavController,
@@ -35,6 +37,12 @@ export class ListaOutorgaPage implements OnInit {
       this.outorgas$.pipe(take(1)).subscribe(() => loading.dismiss());
     }
   }
+
+  
+
+
+    
+  
 
   atualizar(outorga: Outorga): void {
     this.navCtrl.navigateForward(`/menu/updateOutorga/${outorga.id}`);

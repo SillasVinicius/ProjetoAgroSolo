@@ -1,6 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { NavController } from '@ionic/angular';
 import { UsuarioService } from 'src/app/core/services/usuario.service';
+import { ClienteService } from 'src/app/core/services/cliente.service';
+import { Cliente } from '../../models/cliente.model';
+import { Observable } from 'rxjs';
+import { take } from 'rxjs/operators';
+import { OverlayService } from 'src/app/core/services/overlay.service';
 
 @Component({
   selector: 'app-home',
@@ -8,12 +13,15 @@ import { UsuarioService } from 'src/app/core/services/usuario.service';
   styleUrls: ['./home.page.scss']
 })
 export class HomePage implements OnInit {
+  clientes$: Observable<Cliente[]>;
   nomeUser = '...';
   urlFoto = '...';
   admin = false;
   constructor(
     private usuario: UsuarioService,
-    private navCtrl: NavController
+    private navCtrl: NavController,
+    private overlayService: OverlayService,
+    private clienteService: ClienteService
   ) {}
   linkCliente() {
     this.navCtrl.navigateForward('/menu/cliente');
@@ -39,9 +47,18 @@ export class HomePage implements OnInit {
   linkDeclaracoes(){
     this.navCtrl.navigateForward("/menu/DeclaracaoAmbiental")
   }
-  ngOnInit() {
+  async ngOnInit() {
     this.nomeUser = this.usuario.nomeUser;
     this.urlFoto = this.usuario.urlFoto;
     this.admin = this.usuario.admin;
+
+    const loading = await this.overlayService.loading();
+    this.clienteService.initCliente();
+    this.clientes$ = this.clienteService.getAll();
+    this.clientes$.pipe(take(1)).subscribe(() => loading.dismiss());
+
+
   }
+
+
 }
