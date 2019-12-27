@@ -50,7 +50,8 @@
     <ion-grid>
       <ion-row>
         <ion-col>
-          <ion-card class="caixa" (click)="linkCliente()" style="background-color: #98FB98; color: #000;" *ngIf="clientes$ | async as clientes">
+          <ion-card class="caixa" (click)="linkCliente()" style="background-color: #98FB98; color: #000;"
+            *ngIf="clientes$ | async as clientes">
             <ion-card-header>
               <ion-card-subtitle style="color:#000; text-align:center;"><b>Total de Clientes
                   Cadastrados</b></ion-card-subtitle>
@@ -59,28 +60,17 @@
               <strong>{{clientes.length}}</strong>
             </ion-card-content>
           </ion-card>
-
         </ion-col>
+
         <ion-col>
           <ion-card class="caixa" style="background-color: #00FF7F; color: #00643a;">
             <ion-card-header>
-              <ion-card-subtitle style="color:#00643a; text-align:center;"><strong>Total de Aniversários do Mês</strong>
+              <ion-card-subtitle style="color:#00643a; text-align:center;"><strong>Total de Aniversários do Mês
+                  ({{mesAtual}}/{{ano}})</strong>
               </ion-card-subtitle>
             </ion-card-header>
             <ion-card-content style="text-align:center; font-size: 20px;">
               <strong>{{quantidadeAniversariantesMes.length}}</strong>
-            </ion-card-content>
-          </ion-card>
-        </ion-col>
-
-        <ion-col>
-          <ion-card class="caixa" style="background-color: #3CB371; color: white;">
-            <ion-card-header>
-              <ion-card-subtitle style="color:white; text-align:center;"><strong>Aniversariantes do Dia</strong>
-              </ion-card-subtitle>
-            </ion-card-header>
-            <ion-card-content style="text-align:center;">
-              {{aniversarios}}
             </ion-card-content>
           </ion-card>
         </ion-col>
@@ -90,6 +80,36 @@
     <ion-grid>
       <ion-row>
 
+
+        <ion-col>
+
+          <ion-card class="caixa" style="background-color: #3CB371; color: white;">
+            <ion-card-header>
+              <ion-card-subtitle style="color:white; text-align:center;"><strong>Aniversariantes do Dia
+                  ({{dia}}/{{mesAtual}})</strong>
+              </ion-card-subtitle>
+            </ion-card-header>
+            <ion-card-content style="text-align:center; font-size: 15px;">
+              <ion-list style="background-color: #3CB371; color: white;">
+                <ng-container *ngIf="aniversariantesMes.length > 0; else semNiver">
+                  <ion-list *ngFor="let niverDay of aniversariantesMes"
+                    style="text-align: left; background-color: #3CB371; color: white;">
+                    <strong>- {{niverDay.nome}}</strong>
+                  </ion-list>
+                </ng-container>
+                <ng-template #semNiver>
+                  <ion-item lines="none">Sem comemorações hoje...</ion-item>
+                </ng-template>
+              </ion-list>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+
+      </ion-row>
+    </ion-grid>
+
+    <ion-grid>
+      <ion-row>
         <ion-col>
           <ion-card (click)="linkOutorgas()" class="caixa" style="background-color: #DAA520; color: white;">
             <ion-card-header>
@@ -97,7 +117,8 @@
               </ion-card-subtitle>
             </ion-card-header>
             <ion-card-content>
-           
+              <strong>Dentro de 15 dias = {{outorgas15Dias.length}}</strong><br/>
+              <strong>Dentro de 30 dias = {{outorgas30Dias.length}}</strong>
             </ion-card-content>
           </ion-card>
         </ion-col>
@@ -108,7 +129,8 @@
                   Vencer</strong></ion-card-subtitle>
             </ion-card-header>
             <ion-card-content>
-              
+              <strong>Dentro de 15 dias = {{la15Dias.length}}</strong><br/>
+              <strong>Dentro de 30 dias = {{la30Dias.length}}</strong>
             </ion-card-content>
           </ion-card>
         </ion-col>
@@ -120,7 +142,7 @@
               </ion-card-subtitle>
             </ion-card-header>
             <ion-card-content>
-           
+
             </ion-card-content>
           </ion-card>
         </ion-col>

@@ -6,6 +6,10 @@ import { Cliente } from '../../models/cliente.model';
 import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { OverlayService } from 'src/app/core/services/overlay.service';
+import { Outorga } from '../../models/outorga.model';
+import { OutorgaService } from 'src/app/core/services/outorga.service';
+import { LicencaAmbiental } from '../../models/la.model';
+import { LaService } from 'src/app/core/services/la.service';
 
 @Component({
   selector: 'app-home',
@@ -14,18 +18,24 @@ import { OverlayService } from 'src/app/core/services/overlay.service';
 })
 export class HomePage implements OnInit {
   clientes$: Observable<Cliente[]>;
+  outorgas$: Observable<Outorga[]>;
+  licencasAmbientais$: Observable<LicencaAmbiental[]>;
 
   data: Date = new Date();
   dia = this.data.getDate();
   mes = this.data.getMonth() + 1;
   ano = this.data.getFullYear();
   // variaveis para saber os aniversáriantes do mês
-  dataAtual = [this.mes, this.dia].join('/');
+  dataAtual = [this.mes, this.dia,].join('/');
+  dataAtualAno = [this.mes, this.dia, this.ano].join('/');
   mesAtual = parseInt([this.mes].join(''));
   aniversariantesMes: Array<any> = [];
+  outorgas15Dias: Array<any> = [];
+  outorgas30Dias: Array<any> = [];
+  la15Dias: Array<any> = [];
+  la30Dias: Array<any> = [];
+  dias120: Array<any> = [];
   quantidadeAniversariantesMes: Array<any> = [];
-
-  @Input() cliente: Cliente;
 
   nomeUser = '...';
   urlFoto = '...';
@@ -34,8 +44,10 @@ export class HomePage implements OnInit {
     private usuario: UsuarioService,
     private navCtrl: NavController,
     private overlayService: OverlayService,
-    private clienteService: ClienteService
-  ) {}
+    private clienteService: ClienteService,
+    private outorgaService: OutorgaService,
+    private licencaAmbientalService: LaService
+  ) { }
   linkCliente() {
     this.navCtrl.navigateForward('/menu/cliente');
   }
@@ -51,19 +63,15 @@ export class HomePage implements OnInit {
   linkAlterarUsuario() {
     this.navCtrl.navigateForward(`/menu/updateUsuario/${this.usuario.id}`);
   }
-  linkOutorgas(){
+  linkOutorgas() {
     this.navCtrl.navigateForward('/menu/outorga')
   }
-  linkAmbientais(){
+  linkAmbientais() {
     this.navCtrl.navigateForward("/menu/LicencaAmbiental")
   }
-  linkDeclaracoes(){
+  linkDeclaracoes() {
     this.navCtrl.navigateForward("/menu/DeclaracaoAmbiental")
   }
-
-
-
-
 
   async ngOnInit() {
     this.nomeUser = this.usuario.nomeUser;
@@ -75,14 +83,23 @@ export class HomePage implements OnInit {
     this.clientes$ = this.clienteService.getAll();
     this.clientes$.pipe(take(1)).subscribe(() => loading.dismiss());
 
+    this.outorgaService.initOutorga();
+    this.outorgas$ = this.outorgaService.getAll();
+    this.outorgas$.pipe(take(1)).subscribe(() => loading.dismiss());
+
+    this.licencaAmbientalService.initLA();
+    this.licencasAmbientais$ = this.licencaAmbientalService.getAll();
+    this.licencasAmbientais$.pipe(take(1)).subscribe(() => loading.dismiss());
+
     this.retornaDiasVencimento();
+    this.vencimento(this.outorgas$, 'outorga');
+    this.vencimento(this.licencasAmbientais$, 'la');
   }
 
   async retornaDiasVencimento() {
 
     this.clientes$.forEach(element => {
 
-      console.log('Cliente');
       this.aniversariantesMes = [];
       this.quantidadeAniversariantesMes = [];
       let nomesAniversariantesDia: Array<any> = [];
@@ -90,13 +107,13 @@ export class HomePage implements OnInit {
       let qtdArray: Array<any> = [];
 
       element.forEach(cli => {
-        console.log(cli.dataNascimento);  
+        //console.log(cli.dataNascimento);  
         let dataInicialRecebida = new Date(cli.dataNascimento);
         let dataFinalFormatada = (dataInicialRecebida.getMonth() + 1) + "/" + (dataInicialRecebida.getDate());
         let dataInicialFormatada = this.dataAtual;
 
         let dataMesAtualNiver = (dataInicialRecebida.getMonth() + 1);
-       // console.log('mes', dataMesAtualNiver, ' atual  ', this.mesAtual);
+        // console.log('mes', dataMesAtualNiver, ' atual  ', this.mesAtual);
 
 
         //console.log(dataInicialFormatada + " - " + dataFinalFormatada);
@@ -107,30 +124,85 @@ export class HomePage implements OnInit {
         //console.log(dataInicialMilissegundos + ' - ' + dataFinalMilissegundos);
 
         // Transforme 1 dia em milissegundos
-        var umDiaMilissegundos = 1000*60*60*24;
+        var umDiaMilissegundos = 1000 * 60 * 60 * 24;
 
         // Calcule a diferença em milissegundos
-        var diferencaMilissegundos = dataFinalMilissegundos  - dataInicialMilissegundos;
+        var diferencaMilissegundos = dataFinalMilissegundos - dataInicialMilissegundos;
 
         // Converta novamente para data
-        var diferencaData = Math.round(diferencaMilissegundos/umDiaMilissegundos);
+        var diferencaData = Math.round(diferencaMilissegundos / umDiaMilissegundos);
 
-        console.log(diferencaData);
+        //console.log(diferencaData);
 
         if (diferencaData == 0) {
-          nomesAniversariantesDia.push(cli.nome);
+          nomesAniversariantesDia.push(cli);
         }
 
-        if (this.mesAtual == dataMesAtualNiver && diferencaData >= 0) {
-          console.log('54541541')
+        if (this.mesAtual == dataMesAtualNiver) {
           qtdNiverMes = qtdNiverMes + 1;
           qtdArray.push(qtdNiverMes);
         }
       });
 
-      this.aniversariantesMes.push(nomesAniversariantesDia);
+      this.aniversariantesMes = nomesAniversariantesDia;
       this.quantidadeAniversariantesMes = qtdArray;
-      console.log(this.aniversariantesMes, '------', this.quantidadeAniversariantesMes);
+      //console.log(this.aniversariantesMes, '------', this.quantidadeAniversariantesMes);
     });
+  }
+
+  async vencimento(listaCadastrosAmbientais, painel) {
+
+    listaCadastrosAmbientais.forEach(vencimentos => {
+      if (painel === 'outorga') {
+        this.outorgas15Dias = [];
+        this.outorgas30Dias = [];
+      }
+      if (painel === 'la') {
+        this.la15Dias = [];
+        this.la30Dias = [];
+      }
+      this.dias120 = [];
+
+      vencimentos.forEach(venci => {
+
+        let dataInicialRecebida = new Date(venci.dataDeVencimento);
+        let dataFinalFormatada = (dataInicialRecebida.getMonth() + 1) + "/" + dataInicialRecebida.getDate() + "/" + dataInicialRecebida.getFullYear();
+        let dataInicialFormatada = this.dataAtualAno;
+
+        //let dataOutorgaAtual = (dataInicialRecebida.getDate() + 1);
+
+        var dataInicialMilissegundos = new Date(dataInicialFormatada).getTime();
+        var dataFinalMilissegundos = new Date(dataFinalFormatada).getTime();
+
+
+        // Transforme 1 dia em milissegundos
+        var umDiaMilissegundos = 1000 * 60 * 60 * 24;
+
+        // Calcule a diferença em milissegundos
+        var diferencaMilissegundos = dataFinalMilissegundos - dataInicialMilissegundos;
+
+        // Converta novamente para data
+        var diferencaData = Math.round(diferencaMilissegundos / umDiaMilissegundos);
+
+        if (diferencaData <= 15) {
+          if (painel === 'outorga') {
+            this.outorgas15Dias.push(venci);
+          }
+          if (painel === 'la') {
+            this.la15Dias.push(venci);
+          }
+        }
+        if (diferencaData > 15 && diferencaData <= 30) {
+          if (painel === 'outorga') {
+            this.outorgas30Dias.push(venci);
+          }
+          if (painel === 'la') {
+            this.la30Dias.push(venci);
+          }
+        }
+
+      });
+    });
+
   }
 }
