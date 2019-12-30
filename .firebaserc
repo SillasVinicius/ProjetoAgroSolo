@@ -1,5 +1,6 @@
 {
   "projects": {
-    "default": "agrosolo-a5c19"
+    "default": "agrosolo-34e94",
+    "agro": "agrosolo-34e94"
   }
 }

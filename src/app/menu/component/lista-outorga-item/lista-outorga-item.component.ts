@@ -29,6 +29,8 @@ export class ListaOutorgaItemComponent implements OnInit{
   @Output() update = new EventEmitter<Outorga>();
   @Output() delete = new EventEmitter<Outorga>();
 
+
+
   async ngOnInit(){
     this.clicado = false;
     let diasVenc: number = Number.parseInt(this.retornaDiasVencimento());
@@ -63,10 +65,12 @@ export class ListaOutorgaItemComponent implements OnInit{
 
       if (diasVenc === 30) {
         this.presentAlert('30');
+
       }
       if (diasVenc === 15) {
         this.presentAlert('15');
       }
+
   }
 
   async presentAlert(dias: string) {
@@ -74,7 +78,8 @@ export class ListaOutorgaItemComponent implements OnInit{
        header: 'AVISO',
        subHeader: 'Outorga Irá Vencer!',
        message: `A outorga '${this.outorga.descricao}' vence em ${dias} dias!`,
-       buttons: ['OK']
+       buttons: ['OK'],
+
      });
 
      await alert.present();

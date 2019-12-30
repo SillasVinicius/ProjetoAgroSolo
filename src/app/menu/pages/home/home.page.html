@@ -1,50 +1,49 @@
+<ion-header class="header">
+  <ion-toolbar color="primary">
+    <app-menu-toogle
+      slot="start"
+      menu="main-menu"
+    ></app-menu-toogle>
+    <ion-title>Home</ion-title>
+    <app-logout-button
+      slot="end"
+      menu="main-menu"
+    ></app-logout-button>
+  </ion-toolbar>
+  <ion-grid>
+    <ion-row align-items-center>
+      <ion-col
+        text-center
+      >
+      <ion-chip class="rgba3" style="background: #00331e; height:45px;" *ngIf="!admin">
+          <ion-avatar style="height: 35px; width: 35px;">
+            <img [src]="urlFoto" *ngIf="urlFoto">
+            <img src="../../../assets/img/avatar.svg" *ngIf="!urlFoto">
+          </ion-avatar>
+          <ion-label>{{nomeUser}}
+          </ion-label>
+          <ion-avatar (click)="linkAlterarUsuario()" style="height: 35px; width: 35px;">
+            <img src="../../../assets/img/settings.svg">
+          </ion-avatar>
+      </ion-chip>
 
+      <ion-chip class="rgba3" style="background: gray; height:45px;" *ngIf="admin">
+          <ion-avatar style="height: 35px; width: 35px;">
+            <img [src]="urlFoto" *ngIf="urlFoto">
+            <img src="../../../assets/img/avatar.svg" *ngIf="!urlFoto">
+          </ion-avatar>
+          <ion-label>{{nomeUser}} / Admin
+          </ion-label>
+          <ion-avatar (click)="linkAlterarUsuario()" style="height: 35px; width: 35px;">
+            <img src="../../../assets/img/settings.svg">
+          </ion-avatar>
+      </ion-chip>
+
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-header>
 <ion-content>
-  <ion-header class="header">
-    <ion-toolbar color="primary">
-      <app-menu-toogle
-        slot="start"
-        menu="main-menu"
-      ></app-menu-toogle>
-      <ion-title>Home</ion-title>
-      <app-logout-button
-        slot="end"
-        menu="main-menu"
-      ></app-logout-button>
-    </ion-toolbar>
-    <ion-grid>
-      <ion-row align-items-center>
-        <ion-col
-          text-center
-        >
-        <ion-chip class="rgba3" style="background: #00331e; height:45px;" *ngIf="!admin">
-            <ion-avatar style="height: 35px; width: 35px;">
-              <img [src]="urlFoto" *ngIf="urlFoto">
-              <img src="../../../assets/img/avatar.svg" *ngIf="!urlFoto">
-            </ion-avatar>
-            <ion-label>{{nomeUser}}
-            </ion-label>
-            <ion-avatar (click)="linkAlterarUsuario()" style="height: 35px; width: 35px;">
-              <img src="../../../assets/img/settings.svg">
-            </ion-avatar>
-        </ion-chip>
-
-        <ion-chip class="rgba3" style="background: gray; height:45px;" *ngIf="admin">
-            <ion-avatar style="height: 35px; width: 35px;">
-              <img [src]="urlFoto" *ngIf="urlFoto">
-              <img src="../../../assets/img/avatar.svg" *ngIf="!urlFoto">
-            </ion-avatar>
-            <ion-label>{{nomeUser}} / Admin
-            </ion-label>
-            <ion-avatar (click)="linkAlterarUsuario()" style="height: 35px; width: 35px;">
-              <img src="../../../assets/img/settings.svg">
-            </ion-avatar>
-        </ion-chip>
-
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-  </ion-header>
   <ion-grid style="margin:0px; padding: 0px;">
     <ion-row align-items-center>
       <ion-col text-center style="width:100%; background: #a2bd31;" (click)="linkCliente()">
@@ -81,7 +80,6 @@
       </ion-col>
     </ion-row>
   </ion-grid>
-
   <ion-grid style="margin:0px; padding: 0px;">
     <ion-row align-items-center>
       <ion-col text-center style="width:100%; background-color: #001a0f" (click)="linkAmbiental()">
@@ -119,6 +117,6 @@
       </ion-col>
     </ion-row>
   </ion-grid>
-</ion-content>
 
-<img src="../../../../assets/img/grama.png" alt="">
+</ion-content>
+  <img src="../../../../assets/img/grama.png" alt="" style="margin-bottom: 0px;">

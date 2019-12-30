@@ -198,7 +198,7 @@ export class CriaUsuarioPage implements OnInit {
       senha: this.formBuilder.control('', [Validators.required, Validators.minLength(6)]),
       email: this.formBuilder.control('', [Validators.required, Validators.email]),
       nome: this.formBuilder.control('', [Validators.required, Validators.minLength(3)]),
-      admin: this.formBuilder.control(false, [])
+      admin: this.formBuilder.control(true, [])
     });
   }
 
