@@ -10,6 +10,8 @@ import { Outorga } from '../../models/outorga.model';
 import { OutorgaService } from 'src/app/core/services/outorga.service';
 import { LicencaAmbiental } from '../../models/la.model';
 import { LaService } from 'src/app/core/services/la.service';
+import { DeclaracaoAmbiental } from '../../models/da.model';
+import { DaService } from 'src/app/core/services/da.service';
 
 @Component({
   selector: 'app-home',
@@ -20,6 +22,7 @@ export class HomePage implements OnInit {
   clientes$: Observable<Cliente[]>;
   outorgas$: Observable<Outorga[]>;
   licencasAmbientais$: Observable<LicencaAmbiental[]>;
+  das$: Observable<DeclaracaoAmbiental[]>;
 
   data: Date = new Date();
   dia = this.data.getDate();
@@ -33,8 +36,10 @@ export class HomePage implements OnInit {
   outorgas15Dias: Array<any> = [];
   outorgas30Dias: Array<any> = [];
   la15Dias: Array<any> = [];
-  la30Dias: Array<any> = [];
-  dias120: Array<any> = [];
+  la60Dias: Array<any> = [];
+  la130Dias: Array<any> = [];
+  da15Dias: Array<any> = [];
+  da30Dias: Array<any> = [];
   quantidadeAniversariantesMes: Array<any> = [];
 
   nomeUser = '...';
@@ -46,7 +51,8 @@ export class HomePage implements OnInit {
     private overlayService: OverlayService,
     private clienteService: ClienteService,
     private outorgaService: OutorgaService,
-    private licencaAmbientalService: LaService
+    private licencaAmbientalService: LaService,
+    private daService: DaService,
   ) { }
   linkCliente() {
     this.navCtrl.navigateForward('/menu/cliente');
@@ -91,9 +97,14 @@ export class HomePage implements OnInit {
     this.licencasAmbientais$ = this.licencaAmbientalService.getAll();
     this.licencasAmbientais$.pipe(take(1)).subscribe(() => loading.dismiss());
 
+    this.daService.initDA();
+    this.das$ = this.daService.getAll();
+    this.das$.pipe(take(1)).subscribe(() => loading.dismiss());
+
     this.retornaDiasVencimento();
     this.vencimento(this.outorgas$, 'outorga');
     this.vencimento(this.licencasAmbientais$, 'la');
+    this.vencimento(this.das$, 'da');
   }
 
   async retornaDiasVencimento() {
@@ -159,9 +170,13 @@ export class HomePage implements OnInit {
       }
       if (painel === 'la') {
         this.la15Dias = [];
-        this.la30Dias = [];
+        this.la60Dias = [];
+        this.la130Dias = [];
       }
-      this.dias120 = [];
+      if (painel === "da") {
+        this.da15Dias = [];
+        this.da30Dias = [];
+      }
 
       vencimentos.forEach(venci => {
 
@@ -191,13 +206,26 @@ export class HomePage implements OnInit {
           if (painel === 'la') {
             this.la15Dias.push(venci);
           }
+          if (painel === 'da') {
+            this.da15Dias.push(venci);
+          }
         }
         if (diferencaData > 15 && diferencaData <= 30) {
           if (painel === 'outorga') {
             this.outorgas30Dias.push(venci);
           }
+          if (painel === 'da') {
+            this.da30Dias.push(venci);
+          }
+        }
+        if (diferencaData > 30 && diferencaData <= 60) {
           if (painel === 'la') {
-            this.la30Dias.push(venci);
+            this.la60Dias.push(venci);
+          }
+        }
+        if (diferencaData > 60 && diferencaData <= 130) {
+          if (painel === 'la') {
+            this.la130Dias.push(venci);
           }
         }
 
