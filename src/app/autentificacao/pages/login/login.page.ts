@@ -32,6 +32,8 @@ export class LoginPage implements OnInit {
     acao: 'Login'
   };
 
+  private cliente: Observable<Usuario[]>;
+
   private user: Observable<Usuario[]>;
 
   private nomeControl = new FormControl('', [Validators.required, Validators.minLength(3)]);
@@ -61,8 +63,8 @@ export class LoginPage implements OnInit {
 
   ngOnInit() {
     this.loginForm = this.formBuilder.group({
-      senha: this.formBuilder.control('', [Validators.required, Validators.minLength(6)]),
-      email: this.formBuilder.control('', [Validators.required, Validators.email]),
+      senha: this.formBuilder.control('123456', [Validators.required, Validators.minLength(6)]),
+      email: this.formBuilder.control('admin@gmail.com', [Validators.required, Validators.email]),
       admin: this.formBuilder.control(false, [])
     });
 
@@ -142,11 +144,33 @@ export class LoginPage implements OnInit {
           this.usuarioService.urlFoto = r[0].foto;
           this.usuarioService.admin = r[0].admin;
         } else {
-          await this.overlayService.toast({
-            message: 'Usuário inválido! Verifique os dados e tente novamente!'
-          });
-          this.usuarioService.logado = false;
+          this.user = await this.usuarioService.loginDbCliente(
+            this.loginForm.get('email').value,
+            this.loginForm.get('senha').value,
+          );
+          this.user.subscribe(async (r: Usuario[]) => {
+            if (r.length >= 1) {
+              console.log('Usuário Logado', this.user);
+              this.usuarioService.setId(r[0].id);
+              this.logar();
+              console.log(r[0].id);
+              console.log(this.logado);
+              this.navCtrl.navigateForward('/menu');
+              this.usuarioService.logado = true;
+              this.usuarioService.nomeUser = r[0].nome;
+              this.usuarioService.urlFoto = r[0].foto;
+              this.usuarioService.admin = r[0].admin;
+            }
+            else{
+              await this.overlayService.toast({
+                  message: 'Dados incorretos! Verifique-os e tente novamente!'
+                });
+                this.usuarioService.logado = false;
+            }
+          }
+        );
         }
+
       },
     );
     } catch (error) {
@@ -158,6 +182,9 @@ export class LoginPage implements OnInit {
       loading.dismiss();
     }
   }
+
+
+
 
 
 
