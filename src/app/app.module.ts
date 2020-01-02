@@ -14,6 +14,8 @@ import { DocumentViewer, DocumentViewerOptions } from '@ionic-native/document-vi
   declarations: [AppComponent],
   imports: [CoreModule, AppRoutingModule, IonicStorageModule.forRoot()],
   providers: [WebView, FilePath, Network, InAppBrowser, DocumentViewer],
-  bootstrap: [AppComponent],
+  bootstrap: [AppComponent]
 })
+
+
 export class AppModule {}

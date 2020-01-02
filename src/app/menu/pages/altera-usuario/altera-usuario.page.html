@@ -228,13 +228,12 @@
         Mínimo 6 caracteres
       </ion-note>
     </ion-item>
-    <ion-button expand="block" type="submit" *ngIf="updateUsuarioForm.valid && liberaArquivo" style="margin-top: 15%;">
+    <ion-button expand="block" type="submit" [*ngIf]="updateUsuarioForm.valid && liberaArquivo" style="margin-top: 15%;">
       ALTERAR
     </ion-button>
     <ion-button
-    style="margin-top: 15%;"
-      expand="block"
-      [disabled]="true"
+      style="margin-top: 15%;"
+      expand="block"      
       *ngIf="
         (!updateUsuarioForm.valid && !liberaArquivo) ||
         (!updateUsuarioForm.valid && liberaArquivo) ||

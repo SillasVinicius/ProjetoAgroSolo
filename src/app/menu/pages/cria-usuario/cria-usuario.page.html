@@ -38,7 +38,7 @@
           Progress: {{ pct | number }}%
           <ion-progress-bar value="{{ pct / 100 }}"></ion-progress-bar>
         </div>
-        <div [@marginBotao]="liberaArquivo ? 'comArquivo' : 'semArquivo'">
+        <div *ngIf="!update" [@marginBotao]="liberaArquivo ? 'comArquivo' : 'semArquivo'">
           <label for="uploadBtn" class="btn">Escolher Foto</label>
           <input
             class="upload"
@@ -141,14 +141,8 @@
     </ion-button>
     <ion-button
     style="margin-top: 5%;"
-      expand="full"
-      [disabled]="true"
-      *ngIf="
-        (!usuarioForm.valid && !liberaArquivo) ||
-        (!usuarioForm.valid && liberaArquivo) ||
-        (usuarioForm.valid && !liberaArquivo)
-      "
-    >
+      expand="full"      
+      *ngIf="(!usuarioForm.valid && !liberaArquivo) || (!usuarioForm.valid && liberaArquivo) || (usuarioForm.valid && !liberaArquivo)">
       {{ botaoTitle }}
     </ion-button>
   </form>

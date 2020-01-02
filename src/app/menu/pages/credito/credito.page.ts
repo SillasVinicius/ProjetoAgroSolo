@@ -267,7 +267,7 @@ export class CreditoPage implements OnInit {
 
     async uploadFileTo(file: Object){
 
-      const ref2 = this.storage.ref(`/users/${this.creditoService.usuarioId}/CadastroRuralAmbiental/${this.creditoService.id}/arquivos/${this.fileName}`);
+      const ref2 = this.storage.ref(`/users/${this.creditoService.usuarioId}/cliente/${this.creditoService.id}/arquivos/${this.fileName}`);
       const task2 = ref2.put(file);
 
       task2.snapshotChanges().pipe(
