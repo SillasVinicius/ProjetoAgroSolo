@@ -40,9 +40,18 @@ export abstract class Firestore<T extends { id: string }> {
     this.setCollection('/users', ref =>
       ref.where('email', '==', email).where('senha', '==', senha)
     );
-
+  
     return this.getAll();
   }
+
+  loginDbCliente(email: string, senha: string): Observable<T[]> {
+    this.setCollection('/cliente', ref =>
+      ref.where('email', '==', email).where('senha', '==', senha)
+    );
+    return this.getAll();
+  }
+
+
 
   setId(id: string) {
     this.id = id;

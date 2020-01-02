@@ -74,8 +74,8 @@
         CADASTRAR
       </ion-button>
     </div>
-    <div *ngIf="!admin && update">
-      <ion-button expand="full" type="submit" *ngIf="cadastroRuralAmbiental.valid">
+    <div *ngIf="admin && update">
+      <ion-button expand="full" type="submit" *ngIf="cadastroRuralAmbientalForm.valid">
         ATUALIZAR
       </ion-button>
       <ion-button expand="full" [disabled]="true" *ngIf="!cadastroRuralAmbiental.valid">
