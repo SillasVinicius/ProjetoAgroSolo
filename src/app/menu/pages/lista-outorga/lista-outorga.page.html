@@ -1,6 +1,12 @@
 <ion-header>
   <ion-toolbar color="primary">
-    <app-menu-toogle slot="start" menu="main-menu"></app-menu-toogle>
+    <app-menu-toogle
+      slot="start"
+      menu="main-menu"
+    ></app-menu-toogle>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/menu/ambiental"></ion-back-button>
+    </ion-buttons>
     <ion-title>Outorgas</ion-title>
     <!-- <app-logout-button
       slot="end"
@@ -18,11 +24,25 @@
       <ion-item lines="none">Sem Outorgas cadastradas...</ion-item>
     </ng-template>
   </ion-list>
+<<<<<<< HEAD
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
     <ion-fab-button (click)="exportPdf($event)" routerDirection="forward">
       <ion-icon name="print"></ion-icon>
     </ion-fab-button><br>
     <ion-fab-button [routerLink]="['/menu/cadastroOutorga']" routerDirection="forward">
+=======
+  <ion-fab
+    vertical="bottom"
+    horizontal="end"
+    slot="fixed"
+  >
+
+    <ion-fab-button
+      [routerLink]="['/menu/cadastroOutorga']"
+      routerDirection="forward"
+    >
+
+>>>>>>> master
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
   </ion-fab>

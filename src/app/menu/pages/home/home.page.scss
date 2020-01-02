@@ -1,6 +1,7 @@
 .header {
   height: 20%;
   background-color: #00643a;
+  position: relative;
 }
 
 .round {
@@ -10,4 +11,62 @@
   --vertical-align: middle;
   --padding-start: 10px;
   --padding-end: 10px;
+}
+
+.caixas{
+  margin-top: 0%;
+}
+
+.chip-user{
+  margin-top: 5%;
+}
+.caixa{
+  width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+
+}
+
+@media screen and (max-width: 480px) {
+  .caixa{
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .chip-user{
+    margin-top: 10%;
+  }
+}
+
+@media screen and (max-width: 700px) {
+  .caixa{
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .chip-user{
+    margin-top: 10%;
+  }
+}
+
+@media screen and (max-width: 920px) {
+  .caixa{
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .chip-user{
+    margin-top: 10%;
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .caixa{
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .chip-user{
+    margin-top: 5%;
+  }
 }

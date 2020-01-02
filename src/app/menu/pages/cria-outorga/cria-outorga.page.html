@@ -7,7 +7,7 @@
     <!-- <app-logout-button slot="end" menu="main-menu"></app-logout-button> -->
   </ion-toolbar>
 </ion-header>
-<ion-item *ngIf="clientes.length === 0" style="position: absolute; margin-top: 20%;" lines="none">Outorgas são vinculadas a clientes, não encontramos nenhum cliente cadastrado, cadastre um cliente e tente novamente!</ion-item>
+<ion-item *ngIf="clientes.length === 0" style="position: absolute; margin-top: 20%;" lines="none">Não foi encontrado nenhuma Outorga vinculada ao clientes!</ion-item>
 <ion-content padding *ngIf="clientes.length > 0">
   <form [formGroup]="outorgaForm" (submit)="onSubmit()" novalidate>
     <ion-item>
@@ -15,7 +15,6 @@
       <ion-select interface="popover" #selectCliente formControlName="idCliente">
         <ion-select-option *ngFor="let cliente of clientes" [value]="cliente.id">{{cliente.nome}}</ion-select-option>
       </ion-select>
-
     </ion-item>
     <ion-note
       slot="start"
@@ -123,7 +122,7 @@
         CADASTRAR
       </ion-button>
     </div>
-    <div *ngIf="!admin && update">
+    <div *ngIf="admin && update">
       <ion-button expand="full" type="submit" *ngIf="outorgaForm.valid">
         ATUALIZAR
       </ion-button>

@@ -1,121 +1,169 @@
-<ion-header class="header">
-  <ion-toolbar color="primary">
-    <app-menu-toogle
-      slot="start"
-      menu="main-menu"
-    ></app-menu-toogle>
-    <ion-title>Home</ion-title>
-    <app-logout-button
-      slot="end"
-      menu="main-menu"
-    ></app-logout-button>
-  </ion-toolbar>
-  <ion-grid>
-    <ion-row align-items-center>
-      <ion-col
-        text-center
-      >
-      <ion-chip class="rgba3" style="background: #00331e; height:45px;" *ngIf="!admin">
-          <ion-avatar style="height: 35px; width: 35px;">
-            <img [src]="urlFoto" *ngIf="urlFoto">
-            <img src="../../../assets/img/avatar.svg" *ngIf="!urlFoto">
-          </ion-avatar>
-          <ion-label>{{nomeUser}}
-          </ion-label>
-          <ion-avatar (click)="linkAlterarUsuario()" style="height: 35px; width: 35px;">
-            <img src="../../../assets/img/settings.svg">
-          </ion-avatar>
-      </ion-chip>
-
-      <ion-chip class="rgba3" style="background: gray; height:45px;" *ngIf="admin">
-          <ion-avatar style="height: 35px; width: 35px;">
-            <img [src]="urlFoto" *ngIf="urlFoto">
-            <img src="../../../assets/img/avatar.svg" *ngIf="!urlFoto">
-          </ion-avatar>
-          <ion-label>{{nomeUser}} / Admin
-          </ion-label>
-          <ion-avatar (click)="linkAlterarUsuario()" style="height: 35px; width: 35px;">
-            <img src="../../../assets/img/settings.svg">
-          </ion-avatar>
-      </ion-chip>
-
-      </ion-col>
-    </ion-row>
-  </ion-grid>
-</ion-header>
 <ion-content>
-  <ion-grid style="margin:0px; padding: 0px;">
-    <ion-row align-items-center>
-      <ion-col text-center style="width:100%; background: #a2bd31;" (click)="linkCliente()">
-        <ion-button
-          shape="round"
-          size="large"
-          fill="clear"
-          style="color: #00643a;"
-        >
-          <ion-icon
-            slot="start"
-            name="person-add"
-          ></ion-icon>
-          Cliente
-        </ion-button>
+  <ion-header class="header" style="height: 30px;">
+    <ion-toolbar color="primary">
+      <app-menu-toogle slot="start" menu="main-menu"></app-menu-toogle>
+      <ion-title>Home</ion-title>
+      <app-logout-button slot="end" menu="main-menu"></app-logout-button>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+
+      </ion-col>
+      <div class="chip-user">
+        <ion-col text-center>
+          <ion-chip class="rgba3" style="background: #00331e; height:45px;" *ngIf="!admin">
+            <ion-avatar style="height: 35px; width: 35px;">
+              <img [src]="urlFoto" *ngIf="urlFoto">
+              <img src="../../../assets/img/avatar.svg" *ngIf="!urlFoto">
+            </ion-avatar>
+            <ion-label>{{nomeUser}}
+            </ion-label>
+            <ion-avatar (click)="linkAlterarUsuario()" style="height: 35px; width: 35px;">
+              <img src="../../../assets/img/settings.svg">
+            </ion-avatar>
+          </ion-chip>
+
+          <ion-chip class="rgba3" style="background: gray; height:45px;" *ngIf="admin">
+            <ion-avatar style="height: 35px; width: 35px;">
+              <img [src]="urlFoto" *ngIf="urlFoto">
+              <img src="../../../assets/img/avatar.svg" *ngIf="!urlFoto">
+            </ion-avatar>
+            <ion-label>{{nomeUser}} / Admin
+            </ion-label>
+            <ion-avatar (click)="linkAlterarUsuario()" style="height: 35px; width: 35px;">
+              <img src="../../../assets/img/settings.svg">
+            </ion-avatar>
+          </ion-chip>
+
+        </ion-col>
+      </div>
+      <ion-col>
+
       </ion-col>
     </ion-row>
   </ion-grid>
-  <ion-grid style="margin:0px; padding: 0px;">
-    <ion-row align-items-center>
-       <ion-col text-center style="width:100%; background-color: #00643a" (click)="linkDadosPessoais()">
-        <ion-button
-          size="large"
-          shape="round"
-          fill="clear"
-          style="color: white;"
-        >
-          <ion-icon
-            slot="start"
-            name="folder"
-          ></ion-icon>
-          Dados Pessoais
-        </ion-button>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
-  <ion-grid style="margin:0px; padding: 0px;">
-    <ion-row align-items-center>
-      <ion-col text-center style="width:100%; background-color: #001a0f" (click)="linkAmbiental()">
-        <ion-button
-          shape="round"
-          id="btn-final"
-          size="large"
-          fill="clear"
-          style="color: white;"
-        >
-          <ion-icon
-            slot="start"
-            name="flower"
-          ></ion-icon>
-          Ambiental
-        </ion-button>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
-  <ion-grid style="margin:0px; padding: 0px;" *ngIf="admin">
-    <ion-row align-items-center>
-      <ion-col text-center style="width:100%; background: #dc3545;" (click)="linkUsuarios()">
-        <ion-button
-          shape="round"
-          size="large"
-          fill="clear"
-          style="color: white;"
-        >
-          <ion-icon
-            slot="start"
-            name="person-add"
-          ></ion-icon>
-          Administrador
-        </ion-button>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
-</ion-content>
+
+  <div class="caixas">
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <ion-card class="caixa" color="primary" (click)="linkCliente()" style=" color: #fff;"
+            *ngIf="clientes$ | async as clientes">
+            <ion-card-header>
+              <ion-card-subtitle style="color:#fff; text-align:center;"><b>Total de Clientes
+                  Cadastrados</b></ion-card-subtitle>
+            </ion-card-header>
+            <ion-card-content style="text-align:center; font-size: 20px;">
+              <strong>{{clientes.length}}</strong>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+
+        <ion-col>
+          <ion-card class="caixa" color="primary" style="color: #fff;">
+            <ion-card-header>
+              <ion-card-subtitle style="color:#fff; text-align:center;"><strong>Total de Aniversários do Mês
+                  ({{mesAtual}}/{{ano}})</strong>
+              </ion-card-subtitle>
+            </ion-card-header>
+            <ion-card-content style="text-align:center; font-size: 20px;">
+              <strong>{{quantidadeAniversariantesMes.length}}</strong>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+    <ion-grid>
+      <ion-row>
+
+
+        <ion-col>
+
+          <ion-card class="caixa" color="primary" style=" color: #fff;">
+            <ion-card-header>
+              <ion-card-subtitle style="color: #fff; text-align:center;"><strong>Aniversariantes do Dia
+                  ({{dia}}/{{mesAtual}})</strong>
+              </ion-card-subtitle>
+            </ion-card-header>
+            <ion-card-content style="text-align:center; font-size: 15px;">
+              <ion-list color="primary" style="color: #fff; background-color: #00643a;">
+                <ng-container *ngIf="aniversariantesMes.length > 0; else semNiver">
+                  <ion-list *ngFor="let niverDay of aniversariantesMes" color="primary"
+                    style="text-align: left; color: #fff; background-color: #00643a;">
+                    <strong>- {{niverDay.nome}}</strong>
+                  </ion-list>
+                </ng-container>
+                <ng-template #semNiver>
+                  <ion-item lines="none">Sem comemorações hoje...</ion-item>
+                </ng-template>
+              </ion-list>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+
+      </ion-row>
+    </ion-grid>
+
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <ion-card (click)="linkOutorgas()" class="caixa" color="primary" style=" color: #fff;">
+            <ion-card-header>
+              <ion-card-subtitle style="color:#fff; text-align:center;"><strong>Outorgas a Vencer</strong>
+              </ion-card-subtitle>
+            </ion-card-header>
+            <ion-card-content>
+              <strong>Em 15 dias = {{outorgas15Dias.length}}</strong><br/>
+              <strong>Em 30 dias = {{outorgas30Dias.length}}</strong>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+       
+
+        <ion-col>
+          <ion-card (click)="linkDeclaracoes()" class="caixa" color="primary" style=" color: #fff;">
+            <ion-card-header>
+              <ion-card-subtitle style="color:#fff; text-align:center;"><strong>Declarações Ambientais a
+                Vencer</strong>
+              </ion-card-subtitle>
+            </ion-card-header>
+            <ion-card-content>
+              <strong>Em 15 dias = {{da15Dias.length}}</strong><br/>
+              <strong>Em 30 dias = {{da30Dias.length}}</strong><br/>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+    <ion-grid>
+      <ion-row>
+        
+
+        <ion-col>
+          <ion-card (click)="linkAmbientais()" class="caixa" color="primary" style="color: #fff;">
+            <ion-card-header>
+              <ion-card-subtitle style="color:#fff; text-align:center;"><strong></strong>Licenças Ambientais a Vencer</ion-card-subtitle>
+            </ion-card-header>
+            <ion-card-content>
+              <strong>Dentro de 15 dias = {{la15Dias.length}}</strong><br/>
+              <strong>Dentro de 60 dias = {{la60Dias.length}}</strong><br/>
+              <strong>Dentro de 130 dias = {{la130Dias.length}}</strong>
+            </ion-card-content>
+          </ion-card>
+       
+
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+
+  </div>
+
+
   <img src="../../../../assets/img/grama.png" alt="" style="margin-bottom: 0px;">
+</ion-content>

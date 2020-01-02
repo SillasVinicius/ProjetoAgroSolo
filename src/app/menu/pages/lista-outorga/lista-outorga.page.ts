@@ -17,6 +17,8 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
 })
 export class ListaOutorgaPage implements OnInit {
 
+  Outorga = [];
+
   outorgas$: Observable<Outorga[]>;
   pdfObject: any;
 
@@ -45,9 +47,16 @@ export class ListaOutorgaPage implements OnInit {
     }
   }
 
+  
+
+
+    
+  
+
   atualizar(outorga: Outorga): void {
     this.navCtrl.navigateForward(`/menu/updateOutorga/${outorga.id}`);
   }
+
 
   async deletar(outorga: Outorga): Promise<void> {
     await this.overlayService.alert({
