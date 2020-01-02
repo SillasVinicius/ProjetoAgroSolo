@@ -9,13 +9,13 @@
   {{ cadastroAmbientalRural.descricao }}
 </ion-item>
   <ion-item-options side="start">
-    <ion-item-option color="danger" (click)="delete.emit(cadastroAmbientalRural); sliding.close()" *ngIf="!admin">
+    <ion-item-option color="danger" (click)="delete.emit(cadastroAmbientalRural); sliding.close()" *ngIf="admin">
       <ion-icon slot="icon-only" name="trash"></ion-icon>
     </ion-item-option>
-    <ion-item-option color="tertiary" (click)="update.emit(cadastroAmbientalRural); sliding.close()" *ngIf="!admin">
+    <ion-item-option color="tertiary" (click)="update.emit(cadastroAmbientalRural); sliding.close()" *ngIf="admin">
       <ion-icon slot="icon-only" name="create"></ion-icon>
     </ion-item-option>
-    <ion-item-option color="tertiary" (click)="update.emit(cadastroAmbientalRural); sliding.close()" *ngIf="admin">
+    <ion-item-option color="tertiary" (click)="update.emit(cadastroAmbientalRural); sliding.close()" *ngIf="!admin">
       <ion-icon slot="icon-only" name="eye"></ion-icon>
     </ion-item-option>
     <ion-item-option color="primary" (click)="openLink(); sliding.close()" *ngIf="!admin">

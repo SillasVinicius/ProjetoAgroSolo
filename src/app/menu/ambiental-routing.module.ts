@@ -43,10 +43,24 @@ const routes: Routes = [
         path: 'CadastroAmbientalRural',
         loadChildren: './pages/lista-car/lista-car.module#ListaCARPageModule'
       },
+     {
+        path: 'listaCreditoFinanceiro',
+        loadChildren: './pages/lista-credito/lista-credito.module#ListaCreditoPageModule'
+      },
+      {
+        path: 'cadastroCredito',
+        loadChildren: './pages/credito/credito.module#CreditoPageModule'
+      },
+      {
+        path: 'UpdateCadastroCreditoFinanceiro/:id',
+        loadChildren: './pages/credito/credito.module#CreditoPageModule'
+      },
       {
         path: '',
         loadChildren: './pages/home-ambiental/home-ambiental.module#HomeAmbientalPageModule'
       }
+    
+    
     ]
   }
 ];

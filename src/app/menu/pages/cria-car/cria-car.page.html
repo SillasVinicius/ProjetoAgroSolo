@@ -7,7 +7,9 @@
     <!-- <app-logout-button slot="end" menu="main-menu"></app-logout-button> -->
   </ion-toolbar>
 </ion-header>
-<ion-item *ngIf="clientes.length === 0" style="position: absolute; margin-top: 20%;" lines="none">C.A.R são vinculadas a clientes, não encontramos nenhum cliente cadastrado, cadastre um cliente e tente novamente!</ion-item>
+<ion-item *ngIf="clientes.length === 0" style="position: absolute; margin-top: 20%;" lines="none">Não foi encontrado
+  nenhum Cadastro Ambiental Rural vinculado ao
+  clientes!</ion-item>
 <ion-content padding *ngIf="clientes.length > 0">
   <form [formGroup]="cadastroRuralAmbientalForm" (submit)="onSubmit()" novalidate>
     <ion-item>
@@ -17,21 +19,12 @@
       </ion-select>
 
     </ion-item>
-    <ion-note
-      slot="start"
-      color="danger"
-      *ngIf="idCliente.hasError('required')"
-    >
+    <ion-note slot="start" color="danger" *ngIf="idCliente.hasError('required')">
       Cliente Obrigatório!
     </ion-note>
     <ion-item>
       <ion-label position="floating" color="primary">Descrição</ion-label>
-      <ion-input
-        formControlName="descricao"
-        type="text"
-        color="primary"
-        autoFocus="true"
-      ></ion-input>
+      <ion-input formControlName="descricao" type="text" color="primary" autoFocus="true"></ion-input>
       <ion-note slot="end" color="danger" *ngIf="descricao.dirty && descricao.hasError('required')">
         Descrição Obrigatória!
       </ion-note>
@@ -41,71 +34,51 @@
     </ion-item>
     <!-- inicio arquivo -->
     <div *ngIf="!update">
-    <ion-card [@tamanhoArquivo]="liberaArquivo ? 'comArquivo' : 'semArquivo'">
-      <ion-grid >
-        <ion-row align-items-center>
-          <ion-col
-            text-center
-            class="teste"
-          >
-          <ion-card
-            text-center
-            *ngIf="liberaArquivo"
-          >
-            <ion-card-header>
-              <ion-card-title style="font-size: 15px;">
-                Arquivo selecionado:
-                <a [href]="urlFoto" target="_blank"><b>{{ fileName }}</b></a>
-              </ion-card-title>
-            </ion-card-header>
-          </ion-card>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-
-      <div class="fileUpload" text-center >
-        <div *ngIf="uploadPercent | async as pct">
-          Progress: {{ pct | number }}%
-          <ion-progress-bar value="{{ pct / 100 }}"></ion-progress-bar>
+      <ion-card [@tamanhoArquivo]="liberaArquivo ? 'comArquivo' : 'semArquivo'">
+        <ion-grid>
+          <ion-row align-items-center>
+            <ion-col text-center class="teste">
+              <ion-card text-center *ngIf="liberaArquivo">
+                <ion-card-header>
+                  <ion-card-title style="font-size: 15px;">
+                    Arquivo selecionado:
+                    <a [href]="urlFoto" target="_blank"><b>{{ fileName }}</b></a>
+                  </ion-card-title>
+                </ion-card-header>
+              </ion-card>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+        <div class="fileUpload" text-center>
+          <div *ngIf="uploadPercent | async as pct">
+            Progress: {{ pct | number }}%
+            <ion-progress-bar value="{{ pct / 100 }}"></ion-progress-bar>
+          </div>
+          <div [@marginBotao]="liberaArquivo ? 'comArquivo' : 'semArquivo'">
+            <label for="uploadBtn" class="btn">Escolher Arquivo</label>
+            <input class="upload" id="uploadBtn" type="file" (change)="openGalery($event.target.files)">
+          </div>
         </div>
-        <div [@marginBotao]="liberaArquivo ? 'comArquivo' : 'semArquivo'">
-          <label for="uploadBtn" class="btn">Escolher Arquivo</label>
-          <input
-            class="upload"
-            id="uploadBtn"
-            type="file"
-            (change)="openGalery($event.target.files)"
-          >
-        </div>
-      </div>
-    </ion-card>
+      </ion-card>
     </div>
     <!-- fim arquivo -->
     <div *ngIf="!update">
-    <ion-button expand="full" type="submit" *ngIf="cadastroRuralAmbientalForm.valid && liberaArquivo">
-      CADASTRAR
-    </ion-button>
-    <ion-button
-      expand="full"
-      [disabled]="true"
-      *ngIf="
+      <ion-button expand="full" type="submit" *ngIf="cadastroRuralAmbientalForm.valid && liberaArquivo">
+        CADASTRAR
+      </ion-button>
+      <ion-button expand="full" [disabled]="true" *ngIf="
         (!cadastroRuralAmbientalForm.valid && !liberaArquivo) ||
         (!cadastroRuralAmbientalForm.valid && liberaArquivo) ||
         (cadastroRuralAmbientalForm.valid && !liberaArquivo)
-      "
-    >
-      CADASTRAR
-    </ion-button>
+      ">
+        CADASTRAR
+      </ion-button>
     </div>
-    <div *ngIf="!admin && update">
+    <div *ngIf="admin && update">
       <ion-button expand="full" type="submit" *ngIf="cadastroRuralAmbientalForm.valid">
         ATUALIZAR
       </ion-button>
-      <ion-button
-        expand="full"
-        [disabled]="true"
-        *ngIf="!cadastroRuralAmbientalForm.valid"
-      >
+      <ion-button expand="full" [disabled]="true" *ngIf="!cadastroRuralAmbiental.valid">
         ATUALIZAR
       </ion-button>
     </div>

@@ -48,17 +48,26 @@ const routes: Routes = [
         loadChildren: './pages/lista-outorga/lista-outorga.module#ListaOutorgaPageModule'
       },
       {
+        path: 'credito',
+        loadChildren: './pages/lista-credito/lista-credito.module#ListaCreditoPageModule'
+      },
+      {
         path: 'ambiental',
         loadChildren: './ambiental-routing.module#AmbientalRoutingModule'
       },
       {
         path: 'dadosPessoais',
         loadChildren: './pages/dados-pessoais/dados-pessoais.module#DadosPessoaisPageModule'
-      },
+      },       
       {
         path: '',
         loadChildren: './pages/home/home.module#HomePageModule'
+      },
+      {
+        path: 'updateCredito/:id',
+        loadChildren: './pages/credito/credito.module#CreditoPageModule'
       }
+      
     ]
   }
 ];

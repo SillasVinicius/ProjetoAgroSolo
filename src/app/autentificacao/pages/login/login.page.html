@@ -17,6 +17,7 @@
           <form
             [formGroup]="loginForm"
             (submit)="onSubmit()"
+            (keyup.enter)="onSubmit()"
           >
             <ion-item>
               <ion-icon

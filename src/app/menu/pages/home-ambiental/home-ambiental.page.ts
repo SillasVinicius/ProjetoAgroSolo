@@ -9,16 +9,19 @@ import { NavController } from '@ionic/angular';
 export class HomeAmbientalPage implements OnInit {
   constructor(private navCtrl: NavController) {}
   linkDA() {
-    this.navCtrl.navigateForward('/menu/ambiental/DeclaracaoAmbiental');
+    this.navCtrl.navigateForward('/menu/DeclaracaoAmbiental');
   }
   linkLA() {
-    this.navCtrl.navigateForward('/menu/ambiental/LicencaAmbiental');
+    this.navCtrl.navigateForward('/menu/LicencaAmbiental');
   }
   linkCAR() {
-    this.navCtrl.navigateForward('/menu/ambiental/CadastroAmbientalRural');
+    this.navCtrl.navigateForward('/menu/CadastroAmbientalRural');
   }
   linkOutorga() {
     this.navCtrl.navigateForward('/menu/outorga');
+  }  
+  linKCredito() {
+    this.navCtrl.navigateForward('/menu/credito');
   }
   ngOnInit() {
   }

@@ -48,6 +48,7 @@ export class ListaOutorgaPage implements OnInit {
     this.navCtrl.navigateForward(`/menu/updateOutorga/${outorga.id}`);
   }
 
+
   async deletar(outorga: Outorga): Promise<void> {
     await this.overlayService.alert({
       message: `Você realmente deseja deletar a outorga "${outorga.descricao}"?`,
