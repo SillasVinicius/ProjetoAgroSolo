@@ -25,3 +25,5 @@ describe('ListaClientePage', () => {
     expect(component).toBeTruthy();
   });
 });
+
+  

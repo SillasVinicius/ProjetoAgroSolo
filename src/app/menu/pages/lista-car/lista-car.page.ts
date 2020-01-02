@@ -6,7 +6,9 @@ import { OverlayService } from 'src/app/core/services/overlay.service';
 import { CadastroAmbientalRural } from '../../models/car.model';
 import { CarService } from 'src/app/core/services/car.service';
 import { UsuarioService } from 'src/app/core/services/usuario.service';
-
+import pdfMake from "pdfmake/build/pdfmake";
+import pdfFonts from "pdfmake/build/vfs_fonts";
+pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 @Component({
   selector: 'app-lista-car',
@@ -16,6 +18,8 @@ import { UsuarioService } from 'src/app/core/services/usuario.service';
 export class ListaCARPage implements OnInit {
 
   cadastrosAmbientaisRurais$: Observable<CadastroAmbientalRural[]>;
+  pdfObject: any;
+
   constructor(
     private navCtrl: NavController,
     private cadastroAmbientalRuralService: CarService,
@@ -23,17 +27,21 @@ export class ListaCARPage implements OnInit {
     private overlayService: OverlayService
   ) {}
 
+  listaCar: Array<any> = [];
+
   async ngOnInit(): Promise<void> {
     const loading = await this.overlayService.loading();
     if (this.usuarioService.admin) {
       this.cadastroAmbientalRuralService.initCAR();
       this.cadastrosAmbientaisRurais$ = this.cadastroAmbientalRuralService.getAll();
       this.cadastrosAmbientaisRurais$.pipe(take(1)).subscribe(() => loading.dismiss());
+      this.listCar();
     }
     else {
       this.cadastroAmbientalRuralService.init();
       this.cadastrosAmbientaisRurais$ = this.cadastroAmbientalRuralService.getAll();
       this.cadastrosAmbientaisRurais$.pipe(take(1)).subscribe(() => loading.dismiss());
+      this.listCar();
     }
 
   }
@@ -63,4 +71,103 @@ export class ListaCARPage implements OnInit {
     });
   }
 
+
+   
+  async listCar() {
+    this.cadastrosAmbientaisRurais$.forEach(cars => {
+      cars.forEach(car => {
+        this.listaCar.push(car);
+      });
+    });
+  }
+
+
+  buildTableBody(data, columns, header) {
+
+    let body = [];
+
+    body.push(header);
+
+    data.forEach(row => {
+      const dataRow = [];
+
+      columns.forEach(column => {
+        dataRow.push({ text: row[column] ? row[column].toString() : "" });
+      });
+
+      body.push(dataRow);
+    });
+
+    return body;
+  }
+
+  
+  table(data, columns, header) {
+    return {
+      table: {
+        headerRows: 1,
+        widths: [100, 100, 100, 100, 100, 100, 100, 100, 100],
+        body: this.buildTableBody(data, columns, header)
+      },
+      layout: "lightHorizontalLines"
+    }
+  }
+
+  exportPdf(): void {
+    var docDefinition
+    docDefinition = {
+      header: {
+        columns: [
+          {
+            stack: [
+              {
+                text: "Agro Solo",
+                fontSize: 18,
+                alignment: "center" 
+              },
+            ],
+            width: '*'
+          }
+        ],
+        
+        margin: [15, 15]
+      },
+
+      pageOrientation: 'landscape',
+      pageSize: {height: 850, width: 1100},
+      content: [
+        this.table(
+          this.listaCar,
+          ["id", "descricao"],
+          [
+            { text: "idCliente", style: "tableHeader" },
+            { text: "Descricao", style: "tableHeader" },12
+          
+          ]
+        )
+      ],
+      styles: {
+        tableHeader: {
+          bold:true,
+          fontSize: 13,
+          color: "Black"
+        }
+      },
+
+      footer: {
+        columns: [
+          "Left part",
+          { text: "Right part", alignment: "right" }
+        ]
+      },
+
+    };
+
+
+    this.pdfObject = pdfMake.createPdf(docDefinition).open();
+
+  }
+
+
 }
+

@@ -18,10 +18,11 @@
       <ion-item lines="none">Sem clientes cadastrados...</ion-item>
     </ng-template>
   </ion-list>
+  
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-    <ion-fab-button [routerLink]="['/menu/relatoriocliente']" routerDirection="forward">
-      <ion-icon name="print"></ion-icon>
-    </ion-fab-button><br>
+    <ion-fab-button (click)="exportPdf($event)" routerDirection="forward">
+    <ion-icon name="print"></ion-icon>     
+  </ion-fab-button><br>
 
     <ion-fab-button [routerLink]="['/menu/cadastroCliente']" routerDirection="forward">
       <ion-icon name="add"></ion-icon>
