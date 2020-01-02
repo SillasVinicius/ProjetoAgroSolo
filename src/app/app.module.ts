@@ -8,18 +8,16 @@ import { IonicStorageModule } from '@ionic/storage';
 import { Network } from '@ionic-native/network/ngx';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 import { DocumentViewer, DocumentViewerOptions } from '@ionic-native/document-viewer/ngx';
-import { FileOpener } from '@ionic-native/file-opener/ngx';
 import { SplashScreen } from "@ionic-native/splash-screen/ngx";
 import { StatusBar } from "@ionic-native/status-bar/ngx";
 import { RouteReuseStrategy } from "@angular/router";
 import { IonicModule, IonicRouteStrategy } from "@ionic/angular";
-import { Base64ToGallery } from '@ionic-native/base64-to-gallery/ngx';
 
 @NgModule({
   declarations: [AppComponent],
   imports: [CoreModule, AppRoutingModule, IonicStorageModule.forRoot()],
-  providers: [WebView, FilePath, Network, InAppBrowser, DocumentViewer, StatusBar, SplashScreen, FileOpener,
-  { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, Base64ToGallery],
+  providers: [WebView, FilePath, Network, InAppBrowser, DocumentViewer, StatusBar, SplashScreen,
+  { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
