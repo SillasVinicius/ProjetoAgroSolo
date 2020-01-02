@@ -103,7 +103,7 @@ export class CriaCarPage implements OnInit {
       criaFormulario(): void {
         this.cadastroRuralAmbientalForm = this.formBuilder.group({
           descricao: this.formBuilder.control('', [Validators.required, Validators.minLength(3)]),
-          idCliente: this.formBuilder.control('', [Validators.required])
+          clienteId: this.formBuilder.control('', [Validators.required])
         });
       }
 
@@ -111,8 +111,8 @@ export class CriaCarPage implements OnInit {
       get descricao(): FormControl {
         return this.cadastroRuralAmbientalForm.get('descricao') as FormControl;
       }
-      get idCliente(): FormControl {
-        return this.cadastroRuralAmbientalForm.get('idCliente') as FormControl;
+      get clienteId(): FormControl {
+        return this.cadastroRuralAmbientalForm.get('clienteId') as FormControl;
       }
 
       // verifica se a acao é de criação ou atualização
@@ -135,7 +135,7 @@ export class CriaCarPage implements OnInit {
           .pipe(take(1))
           .subscribe(({ descricao, clienteId  }) => {
             this.cadastroRuralAmbientalForm.get('descricao').setValue(descricao),
-              this.cadastroRuralAmbientalForm.get('idCliente').setValue(clienteId)
+              this.cadastroRuralAmbientalForm.get('clienteId').setValue(clienteId)
           });
       }
 
@@ -149,7 +149,7 @@ export class CriaCarPage implements OnInit {
         const atualizarFoto = await this.cadastroRuralAmbientalService.update({
           id: this.cadastroRuralAmbientalId,
           descricao: this.cadastroRuralAmbientalForm.get('descricao').value,
-          clienteId: this.cadastroRuralAmbientalForm.get('idCliente').value
+          clienteId: this.cadastroRuralAmbientalForm.get('clienteId').value
         });
       }
 
@@ -179,7 +179,7 @@ export class CriaCarPage implements OnInit {
             const atualizar = await this.cadastroRuralAmbientalService.update({
               id: this.cadastroRuralAmbientalId,
               descricao: this.cadastroRuralAmbientalForm.get('descricao').value,
-              clienteId: this.cadastroRuralAmbientalForm.get('idCliente').value
+              clienteId: this.cadastroRuralAmbientalForm.get('clienteId').value
             });
 
             this.AtualizaListaGlobal();
@@ -253,7 +253,7 @@ export class CriaCarPage implements OnInit {
                 const atualizarFoto = await this.cadastroRuralAmbientalService.update({
                   id: this.cadastroRuralAmbientalService.id,
                   descricao: this.cadastroRuralAmbientalForm.get('descricao').value,
-                  clienteId: this.cadastroRuralAmbientalForm.get('idCliente').value,
+                  clienteId: this.cadastroRuralAmbientalForm.get('clienteId').value,
                   arquivo: r
                 });
               });
@@ -277,7 +277,7 @@ export class CriaCarPage implements OnInit {
               const atualizarFoto = await this.cadastroRuralAmbientalService.update({
                 id: this.cadastroRuralAmbientalId,
                 descricao: this.cadastroRuralAmbientalForm.get('descricao').value,
-                clienteId: this.cadastroRuralAmbientalForm.get('idCliente').value,
+                clienteId: this.cadastroRuralAmbientalForm.get('clienteId').value,
                 arquivo: r
               });
             });

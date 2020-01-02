@@ -56,6 +56,18 @@ const routes: Routes = [
         loadChildren: './pages/credito/credito.module#CreditoPageModule'
       },
       {
+        path: 'RelatorioCadastroAmbientalRural',
+        loadChildren: './pages/relatorio-car/relatorio-car.module#RelatorioCarPageModule'
+      },
+      {
+        path: 'RelatorioDa',
+        loadChildren: './pages/relatorio-da/relatorio-da.module#RelatorioDaPageModule'
+      },
+      {
+        path: 'RelatorioLa',
+        loadChildren: './pages/relatorio-la/relatorio-la.module#RelatorioLaPageModule'
+      },
+      {
         path: '',
         loadChildren: './pages/home-ambiental/home-ambiental.module#HomeAmbientalPageModule'
       }

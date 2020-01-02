@@ -106,7 +106,7 @@ export class CriaDaPage implements OnInit {
         descricao: this.formBuilder.control('', [Validators.required, Validators.minLength(3)]),
         dataDeVencimento: this.formBuilder.control('', [Validators.required, Validators.minLength(10),
           Validators.maxLength(10)]),
-        idCliente: this.formBuilder.control('', [Validators.required])
+          clienteId: this.formBuilder.control('', [Validators.required])
       });
     }
 
@@ -118,8 +118,8 @@ export class CriaDaPage implements OnInit {
       return this.declaracaoAmbientalForm.get('dataDeVencimento') as FormControl;
     }
 
-    get idCliente(): FormControl {
-      return this.declaracaoAmbientalForm.get('idCliente') as FormControl;
+    get clienteId(): FormControl {
+      return this.declaracaoAmbientalForm.get('clienteId') as FormControl;
     }
 
     // verifica se a acao é de criação ou atualização
@@ -143,7 +143,7 @@ export class CriaDaPage implements OnInit {
         .subscribe(({ descricao, dataDeVencimento, clienteId  }) => {
           this.declaracaoAmbientalForm.get('descricao').setValue(descricao),
             this.declaracaoAmbientalForm.get('dataDeVencimento').setValue(dataDeVencimento),
-            this.declaracaoAmbientalForm.get('idCliente').setValue(clienteId)
+            this.declaracaoAmbientalForm.get('clienteId').setValue(clienteId)
         });
     }
 
@@ -158,7 +158,7 @@ export class CriaDaPage implements OnInit {
         id: this.declaracaoAmbientalId,
         descricao: this.declaracaoAmbientalForm.get('descricao').value,
         dataDeVencimento: this.declaracaoAmbientalForm.get('dataDeVencimento').value,
-        clienteId: this.declaracaoAmbientalForm.get('idCliente').value
+        clienteId: this.declaracaoAmbientalForm.get('clienteId').value
       });
     }
 
@@ -188,7 +188,7 @@ export class CriaDaPage implements OnInit {
             id: this.declaracaoAmbientalId,
             descricao: this.declaracaoAmbientalForm.get('descricao').value,
             dataDeVencimento: this.declaracaoAmbientalForm.get('dataDeVencimento').value,
-            clienteId: this.declaracaoAmbientalForm.get('idCliente').value
+            clienteId: this.declaracaoAmbientalForm.get('clienteId').value
           });
 
           this.AtualizaListaGlobal();
@@ -263,7 +263,7 @@ export class CriaDaPage implements OnInit {
                 id: this.declaracaoAmbientalService.id,
                 descricao: this.declaracaoAmbientalForm.get('descricao').value,
                 dataDeVencimento: this.declaracaoAmbientalForm.get('dataDeVencimento').value,
-                clienteId: this.declaracaoAmbientalForm.get('idCliente').value,
+                clienteId: this.declaracaoAmbientalForm.get('clienteId').value,
                 arquivo: r
               });
             });
@@ -288,7 +288,7 @@ export class CriaDaPage implements OnInit {
               id: this.declaracaoAmbientalId,
               descricao: this.declaracaoAmbientalForm.get('descricao').value,
               dataDeVencimento: this.declaracaoAmbientalForm.get('dataDeVencimento').value,
-              clienteId: this.declaracaoAmbientalForm.get('idCliente').value,
+              clienteId: this.declaracaoAmbientalForm.get('clienteId').value,
               arquivo: r
             });
           });

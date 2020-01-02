@@ -17,26 +17,20 @@
 <ion-content>
   <ion-list *ngIf="clientes$ | async as clientes">
     <ng-container *ngIf="clientes.length > 0; else semClientes">
-      <app-lista-cliente-item
-        *ngFor="let cliente of clientes"
-        [cliente]="cliente"
-        (update)="atualizar($event)"
-        (delete)="deletar($event)"
-      ></app-lista-cliente-item>
+      <app-lista-cliente-item *ngFor="let cliente of clientes" [cliente]="cliente" (update)="atualizar($event)"
+        (delete)="deletar($event)"></app-lista-cliente-item>
     </ng-container>
     <ng-template #semClientes>
       <ion-item lines="none">Sem clientes cadastrados...</ion-item>
     </ng-template>
   </ion-list>
-  <ion-fab
-    vertical="bottom"
-    horizontal="end"
-    slot="fixed"
-  >
-    <ion-fab-button
-      [routerLink]="['/menu/cadastroCliente']"
-      routerDirection="forward"
-    >
+  
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="exportPdf($event)" routerDirection="forward">
+    <ion-icon name="print"></ion-icon>     
+  </ion-fab-button><br>
+
+    <ion-fab-button [routerLink]="['/menu/cadastroCliente']" routerDirection="forward">
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
   </ion-fab>

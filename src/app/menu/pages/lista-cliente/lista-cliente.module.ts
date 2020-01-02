@@ -3,16 +3,18 @@ import { Routes, RouterModule } from '@angular/router';
 import { ListaClientePage } from './lista-cliente.page';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { ComponentsModule } from '../../component/components.module';
+import { RelatorioClientePage } from '../relatorio-cliente/relatorio-cliente.page';
 
 const routes: Routes = [
   {
     path: '',
-    component: ListaClientePage
+    component: ListaClientePage,
+    
   }
 ];
 
 @NgModule({
   imports: [SharedModule, ComponentsModule, RouterModule.forChild(routes)],
-  declarations: [ListaClientePage]
+  declarations: [ListaClientePage, RelatorioClientePage]
 })
 export class ListaClientePageModule {}
