@@ -25,6 +25,11 @@
     horizontal="end"
     slot="fixed">
     <ion-fab-button
+      (click)="exportPdf($event)"
+      routerDirection="forward">
+      <ion-icon name="print"></ion-icon>
+    </ion-fab-button><br>
+    <ion-fab-button
       [routerLink]="['/menu/ambiental/cadastroCredito']"
       routerDirection="forward">
       <ion-icon name="add"></ion-icon>

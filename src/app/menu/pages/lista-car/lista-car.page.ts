@@ -6,6 +6,8 @@ import { OverlayService } from 'src/app/core/services/overlay.service';
 import { CadastroAmbientalRural } from '../../models/car.model';
 import { CarService } from 'src/app/core/services/car.service';
 import { UsuarioService } from 'src/app/core/services/usuario.service';
+import { ClienteService } from 'src/app/core/services/cliente.service';
+import { Cliente } from '../../models/cliente.model';
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
@@ -18,12 +20,14 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
 export class ListaCARPage implements OnInit {
 
   cadastrosAmbientaisRurais$: Observable<CadastroAmbientalRural[]>;
+  clientes$: Observable<Cliente[]>;
   pdfObject: any;
 
   constructor(
     private navCtrl: NavController,
     private cadastroAmbientalRuralService: CarService,
     private usuarioService: UsuarioService,
+    private clienteService: ClienteService,
     private overlayService: OverlayService
   ) {}
 
@@ -35,15 +39,13 @@ export class ListaCARPage implements OnInit {
       this.cadastroAmbientalRuralService.initCAR();
       this.cadastrosAmbientaisRurais$ = this.cadastroAmbientalRuralService.getAll();
       this.cadastrosAmbientaisRurais$.pipe(take(1)).subscribe(() => loading.dismiss());
-      this.listCar();
     }
     else {
       this.cadastroAmbientalRuralService.init();
       this.cadastrosAmbientaisRurais$ = this.cadastroAmbientalRuralService.getAll();
       this.cadastrosAmbientaisRurais$.pipe(take(1)).subscribe(() => loading.dismiss());
-      this.listCar();
     }
-
+    this.listCar();
   }
 
   atualizar(cadastroAmbientalRural: CadastroAmbientalRural): void {
@@ -76,6 +78,10 @@ export class ListaCARPage implements OnInit {
   async listCar() {
     this.cadastrosAmbientaisRurais$.forEach(cars => {
       cars.forEach(car => {
+        this.clientes$ = this.clienteService.initClienteId(car.clienteId);
+        this.clientes$.subscribe(async (r: Cliente[]) => {
+          car['nomeCliente'] = r[0].nome;
+        });
         this.listaCar.push(car);
       });
     });
@@ -138,10 +144,10 @@ export class ListaCARPage implements OnInit {
       content: [
         this.table(
           this.listaCar,
-          ["id", "descricao"],
+          ["nomeCliente", "descricao"],
           [
-            { text: "idCliente", style: "tableHeader" },
-            { text: "Descricao", style: "tableHeader" },12
+            { text: "Nome Cliente", style: "tableHeader" },
+            { text: "Descricao", style: "tableHeader" },
           
           ]
         )

@@ -105,7 +105,7 @@ export class CriaLaPage implements OnInit {
           descricao: this.formBuilder.control('', [Validators.required, Validators.minLength(3)]),
           dataDeVencimento: this.formBuilder.control('', [Validators.required, Validators.minLength(10),
             Validators.maxLength(10)]),
-          idCliente: this.formBuilder.control('', [Validators.required])
+            clienteId: this.formBuilder.control('', [Validators.required])
         });
       }
 
@@ -117,8 +117,8 @@ export class CriaLaPage implements OnInit {
         return this.licencaAmbientalForm.get('dataDeVencimento') as FormControl;
       }
 
-      get idCliente(): FormControl {
-        return this.licencaAmbientalForm.get('idCliente') as FormControl;
+      get clienteId(): FormControl {
+        return this.licencaAmbientalForm.get('clienteId') as FormControl;
       }
 
       // verifica se a acao é de criação ou atualização
@@ -142,7 +142,7 @@ export class CriaLaPage implements OnInit {
           .subscribe(({ descricao, dataDeVencimento, clienteId  }) => {
             this.licencaAmbientalForm.get('descricao').setValue(descricao),
               this.licencaAmbientalForm.get('dataDeVencimento').setValue(dataDeVencimento)
-              this.licencaAmbientalForm.get('idCliente').setValue(clienteId)
+              this.licencaAmbientalForm.get('clienteId').setValue(clienteId)
           });
       }
 
@@ -157,7 +157,7 @@ export class CriaLaPage implements OnInit {
           id: this.licencaAmbientalId,
           descricao: this.licencaAmbientalForm.get('descricao').value,
           dataDeVencimento: this.licencaAmbientalForm.get('dataDeVencimento').value,
-          clienteId: this.licencaAmbientalForm.get('idCliente').value
+          clienteId: this.licencaAmbientalForm.get('clienteId').value
         });
       }
 
@@ -191,7 +191,7 @@ export class CriaLaPage implements OnInit {
               id: this.licencaAmbientalId,
               descricao: this.licencaAmbientalForm.get('descricao').value,
               dataDeVencimento: this.licencaAmbientalForm.get('dataDeVencimento').value,
-              clienteId: this.licencaAmbientalForm.get('idCliente').value
+              clienteId: this.licencaAmbientalForm.get('clienteId').value
             });
 
             this.AtualizaListaGlobal();
@@ -267,7 +267,7 @@ export class CriaLaPage implements OnInit {
                   id: this.licencaAmbientalService.id,
                   descricao: this.licencaAmbientalForm.get('descricao').value,
                   dataDeVencimento: this.licencaAmbientalForm.get('dataDeVencimento').value,
-                  clienteId: this.licencaAmbientalForm.get('idCliente').value,
+                  clienteId: this.licencaAmbientalForm.get('clienteId').value,
                   arquivo: r
                 });
               });
@@ -292,7 +292,7 @@ export class CriaLaPage implements OnInit {
                 id: this.licencaAmbientalId,
                 descricao: this.licencaAmbientalForm.get('descricao').value,
                 dataDeVencimento: this.licencaAmbientalForm.get('dataDeVencimento').value,
-                clienteId: this.licencaAmbientalForm.get('idCliente').value,
+                clienteId: this.licencaAmbientalForm.get('clienteId').value,
                 arquivo: r
               });
             });

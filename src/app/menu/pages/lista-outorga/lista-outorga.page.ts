@@ -6,6 +6,8 @@ import { OverlayService } from 'src/app/core/services/overlay.service';
 import { Outorga } from '../../models/outorga.model';
 import { OutorgaService } from 'src/app/core/services/outorga.service';
 import { UsuarioService } from 'src/app/core/services/usuario.service';
+import { ClienteService } from 'src/app/core/services/cliente.service';
+import { Cliente } from '../../models/cliente.model';
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
@@ -20,13 +22,15 @@ export class ListaOutorgaPage implements OnInit {
   Outorga = [];
 
   outorgas$: Observable<Outorga[]>;
+  clientes$: Observable<Cliente[]>;
   pdfObject: any;
 
   constructor(
     private navCtrl: NavController,
     private outorgaService: OutorgaService,
     private overlayService: OverlayService,
-    private usuarioService: UsuarioService
+    private usuarioService: UsuarioService,
+    private clienteService: ClienteService
   ) {}
 
   listaOutorga: Array<any> = [];
@@ -46,12 +50,6 @@ export class ListaOutorgaPage implements OnInit {
       this.listOutorga();
     }
   }
-
-  
-
-
-    
-  
 
   atualizar(outorga: Outorga): void {
     this.navCtrl.navigateForward(`/menu/updateOutorga/${outorga.id}`);
@@ -83,6 +81,10 @@ export class ListaOutorgaPage implements OnInit {
   async listOutorga() {
     this.outorgas$.forEach(outorgas => {
       outorgas.forEach(outorga => {
+        this.clientes$ = this.clienteService.initClienteId(outorga.clienteId);
+        this.clientes$.subscribe(async (r: Cliente[]) => {
+            outorga['nomeCliente'] = r[0].nome;
+        });
         this.listaOutorga.push(outorga);
       });
     });
@@ -145,9 +147,9 @@ export class ListaOutorgaPage implements OnInit {
       content: [
         this.table(
           this.listaOutorga,
-          ["id", "descricao", "dataDeVencimento"],
+          ["nomeCliente", "descricao", "dataDeVencimento"],
           [
-            { text: "idCliente", style: "tableHeader" },
+            { text: "Nome Cliente", style: "tableHeader" },
             { text: "Descricao", style: "tableHeader" },
             { text: "Data de Vencimento", style: "tableHeader", Data: "MM/DD/YYYY"},
           

@@ -6,6 +6,8 @@ import { OverlayService } from 'src/app/core/services/overlay.service';
 import { DeclaracaoAmbiental } from '../../models/da.model';
 import { DaService } from 'src/app/core/services/da.service';
 import { UsuarioService } from 'src/app/core/services/usuario.service';
+import { ClienteService } from 'src/app/core/services/cliente.service';
+import { Cliente } from '../../models/cliente.model';
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
@@ -19,13 +21,15 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
 export class ListaDAPage implements OnInit {
 
   das$: Observable<DeclaracaoAmbiental[]>;
+  clientes$: Observable<Cliente[]>;
   pdfObject: any;
 
   constructor(
     private navCtrl: NavController,
     private daService: DaService,
     private overlayService: OverlayService,
-    private usuarioService: UsuarioService
+    private usuarioService: UsuarioService,
+    private clienteService: ClienteService
   ) {}
 
   listaDa: Array<any> = [];
@@ -77,6 +81,10 @@ export class ListaDAPage implements OnInit {
   async listDa() {
     this.das$.forEach(das => {
       das.forEach(da => {
+        this.clientes$ = this.clienteService.initClienteId(da.clienteId);
+        this.clientes$.subscribe(async (r: Cliente[]) => {
+          da['nomeCliente'] = r[0].nome;
+        });
         this.listaDa.push(da);
       });
     });
@@ -139,9 +147,9 @@ export class ListaDAPage implements OnInit {
       content: [
         this.table(
           this.listaDa,
-          ["id", "descricao", "dataDeVencimento"],
+          ["nomeCliente", "descricao", "dataDeVencimento"],
           [
-            { text: "idCliente", style: "tableHeader" },
+            { text: "Nome Cliente", style: "tableHeader" },
             { text: "Descricao", style: "tableHeader" },
             { text: "Data de Vencimento", style: "tableHeader", Data: "MM/DD/YYYY"},
           

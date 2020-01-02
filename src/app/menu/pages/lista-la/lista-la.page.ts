@@ -6,6 +6,8 @@ import { OverlayService } from 'src/app/core/services/overlay.service';
 import { LicencaAmbiental } from '../../models/la.model';
 import { LaService } from 'src/app/core/services/la.service';
 import { UsuarioService } from 'src/app/core/services/usuario.service';
+import { ClienteService } from 'src/app/core/services/cliente.service';
+import { Cliente } from '../../models/cliente.model';
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
@@ -18,13 +20,15 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
 export class ListaLAPage implements OnInit {
 
   licencasAmbientais$: Observable<LicencaAmbiental[]>;
+  clientes$: Observable<Cliente[]>;
   pdfObject: any;
 
   constructor(
     private navCtrl: NavController,
     private licencaAmbientalService: LaService,
     private overlayService: OverlayService,
-    private usuarioService: UsuarioService
+    private usuarioService: UsuarioService,
+    private clienteService: ClienteService
   ) {}
 
 
@@ -72,11 +76,13 @@ export class ListaLAPage implements OnInit {
     });
   }
 
-  
-  
   async listLa() {
     this.licencasAmbientais$.forEach(licencasAmbientais => {
       licencasAmbientais.forEach(la => {
+        this.clientes$ = this.clienteService.initClienteId(la.clienteId);
+        this.clientes$.subscribe(async (r: Cliente[]) => {
+          la['nomeCliente'] = r[0].nome;
+        });
         this.listaLa.push(la);
       });
     });
@@ -139,9 +145,9 @@ export class ListaLAPage implements OnInit {
       content: [
         this.table(
           this.listaLa,
-          ["id", "descricao", "dataDeVencimento"],
+          ["nomeCliente", "descricao", "dataDeVencimento"],
           [
-            { text: "idCliente", style: "tableHeader" },
+            { text: "Nome Cliente", style: "tableHeader" },
             { text: "Descricao", style: "tableHeader" },
             { text: "Data de Vencimento", style: "tableHeader", Data: "MM/DD/YYYY"},
           

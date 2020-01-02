@@ -60,6 +60,7 @@
     "fabric": "^3.5.1",
     "firebase": "^5.9.4",
     "grpc": "^1.24.2",
+    "ionic-gallery-modal": "^0.2.7",
     "json-server": "^0.15.0",
     "jsonwebtoken": "^8.5.1",
     "jspdf": "^1.5.3",

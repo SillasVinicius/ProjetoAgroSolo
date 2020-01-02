@@ -12,14 +12,14 @@
   <form [formGroup]="outorgaForm" (submit)="onSubmit()" novalidate>
     <ion-item>
       <ion-label position="floating" color="primary">Cliente</ion-label>
-      <ion-select interface="popover" #selectCliente formControlName="idCliente">
+      <ion-select interface="popover" #selectCliente formControlName="clienteId">
         <ion-select-option *ngFor="let cliente of clientes" [value]="cliente.id">{{cliente.nome}}</ion-select-option>
       </ion-select>
     </ion-item>
     <ion-note
       slot="start"
       color="danger"
-      *ngIf="idCliente.hasError('required')"
+      *ngIf="clienteId.hasError('required')"
     >
       Cliente Obrigatório!
     </ion-note>

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Cliente } from '../../models/cliente.model';
 import { take } from 'rxjs/operators';
-import { NavController } from '@ionic/angular';
+import { NavController, ModalController } from '@ionic/angular';
 import { ClienteService } from 'src/app/core/services/cliente.service';
 import { OverlayService } from 'src/app/core/services/overlay.service';
 import { UsuarioService } from 'src/app/core/services/usuario.service';
@@ -21,9 +21,10 @@ export class ListaClientePage implements OnInit {
   pdfObject: any;
   constructor(
     private navCtrl: NavController,
+    private modalCtrl: ModalController,
     private clienteService: ClienteService,
     private overlayService: OverlayService,
-    private usuarioService: UsuarioService
+    private usuarioService: UsuarioService,
   ) { }
 
   listaCliente: Array<any> = [];
@@ -166,4 +167,6 @@ export class ListaClientePage implements OnInit {
     this.pdfObject = pdfMake.createPdf(docDefinition).open();
 
   }
+
+  
 }

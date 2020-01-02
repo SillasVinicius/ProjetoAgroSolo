@@ -104,7 +104,7 @@ export class CriaOutorgaPage implements OnInit {
       descricao: this.formBuilder.control('', [Validators.required, Validators.minLength(3)]),
       dataDeVencimento: this.formBuilder.control('', [Validators.required, Validators.minLength(10),
         Validators.maxLength(10)]),
-      idCliente: this.formBuilder.control('', [Validators.required])
+        clienteId: this.formBuilder.control('', [Validators.required])
     });
   }
 
@@ -116,8 +116,8 @@ export class CriaOutorgaPage implements OnInit {
     return this.outorgaForm.get('dataDeVencimento') as FormControl;
   }
 
-  get idCliente(): FormControl {
-    return this.outorgaForm.get('idCliente') as FormControl;
+  get clienteId(): FormControl {
+    return this.outorgaForm.get('clienteId') as FormControl;
   }
 
   // verifica se a acao é de criação ou atualização
@@ -141,7 +141,7 @@ export class CriaOutorgaPage implements OnInit {
       .subscribe(({ descricao, dataDeVencimento, clienteId  }) => {
         this.outorgaForm.get('descricao').setValue(descricao),
           this.outorgaForm.get('dataDeVencimento').setValue(dataDeVencimento),
-          this.outorgaForm.get('idCliente').setValue(clienteId)
+          this.outorgaForm.get('clienteId').setValue(clienteId)
       });
   }
 
@@ -156,7 +156,7 @@ export class CriaOutorgaPage implements OnInit {
       id: this.outorgaId,
       descricao: this.outorgaForm.get('descricao').value,
       dataDeVencimento: this.outorgaForm.get('dataDeVencimento').value,
-      clienteId: this.outorgaForm.get('idCliente').value
+      clienteId: this.outorgaForm.get('clienteId').value
     });
   }
 
@@ -187,7 +187,7 @@ export class CriaOutorgaPage implements OnInit {
           id: this.outorgaId,
           descricao: this.outorgaForm.get('descricao').value,
           dataDeVencimento: this.outorgaForm.get('dataDeVencimento').value,
-          clienteId: this.outorgaForm.get('idCliente').value
+          clienteId: this.outorgaForm.get('clienteId').value
         });
 
         this.AtualizaListaGlobal();
@@ -262,7 +262,7 @@ export class CriaOutorgaPage implements OnInit {
               id: this.outorgaService.id,
               descricao: this.outorgaForm.get('descricao').value,
               dataDeVencimento: this.outorgaForm.get('dataDeVencimento').value,
-              clienteId: this.outorgaForm.get('idCliente').value,
+              clienteId: this.outorgaForm.get('clienteId').value,
               arquivo: r
             });
           });
@@ -287,7 +287,7 @@ export class CriaOutorgaPage implements OnInit {
             id: this.outorgaId,
             descricao: this.outorgaForm.get('descricao').value,
             dataDeVencimento: this.outorgaForm.get('dataDeVencimento').value,
-            clienteId: this.outorgaForm.get('idCliente').value,
+            clienteId: this.outorgaForm.get('clienteId').value,
             arquivo: r
           });
         });

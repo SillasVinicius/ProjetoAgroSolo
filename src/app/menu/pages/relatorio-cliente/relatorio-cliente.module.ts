@@ -21,6 +21,7 @@ const routes: Routes = [
     IonicModule,
     RouterModule.forChild(routes)
   ],
-  declarations: [RelatorioClientePage]
+  declarations: [RelatorioClientePage],
+  exports: [RelatorioClientePage]
 })
 export class RelatorioClientePageModule {}
