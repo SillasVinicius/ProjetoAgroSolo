@@ -14,7 +14,7 @@
     ></app-logout-button> -->
   </ion-toolbar>
 </ion-header>
-<ion-content>
+<ion-content *ngIf="usuarioService.admin">
   <ion-list *ngIf="cadastrosAmbientaisRurais$ | async as cadastrosAmbientaisRurais">
     <ng-container *ngIf="cadastrosAmbientaisRurais.length > 0; else semCadastrosAmbientaisRurais">
       <app-lista-car-item *ngFor="let cadastroAmbientalRural of cadastrosAmbientaisRurais"
@@ -33,4 +33,17 @@
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
   </ion-fab>
+</ion-content>
+
+<ion-content *ngIf="!usuarioService.admin">
+  <ion-list *ngIf="cadastrosAmbientaisRurais$ | async as cadastrosAmbientaisRurais">
+    <ng-container *ngIf="cadastrosAmbientaisRurais.length > 0; else semCadastrosAmbientaisRurais">
+      <app-lista-car-item *ngFor="let cadastroAmbientalRural of cadastrosAmbientaisRurais"
+        [cadastroAmbientalRural]="cadastroAmbientalRural" (update)="atualizar($event)" (delete)="deletar($event)">
+      </app-lista-car-item>
+    </ng-container>
+    <ng-template #semCadastrosAmbientaisRurais>
+      <ion-item lines="none">Sem cadastros Ambientais Rurais cadastradas...</ion-item>
+    </ng-template>
+  </ion-list>
 </ion-content>

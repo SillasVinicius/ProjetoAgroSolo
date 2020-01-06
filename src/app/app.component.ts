@@ -4,6 +4,8 @@ import { Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 
+import { UsuarioService } from 'src/app/core/services/usuario.service';
+
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html'
@@ -14,6 +16,7 @@ export class AppComponent {
   constructor(
     private platform: Platform,
     private splashScreen: SplashScreen,
+    private usuarioService: UsuarioService,
     private statusBar: StatusBar  ) {
     this.initializeApp();
   }
@@ -22,7 +25,7 @@ export class AppComponent {
     this.pages = [
       { url: '/menu', icon: 'home', text: 'Home', direction: 'back' },
       { url: '/menu/cliente', icon: 'person-add', text: 'Cliente', direction: 'forward' },
-      { url: '/menu/usuario', icon: 'ios-person-add', text: 'Administrador', direction: 'forward' },
+          { url: '/menu/usuario', icon: 'ios-person-add', text: 'Administrador', direction: 'forward' },
       { url: '/menu/dadosPessoais', icon: 'folder', text: 'Dados Pessoais', direction: 'forward' },
       { url: '/menu/ambiental', icon: 'flower', text: 'Ambiental', direction: 'forward' }
 

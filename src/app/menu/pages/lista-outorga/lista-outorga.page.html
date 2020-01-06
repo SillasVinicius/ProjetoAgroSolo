@@ -14,7 +14,7 @@
     ></app-logout-button> -->
   </ion-toolbar>
 </ion-header>
-<ion-content>
+<ion-content >
   <ion-list *ngIf="outorgas$ | async as outorgas">
     <ng-container *ngIf="outorgas.length > 0; else semOutorgas">
       <app-lista-outorga-item *ngFor="let outorga of outorgas" [outorga]="outorga" (update)="atualizar($event)"
@@ -24,20 +24,20 @@
       <ion-item lines="none">Sem Outorgas cadastradas...</ion-item>
     </ng-template>
   </ion-list>
-  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+  <ion-fab  vertical="bottom" horizontal="end" slot="fixed">
     <ion-fab-button (click)="exportPdf($event)" routerDirection="forward">
       <ion-icon name="print"></ion-icon>
     </ion-fab-button><br>
     <ion-fab-button [routerLink]="['/menu/cadastroOutorga']" routerDirection="forward">
     </ion-fab-button>
   </ion-fab>
-  <ion-fab
+  <ion-fab  
     vertical="bottom"
     horizontal="end"
     slot="fixed"
   >
 
-    <ion-fab-button
+    <ion-fab-button  
       [routerLink]="['/menu/cadastroOutorga']"
       routerDirection="forward"
     >
@@ -46,3 +46,38 @@
     </ion-fab-button>
   </ion-fab>
 </ion-content>
+
+<!--
+<ion-content >
+  <ion-list *ngIf="outorgas$ | async as outorgas">
+    <ng-container *ngIf="outorgas.length > 0; else semOutorgas">
+      <app-lista-outorga-item *ngFor="let outorga of outorgas" [outorga]="outorga" (update)="atualizar($event)"
+        (delete)="deletar($event)"></app-lista-outorga-item>
+    </ng-container>
+    <ng-template #semOutorgas>
+      <ion-item lines="none">Sem Outorgas cadastradas...</ion-item>
+    </ng-template>
+  </ion-list>
+  <ion-fab *ngIf="admin" vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="exportPdf($event)" routerDirection="forward">
+      <ion-icon name="print"></ion-icon>
+    </ion-fab-button><br>
+    <ion-fab-button [routerLink]="['/menu/cadastroOutorga']" routerDirection="forward">
+    </ion-fab-button>
+  </ion-fab>
+  <ion-fab  
+    vertical="bottom"
+    horizontal="end"
+    slot="fixed"
+  >
+
+    <ion-fab-button  
+      [routerLink]="['/menu/cadastroOutorga']"
+      routerDirection="forward"
+    >
+
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>
+-->

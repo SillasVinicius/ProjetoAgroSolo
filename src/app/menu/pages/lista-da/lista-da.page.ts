@@ -40,11 +40,9 @@ export class ListaDAPage implements OnInit {
       this.das$ = this.daService.getAll();
       this.das$.pipe(take(1)).subscribe(() => loading.dismiss());
       this.listDa();
-
     }
     else {
-      this.daService.init();
-      this.das$ = this.daService.getAll();
+      this.das$ =  this.daService.buscaDeclaracoesClientes(this.usuarioService.id);
       this.das$.pipe(take(1)).subscribe(() => loading.dismiss());
       this.listDa();
     }

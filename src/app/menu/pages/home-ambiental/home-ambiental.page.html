@@ -1,24 +1,30 @@
-<ion-header class="header">
+<ion-content>
+<ion-header class="header" style="height: 30px;" >
   <ion-toolbar color="primary">
     <app-menu-toogle
       slot="start"
       menu="main-menu"
     ></app-menu-toogle>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/menu/home"></ion-back-button>
+    </ion-buttons>
     <ion-title>Ambiental</ion-title>
   </ion-toolbar>
-  <ion-grid>
-    <ion-row align-items-center>
-      <ion-col
-        text-center
-      >
-      <ion-chip class="rgba3" style="background: #004d2d;">
-          <ion-label>Cadastros Ambientais</ion-label>
-      </ion-chip>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+ 
 </ion-header>
-<ion-content>
+<ion-grid>
+  <ion-row align-items-center>
+    <ion-col
+      text-center
+    >
+    <ion-chip class="rgba3" style="background: #004d2d; margin-top: 25px;">
+        <ion-label>Cadastros Ambientais</ion-label>
+    </ion-chip>
+    </ion-col>
+  </ion-row>
+</ion-grid>
+
+
   <ion-grid style="margin:0px; padding: 0px;">
     <ion-row align-items-center>
        <ion-col text-center style="width:100%; background:  #a2bd31;" (click)="linkOutorga()">
@@ -115,3 +121,5 @@
   </ion-grid>
 </ion-content>
 <img src="../../../../assets/img/grama.png" alt="" style="margin-bottom: 0px;">
+
+

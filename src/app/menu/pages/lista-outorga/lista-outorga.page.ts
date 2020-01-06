@@ -44,8 +44,7 @@ export class ListaOutorgaPage implements OnInit {
       this.listOutorga();
     }
     else {
-      this.outorgaService.init();
-      this.outorgas$ = this.outorgaService.getAll();
+      this.outorgas$ = this.outorgaService.buscaOutorgasClientes(this.usuarioService.id);
       this.outorgas$.pipe(take(1)).subscribe(() => loading.dismiss());
       this.listOutorga();
     }

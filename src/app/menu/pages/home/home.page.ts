@@ -3,6 +3,8 @@ import { NavController } from '@ionic/angular';
 import { UsuarioService } from 'src/app/core/services/usuario.service';
 import { ClienteService } from 'src/app/core/services/cliente.service';
 import { Cliente } from '../../models/cliente.model';
+import { Credito } from '../../models/credito.model';
+import { CreditoService } from 'src/app/core/services/credito.service';
 import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { OverlayService } from 'src/app/core/services/overlay.service';
@@ -23,6 +25,7 @@ export class HomePage implements OnInit {
   outorgas$: Observable<Outorga[]>;
   licencasAmbientais$: Observable<LicencaAmbiental[]>;
   das$: Observable<DeclaracaoAmbiental[]>;
+  cadastrosDeCreditos$: Observable<Credito[]>;
 
   data: Date = new Date();
   dia = this.data.getDate();
@@ -40,6 +43,10 @@ export class HomePage implements OnInit {
   la130Dias: Array<any> = [];
   da15Dias: Array<any> = [];
   da30Dias: Array<any> = [];
+  credito15Dias: Array<any> = [];
+  credito30Dias: Array<any> = [];
+  credito130Dias: Array<any> = [];
+  testeOutorga: Array<any> = [];
   quantidadeAniversariantesMes: Array<any> = [];
 
   nomeUser = '...';
@@ -53,6 +60,7 @@ export class HomePage implements OnInit {
     private outorgaService: OutorgaService,
     private licencaAmbientalService: LaService,
     private daService: DaService,
+    private creditoService: CreditoService
   ) { }
   linkCliente() {
     this.navCtrl.navigateForward('/menu/cliente');
@@ -78,6 +86,9 @@ export class HomePage implements OnInit {
   linkDeclaracoes() {
     this.navCtrl.navigateForward("/menu/DeclaracaoAmbiental")
   }
+  linkCredito() {
+    this.navCtrl.navigateForward("menu/listaCreditoFinanceiro")
+  }
 
   async ngOnInit() {
     this.nomeUser = this.usuario.nomeUser;
@@ -85,26 +96,52 @@ export class HomePage implements OnInit {
     this.admin = this.usuario.admin;
 
     const loading = await this.overlayService.loading();
-    this.clienteService.initCliente();
-    this.clientes$ = this.clienteService.getAll();
-    this.clientes$.pipe(take(1)).subscribe(() => loading.dismiss());
 
-    this.outorgaService.initOutorga();
-    this.outorgas$ = this.outorgaService.getAll();
-    this.outorgas$.pipe(take(1)).subscribe(() => loading.dismiss());
+    if (this.admin) {
+      this.clienteService.initCliente();
+      this.clientes$ = this.clienteService.getAll();
+      this.clientes$.pipe(take(1)).subscribe(() => loading.dismiss());
 
-    this.licencaAmbientalService.initLA();
-    this.licencasAmbientais$ = this.licencaAmbientalService.getAll();
-    this.licencasAmbientais$.pipe(take(1)).subscribe(() => loading.dismiss());
+      this.outorgaService.initOutorga();
+      this.outorgas$ = this.outorgaService.getAll();
+      this.outorgas$.pipe(take(1)).subscribe(() => loading.dismiss());
 
-    this.daService.initDA();
-    this.das$ = this.daService.getAll();
-    this.das$.pipe(take(1)).subscribe(() => loading.dismiss());
 
-    this.retornaDiasVencimento();
-    this.vencimento(this.outorgas$, 'outorga');
-    this.vencimento(this.licencasAmbientais$, 'la');
-    this.vencimento(this.das$, 'da');
+      this.licencaAmbientalService.initLA();
+      this.licencasAmbientais$ = this.licencaAmbientalService.getAll();
+      this.licencasAmbientais$.pipe(take(1)).subscribe(() => loading.dismiss());
+
+      this.daService.initDA();
+      this.das$ = this.daService.getAll();
+      this.das$.pipe(take(1)).subscribe(() => loading.dismiss());
+
+      this.creditoService.initCredito();
+      this.cadastrosDeCreditos$ = this.creditoService.getAll();
+      this.cadastrosDeCreditos$.pipe(take(1)).subscribe(() => loading.dismiss());
+
+      this.retornaDiasVencimento();
+      this.vencimento(this.outorgas$, 'outorga');
+      this.vencimento(this.licencasAmbientais$, 'la');
+      this.vencimento(this.das$, 'da');
+      this.vencimento(this.cadastrosDeCreditos$, "cadastroCredito");
+    } else {
+      this.outorgaService.initOutorga();
+      this.outorgas$ = this.outorgaService.buscaOutorgasClientes(this.usuario.id);
+      this.outorgas$.pipe(take(1)).subscribe(() => loading.dismiss());
+
+      this.licencaAmbientalService.initLA();
+      this.licencasAmbientais$ = this.licencaAmbientalService.buscaLaClientes(this.usuario.id);
+      this.licencasAmbientais$.pipe(take(1)).subscribe(() => loading.dismiss());
+
+      this.daService.initDA();
+      this.das$ = this.daService.buscaDeclaracoesClientes(this.usuario.id);
+      this.das$.pipe(take(1)).subscribe(() => loading.dismiss());
+
+      this.creditoService.initCredito();
+      this.cadastrosDeCreditos$ = this.creditoService.buscaCreditoClientes(this.usuario.id);
+      this.cadastrosDeCreditos$.pipe(take(1)).subscribe(() => loading.dismiss());
+
+    }
   }
 
   async retornaDiasVencimento() {
@@ -177,6 +214,11 @@ export class HomePage implements OnInit {
         this.da15Dias = [];
         this.da30Dias = [];
       }
+      if (painel === "cadastroCredito") {
+        this.credito15Dias = [];
+        this.credito30Dias = [];
+        this.credito130Dias = [];
+      }
 
       vencimentos.forEach(venci => {
 
@@ -184,11 +226,8 @@ export class HomePage implements OnInit {
         let dataFinalFormatada = (dataInicialRecebida.getMonth() + 1) + "/" + dataInicialRecebida.getDate() + "/" + dataInicialRecebida.getFullYear();
         let dataInicialFormatada = this.dataAtualAno;
 
-        //let dataOutorgaAtual = (dataInicialRecebida.getDate() + 1);
-
         var dataInicialMilissegundos = new Date(dataInicialFormatada).getTime();
         var dataFinalMilissegundos = new Date(dataFinalFormatada).getTime();
-
 
         // Transforme 1 dia em milissegundos
         var umDiaMilissegundos = 1000 * 60 * 60 * 24;
@@ -209,6 +248,9 @@ export class HomePage implements OnInit {
           if (painel === 'da') {
             this.da15Dias.push(venci);
           }
+          if (painel === 'cadastroCredito') {
+            this.credito15Dias.push(venci);
+          }
         }
         if (diferencaData > 15 && diferencaData <= 30) {
           if (painel === 'outorga') {
@@ -216,6 +258,9 @@ export class HomePage implements OnInit {
           }
           if (painel === 'da') {
             this.da30Dias.push(venci);
+          }
+          if (painel === 'cadastroCredito') {
+            this.credito30Dias.push(venci);
           }
         }
         if (diferencaData > 30 && diferencaData <= 60) {
@@ -226,6 +271,9 @@ export class HomePage implements OnInit {
         if (diferencaData > 60 && diferencaData <= 130) {
           if (painel === 'la') {
             this.la130Dias.push(venci);
+          }
+          if (painel === 'cadastroCredito') {
+            this.credito130Dias.push(venci);
           }
         }
 

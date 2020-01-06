@@ -25,6 +25,13 @@ export class CarService extends Firestore<CadastroAmbientalRural>{
       this.setCollection(`/CadastroAmbientalRural`);
     }
 
+    buscaCarClientes(id: string){
+      this.setCollection('/CadastroAmbientalRural', ref =>
+        ref.where('clienteId', '==', id)
+      );
+      return this.getAll();
+    }
+
     setCollectionArquivo(la: string) {
       this.setCollection(`/users/${this.usuarioId}/CadastroAmbientalRural/${la}/arquivos`);
     }

@@ -43,8 +43,7 @@ export class ListaLAPage implements OnInit {
       this.listLa();
     }
     else {
-      this.licencaAmbientalService.init();
-      this.licencasAmbientais$ = this.licencaAmbientalService.getAll();
+      this.licencasAmbientais$ = this.licencaAmbientalService.buscaLaClientes(this.usuarioService.id);
       this.licencasAmbientais$.pipe(take(1)).subscribe(() => loading.dismiss());
       this.listLa();
     }

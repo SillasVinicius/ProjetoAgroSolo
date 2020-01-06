@@ -28,6 +28,13 @@ export class OutorgaService extends Firestore<Outorga> {
     this.setCollection(`/users/${this.usuarioId}/outorga/${outorga}/arquivos`);
   }
 
+  buscaOutorgasClientes(id: string){
+    this.setCollection('/outorga', ref =>
+      ref.where('clienteId', '==', id)
+    );
+    return this.getAll();
+  }
+
   criarId(): string {
     return this.db.createId();
   }

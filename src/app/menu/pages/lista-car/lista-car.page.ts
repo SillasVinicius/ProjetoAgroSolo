@@ -34,6 +34,7 @@ export class ListaCARPage implements OnInit {
   listaCar: Array<any> = [];
 
   async ngOnInit(): Promise<void> {
+    console.log(this.usuarioService);
     const loading = await this.overlayService.loading();
     if (this.usuarioService.admin) {
       this.cadastroAmbientalRuralService.initCAR();
@@ -41,8 +42,7 @@ export class ListaCARPage implements OnInit {
       this.cadastrosAmbientaisRurais$.pipe(take(1)).subscribe(() => loading.dismiss());
     }
     else {
-      this.cadastroAmbientalRuralService.init();
-      this.cadastrosAmbientaisRurais$ = this.cadastroAmbientalRuralService.getAll();
+      this.cadastrosAmbientaisRurais$ = this.cadastroAmbientalRuralService.buscaCarClientes(this.usuarioService.id);
       this.cadastrosAmbientaisRurais$.pipe(take(1)).subscribe(() => loading.dismiss());
     }
     this.listCar();
