@@ -15,11 +15,13 @@
   </ion-toolbar>
 </ion-header>
 <ion-content>
-  <ion-list *ngIf="cadastrosAmbientaisRurais$ | async as cadastrosAmbientaisRurais">
-    <ng-container *ngIf="cadastrosAmbientaisRurais.length > 0; else semCadastrosAmbientaisRurais">
-      <app-lista-car-item *ngFor="let cadastroAmbientalRural of cadastrosAmbientaisRurais"
-        [cadastroAmbientalRural]="cadastroAmbientalRural" (update)="atualizar($event)" (delete)="deletar($event)">
-      </app-lista-car-item>
+  <ion-list>
+    <ng-container *ngIf="listaCarCliente.length > 0; else semCadastrosAmbientaisRurais">
+      <app-lista-credito-item
+        *ngFor="let cadastro of listaCarCliente"
+        [cadastroCreditoFinanceiro]="cadastro"
+        (update)="atualizar($event)"
+        (delete)="deletar($event)"></app-lista-credito-item>
     </ng-container>
     <ng-template #semCadastrosAmbientaisRurais>
       <ion-item lines="none">Sem cadastros Ambientais Rurais cadastradas...</ion-item>

@@ -193,8 +193,6 @@ export class CreditoPage implements OnInit {
 
         this.cadastraListaGlobal(this.creditoService.id);
 
-        this.deletePicture();
-
         this.uploadFileTo(this.arquivos);
 
       } else {
@@ -204,20 +202,8 @@ export class CreditoPage implements OnInit {
           this.uploadFileTo(this.arquivos);
           this.novoArquivo = false;
         } else {
-
-          this.creditoService.initCredito();
-          const cadastroCredito = await this.creditoService.update({
-            id: this.creditoId,
-            dataAprovacaoCredito: this.cadastroCreditoFinanceiro.get('dataAprovacaoCredito').value,
-            descricao: this.cadastroCreditoFinanceiro.get('descricao').value,
-            dataExpiracaoCredito: this.cadastroCreditoFinanceiro.get('dataExpiracaoCredito').value,
-            valorCredito: this.cadastroCreditoFinanceiro.get('valorCredito').value,
-            clienteId: this.cadastroCreditoFinanceiro.get('clienteId').value
-          });
+          this.AtualizaListaGlobal();
         }
-        
-        this.AtualizaListaGlobal();
-
       }
       console.log('Cadastro Financeiro Criado', cadastroCredito);
       this.navCtrl.navigateBack('/menu/ambiental/listaCreditoFinanceiro');

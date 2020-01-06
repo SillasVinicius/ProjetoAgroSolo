@@ -4,4 +4,5 @@ export interface Outorga {
   dataDeVencimento: string;
   clienteId: string;
   arquivo?: string;
+  nomeArquivo?: string;
 }

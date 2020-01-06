@@ -4,4 +4,5 @@ export interface DeclaracaoAmbiental {
   dataDeVencimento: string;
   clienteId: string;
   arquivo?: string;
+  nomeArquivo?: string;
 }
