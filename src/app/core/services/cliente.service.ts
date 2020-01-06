@@ -27,7 +27,7 @@ export class ClienteService extends Firestore<Cliente> {
     this.setCollection(`/cliente`);
   }
 
-  initClienteId(idCliente: string) {
+  initClienteId(idCliente: string): any {
     this.setCollection('/cliente', ref =>
       ref.where('id', '==', idCliente)
     );

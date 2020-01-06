@@ -33,6 +33,7 @@ export class ListaDAPage implements OnInit {
   ) {}
 
   listaDa: Array<any> = [];
+  listaDaCliente: Array<any> = [];
   async ngOnInit(): Promise<void> {
     const loading = await this.overlayService.loading();
     if (this.usuarioService.admin) {
@@ -40,6 +41,19 @@ export class ListaDAPage implements OnInit {
       this.das$ = this.daService.getAll();
       this.das$.pipe(take(1)).subscribe(() => loading.dismiss());
       this.listDa();
+
+      this.das$.forEach(Das => {
+        this.listaDaCliente = [];
+        Das.forEach(Da => {
+          if(Da.clienteId != "") {
+          this.clientes$ = this.clienteService.initClienteId(Da.clienteId);
+          this.clientes$.subscribe(async (r: Cliente[]) => {
+            Da['nomeCliente'] = r[0].nome;
+          });
+          this.listaDaCliente.push(Da);
+        }
+        });
+      }); 
 
     }
     else {

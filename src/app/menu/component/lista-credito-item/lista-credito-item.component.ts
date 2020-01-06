@@ -95,18 +95,12 @@ export class ListaCreditoItemComponent implements OnInit {
 
   retornaDiasVencimento(): string {
 
-
     let dataExpiracaoCredito = new Date(this.cadastroCreditoFinanceiro.dataExpiracaoCredito);
-    let dataExpiracaoFormatada = (dataExpiracaoCredito.getMonth() + 1) + "/" + (dataExpiracaoCredito.getDate() + 1) + "/" + dataExpiracaoCredito.getFullYear();
+    let dataExpiracaoFormatada = (dataExpiracaoCredito.getMonth() + 1) + "/" + (dataExpiracaoCredito.getDate()) + "/" + dataExpiracaoCredito.getFullYear();
     let dataAprovacaoCreditoFormatada = this.dataAtual;
-
-
-    //console.log(dataInicialFormatada + " - " + dataFinalFormatada);
 
     var dataAprovacaoCreditoMilissegundos = new Date(dataAprovacaoCreditoFormatada).getTime();
     var dataExpiracaoCreditoMilissegundos = new Date(dataExpiracaoFormatada).getTime();
-
-    //console.log(dataInicialMilissegundos + ' - ' + dataFinalMilissegundos);
 
     // Transforme 1 dia em milissegundos
     var umDiaMilissegundos = 1000 * 60 * 60 * 24;
@@ -116,7 +110,7 @@ export class ListaCreditoItemComponent implements OnInit {
 
     // Converta novamente para data
     var diferencaData = Math.round(diferencaMilissegundos / umDiaMilissegundos);
-
+    
     return "" + diferencaData;
   }
 
