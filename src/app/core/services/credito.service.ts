@@ -19,10 +19,6 @@ export class CreditoService extends Firestore<Credito>{
     this.setCollection(`/users/${this.usuarioService.id}/cadastroCredito`,ref => ref.orderBy('dataAprovacaoCredito', 'desc'));
   }
 
-  initLA(): void {
-    this.setCollection('/cadastroCredito');
-  }
-
   initCredito(): void {
     this.setCollection('/cadastroCredito');
   }  

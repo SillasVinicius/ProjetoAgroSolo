@@ -8,6 +8,7 @@ import { UsuarioService } from 'src/app/core/services/usuario.service';
 import { ClienteService } from 'src/app/core/services/cliente.service';
 import { Cliente } from '../../models/cliente.model';
 import { take } from 'rxjs/operators';
+import { AngularFireStorage } from '@angular/fire/storage';
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
@@ -19,7 +20,7 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
 })
 export class ListaCreditoPage implements OnInit {
 
-  
+
   cadastrosDeCreditos$: Observable<Credito[]>;
   clientes$: Observable<Cliente[]>;
   pdfObject: any;
@@ -29,10 +30,12 @@ export class ListaCreditoPage implements OnInit {
     private creditoService: CreditoService,
     private overlayService: OverlayService,
     private clienteService: ClienteService,
-    private usuarioService: UsuarioService
-  ) {}
+    private usuarioService: UsuarioService,
+    private storage: AngularFireStorage
+  ) { }
 
   listCred: Array<any> = [];
+  listaCreditoPrincipal: Array<any> = [];
 
   async ngOnInit(): Promise<void> {
     const loading = await this.overlayService.loading();
@@ -40,6 +43,20 @@ export class ListaCreditoPage implements OnInit {
       this.creditoService.initCredito();
       this.cadastrosDeCreditos$ = this.creditoService.getAll();
       this.cadastrosDeCreditos$.pipe(take(1)).subscribe(() => loading.dismiss());
+
+      this.cadastrosDeCreditos$.forEach(Creds => {
+        this.listaCreditoPrincipal = [];
+        Creds.forEach(Cred => {
+          if (Cred.clienteId != "") {
+            this.clientes$ = this.clienteService.initClienteId(Cred.clienteId);
+            this.clientes$.subscribe(async (r: Cliente[]) => {
+              Cred['nomeCliente'] = r[0].nome;
+            });
+            this.listaCreditoPrincipal.push(Cred);                       
+          }
+        });
+      });
+      
     }
     else {
       this.cadastrosDeCreditos$ = this.creditoService.buscaCreditoClientes(this.usuarioService.id);
@@ -59,6 +76,8 @@ export class ListaCreditoPage implements OnInit {
         {
           text: 'Sim',
           handler: async () => {
+            const ref = this.storage.ref(`/credito${credito.id}/`);
+            ref.child(`${credito.nomeArquivo}`).delete();
             await this.creditoService.init();
             await this.creditoService.delete(credito);
             await this.creditoService.initCredito();
@@ -76,11 +95,13 @@ export class ListaCreditoPage implements OnInit {
   async listCredito() {
     this.cadastrosDeCreditos$.forEach(Creds => {
       Creds.forEach(Cred => {
-        this.clientes$ = this.clienteService.initClienteId(Cred.clienteId);
-        this.clientes$.subscribe(async (r: Cliente[]) => {
-          Cred['nomeCliente'] = r[0].nome;
-        });
-        this.listCred.push(Cred);
+        if (Cred.clienteId != "") {
+          this.clientes$ = this.clienteService.initClienteId(Cred.clienteId);
+          this.clientes$.subscribe(async (r: Cliente[]) => {
+            Cred['nomeCliente'] = r[0].nome;
+          });
+          this.listCred.push(Cred);
+        }
       });
     });
   }
@@ -125,18 +146,18 @@ export class ListaCreditoPage implements OnInit {
               {
                 text: "Agro Solo",
                 fontSize: 18,
-                alignment: "center" 
+                alignment: "center"
               },
             ],
             width: '*'
           }
         ],
-        
+
         margin: [15, 15]
       },
 
       pageOrientation: 'landscape',
-      pageSize: {height: 600, width: 1000},
+      pageSize: { height: 600, width: 1000 },
       content: [
         this.table(
           this.listCred,
@@ -147,13 +168,13 @@ export class ListaCreditoPage implements OnInit {
             { text: "Valor do Crédito", style: "tableHeader" },
             { text: "Data de Aprovação", style: "tableHeader" },
             { text: "Data de Expiração", style: "tableHeader" },
-          
+
           ]
         )
       ],
       styles: {
         tableHeader: {
-          bold:true,
+          bold: true,
           fontSize: 13,
           color: "Black"
         }
@@ -167,7 +188,7 @@ export class ListaCreditoPage implements OnInit {
       },
 
     };
-    
+
     this.pdfObject = pdfMake.createPdf(docDefinition).open();
 
   }

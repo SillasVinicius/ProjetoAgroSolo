@@ -6,4 +6,5 @@ export interface Credito{
     dataExpiracaoCredito: string;
     valorCredito: string;
     arquivo?: string;
+    nomeArquivo?: string;
 }

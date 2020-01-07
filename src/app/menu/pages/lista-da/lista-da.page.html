@@ -14,12 +14,15 @@
     ></app-logout-button> -->
   </ion-toolbar>
 </ion-header>
-<ion-content *ngIf="usuarioService.admin">
-  <ion-list *ngIf="das$ | async as das">
-    <ng-container *ngIf="das.length > 0; else semDas">
-      <app-lista-da-item *ngFor="let da of das" [declaracaoAmbiental]="da" (update)="atualizar($event)"
-        (delete)="deletar($event)"></app-lista-da-item>
-    </ng-container>
+<ion-content>
+  <ion-list>
+  <ng-container *ngIf="listaDaCliente.length > 0; else semDas">
+    <app-lista-credito-item
+      *ngFor="let cadastro of listaDaCliente"
+      [cadastroCreditoFinanceiro]="cadastro"
+      (update)="atualizar($event)"
+      (delete)="deletar($event)"></app-lista-credito-item>
+  </ng-container>
     <ng-template #semDas>
       <ion-item lines="none">Sem Declarações Ambientais cadastradas...</ion-item>
     </ng-template>

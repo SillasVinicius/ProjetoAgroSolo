@@ -38,10 +38,11 @@
     </ion-item>
 
 
-    <ion-item>
+   <ion-item>
       <ion-label position="floating" color="primary">Data de Aprovação do Crédito Financeiro</ion-label>
       <ion-input type="date" placeholder="Aprovação" color="primary" formControlName="dataAprovacaoCredito">
       </ion-input>
+
       <ion-note slot="end" color="danger"
         *ngIf="dataAprovacaoCredito.dirty && dataAprovacaoCredito.hasError('required')">
         Data Obrigatório!
@@ -61,8 +62,8 @@
         Data Obrigatória!
       </ion-note>
       <ion-note slot="end" color="danger"
-        *ngIf="dataExpiracaoCredito.dirty && (dataExpiracaoCredito.hasError('minlength') || dataExpiracaoCredito.hasError('maxlength'))">
-        Data Inválida!
+        *ngIf="dataExpiracaoCredito.dirty && (dataExpiracaoCredito.hasError('minlength') < dataAprovacaoCredito.hasError('maxlength'))">
+        Data de Expiração do Crédito não pode ser menor que a Data de Aprovação!
       </ion-note>
     </ion-item>
 
@@ -94,7 +95,7 @@
 
 
     <!-- inicio arquivo -->
-    <div *ngIf="!update">
+    <div>
       <ion-card [@tamanhoArquivo]="liberaArquivo ? 'comArquivo' : 'semArquivo'">
         <ion-grid>
           <ion-row align-items-center>
@@ -103,7 +104,7 @@
                 <ion-card-header>
                   <ion-card-title style="font-size: 15px;">
                     Arquivo selecionado:
-                    <a [href]="urlFoto" target="_blank"><b>{{ fileName }}</b></a>
+                    <a [href]="urlArquivo" target="_blank"><b>{{ fileName }}</b></a>
                   </ion-card-title>
                 </ion-card-header>
               </ion-card>
@@ -133,7 +134,7 @@
         CADASTRAR
       </ion-button>
     </div>
-    <div *ngIf="!admin && update">
+    <div *ngIf="admin && update">
       <ion-button expand="full" type="submit" *ngIf="cadastroCreditoFinanceiro.valid">
         ATUALIZAR
       </ion-button>

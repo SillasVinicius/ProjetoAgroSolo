@@ -33,6 +33,7 @@ export class ListaLAPage implements OnInit {
 
 
   listaLa: Array<any> = [];
+  listaLaCliente: Array<any> = [];
 
   async ngOnInit(): Promise<void> {
     const loading = await this.overlayService.loading();
@@ -41,6 +42,21 @@ export class ListaLAPage implements OnInit {
       this.licencasAmbientais$ = this.licencaAmbientalService.getAll();
       this.licencasAmbientais$.pipe(take(1)).subscribe(() => loading.dismiss());
       this.listLa();
+
+      this.licencasAmbientais$.forEach(licencasAmbientais => {
+        this.listaLaCliente = [];
+        licencasAmbientais.forEach(la => {
+          if(la.clienteId != ""){
+          this.clientes$ = this.clienteService.initClienteId(la.clienteId);
+          this.clientes$.subscribe(async (r: Cliente[]) => {
+            la['nomeCliente'] = r[0].nome;
+          });
+          this.listaLaCliente.push(la);
+        }
+        });
+      });
+
+      
     }
     else {
       this.licencasAmbientais$ = this.licencaAmbientalService.buscaLaClientes(this.usuarioService.id);

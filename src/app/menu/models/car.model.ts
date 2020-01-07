@@ -3,4 +3,5 @@ export interface CadastroAmbientalRural {
   descricao: string;
   clienteId: string;
   arquivo?: string;
+  nomeArquivo?: string;
 }

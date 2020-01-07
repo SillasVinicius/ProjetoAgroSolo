@@ -66,7 +66,7 @@
       </ion-note>
     </ion-item>
     <!-- inicio arquivo -->
-    <div *ngIf="!update">
+    <div>
     <ion-card [@tamanhoArquivo]="liberaArquivo ? 'comArquivo' : 'semArquivo'">
       <ion-grid >
         <ion-row align-items-center>
@@ -81,7 +81,7 @@
             <ion-card-header>
               <ion-card-title style="font-size: 15px;">
                 Arquivo selecionado:
-                <a [href]="urlFoto" target="_blank"><b>{{ fileName }}</b></a>
+                <a [href]="urlArquivo" target="_blank"><b>{{ fileName }}</b></a>
               </ion-card-title>
             </ion-card-header>
           </ion-card>
@@ -128,10 +128,7 @@
         ATUALIZAR
       </ion-button>
       <ion-button
-        expand="full"
-        [disabled]="true"
-        *ngIf="!declaracaoAmbientalForm.valid"
-      >
+        expand="full" [disabled]="true" *ngIf="!declaracaoAmbientalForm.valid">
         ATUALIZAR
       </ion-button>
     </div>

@@ -11,4 +11,6 @@ export interface Cliente {
   senha: string;
   informacoesAdicionais?: string;
   foto?: string;
+  nomeFoto?: string;
+
 }
