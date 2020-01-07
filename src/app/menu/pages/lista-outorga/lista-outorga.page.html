@@ -7,18 +7,17 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/menu/ambiental"></ion-back-button>
     </ion-buttons>
-    <ion-title>Outorgas</ion-title>
-    <!-- <app-logout-button
-      slot="end"
-      menu="main-menu"
-    ></app-logout-button> -->
+    <ion-title>Outorgas</ion-title>       
   </ion-toolbar>
 </ion-header>
 <ion-content>
-  <ion-list *ngIf="outorgas$ | async as outorgas">
-    <ng-container *ngIf="outorgas.length > 0; else semOutorgas">
-      <app-lista-outorga-item *ngFor="let outorga of outorgas" [outorga]="outorga" (update)="atualizar($event)"
-        (delete)="deletar($event)"></app-lista-outorga-item>
+  <ion-list>
+    <ng-container *ngIf="listaClientesOutorgas.length > 0; else semOutorgas">
+      <app-lista-outorga-item 
+      *ngFor="let outorga of listaClientesOutorgas" 
+      [outorga]="outorga" 
+      (update)="atualizar($event)"
+      (delete)="deletar($event)"></app-lista-outorga-item>
     </ng-container>
     <ng-template #semOutorgas>
       <ion-item lines="none">Sem Outorgas cadastradas...</ion-item>
@@ -34,6 +33,7 @@
   <ion-fab
     vertical="bottom"
     horizontal="end"
+
     slot="fixed"
   >
 

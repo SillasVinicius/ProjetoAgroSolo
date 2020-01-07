@@ -46,8 +46,8 @@ export class ListaDAPage implements OnInit {
         this.listaDaCliente = [];
         Das.forEach(Da => {
           if(Da.clienteId != "") {
-          this.clientes$ = this.clienteService.initClienteId(Da.clienteId);
-          this.clientes$.subscribe(async (r: Cliente[]) => {
+            this.clientes$ = this.clienteService.initClienteId(Da.clienteId);
+            this.clientes$.subscribe(async (r: Cliente[]) => {
             Da['nomeCliente'] = r[0].nome;
           });
           this.listaDaCliente.push(Da);

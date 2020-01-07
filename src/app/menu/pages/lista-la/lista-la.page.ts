@@ -43,9 +43,9 @@ export class ListaLAPage implements OnInit {
       this.licencasAmbientais$.pipe(take(1)).subscribe(() => loading.dismiss());
       this.listLa();
 
-      this.licencasAmbientais$.forEach(licencasAmbientais => {
+      this.licencasAmbientais$.forEach(La => {
         this.listaLaCliente = [];
-        licencasAmbientais.forEach(la => {
+        La.forEach(la => {
           if(la.clienteId != ""){
           this.clientes$ = this.clienteService.initClienteId(la.clienteId);
           this.clientes$.subscribe(async (r: Cliente[]) => {
