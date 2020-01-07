@@ -83,7 +83,7 @@ export class CreditoPage implements OnInit {
           this.clientes[i] = r[i];
         }
       });
-      
+
       this.admin = true;
     }
     else {
@@ -198,7 +198,9 @@ export class CreditoPage implements OnInit {
       } else {
 
         if (this.novoArquivo) {
-          this.deletePicture();
+          if (this.arquivoAntigo !== '') {
+            this.deletePicture();
+          }
           this.uploadFileTo(this.arquivos);
           this.novoArquivo = false;
         } else {

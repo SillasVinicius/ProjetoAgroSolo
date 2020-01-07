@@ -19,7 +19,7 @@
     <ng-container *ngIf="listaLaCliente.length > 0; else semcadastrosDeCreditos">
       <app-lista-credito-item
         *ngFor="let cadastro of listaLaCliente"
-        [licencaAmbiental]="licenca"
+        [cadastroCreditoFinanceiro]="cadastro"
         (update)="atualizar($event)"
         (delete)="deletar($event)"></app-lista-credito-item>
     </ng-container>

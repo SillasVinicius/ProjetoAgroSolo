@@ -56,10 +56,12 @@ export class CriaDaPage implements OnInit {
     // ARQUIVOS
     public uploadPercent: Observable<number>;
     public downloadUrl: Observable<string>;
-    public urlFoto: string;
+    public urlArquivo: string;
     arquivos: Object;
     files2: Observable<any[]>;
     fileName = '';
+    novoArquivo = false;
+    arquivoAntigo: any;
 
     // Dependencias
 
@@ -95,7 +97,6 @@ export class CriaDaPage implements OnInit {
         this.admin = false;
       }
 
-      console.log(this.clientes);
       this.clienteService.id = '';
       this.acao();
     }
@@ -140,10 +141,15 @@ export class CriaDaPage implements OnInit {
       this.declaracaoAmbientalService
         .get(declaracaoAmbientalId)
         .pipe(take(1))
-        .subscribe(({ descricao, dataDeVencimento, clienteId  }) => {
-          this.declaracaoAmbientalForm.get('descricao').setValue(descricao),
-            this.declaracaoAmbientalForm.get('dataDeVencimento').setValue(dataDeVencimento),
-            this.declaracaoAmbientalForm.get('clienteId').setValue(clienteId)
+        .subscribe(({ descricao, dataDeVencimento, clienteId, arquivo, nomeArquivo  }) => {
+          this.declaracaoAmbientalForm.get('descricao').setValue(descricao);
+            this.declaracaoAmbientalForm.get('dataDeVencimento').setValue(dataDeVencimento); 
+            this.declaracaoAmbientalForm.get('clienteId').setValue(clienteId);
+            this.liberaArquivo = true;
+            this.urlArquivo = arquivo;
+            this.fileName = nomeArquivo;
+            this.arquivoAntigo = nomeArquivo;
+
         });
     }
 
@@ -170,28 +176,22 @@ export class CriaDaPage implements OnInit {
       try {
         const declaracaoAmbiental = '';
         if (!this.declaracaoAmbientalId) {
-          this.declaracaoAmbientalService.init();
+          this.declaracaoAmbientalService.initDA();
           const declaracaoAmbiental = await this.declaracaoAmbientalService.create(this.declaracaoAmbientalForm.value);
           this.cadastraListaGlobal(this.declaracaoAmbientalService.id);
-
-          this.deletePicture();
 
           this.uploadFileTo(this.arquivos);
 
         } else {
-          // this.deletePicture();
-          //
-          // this.uploadFileToUpdate(this.arquivos);
+          
+          if (this.novoArquivo) {
+            this.deletePicture();
+            this.uploadFileTo(this.arquivos);
+            this.novoArquivo = false;
 
-          this.declaracaoAmbientalService.init();
-          const declaracaoAmbiental = await this.declaracaoAmbientalService.update({
-            id: this.declaracaoAmbientalId,
-            descricao: this.declaracaoAmbientalForm.get('descricao').value,
-            dataDeVencimento: this.declaracaoAmbientalForm.get('dataDeVencimento').value,
-            clienteId: this.declaracaoAmbientalForm.get('clienteId').value
-          });
-
-          this.AtualizaListaGlobal();
+          } else {
+            this.AtualizaListaGlobal();
+         }
         }
         console.log('declaracao Ambiental Criada', declaracaoAmbiental);
         this.navCtrl.navigateBack('/menu/ambiental/DeclaracaoAmbiental');
@@ -216,39 +216,19 @@ export class CriaDaPage implements OnInit {
           }
         this.fileName = file.name;
         this.arquivos = file;
-        this.uploadFile(file);
+        this.liberaArquivo = true;
+        this.novoArquivo = true;
 
       }catch(error){
         console.error(error);
       }
     }
 
-    async uploadFile(file: Object){
-        const ref = this.storage.ref(`${this.fileName}`);
-        const task = ref.put(file);
-        //
-        this.uploadPercent = task.percentageChanges();
-        task.snapshotChanges().pipe(
-          finalize(async () => {
-            const loading = await this.overlayService.loading({
-              message: "Carregando Foto..."
-            });
-
-            this.downloadUrl = ref.getDownloadURL();
-            this.liberaArquivo = true;
-
-            this.downloadUrl.subscribe(async r => {
-              this.urlFoto = r;
-            });
-
-            loading.dismiss();
-          })
-        ).subscribe();
-    }
-
     async uploadFileTo(file: Object){
 
-        const ref2 = this.storage.ref(`/users/${this.declaracaoAmbientalService.usuarioId}/DeclaracaoAmbiental/${this.declaracaoAmbientalService.id}/arquivos/${this.fileName}`);
+      let idDa = (this.declaracaoAmbientalService.id === '') ? this.declaracaoAmbientalId : this.declaracaoAmbientalService.id;
+
+        const ref2 = this.storage.ref(`/DeclaracaoAmbiental${idDa}/${this.fileName}`);
         const task2 = ref2.put(file);
 
         task2.snapshotChanges().pipe(
@@ -258,47 +238,26 @@ export class CriaDaPage implements OnInit {
             this.liberaArquivo = true;
 
             this.downloadUrl.subscribe(async r => {
-              this.declaracaoAmbientalService.init();
+              this.declaracaoAmbientalService.initDA();
               const atualizarFoto = await this.declaracaoAmbientalService.update({
                 id: this.declaracaoAmbientalService.id,
                 descricao: this.declaracaoAmbientalForm.get('descricao').value,
                 dataDeVencimento: this.declaracaoAmbientalForm.get('dataDeVencimento').value,
                 clienteId: this.declaracaoAmbientalForm.get('clienteId').value,
-                arquivo: r
+                arquivo: r,
+                nomeArquivo: this.fileName
               });
             });
           })
         ).subscribe();
     }
 
-    async uploadFileToUpdate(file: Object){
-
-      const ref2 = this.storage.ref(`/users/${this.declaracaoAmbientalService.usuarioId}/DeclaracaoAmbiental/${this.declaracaoAmbientalService.id}/arquivos/${this.fileName}`);
-      const task2 = ref2.put(file);
-
-      task2.snapshotChanges().pipe(
-        finalize(async () => {
-
-          this.downloadUrl = ref2.getDownloadURL();
-          this.liberaArquivo = true;
-
-          this.downloadUrl.subscribe(async r => {
-            this.declaracaoAmbientalService.init();
-            const atualizarFoto = await this.declaracaoAmbientalService.update({
-              id: this.declaracaoAmbientalId,
-              descricao: this.declaracaoAmbientalForm.get('descricao').value,
-              dataDeVencimento: this.declaracaoAmbientalForm.get('dataDeVencimento').value,
-              clienteId: this.declaracaoAmbientalForm.get('clienteId').value,
-              arquivo: r
-            });
-          });
-        })
-      ).subscribe();
-    }
-
     deletePicture(){
-      const ref = this.storage.ref(`${this.fileName}`);
-      const task = ref.delete();
+
+      let idDa = (this.declaracaoAmbientalService.id === '') ? this.declaracaoAmbientalId : this.declaracaoAmbientalService.id;
+
+      const ref = this.storage.ref(`/DeclaracaoAmbiental${idDa}/`);
+      ref.child(`${this.arquivoAntigo}`).delete();
     }
 
 

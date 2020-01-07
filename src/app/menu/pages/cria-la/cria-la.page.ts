@@ -56,10 +56,12 @@ export class CriaLaPage implements OnInit {
       // ARQUIVOS
       public uploadPercent: Observable<number>;
       public downloadUrl: Observable<string>;
-      public urlFoto: string;
+      public urlArquivo: string;
       arquivos: Object;
       files2: Observable<any[]>;
       fileName = '';
+      novoArquivo = false;
+      arquivoAntigo: any;
 
 
       constructor(
@@ -95,7 +97,6 @@ export class CriaLaPage implements OnInit {
           this.admin = false;
         }
 
-        console.log(this.clientes);
         this.clienteService.id = '';
         this.acao();
       }
@@ -139,10 +140,14 @@ export class CriaLaPage implements OnInit {
         this.licencaAmbientalService
           .get(licencaAmbientalId)
           .pipe(take(1))
-          .subscribe(({ descricao, dataDeVencimento, clienteId  }) => {
-            this.licencaAmbientalForm.get('descricao').setValue(descricao),
-              this.licencaAmbientalForm.get('dataDeVencimento').setValue(dataDeVencimento)
-              this.licencaAmbientalForm.get('clienteId').setValue(clienteId)
+          .subscribe(({ descricao, dataDeVencimento, clienteId, arquivo, nomeArquivo  }) => {
+            this.licencaAmbientalForm.get('descricao').setValue(descricao);
+              this.licencaAmbientalForm.get('dataDeVencimento').setValue(dataDeVencimento);
+              this.licencaAmbientalForm.get('clienteId').setValue(clienteId);
+              this.liberaArquivo = true;
+              this.urlArquivo = arquivo;
+              this.fileName = nomeArquivo;
+              this.arquivoAntigo = nomeArquivo;
           });
       }
 
@@ -176,26 +181,18 @@ export class CriaLaPage implements OnInit {
 
             this.cadastraListaGlobal(this.licencaAmbientalService.id);
 
-            this.deletePicture();
-
             this.uploadFileTo(this.arquivos);
 
           } else {
 
-            // this.deletePicture();
-            //
-            // this.uploadFileToUpdate(this.arquivos);
+            if(this.novoArquivo){
+              this.deletePicture();
+              this.uploadFileTo(this.arquivos);
+              this.novoArquivo = false;
+            } else {
 
-            this.licencaAmbientalService.init();
-            const atualizar = await this.licencaAmbientalService.update({
-              id: this.licencaAmbientalId,
-              descricao: this.licencaAmbientalForm.get('descricao').value,
-              dataDeVencimento: this.licencaAmbientalForm.get('dataDeVencimento').value,
-              clienteId: this.licencaAmbientalForm.get('clienteId').value
-            });
-
-            this.AtualizaListaGlobal();
-
+              this.AtualizaListaGlobal();
+            }
           }
           console.log('Licença Ambiental Criada', licencaAmbiental);
           this.navCtrl.navigateBack('/menu/ambiental/LicencaAmbiental');
@@ -220,39 +217,20 @@ export class CriaLaPage implements OnInit {
             }
           this.fileName = file.name;
           this.arquivos = file;
-          this.uploadFile(file);
+          this.liberaArquivo = true;
+          this.novoArquivo = true;
 
         }catch(error){
           console.error(error);
         }
       }
 
-      async uploadFile(file: Object){
-          const ref = this.storage.ref(`${this.fileName}`);
-          const task = ref.put(file);
-          //
-          this.uploadPercent = task.percentageChanges();
-          task.snapshotChanges().pipe(
-            finalize(async () => {
-              const loading = await this.overlayService.loading({
-                message: "Carregando Foto..."
-              });
-
-              this.downloadUrl = ref.getDownloadURL();
-              this.liberaArquivo = true;
-
-              this.downloadUrl.subscribe(async r => {
-                this.urlFoto = r;
-              });
-
-              loading.dismiss();
-            })
-          ).subscribe();
-      }
-
+     
       async uploadFileTo(file: Object){
 
-          const ref2 = this.storage.ref(`/users/${this.licencaAmbientalService.usuarioId}/LicencaAmbiental/${this.licencaAmbientalService.id}/arquivos/${this.fileName}`);
+        let idLa = (this.licencaAmbientalService.id === '') ? this.licencaAmbientalService : this.licencaAmbientalService.id;
+
+          const ref2 = this.storage.ref(`/LicencaAmbiental${idLa}/${this.fileName}`);
           const task2 = ref2.put(file);
 
           task2.snapshotChanges().pipe(
@@ -262,47 +240,26 @@ export class CriaLaPage implements OnInit {
               this.liberaArquivo = true;
 
               this.downloadUrl.subscribe(async r => {
-                this.licencaAmbientalService.init();
+                this.licencaAmbientalService.initLA();
                 const atualizarFoto = await this.licencaAmbientalService.update({
                   id: this.licencaAmbientalService.id,
                   descricao: this.licencaAmbientalForm.get('descricao').value,
                   dataDeVencimento: this.licencaAmbientalForm.get('dataDeVencimento').value,
                   clienteId: this.licencaAmbientalForm.get('clienteId').value,
-                  arquivo: r
+                  arquivo: r,
+                  nomeArquivo: this.fileName
                 });
               });
             })
           ).subscribe();
       }
 
-      async uploadFileToUpdate(file: Object){
-
-        const ref2 = this.storage.ref(`/users/${this.licencaAmbientalService.usuarioId}/LicencaAmbiental/${this.licencaAmbientalService.id}/arquivos/${this.fileName}`);
-        const task2 = ref2.put(file);
-
-        task2.snapshotChanges().pipe(
-          finalize(async () => {
-
-            this.downloadUrl = ref2.getDownloadURL();
-            this.liberaArquivo = true;
-
-            this.downloadUrl.subscribe(async r => {
-              this.licencaAmbientalService.init();
-              const atualizarFoto = await this.licencaAmbientalService.update({
-                id: this.licencaAmbientalId,
-                descricao: this.licencaAmbientalForm.get('descricao').value,
-                dataDeVencimento: this.licencaAmbientalForm.get('dataDeVencimento').value,
-                clienteId: this.licencaAmbientalForm.get('clienteId').value,
-                arquivo: r
-              });
-            });
-          })
-        ).subscribe();
-      }
-
       deletePicture(){
-        const ref = this.storage.ref(`${this.fileName}`);
-        const task = ref.delete();
+
+        let idLa = (this.licencaAmbientalService.id === '') ? this.licencaAmbientalId : this.licencaAmbientalService.id;
+
+        const ref = this.storage.ref(`/LicencaAmbiental${idLa}`);
+        ref.child(`${this.arquivoAntigo}`).delete();
       }
 
 

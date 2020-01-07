@@ -18,14 +18,14 @@ import { UsuarioService } from 'src/app/core/services/usuario.service';
   styleUrls: ['./cria-outorga.page.scss'],
   animations: [
     trigger('tamanhoArquivo', [
-      state('semArquivo', style({ 'height': '100px'})),
-      state('comArquivo', style({ 'height': '210px'})),
+      state('semArquivo', style({ 'height': '100px' })),
+      state('comArquivo', style({ 'height': '210px' })),
       transition('antes => depois', [style({ transition: '0.2s' }), animate('100ms 0s ease-in')]),
       transition('depois => antes', [style({ transition: '0.2s' }), animate('100ms 0s ease-in')])
     ]),
     trigger('marginBotao', [
-      state('semArquivo', style({ 'margin-top': '2px'})),
-      state('comArquivo', style({ 'margin-top': '30px'})),
+      state('semArquivo', style({ 'margin-top': '2px' })),
+      state('comArquivo', style({ 'margin-top': '30px' })),
       transition('antes => depois', [style({ transition: '0.1s' }), animate('100ms 0s ease-in')]),
       transition('depois => antes', [style({ transition: '0.1s' }), animate('100ms 0s ease-in')])
     ]),
@@ -53,10 +53,12 @@ export class CriaOutorgaPage implements OnInit {
   // ARQUIVOS
   public uploadPercent: Observable<number>;
   public downloadUrl: Observable<string>;
-  public urlFoto: string;
+  public urlArquivo: string;
   arquivos: Object;
   files2: Observable<any[]>;
   fileName = '';
+  novoArquivo = false;
+  arquivoAntigo: any;
 
   // Dependencias
   constructor(
@@ -67,7 +69,7 @@ export class CriaOutorgaPage implements OnInit {
     private outorgaService: OutorgaService,
     private clienteService: ClienteService,
     private usuarioService: UsuarioService,
-    private storage: AngularFireStorage  ) {}
+    private storage: AngularFireStorage) { }
 
   // metodo que é chamado quando a pagina é carregada
   ngOnInit() {
@@ -76,7 +78,7 @@ export class CriaOutorgaPage implements OnInit {
       this.clienteService.initCliente();
       this.clienteService.getAll().subscribe((r: Cliente[]) => {
         for (let i = 0; i < r.length; i++) {
-            this.clientes[i] = r[i];
+          this.clientes[i] = r[i];
         }
       });
 
@@ -86,14 +88,13 @@ export class CriaOutorgaPage implements OnInit {
       this.clienteService.init();
       this.clienteService.getAll().subscribe((r: Cliente[]) => {
         for (let i = 0; i < r.length; i++) {
-            this.clientes[i] = r[i];
+          this.clientes[i] = r[i];
         }
       });
 
       this.admin = false;
     }
 
-    console.log(this.clientes);
     this.clienteService.id = '';
     this.acao();
   }
@@ -103,8 +104,8 @@ export class CriaOutorgaPage implements OnInit {
     this.outorgaForm = this.formBuilder.group({
       descricao: this.formBuilder.control('', [Validators.required, Validators.minLength(3)]),
       dataDeVencimento: this.formBuilder.control('', [Validators.required, Validators.minLength(10),
-        Validators.maxLength(10)]),
-        clienteId: this.formBuilder.control('', [Validators.required])
+      Validators.maxLength(10)]),
+      clienteId: this.formBuilder.control('', [Validators.required])
     });
   }
 
@@ -138,10 +139,14 @@ export class CriaOutorgaPage implements OnInit {
     this.outorgaService
       .get(outorgaId)
       .pipe(take(1))
-      .subscribe(({ descricao, dataDeVencimento, clienteId  }) => {
-        this.outorgaForm.get('descricao').setValue(descricao),
-          this.outorgaForm.get('dataDeVencimento').setValue(dataDeVencimento),
-          this.outorgaForm.get('clienteId').setValue(clienteId)
+      .subscribe(({ descricao, dataDeVencimento, clienteId, arquivo, nomeArquivo }) => {
+        this.outorgaForm.get('descricao').setValue(descricao);
+        this.outorgaForm.get('dataDeVencimento').setValue(dataDeVencimento);
+        this.outorgaForm.get('clienteId').setValue(clienteId);
+        this.liberaArquivo = true;
+        this.urlArquivo = arquivo;
+        this.fileName = nomeArquivo;
+        this.arquivoAntigo = nomeArquivo;
       });
   }
 
@@ -172,25 +177,19 @@ export class CriaOutorgaPage implements OnInit {
         const outorga = await this.outorgaService.create(this.outorgaForm.value);
         this.cadastraListaGlobal(this.outorgaService.id);
 
-        this.deletePicture();
-
         this.uploadFileTo(this.arquivos);
 
       } else {
 
-        // this.deletePicture();
-        //
-        // this.uploadFileToUpdate(this.arquivos);
-
-        this.outorgaService.init();
-        const atualizar = await this.outorgaService.update({
-          id: this.outorgaId,
-          descricao: this.outorgaForm.get('descricao').value,
-          dataDeVencimento: this.outorgaForm.get('dataDeVencimento').value,
-          clienteId: this.outorgaForm.get('clienteId').value
-        });
-
-        this.AtualizaListaGlobal();
+        if (this.novoArquivo) {
+          if (this.arquivoAntigo !== '') {
+            this.deletePicture();
+          }
+          this.uploadFileTo(this.arquivos);
+          this.novoArquivo = false;
+        } else {
+          this.AtualizaListaGlobal();
+        }
       }
       console.log('Outorga Criada', outorga);
       this.navCtrl.navigateBack('/menu/outorga');
@@ -204,75 +203,32 @@ export class CriaOutorgaPage implements OnInit {
     }
   }
 
-  async openGalery(event: FileList){
+  async openGalery(event: FileList) {
     try {
       const file = event.item(0);
-        if (file.type.split('/')[0] === 'image') {
-          await this.overlayService.toast({
-            message: 'tipo de arquivo não pode ser enviado por esse campo :('
-          });
-          return;
-        }
+      if (file.type.split('/')[0] === 'image') {
+        await this.overlayService.toast({
+          message: 'tipo de arquivo não pode ser enviado por esse campo :('
+        });
+        return;
+      }
       this.fileName = file.name;
       this.arquivos = file;
-      this.uploadFile(file);
+      this.liberaArquivo = true;
+      this.novoArquivo = true;
 
-    }catch(error){
+    } catch (error) {
       console.error(error);
     }
   }
 
-  async uploadFile(file: Object){
-      const ref = this.storage.ref(`${this.fileName}`);
-      const task = ref.put(file);
-      //
-      this.uploadPercent = task.percentageChanges();
-      task.snapshotChanges().pipe(
-        finalize(async () => {
-          const loading = await this.overlayService.loading({
-            message: "Carregando Foto..."
-          });
 
-          this.downloadUrl = ref.getDownloadURL();
-          this.liberaArquivo = true;
 
-          this.downloadUrl.subscribe(async r => {
-            this.urlFoto = r;
-          });
+  async uploadFileTo(file: Object) {
 
-          loading.dismiss();
-        })
-      ).subscribe();
-  }
+    let idOutorga = (this.clienteService.id === '') ? this.outorgaId : this.outorgaService.id;
 
-  async uploadFileTo(file: Object){
-
-      const ref2 = this.storage.ref(`/users/${this.outorgaService.usuarioId}/outorga/${this.outorgaService.id}/arquivos/${this.fileName}`);
-      const task2 = ref2.put(file);
-
-      task2.snapshotChanges().pipe(
-        finalize(async () => {
-
-          this.downloadUrl = ref2.getDownloadURL();
-          this.liberaArquivo = true;
-
-          this.downloadUrl.subscribe(async r => {
-            this.outorgaService.init();
-            const atualizarFoto = await this.outorgaService.update({
-              id: this.outorgaService.id,
-              descricao: this.outorgaForm.get('descricao').value,
-              dataDeVencimento: this.outorgaForm.get('dataDeVencimento').value,
-              clienteId: this.outorgaForm.get('clienteId').value,
-              arquivo: r
-            });
-          });
-        })
-      ).subscribe();
-  }
-
-  async uploadFileToUpdate(file: Object){
-
-    const ref2 = this.storage.ref(`/users/${this.outorgaService.usuarioId}/outorga/${this.outorgaService.id}/arquivos/${this.fileName}`);
+    const ref2 = this.storage.ref(`/outorga${idOutorga}/${this.fileName}`);
     const task2 = ref2.put(file);
 
     task2.snapshotChanges().pipe(
@@ -282,22 +238,26 @@ export class CriaOutorgaPage implements OnInit {
         this.liberaArquivo = true;
 
         this.downloadUrl.subscribe(async r => {
-          this.outorgaService.init();
+          this.outorgaService.initOutorga();
           const atualizarFoto = await this.outorgaService.update({
-            id: this.outorgaId,
+            id: this.outorgaService.id,
             descricao: this.outorgaForm.get('descricao').value,
             dataDeVencimento: this.outorgaForm.get('dataDeVencimento').value,
             clienteId: this.outorgaForm.get('clienteId').value,
-            arquivo: r
+            arquivo: r,
+            nomeArquivo: this.fileName
           });
         });
       })
     ).subscribe();
   }
 
-  deletePicture(){
-    const ref = this.storage.ref(`${this.fileName}`);
-    const task = ref.delete();
+  deletePicture() {
+
+    let idOutorga = (this.outorgaService.id === '') ? this.outorgaId : this.outorgaService.id;
+
+    const ref = this.storage.ref(`/outorga${idOutorga}`);
+    ref.child(`${this.arquivoAntigo}`).delete();
   }
 
 }
