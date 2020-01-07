@@ -17,11 +17,11 @@
 <ion-content>
   <ion-list>
     <ng-container *ngIf="listaLaCliente.length > 0; else semcadastrosDeCreditos">
-      <app-lista-credito-item
+      <app-lista-la-item
         *ngFor="let cadastro of listaLaCliente"
-        [cadastroCreditoFinanceiro]="cadastro"
+        [licencaAmbiental]="cadastro"
         (update)="atualizar($event)"
-        (delete)="deletar($event)"></app-lista-credito-item>
+        (delete)="deletar($event)"></app-lista-la-item>
     </ng-container>
     <ng-template #semLicencasAmbientais>
       <ion-item lines="none">Sem Licenças Ambientais cadastradas...</ion-item>

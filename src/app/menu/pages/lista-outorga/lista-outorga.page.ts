@@ -34,6 +34,7 @@ export class ListaOutorgaPage implements OnInit {
   ) {}
 
   listaOutorga: Array<any> = [];
+  listaClientesOutorgas: Array<any> = [];
 
   async ngOnInit(): Promise<void> {
     const loading = await this.overlayService.loading();
@@ -42,6 +43,21 @@ export class ListaOutorgaPage implements OnInit {
       this.outorgas$ = this.outorgaService.getAll();
       this.outorgas$.pipe(take(1)).subscribe(() => loading.dismiss());
       this.listOutorga();
+
+      this.outorgas$.forEach(Outs => {
+        this.listaClientesOutorgas = [];
+        Outs.forEach(Out => {
+          if(Out.clienteId != ""){
+            this.clientes$ = this.clienteService.initClienteId(Out.clienteId);
+            this.clientes$.subscribe(async (r: Cliente[]) => {
+              Out['nomeCliente'] = r[0].nome;
+          });
+          this.listaClientesOutorgas.push(Out);
+          }            
+        });
+      });
+
+      
     }
     else {
       this.outorgas$ = this.outorgaService.buscaOutorgasClientes(this.usuarioService.id);
