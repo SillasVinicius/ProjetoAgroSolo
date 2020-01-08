@@ -51,8 +51,6 @@ export abstract class Firestore<T extends { id: string }> {
     return this.getAll();
   }
 
-
-
   setId(id: string) {
     this.id = id;
   }

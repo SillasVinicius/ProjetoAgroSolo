@@ -1,16 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
-import { NavController } from '@ionic/angular';
+import { NavController, ModalController } from '@ionic/angular';
 import { OverlayService } from 'src/app/core/services/overlay.service';
 import { Outorga } from '../../models/outorga.model';
 import { OutorgaService } from 'src/app/core/services/outorga.service';
 import { UsuarioService } from 'src/app/core/services/usuario.service';
-import { ClienteService } from 'src/app/core/services/cliente.service';
 import { Cliente } from '../../models/cliente.model';
-import pdfMake from "pdfmake/build/pdfmake";
-import pdfFonts from "pdfmake/build/vfs_fonts";
-pdfMake.vfs = pdfFonts.pdfMake.vfs;
+import { RelatorioOutorgaPage } from "../relatorio-outorga/relatorio-outorga.page";
 
 @Component({
   selector: 'app-lista-outorga',
@@ -27,10 +24,10 @@ export class ListaOutorgaPage implements OnInit {
 
   constructor(
     private navCtrl: NavController,
+    private ModalController: ModalController,
     private outorgaService: OutorgaService,
     private overlayService: OverlayService,
-    private usuarioService: UsuarioService,
-    private clienteService: ClienteService
+    private usuarioService: UsuarioService
   ) {}
 
   listaOutorga: Array<any> = [];
@@ -41,13 +38,11 @@ export class ListaOutorgaPage implements OnInit {
       this.outorgaService.initOutorga();
       this.outorgas$ = this.outorgaService.getAll();
       this.outorgas$.pipe(take(1)).subscribe(() => loading.dismiss());
-      this.listOutorga();
     }
     else {
       this.outorgaService.init();
       this.outorgas$ = this.outorgaService.getAll();
       this.outorgas$.pipe(take(1)).subscribe(() => loading.dismiss());
-      this.listOutorga();
     }
   }
 
@@ -77,107 +72,11 @@ export class ListaOutorgaPage implements OnInit {
     });
   }
 
-
-  async listOutorga() {
-    this.outorgas$.forEach(outorgas => {
-      outorgas.forEach(outorga => {
-        this.clientes$ = this.clienteService.initClienteId(outorga.clienteId);
-        this.clientes$.subscribe(async (r: Cliente[]) => {
-            outorga['nomeCliente'] = r[0].nome;
-        });
-        this.listaOutorga.push(outorga);
-      });
-    });
-  }
-
-
-  buildTableBody(data, columns, header) {
-
-    let body = [];
-
-    body.push(header);
-
-    data.forEach(row => {
-      const dataRow = [];
-
-      columns.forEach(column => {
-        dataRow.push({ text: row[column] ? row[column].toString() : "" });
-      });
-
-      body.push(dataRow);
-    });
-
-    return body;
-  }
-
-  
-  table(data, columns, header) {
-    return {
-      table: {
-        headerRows: 1,
-        widths: [100, 100, 100, 100, 100, 100, 100, 100, 100],
-        body: this.buildTableBody(data, columns, header)
-      },
-      layout: "lightHorizontalLines"
-    }
-  }
-
-  exportPdf(): void {
-    var docDefinition
-    docDefinition = {
-      header: {
-        columns: [
-          {
-            stack: [
-              {
-                text: "Agro Solo",
-                fontSize: 18,
-                alignment: "center" 
-              },
-            ],
-            width: '*'
-          }
-        ],
-        
-        margin: [15, 15]
-      },
-
-      pageOrientation: 'landscape',
-      pageSize: {height: 850, width: 1100},
-      content: [
-        this.table(
-          this.listaOutorga,
-          ["nomeCliente", "descricao", "dataDeVencimento"],
-          [
-            { text: "Nome Cliente", style: "tableHeader" },
-            { text: "Descricao", style: "tableHeader" },
-            { text: "Data de Vencimento", style: "tableHeader", Data: "MM/DD/YYYY"},
-          
-          ]
-        )
-      ],
-      styles: {
-        tableHeader: {
-          bold:true,
-          fontSize: 13,
-          color: "Black"
-        }
-      },
-
-      footer: {
-        columns: [
-          "Left part",
-          { text: "Right part", alignment: "right" }
-        ]
-      },
-
-    };
-
-
-    this.pdfObject = pdfMake.createPdf(docDefinition).open();
-
-  }
-
-
+  async openModal() {
+    const modal = await this.ModalController.create({
+      component: RelatorioOutorgaPage
+    })
+    modal.present();
+  } 
 
 }
