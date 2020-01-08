@@ -24,6 +24,10 @@ const routes: Routes = [
         loadChildren: './pages/cria-la/cria-la.module#CriaLaPageModule'
       },
       {
+        path: 'VisualizarLA/:id',
+        loadChildren: './pages/cria-la/cria-la.module#CriaLaPageModule'
+      },
+      {
         path: 'UpdateCadastroAmbientalRural/:id',
         loadChildren: './pages/cria-car/cria-car.module#CriaCarPageModule'
       },
@@ -43,7 +47,7 @@ const routes: Routes = [
         path: 'CadastroAmbientalRural',
         loadChildren: './pages/lista-car/lista-car.module#ListaCARPageModule'
       },
-     {
+      {
         path: 'listaCreditoFinanceiro',
         loadChildren: './pages/lista-credito/lista-credito.module#ListaCreditoPageModule'
       },
@@ -71,8 +75,8 @@ const routes: Routes = [
         path: '',
         loadChildren: './pages/home-ambiental/home-ambiental.module#HomeAmbientalPageModule'
       }
-    
-    
+
+
     ]
   }
 ];
@@ -81,4 +85,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class AmbientalRoutingModule {}
+export class AmbientalRoutingModule { }

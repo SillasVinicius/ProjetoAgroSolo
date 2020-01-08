@@ -10,7 +10,7 @@
     <ion-title>Cadastro Crédito Financeiro</ion-title>    
   </ion-toolbar>
 </ion-header>
-<ion-content>
+<ion-content *ngIf="usuarioService.admin">
   <ion-list>
     <ng-container *ngIf="listaCreditoPrincipal.length > 0; else semcadastrosDeCreditos">
       <app-lista-credito-item
@@ -46,11 +46,10 @@
       <app-lista-credito-item
         *ngFor="let cadastro of cadastrosDeCreditos"
         [cadastroCreditoFinanceiro]="cadastro"
-        (update)="atualizar($event)"
-        (delete)="deletar($event)"></app-lista-credito-item>
+        ></app-lista-credito-item>
     </ng-container>
     <ng-template #semcadastrosDeCreditos>
-      <ion-item lines="none">Sem Cadastro de Crédito Financeiro...</ion-item>
+      <ion-item lines="none">Sem Cadastros de crédito...</ion-item>
     </ng-template>
   </ion-list>
 

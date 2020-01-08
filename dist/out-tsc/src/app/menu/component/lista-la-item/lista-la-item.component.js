@@ -19,6 +19,7 @@ var ListaLaItemComponent = /** @class */ (function () {
         this.admin = false;
         this.update = new EventEmitter();
         this.delete = new EventEmitter();
+        this.visualizar = new EventEmitter();
     }
     ListaLaItemComponent.prototype.ngOnInit = function () {
         this.clicado = false;
@@ -92,7 +93,7 @@ var ListaLaItemComponent = /** @class */ (function () {
     };
     ListaLaItemComponent.prototype.retornaDiasVencimento = function () {
         var dataInicialRecebida = new Date(this.licencaAmbiental.dataDeVencimento);
-        var dataFinalFormatada = (dataInicialRecebida.getMonth() + 1) + "/" + (dataInicialRecebida.getDate() + 1) + "/" + dataInicialRecebida.getFullYear();
+        var dataFinalFormatada = (dataInicialRecebida.getMonth() + 1) + "/" + (dataInicialRecebida.getDate()) + "/" + dataInicialRecebida.getFullYear();
         var dataInicialFormatada = this.dataAtual;
         //console.log(dataInicialFormatada + " - " + dataFinalFormatada);
         var dataInicialMilissegundos = new Date(dataInicialFormatada).getTime();
@@ -118,6 +119,10 @@ var ListaLaItemComponent = /** @class */ (function () {
         Output(),
         tslib_1.__metadata("design:type", Object)
     ], ListaLaItemComponent.prototype, "delete", void 0);
+    tslib_1.__decorate([
+        Output(),
+        tslib_1.__metadata("design:type", Object)
+    ], ListaLaItemComponent.prototype, "visualizar", void 0);
     ListaLaItemComponent = tslib_1.__decorate([
         Component({
             selector: 'app-lista-la-item',

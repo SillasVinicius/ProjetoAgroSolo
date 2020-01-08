@@ -14,14 +14,15 @@
     ></app-logout-button> -->
   </ion-toolbar>
 </ion-header>
-<ion-content>
+<ion-content *ngIf="usuarioService.admin">
   <ion-list>
     <ng-container *ngIf="listaLaCliente.length > 0; else semcadastrosDeCreditos">
       <app-lista-la-item
         *ngFor="let cadastro of listaLaCliente"
         [licencaAmbiental]="cadastro"
         (update)="atualizar($event)"
-        (delete)="deletar($event)"></app-lista-la-item>
+        (delete)="deletar($event)"
+        (visualizar)="visualizar($event)"></app-lista-la-item>
     </ng-container>
     <ng-template #semLicencasAmbientais>
       <ion-item lines="none">Sem Licenças Ambientais cadastradas...</ion-item>
@@ -42,10 +43,10 @@
   <ion-list *ngIf="licencasAmbientais$ | async as licencasAmbientais">
     <ng-container *ngIf="licencasAmbientais.length > 0; else semLicencasAmbientais">
       <app-lista-la-item *ngFor="let licencaAmbientai of licencasAmbientais" [licencaAmbiental]="licencaAmbientai"
-        (update)="atualizar($event)" (delete)="deletar($event)"></app-lista-la-item>
+         ></app-lista-la-item>
     </ng-container>
     <ng-template #semLicencasAmbientais>
-      <ion-item lines="none">Sem Licenças Ambientais cadastradas...</ion-item>
+      <ion-item lines="none">Sem Lincença ambiental cadastrada...</ion-item>
     </ng-template>
   </ion-list>
 </ion-content>

@@ -27,6 +27,7 @@ export class ListaLaItemComponent implements OnInit {
   @Input() licencaAmbiental: LicencaAmbiental;
   @Output() update = new EventEmitter<LicencaAmbiental>();
   @Output() delete = new EventEmitter<LicencaAmbiental>();
+  @Output() visualizar = new EventEmitter<LicencaAmbiental>();
 
   ngOnInit(){
     this.clicado = false;
@@ -87,7 +88,7 @@ export class ListaLaItemComponent implements OnInit {
   fechar(){
     this.clicado = false;
   }
-
+  
   openLink(){
     this.iab.create(`${this.licencaAmbiental.arquivo}`, `_system`);
   }
