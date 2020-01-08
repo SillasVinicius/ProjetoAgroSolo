@@ -7,7 +7,7 @@
         size-lg="3"
         size-xl="3"
       >
-        <div class="login-menu" [@movDiv]="configs.login ? 'login' : 'cadastro'">
+        <div class="login-menu" [@movDiv]="true">
           <h1 text-center>
             <ion-img
               src="../../../assets/img/logo.png"
@@ -81,7 +81,7 @@
               type="submit"
               id="login-button"
             >
-            {{ configs.acao }}
+              Login
             </ion-button>
           </form>
         </div>
