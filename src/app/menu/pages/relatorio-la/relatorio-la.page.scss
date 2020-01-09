@@ -1,3 +1,55 @@
-.cabecalho{
-    text-align:center;
+@media screen and (width: 360px), screen and (height: 640px) {
+    .titulo{
+        position: relative; margin-left: 110px;
+    }
+    
 }
+
+@media screen and (width: 375px), screen and (height: 667px) {
+    .titulo{
+        position: relative; margin-left: 11px;
+    }
+    
+}
+
+@media screen and (width: 411px), screen and (height: 731px) {
+    .titulo{
+        position: relative; margin-left: 160px;
+    }
+    
+}
+
+@media screen and (width: 414px), screen and (height: 736px) {
+    .titulo{
+        position: relative; margin-left: 50px;
+    }
+    
+}
+
+@media screen and (width: 680px), screen and (height: 670px) {
+    .titulo{
+        position: relative; margin-left: 390px;
+    }
+    
+}
+
+@media screen and (width: 768px), screen and (height: 1024px) {
+    .titulo{
+        position: relative; margin-left: 233px;
+    }
+    
+}
+
+@media screen and (width: 1024px), screen and (height: 1366px) {
+    .titulo{
+        position: relative; margin-left: 200px;
+    }
+    
+  }
+
+@media screen and (min-width: 1440px) {
+    .titulo{
+        position: relative; margin-right: 1200px;
+    }
+    
+  }

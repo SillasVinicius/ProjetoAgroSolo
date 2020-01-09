@@ -1,8 +1,7 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { CommonModule} from '@angular/common';
+import { FormsModule} from '@angular/forms';
 import { Routes, RouterModule } from '@angular/router';
-
 import { IonicModule } from '@ionic/angular';
 
 import { RelatorioClientePage } from './relatorio-cliente.page';
@@ -22,6 +21,7 @@ const routes: Routes = [
     RouterModule.forChild(routes)
   ],
   declarations: [RelatorioClientePage],
-  exports: [RelatorioClientePage]
+  exports: [RelatorioClientePage],
+  providers: [NgModule]
 })
 export class RelatorioClientePageModule {}

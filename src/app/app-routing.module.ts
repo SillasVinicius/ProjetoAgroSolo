@@ -10,6 +10,8 @@ const routes: Routes = [
     loadChildren: './menu/menu.module#MenuModule',
     canLoad: [AuthGuard]
   },
+
+  
 ];
 
 @NgModule({
