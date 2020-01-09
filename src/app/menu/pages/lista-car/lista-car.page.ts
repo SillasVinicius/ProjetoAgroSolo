@@ -34,8 +34,7 @@ export class ListaCARPage implements OnInit {
   ) {}
 
   listaCar: Array<any> = [];
-  listaClientesCar: Array<any> = [];
-
+  listaClientesCar: Array<any> = [];  
   async ngOnInit(): Promise<void> {
     const loading = await this.overlayService.loading();
     if (this.usuarioService.admin) {
@@ -55,10 +54,13 @@ export class ListaCARPage implements OnInit {
           }            
         });
       });
+
+
+
     }
     else {
-      this.cadastrosAmbientaisRurais$ = this.cadastroAmbientalRuralService.buscaCarClientes(this.usuarioService.id);
-      this.cadastrosAmbientaisRurais$.pipe(take(1)).subscribe(() => loading.dismiss());
+      this.cadastrosAmbientaisRurais$ = this.cadastroAmbientalRuralService.buscaCarClientes(this.usuarioService.id);		
+	    this.cadastrosAmbientaisRurais$.pipe(take(1)).subscribe(() => loading.dismiss());		      
     }
   }
 
@@ -94,3 +96,4 @@ export class ListaCARPage implements OnInit {
     modal.present();
   } 
 }
+

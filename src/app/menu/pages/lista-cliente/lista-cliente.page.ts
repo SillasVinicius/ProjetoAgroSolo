@@ -22,7 +22,9 @@ export class ListaClientePage implements OnInit {
     private clienteService: ClienteService,
     private overlayService: OverlayService,
     private usuarioService: UsuarioService,
-  ) { }
+  ) {
+   }
+
 
   listaCliente: Array<any> = [];
   async ngOnInit(): Promise<void> {
@@ -36,7 +38,7 @@ export class ListaClientePage implements OnInit {
       this.clientes$ = this.clienteService.initClienteId(this.usuarioService.id);
       this.clientes$.pipe(take(1)).subscribe(() => loading.dismiss());
     }
-  }
+  } 
 
   atualizar(cliente: Cliente): void {
     this.navCtrl.navigateForward(`/menu/updateCliente/${cliente.id}`);

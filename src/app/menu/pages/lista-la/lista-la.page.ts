@@ -7,11 +7,11 @@ import { LicencaAmbiental } from '../../models/la.model';
 import { LaService } from 'src/app/core/services/la.service';
 import { UsuarioService } from 'src/app/core/services/usuario.service';
 import { Cliente } from '../../models/cliente.model';
-import { ClienteService } from 'src/app/core/services/cliente.service';
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 import { RelatorioLaPage } from "../relatorio-la/relatorio-la.page";
+import { ClienteService } from 'src/app/core/services/cliente.service';
 
 @Component({
   selector: 'app-lista-la',
@@ -35,8 +35,7 @@ export class ListaLAPage implements OnInit {
 
 
   listaLa: Array<any> = [];
-  listaLaCliente: Array<any> = [];
-
+  listaLaCliente: Array<any> = [];  
   async ngOnInit(): Promise<void> {
     const loading = await this.overlayService.loading();
     if (this.usuarioService.admin) {
@@ -45,22 +44,21 @@ export class ListaLAPage implements OnInit {
       this.licencasAmbientais$.pipe(take(1)).subscribe(() => loading.dismiss());
 
       this.licencasAmbientais$.forEach(La => {
-        this.listaLaCliente = [];
-        La.forEach(la => {
-          if(la.clienteId != ""){
-          this.clientes$ = this.clienteService.initClienteId(la.clienteId);
-          this.clientes$.subscribe(async (r: Cliente[]) => {
-            la['nomeCliente'] = r[0].nome;
-          });
-          this.listaLaCliente.push(la);
-        }
-        });
-      });
+      this.listaLaCliente = [];
+        	        La.forEach(la => {
+        	          if(la.clienteId != ""){
+        	          this.clientes$ = this.clienteService.initClienteId(la.clienteId);
+        	          this.clientes$.subscribe(async (r: Cliente[]) => {
+        	            la['nomeCliente'] = r[0].nome;
+        	          });
+      	          this.listaLaCliente.push(la);
+        	        }
+        	        });
+       });
 
-      
     }
     else {
-      this.licencasAmbientais$ = this.licencaAmbientalService.buscaLaClientes(this.usuarioService.id);
+      this.licencasAmbientais$ = this.licencaAmbientalService.buscaLaClientes(this.usuarioService.id);			      
       this.licencasAmbientais$.pipe(take(1)).subscribe(() => loading.dismiss());
     }
 
@@ -68,11 +66,6 @@ export class ListaLAPage implements OnInit {
 
   atualizar(licencaAmbiental: LicencaAmbiental): void {
     this.navCtrl.navigateForward(`/menu/ambiental/UpdateLicencaAmbiental/${licencaAmbiental.id}`);
-  }
-
-  visualizar(licencaAmbiental: LicencaAmbiental): void {
-    console.log("testseat");
-    this.navCtrl.navigateForward(`/menu/ambiental/VisualizarLA/${licencaAmbiental.id}`);
   }
 
   async deletar(licencaAmbiental: LicencaAmbiental): Promise<void> {

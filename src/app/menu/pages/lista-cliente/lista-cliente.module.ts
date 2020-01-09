@@ -18,4 +18,7 @@ const routes: Routes = [
   declarations: [ListaClientePage, RelatorioClientePage],
   entryComponents: [RelatorioClientePage]
 })
+
+
+
 export class ListaClientePageModule {}
