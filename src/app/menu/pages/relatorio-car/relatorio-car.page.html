@@ -1,22 +1,29 @@
 <ion-header>
-
-  <ion-toolbar color="primary">
-    <ion-row class="cabecalho">
-      <ion-col>Cliente</ion-col>
-      <ion-col>Descrição</ion-col>
-      <ion-col>Arquivo</ion-col>
-    </ion-row>
+  <ion-toolbar>
+    <ion-title>
+      Dados de Filtro
+      <ion-button (click)="closeModal()" class="titulo"> 
+        <ion-icon slot="icon-only" name="close"></ion-icon>  
+      </ion-button>
+    </ion-title>
   </ion-toolbar>
-
 </ion-header>
 
-
 <ion-content>
-  <div>
-    <ion-row>
-      <ion-col></ion-col>
-      <ion-col></ion-col>
-      <ion-col></ion-col>
-    </ion-row>
-  </div>
+    <ion-list>
+      <ion-item>
+        <ion-label position="floating" color="primary">Cliente</ion-label>
+              <ion-select (ionChange)="obter_id_cliente($event.target.value);">
+                <ion-select-option *ngFor="let cliente of clientes" [value]= "cliente.id">
+                  {{cliente.nome}}
+                </ion-select-option>
+              </ion-select>
+      </ion-item>
+    </ion-list>
+      
+    <ion-button expand="block" (click)="relatorio_car()" >
+      <ion-icon name="print"></ion-icon> 
+    </ion-button>
+
 </ion-content>
+<img src="../../../../assets/img/grama.png" alt="" style="margin-bottom: 0px;">

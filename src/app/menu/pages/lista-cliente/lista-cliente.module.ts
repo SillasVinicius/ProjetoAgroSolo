@@ -15,6 +15,10 @@ const routes: Routes = [
 
 @NgModule({
   imports: [SharedModule, ComponentsModule, RouterModule.forChild(routes)],
-  declarations: [ListaClientePage, RelatorioClientePage]
+  declarations: [ListaClientePage, RelatorioClientePage],
+  entryComponents: [RelatorioClientePage]
 })
+
+
+
 export class ListaClientePageModule {}

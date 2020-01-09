@@ -3,6 +3,8 @@ import { Routes, RouterModule } from '@angular/router';
 import { SharedModule } from '../../../shared/shared.module';
 import { ListaOutorgaPage } from './lista-outorga.page';
 import { ComponentsModule } from '../../component/components.module';
+import { RelatorioOutorgaPage } from "../relatorio-outorga/relatorio-outorga.page";
+
 
 const routes: Routes = [
   {
@@ -15,6 +17,7 @@ const routes: Routes = [
   imports: [
     SharedModule, ComponentsModule, RouterModule.forChild(routes)
   ],
-  declarations: [ListaOutorgaPage]
+  declarations: [ListaOutorgaPage, RelatorioOutorgaPage],
+  entryComponents: [RelatorioOutorgaPage]
 })
 export class ListaOutorgaPageModule {}
