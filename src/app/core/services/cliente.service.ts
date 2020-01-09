@@ -14,16 +14,8 @@ export class ClienteService extends Firestore<Cliente> {
     this.init();
     this.usuarioId = this.usuarioService.id;
   }
-
+  
   init(): void {
-    this.setCollection(`/users/${this.usuarioService.id}/cliente`);
-  }
-
-  initLA(): void {
-    this.setCollection('/LicencaAmbiental');
-  }
-
-  initCliente(): void {
     this.setCollection(`/cliente`);
   }
 

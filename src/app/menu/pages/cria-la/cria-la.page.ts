@@ -79,7 +79,7 @@ export class CriaLaPage implements OnInit {
         console.log("5454545454");
         this.criaFormulario();
         if (this.usuarioService.admin) {
-          this.clienteService.initCliente();
+          this.clienteService.init();
           this.clienteService.getAll().subscribe((r: Cliente[]) => {
             for (let i = 0; i < r.length; i++) {
                 this.clientes[i] = r[i];

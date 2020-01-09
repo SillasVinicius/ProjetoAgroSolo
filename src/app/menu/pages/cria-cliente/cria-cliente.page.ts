@@ -88,7 +88,7 @@ export class CriaClientePage implements OnInit {
   async ngOnInit() {
     this.criaFormulario();
     if (this.usuarioService.admin) {
-      this.clienteService.initCliente();
+      this.clienteService.init();
       console.log('this.clienteService.initCliente();');
       this.admin = true;
     }
@@ -168,7 +168,7 @@ export class CriaClientePage implements OnInit {
           this.liberaAlterar = true;
 
           this.downloadUrl.subscribe(async r => {
-            this.clienteService.initCliente();
+            this.clienteService.init();
             await this.clienteService.update({
               id: idCliente,
               cpf: this.clienteForm.get('cpf').value,
@@ -311,12 +311,12 @@ export class CriaClientePage implements OnInit {
   }
 
   async cadastraListaGlobal(id: string) {
-    this.clienteService.initCliente();
+    this.clienteService.init();
     const cliente = await this.clienteService.createGlobal(this.clienteForm.value, id);
   }
 
   async AtualizaListaGlobal() {
-    this.clienteService.initCliente();
+    this.clienteService.init();
     await this.clienteService.update({
       id: this.clienteId,
       cpf: this.clienteForm.get('cpf').value,
@@ -340,7 +340,7 @@ export class CriaClientePage implements OnInit {
     try {
       const cliente = '';
       if (!this.clienteId) {
-        this.clienteService.initCliente();
+        this.clienteService.init();
         const cliente = await this.clienteService.create(this.clienteForm.value);
         this.cadastraListaGlobal(this.clienteService.id);
         this.deletePicture();

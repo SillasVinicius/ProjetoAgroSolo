@@ -98,11 +98,11 @@ export class HomePage implements OnInit {
     const loading = await this.overlayService.loading();
 
     if (this.admin) {
-      this.clienteService.initCliente();
+      this.clienteService.init();
       this.clientes$ = this.clienteService.getAll();
       this.clientes$.pipe(take(1)).subscribe(() => loading.dismiss());
 
-      this.outorgaService.initOutorga();
+      this.outorgaService.init();
       this.outorgas$ = this.outorgaService.getAll();
       this.outorgas$.pipe(take(1)).subscribe(() => loading.dismiss());
 
@@ -125,7 +125,7 @@ export class HomePage implements OnInit {
       this.vencimento(this.das$, 'da');
       this.vencimento(this.cadastrosDeCreditos$, "cadastroCredito");
     } else {
-      this.outorgaService.initOutorga();
+      this.outorgaService.init();
       this.outorgas$ = this.outorgaService.buscaOutorgasClientes(this.usuario.id);
       this.outorgas$.pipe(take(1)).subscribe(() => loading.dismiss());
 

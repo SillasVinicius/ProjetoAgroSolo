@@ -39,7 +39,7 @@ export class ListaOutorgaPage implements OnInit {
   async ngOnInit(): Promise<void> {
     const loading = await this.overlayService.loading();
     if (this.usuarioService.admin) {
-      this.outorgaService.initOutorga();
+      this.outorgaService.init();
       this.outorgas$ = this.outorgaService.getAll();
       this.outorgas$.pipe(take(1)).subscribe(() => loading.dismiss());
       this.listOutorga();
@@ -80,7 +80,7 @@ export class ListaOutorgaPage implements OnInit {
           handler: async () => {
             await this.outorgaService.init();
             await this.outorgaService.delete(outorga);
-            await this.outorgaService.initOutorga();
+            await this.outorgaService.init();
             await this.outorgaService.delete(outorga);
             await this.overlayService.toast({
               message: `Outorga "${outorga.descricao}" excluido!`

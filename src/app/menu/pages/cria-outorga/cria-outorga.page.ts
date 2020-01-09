@@ -75,7 +75,7 @@ export class CriaOutorgaPage implements OnInit {
   ngOnInit() {
     this.criaFormulario();
     if (this.usuarioService.admin) {
-      this.clienteService.initCliente();
+      this.clienteService.init();
       this.clienteService.getAll().subscribe((r: Cliente[]) => {
         for (let i = 0; i < r.length; i++) {
           this.clientes[i] = r[i];
@@ -151,12 +151,12 @@ export class CriaOutorgaPage implements OnInit {
   }
 
   async cadastraListaGlobal(id: string) {
-    this.outorgaService.initOutorga();
+    this.outorgaService.init();
     const outorga = await this.outorgaService.createGlobal(this.outorgaForm.value, id);
   }
 
   async AtualizaListaGlobal() {
-    this.outorgaService.initOutorga();
+    this.outorgaService.init();
     const atualizarFoto = await this.outorgaService.update({
       id: this.outorgaId,
       descricao: this.outorgaForm.get('descricao').value,
@@ -226,7 +226,7 @@ export class CriaOutorgaPage implements OnInit {
 
   async uploadFileTo(file: Object) {
 
-    let idOutorga = (this.clienteService.id === '') ? this.outorgaId : this.outorgaService.id;
+    let idOutorga = (this.outorgaService.id === '') ? this.outorgaId : this.outorgaService.id;
 
     const ref2 = this.storage.ref(`/outorga${idOutorga}/${this.fileName}`);
     const task2 = ref2.put(file);
@@ -238,9 +238,9 @@ export class CriaOutorgaPage implements OnInit {
         this.liberaArquivo = true;
 
         this.downloadUrl.subscribe(async r => {
-          this.outorgaService.initOutorga();
-          const atualizarFoto = await this.outorgaService.update({
-            id: this.outorgaService.id,
+          this.outorgaService.init();
+          await this.outorgaService.update({
+            id: idOutorga,
             descricao: this.outorgaForm.get('descricao').value,
             dataDeVencimento: this.outorgaForm.get('dataDeVencimento').value,
             clienteId: this.outorgaForm.get('clienteId').value,

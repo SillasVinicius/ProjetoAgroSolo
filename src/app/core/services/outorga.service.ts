@@ -17,10 +17,6 @@ export class OutorgaService extends Firestore<Outorga> {
   }
 
   init(): void {
-    this.setCollection(`/users/${this.usuarioService.id}/outorga`, ref => ref.orderBy('dataDeVencimento', 'desc'));
-  }
-
-  initOutorga(): void {
     this.setCollection('/outorga');
   }
 

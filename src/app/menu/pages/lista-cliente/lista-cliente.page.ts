@@ -6,6 +6,8 @@ import { NavController, ModalController } from '@ionic/angular';
 import { ClienteService } from 'src/app/core/services/cliente.service';
 import { OverlayService } from 'src/app/core/services/overlay.service';
 import { UsuarioService } from 'src/app/core/services/usuario.service';
+import { AngularFireStorage } from '@angular/fire/storage';
+import { OutorgaService } from 'src/app/core/services/outorga.service';
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
@@ -25,13 +27,15 @@ export class ListaClientePage implements OnInit {
     private clienteService: ClienteService,
     private overlayService: OverlayService,
     private usuarioService: UsuarioService,
+    private storage: AngularFireStorage,
+    private outorgaService: OutorgaService,
   ) { }
 
   listaCliente: Array<any> = [];
   async ngOnInit(): Promise<void> {
     const loading = await this.overlayService.loading();
     if (this.usuarioService.admin) {
-      this.clienteService.initCliente();
+      this.clienteService.init();
       this.clientes$ = this.clienteService.getAll();
       this.clientes$.pipe(take(1)).subscribe(() => loading.dismiss());
       this.listCliente();
@@ -56,11 +60,13 @@ export class ListaClientePage implements OnInit {
           handler: async () => {
             await this.clienteService.init();
             await this.clienteService.delete(cliente);
-            await this.clienteService.initCliente();
-            await this.clienteService.delete(cliente);
+            /*
             await this.overlayService.toast({
               message: `Cliente "${cliente.nome}" excluido!`
             });
+            const ref = this.storage.ref(`/cliente${cliente.id}/`);
+            ref.child(`${cliente.nomeFoto}`).delete();*/
+
           }
         },
         'Não'
