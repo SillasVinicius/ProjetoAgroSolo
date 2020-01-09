@@ -19,16 +19,21 @@ export class ClienteService extends Firestore<Cliente> {
     this.setCollection(`/users/${this.usuarioService.id}/cliente`);
   }
 
+  initLA(): void {
+    this.setCollection('/LicencaAmbiental');
+  }
+
   initCliente(): void {
     this.setCollection(`/cliente`);
   }
 
-  initClienteId(idCliente: string): any {
-    this.setCollection('/cliente', ref =>
-      ref.where('id', '==', idCliente)
-    );
-
-    return this.getAll();
+  initClienteId(idCliente: any): any {
+    if (idCliente !== "") {
+      this.setCollection('/cliente', ref =>
+        ref.where('id', '==', idCliente)
+      );
+      return this.getAll();
+    }
   }
 
   setCollectionFoto(cliente: string) {

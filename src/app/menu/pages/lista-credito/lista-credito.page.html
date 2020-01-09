@@ -4,10 +4,13 @@
       slot="start"
       menu="main-menu"
     ></app-menu-toogle>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/menu/ambiental"></ion-back-button>
+    </ion-buttons>
     <ion-title>Cadastro Crédito Financeiro</ion-title>    
   </ion-toolbar>
 </ion-header>
-<ion-content>
+<ion-content *ngIf="usuarioService.admin">
   <ion-list>
     <ng-container *ngIf="listaCreditoPrincipal.length > 0; else semcadastrosDeCreditos">
       <app-lista-credito-item
@@ -35,4 +38,19 @@
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
   </ion-fab>
+</ion-content>
+
+<ion-content *ngIf="!usuarioService.admin">
+  <ion-list *ngIf="cadastrosDeCreditos$ | async as cadastrosDeCreditos">
+    <ng-container *ngIf="cadastrosDeCreditos.length > 0; else semcadastrosDeCreditos">
+      <app-lista-credito-item
+        *ngFor="let cadastro of cadastrosDeCreditos"
+        [cadastroCreditoFinanceiro]="cadastro"
+        ></app-lista-credito-item>
+    </ng-container>
+    <ng-template #semcadastrosDeCreditos>
+      <ion-item lines="none">Sem Cadastros de crédito...</ion-item>
+    </ng-template>
+  </ion-list>
+
 </ion-content>

@@ -93,7 +93,7 @@ export class ListaDaItemComponent implements OnInit {
 
 
     let dataInicialRecebida = new Date(this.declaracaoAmbiental.dataDeVencimento);
-    let dataFinalFormatada = (dataInicialRecebida.getMonth() + 1) + "/" + (dataInicialRecebida.getDate() + 1) + "/" + dataInicialRecebida.getFullYear();
+    let dataFinalFormatada = (dataInicialRecebida.getMonth() + 1) + "/" + (dataInicialRecebida.getDate()) + "/" + dataInicialRecebida.getFullYear();
     let dataInicialFormatada = this.dataAtual;
 
 

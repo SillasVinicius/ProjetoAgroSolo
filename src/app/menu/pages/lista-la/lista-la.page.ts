@@ -59,16 +59,19 @@ export class ListaLAPage implements OnInit {
       
     }
     else {
-      this.licencaAmbientalService.init();
-      this.licencasAmbientais$ = this.licencaAmbientalService.getAll();
+      this.licencasAmbientais$ = this.licencaAmbientalService.buscaLaClientes(this.usuarioService.id);
       this.licencasAmbientais$.pipe(take(1)).subscribe(() => loading.dismiss());
-      this.listLa();
     }
 
   }
 
   atualizar(licencaAmbiental: LicencaAmbiental): void {
     this.navCtrl.navigateForward(`/menu/ambiental/UpdateLicencaAmbiental/${licencaAmbiental.id}`);
+  }
+
+  visualizar(licencaAmbiental: LicencaAmbiental): void {
+    console.log("testseat");
+    this.navCtrl.navigateForward(`/menu/ambiental/VisualizarLA/${licencaAmbiental.id}`);
   }
 
   async deletar(licencaAmbiental: LicencaAmbiental): Promise<void> {

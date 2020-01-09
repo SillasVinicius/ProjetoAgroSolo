@@ -8,20 +8,17 @@
       <ion-back-button defaultHref="/menu/ambiental"></ion-back-button>
     </ion-buttons>
     <ion-title>C.A.R</ion-title>
-    <!-- <app-logout-button
-      slot="end"
-      menu="main-menu"
-    ></app-logout-button> -->
   </ion-toolbar>
 </ion-header>
-<ion-content>
-  <ion-list>
-    <ng-container *ngIf="listaCarCliente.length > 0; else semCadastrosAmbientaisRurais">
-      <app-lista-credito-item
-        *ngFor="let cadastro of listaCarCliente"
-        [cadastroCreditoFinanceiro]="cadastro"
-        (update)="atualizar($event)"
-        (delete)="deletar($event)"></app-lista-credito-item>
+
+<ion-content *ngIf="usuarioService.admin">
+  <ion-list >
+    <ng-container *ngIf="listaClientesCar.length > 0; else semCadastrosAmbientaisRurais">
+      <app-lista-car-item 
+      *ngFor="let cadastro of listaClientesCar" 
+      [cadastroAmbientalRural]="cadastro" 
+      (update)="atualizar($event)"
+      (delete)="deletar($event)"></app-lista-car-item>
     </ng-container>
     <ng-template #semCadastrosAmbientaisRurais>
       <ion-item lines="none">Sem cadastros Ambientais Rurais cadastradas...</ion-item>
@@ -35,4 +32,17 @@
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
   </ion-fab>
+</ion-content>
+
+<ion-content *ngIf="!usuarioService.admin">
+  <ion-list *ngIf="cadastrosAmbientaisRurais$ | async as cadastrosAmbientaisRurais">
+    <ng-container *ngIf="cadastrosAmbientaisRurais.length > 0; else semCadastrosAmbientaisRurais">
+      <app-lista-car-item *ngFor="let cadastroAmbientalRural of cadastrosAmbientaisRurais"
+        [cadastroAmbientalRural]="cadastroAmbientalRural">
+      </app-lista-car-item>
+    </ng-container>
+    <ng-template #semCadastrosAmbientaisRurais>
+      <ion-item lines="none">Sem cadastros Ambientais Rurais cadastradas...</ion-item>
+    </ng-template>
+  </ion-list>
 </ion-content>

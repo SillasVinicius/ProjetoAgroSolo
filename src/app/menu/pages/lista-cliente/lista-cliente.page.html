@@ -1,20 +1,18 @@
 <ion-header>
   <ion-toolbar color="primary">
-    <ion-buttons slot="start">
-      <ion-back-button defaultHref="/menu/ "></ion-back-button>
-    </ion-buttons>
     <app-menu-toogle
       slot="start"
       menu="main-menu"
     ></app-menu-toogle>
-    <ion-title>Clientes</ion-title>
-    <!-- <app-logout-button
-      slot="end"
-      menu="main-menu"
-    ></app-logout-button> -->
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/menu/ "></ion-back-button>
+    </ion-buttons>
+    <ion-title *ngIf="usuarioService.admin">Clientes</ion-title>
+    <ion-title *ngIf="!usuarioService.admin">Meus Dados</ion-title>
+
   </ion-toolbar>
 </ion-header>
-<ion-content>
+<ion-content *ngIf="usuarioService.admin">
   <ion-list *ngIf="clientes$ | async as clientes">
     <ng-container *ngIf="clientes.length > 0; else semClientes">
       <app-lista-cliente-item *ngFor="let cliente of clientes" [cliente]="cliente" (update)="atualizar($event)"
@@ -35,3 +33,17 @@
     </ion-fab-button>
   </ion-fab>
 </ion-content>
+
+<ion-content *ngIf="!usuarioService.admin">
+  <ion-list *ngIf="clientes$ | async as clientes">
+    <ng-container *ngIf="clientes.length > 0; else semClientes">
+      <app-lista-cliente-item *ngFor="let cliente of clientes" [cliente]="cliente">
+        <ng-template>
+        </ng-template>
+      </app-lista-cliente-item>
+    </ng-container>
+    <ng-template #semClientes>
+      <ion-item lines="none">Sem clientes cadastrados...</ion-item>
+    </ng-template>
+  </ion-list>
+  </ion-content>

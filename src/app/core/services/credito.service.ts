@@ -27,6 +27,13 @@ export class CreditoService extends Firestore<Credito>{
     this.setCollection(`/users/${this.usuarioId}/cadastroCredito/${cliente}/arquivos`);
   }
 
+  buscaCreditoClientes(id: string){
+    this.setCollection('/cadastroCredito', ref =>
+      ref.where('clienteId', '==', id)
+    );
+    return this.getAll();
+  }
+
   criarId(): string {
     return this.db.createId();
   }

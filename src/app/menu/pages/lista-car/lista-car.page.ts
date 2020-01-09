@@ -32,7 +32,7 @@ export class ListaCARPage implements OnInit {
   ) {}
 
   listaCar: Array<any> = [];
-  listaCarCliente: Array<any> = [];
+  listaClientesCar: Array<any> = [];
 
   async ngOnInit(): Promise<void> {
     const loading = await this.overlayService.loading();
@@ -41,21 +41,21 @@ export class ListaCARPage implements OnInit {
       this.cadastrosAmbientaisRurais$ = this.cadastroAmbientalRuralService.getAll();
       this.cadastrosAmbientaisRurais$.pipe(take(1)).subscribe(() => loading.dismiss());
 
-      this.cadastrosAmbientaisRurais$.forEach(cars => {
-        cars.forEach(car => {
-          if(car.clienteId != ""){
-          this.clientes$ = this.clienteService.initClienteId(car.clienteId);
-          this.clientes$.subscribe(async (r: Cliente[]) => {
-            car['nomeCliente'] = r[0].nome;
+      this.cadastrosAmbientaisRurais$.forEach(Cars => {
+        this.listaClientesCar = [];
+        Cars.forEach(Car => {
+          if(Car.clienteId !== ""){
+            this.clientes$ = this.clienteService.initClienteId(Car.clienteId);
+            this.clientes$.subscribe(async (r: Cliente[]) => {
+              Car['nomeCliente'] = r[0].nome;
           });
-          this.listaCarCliente.push(car);
-        }
+          this.listaClientesCar.push(Car);
+          }            
         });
       });
     }
     else {
-      this.cadastroAmbientalRuralService.init();
-      this.cadastrosAmbientaisRurais$ = this.cadastroAmbientalRuralService.getAll();
+      this.cadastrosAmbientaisRurais$ = this.cadastroAmbientalRuralService.buscaCarClientes(this.usuarioService.id);
       this.cadastrosAmbientaisRurais$.pipe(take(1)).subscribe(() => loading.dismiss());
     }
     this.listCar();
@@ -189,4 +189,3 @@ export class ListaCARPage implements OnInit {
 
 
 }
-

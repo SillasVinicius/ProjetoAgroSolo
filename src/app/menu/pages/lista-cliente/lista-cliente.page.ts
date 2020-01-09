@@ -37,8 +37,7 @@ export class ListaClientePage implements OnInit {
       this.listCliente();
     }
     else {
-      this.clienteService.init();
-      this.clientes$ = this.clienteService.getAll();
+      this.clientes$ = this.clienteService.initClienteId(this.usuarioService.id);
       this.clientes$.pipe(take(1)).subscribe(() => loading.dismiss());
       this.listCliente();
     }

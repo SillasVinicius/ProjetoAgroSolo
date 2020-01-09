@@ -47,7 +47,7 @@ export class ListaOutorgaPage implements OnInit {
       this.outorgas$.forEach(Outs => {
         this.listaClientesOutorgas = [];
         Outs.forEach(Out => {
-          if(Out.clienteId != ""){
+          if(Out.clienteId !== ""){
             this.clientes$ = this.clienteService.initClienteId(Out.clienteId);
             this.clientes$.subscribe(async (r: Cliente[]) => {
               Out['nomeCliente'] = r[0].nome;
@@ -60,8 +60,7 @@ export class ListaOutorgaPage implements OnInit {
       
     }
     else {
-      this.outorgaService.init();
-      this.outorgas$ = this.outorgaService.getAll();
+      this.outorgas$ = this.outorgaService.buscaOutorgasClientes(this.usuarioService.id);
       this.outorgas$.pipe(take(1)).subscribe(() => loading.dismiss());
       this.listOutorga();
     }
@@ -97,11 +96,13 @@ export class ListaOutorgaPage implements OnInit {
   async listOutorga() {
     this.outorgas$.forEach(outorgas => {
       outorgas.forEach(outorga => {
-        this.clientes$ = this.clienteService.initClienteId(outorga.clienteId);
-        this.clientes$.subscribe(async (r: Cliente[]) => {
-            outorga['nomeCliente'] = r[0].nome;
-        });
-        this.listaOutorga.push(outorga);
+        if(outorga.clienteId !== ""){
+          this.clientes$ = this.clienteService.initClienteId(outorga.clienteId);
+          this.clientes$.subscribe(async (r: Cliente[]) => {
+              outorga['nomeCliente'] = r[0].nome;
+          });
+          this.listaOutorga.push(outorga);
+        }
       });
     });
   }

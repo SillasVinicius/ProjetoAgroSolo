@@ -1,6 +1,7 @@
 <ion-split-pane
   contentId="menuContent"
   when="md"
+  *ngIf="usuario.admin"
 >
   <ion-menu
     menuId="main-menu"
@@ -8,6 +9,7 @@
     type="overlay"
     contentId="menuContent"
     [disabled]="true"
+    
   >
     <ion-header>
       <ion-toolbar color="primary">
@@ -35,4 +37,46 @@
     </ion-content>
   </ion-menu>
   <ion-router-outlet id="menuContent"></ion-router-outlet>
+</ion-split-pane>
+
+<ion-split-pane
+  contentId="menuContent"
+  when="md"
+  *ngIf="!usuario.admin"
+>
+  <ion-menu
+  menuId="main-menu"
+  side="start"
+  type="overlay"
+  contentId="menuContent"
+  [disabled]="true"
+  
+>
+  <ion-header>
+    <ion-toolbar color="primary">
+      <ion-title>Menu</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content>
+    <ion-list>
+      <ion-menu-toggle autoHide="false">
+        <ion-item
+          button
+          *ngFor="let p of pagesCliente"
+          [routerLink]="p.url"
+          [routerDirection]="p.direction"
+        >
+          <ion-icon
+            slot="start"
+            [name]="p.icon"
+            color="primary"
+          ></ion-icon>
+          <ion-label>{{ p.text }}</ion-label>
+        </ion-item>
+      </ion-menu-toggle>
+    </ion-list>
+  </ion-content>
+</ion-menu>
+<ion-router-outlet id="menuContent"></ion-router-outlet>
+
 </ion-split-pane>

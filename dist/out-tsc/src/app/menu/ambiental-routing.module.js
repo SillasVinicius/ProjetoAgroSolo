@@ -24,6 +24,10 @@ var routes = [
                 loadChildren: './pages/cria-la/cria-la.module#CriaLaPageModule'
             },
             {
+                path: 'VisualizarLA/:id',
+                loadChildren: './pages/cria-la/cria-la.module#CriaLaPageModule'
+            },
+            {
                 path: 'UpdateCadastroAmbientalRural/:id',
                 loadChildren: './pages/cria-car/cria-car.module#CriaCarPageModule'
             },

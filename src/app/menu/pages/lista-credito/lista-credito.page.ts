@@ -59,8 +59,7 @@ export class ListaCreditoPage implements OnInit {
       
     }
     else {
-      this.creditoService.init();
-      this.cadastrosDeCreditos$ = this.creditoService.getAll();
+      this.cadastrosDeCreditos$ = this.creditoService.buscaCreditoClientes(this.usuarioService.id);
       this.cadastrosDeCreditos$.pipe(take(1)).subscribe(() => loading.dismiss());
     }
     this.listCredito();
