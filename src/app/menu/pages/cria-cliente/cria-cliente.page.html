@@ -10,7 +10,7 @@
 <ion-content padding>
   <form [formGroup]="clienteForm" (submit)="onSubmit()" novalidate>
     <!-- inicio arquivo -->
-    <div *ngIf="!update">
+    <div>
     <ion-card [@tamanhoArquivo]="liberaArquivo ? 'comArquivo' : 'semArquivo'">
       <ion-grid >
         <ion-row align-items-center>
@@ -24,8 +24,8 @@
           >
             <ion-card-header>
               <ion-avatar>
-                <img [src]="downloadUrl | async" *ngIf="downloadUrl | async">
-                <img src="../../../assets/img/avatar.svg" *ngIf="!liberaArquivo">
+                <img [src]="urlFoto" *ngIf="urlFoto" text-center>
+                <img src="../../../assets/img/avatar.svg" *ngIf="!liberaArquivo" text-center>
               </ion-avatar>
             </ion-card-header>
           </ion-card>

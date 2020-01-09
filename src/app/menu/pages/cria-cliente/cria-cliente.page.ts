@@ -50,6 +50,8 @@ export class CriaClientePage implements OnInit {
   arquivos: Object;
   files2: Observable<any[]>;
   fileName = '';
+  novaFoto = false;
+  fotoAntigo: any;
 
   // Dependencias
   constructor(
@@ -90,7 +92,8 @@ export class CriaClientePage implements OnInit {
         }
       this.fileName = file.name;
       this.arquivos = file;
-      this.uploadFile(file);
+      this.uploadFile(this.arquivos);
+      this.novaFoto = true;
 
     }catch(error){
       console.error(error);
@@ -114,7 +117,6 @@ export class CriaClientePage implements OnInit {
           this.downloadUrl.subscribe(async r => {
             this.urlFoto = r;
           });
-
           loading.dismiss();
         })
       ).subscribe();
@@ -122,7 +124,9 @@ export class CriaClientePage implements OnInit {
 
   async uploadFileTo(file: Object){
 
-      const ref2 = this.storage.ref(`/users/${this.clienteService.usuarioId}/cliente/${this.clienteService.id}/${this.fileName}`);
+      let idCliente = (this.clienteService.id === '') ? this.clienteId : this.clienteService.id;
+
+      const ref2 = this.storage.ref(`/cliente${idCliente}/${this.fileName}`);
       const task2 = ref2.put(file);
 
       task2.snapshotChanges().pipe(
@@ -133,12 +137,13 @@ export class CriaClientePage implements OnInit {
           this.liberaAlterar = true;
 
           this.downloadUrl.subscribe(async r => {
-            this.clienteService.init();
-            const atualizarFoto = await this.clienteService.update({
-              id: this.clienteService.id,
+            this.clienteService.initCliente();
+            await this.clienteService.update({
+              id: idCliente,
               cpf: this.clienteForm.get('cpf').value,
               nome: this.clienteForm.get('nome').value,
               foto: r,
+              nomeFoto: this.fileName,
               patrimonio: this.clienteForm.get('patrimonio').value,
               pdtvAgro: this.clienteForm.get('pdtvAgro').value,
               informacoesAdicionais: this.clienteForm.get('informacoesAdicionais').value,
@@ -153,42 +158,16 @@ export class CriaClientePage implements OnInit {
       ).subscribe();
   }
 
-  async uploadFileToUpdate(file: Object){
-
-      const ref2 = this.storage.ref(`/users/${this.clienteService.usuarioId}/cliente/${this.clienteService.id}/${this.fileName}`);
-      const task2 = ref2.put(file);
-
-      task2.snapshotChanges().pipe(
-        finalize(async () => {
-
-          this.downloadUrl = ref2.getDownloadURL();
-          this.liberaArquivo = true;
-          this.liberaAlterar = true;
-
-          this.downloadUrl.subscribe(async r => {
-            this.clienteService.init();
-            const cliente = await this.clienteService.update({
-              id: this.clienteId,
-              cpf: this.clienteForm.get('cpf').value,
-              rg: this.clienteForm.get('rg').value,
-              dataNascimento: this.clienteForm.get('dataNascimento').value,
-              telefone: this.clienteForm.get('telefone').value,
-              email: this.clienteForm.get('email').value,
-              nome: this.clienteForm.get('nome').value,
-              senha: this.clienteForm.get('senha').value,
-              foto: r,
-              patrimonio: this.clienteForm.get('patrimonio').value,
-              pdtvAgro: this.clienteForm.get('pdtvAgro').value,
-              informacoesAdicionais: this.clienteForm.get('informacoesAdicionais').value
-            });
-          });
-        })
-      ).subscribe();
-  }
-
   deletePicture(){
     const ref = this.storage.ref(`${this.fileName}`);
     const task = ref.delete();
+  }
+
+  deletePicturePasta(){
+    let idCliente =  (this.clienteService.id === '') ? this.clienteId : this.clienteService.id;
+
+    const ref = this.storage.ref(`/cliente${idCliente}/`);
+    ref.child(`${this.fotoAntigo}`).delete();
   }
 
   // Cria formulários
@@ -279,10 +258,11 @@ export class CriaClientePage implements OnInit {
     this.pageTitle = 'Atualizar Cliente';
     this.botaoTitle = 'ATUALIZAR';
     this.toastMessage = 'Atualizando...';
+    this.liberaArquivo = true;
     this.clienteService
       .get(clienteId)
       .pipe(take(1))
-      .subscribe(({ nome, cpf, patrimonio, pdtvAgro, informacoesAdicionais, rg, telefone, dataNascimento, email, senha}) => {
+      .subscribe(({ nome, cpf, patrimonio, pdtvAgro, informacoesAdicionais, rg, telefone, dataNascimento, email, senha, foto, nomeFoto}) => {
         this.clienteForm.get('nome').setValue(nome),
           this.clienteForm.get('cpf').setValue(cpf),
           this.clienteForm.get('patrimonio').setValue(patrimonio),
@@ -292,7 +272,10 @@ export class CriaClientePage implements OnInit {
           this.clienteForm.get('telefone').setValue(telefone),
           this.clienteForm.get('dataNascimento').setValue(dataNascimento),
           this.clienteForm.get('email').setValue(email),
-          this.clienteForm.get('senha').setValue(senha)
+          this.clienteForm.get('senha').setValue(senha),
+          this.urlFoto = foto;
+          this.fileName = nomeFoto;
+          this.fotoAntigo = nomeFoto;
       });
   }
 
@@ -303,7 +286,7 @@ export class CriaClientePage implements OnInit {
 
   async AtualizaListaGlobal() {
     this.clienteService.initCliente();
-    const cliente = await this.clienteService.update({
+    await this.clienteService.update({
       id: this.clienteId,
       cpf: this.clienteForm.get('cpf').value,
       nome: this.clienteForm.get('nome').value,
@@ -317,7 +300,7 @@ export class CriaClientePage implements OnInit {
       senha: this.clienteForm.get('senha').value,
     });
   }
-
+  
   // método que envia os dados do formulário para o banco de dados
   async onSubmit(): Promise<void> {
     const loading = await this.overlayService.loading({
@@ -326,40 +309,24 @@ export class CriaClientePage implements OnInit {
     try {
       const cliente = '';
       if (!this.clienteId) {
-        this.clienteService.init();
+        this.clienteService.initCliente();
         const cliente = await this.clienteService.create(this.clienteForm.value);
         this.cadastraListaGlobal(this.clienteService.id);
-
         this.deletePicture();
-
         this.uploadFileTo(this.arquivos);
-
-
-
-
       } else {
 
-        // this.deletePicture();
-        //
-        // this.uploadFileToUpdate(this.arquivos);
-
-        this.clienteService.init();
-        const cliente = await this.clienteService.update({
-          id: this.clienteId,
-          cpf: this.clienteForm.get('cpf').value,
-          nome: this.clienteForm.get('nome').value,
-          patrimonio: this.clienteForm.get('patrimonio').value,
-          pdtvAgro: this.clienteForm.get('pdtvAgro').value,
-          informacoesAdicionais: this.clienteForm.get('informacoesAdicionais').value,
-          rg: this.clienteForm.get('rg').value,
-          telefone: this.clienteForm.get('telefone').value,
-          dataNascimento: this.clienteForm.get('dataNascimento').value,
-          email: this.clienteForm.get('email').value,
-          senha: this.clienteForm.get('senha').value,
-        });
-
-        this.AtualizaListaGlobal();
-
+        if (this.novaFoto) {
+          if(this.fotoAntigo !== "") {
+            this.deletePicturePasta();
+            // deleta a foto temporaria que foi feito upload no servidor
+            this.deletePicture();
+          }
+          this.uploadFileTo(this.arquivos);
+          this.novaFoto = false;
+        } else {
+          this.AtualizaListaGlobal();
+        }
 
       }
       console.log('Cliente Criado', cliente);
