@@ -10,14 +10,15 @@
     <ion-title>C.A.R</ion-title>
   </ion-toolbar>
 </ion-header>
+
 <ion-content *ngIf="usuarioService.admin">
-  <ion-list>
-    <ng-container *ngIf="listaCarCliente.length > 0; else semCadastrosAmbientaisRurais">
-      <app-lista-car-item
-        *ngFor="let cadastro of listaCarCliente"
-        [cadastroAmbientalRural]="cadastro"
-        (update)="atualizar($event)"
-        (delete)="deletar($event)"></app-lista-car-item>
+  <ion-list >
+    <ng-container *ngIf="listaClientesCar.length > 0; else semCadastrosAmbientaisRurais">
+      <app-lista-car-item 
+      *ngFor="let cadastro of listaClientesCar" 
+      [cadastroAmbientalRural]="cadastro" 
+      (update)="atualizar($event)"
+      (delete)="deletar($event)"></app-lista-car-item>
     </ng-container>
     <ng-template #semCadastrosAmbientaisRurais>
       <ion-item lines="none">Sem cadastros Ambientais Rurais cadastradas...</ion-item>
@@ -40,9 +41,8 @@
         [cadastroAmbientalRural]="cadastroAmbientalRural">
       </app-lista-car-item>
     </ng-container>
-
     <ng-template #semCadastrosAmbientaisRurais>
-      <ion-item lines="none">Sem Cadastro ambiental rural cadastrado...</ion-item>
+      <ion-item lines="none">Sem cadastros Ambientais Rurais cadastradas...</ion-item>
     </ng-template>
   </ion-list>
 </ion-content>

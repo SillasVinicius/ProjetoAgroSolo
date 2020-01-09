@@ -18,7 +18,7 @@ export class ClienteService extends Firestore<Cliente> {
   init(): void {
     this.setCollection(`/users/${this.usuarioService.id}/cliente`);
   }
-  
+
   initLA(): void {
     this.setCollection('/LicencaAmbiental');
   }
@@ -27,12 +27,13 @@ export class ClienteService extends Firestore<Cliente> {
     this.setCollection(`/cliente`);
   }
 
-  initClienteId(idCliente: string): any {
-    this.setCollection('/cliente', ref =>
-      ref.where('id', '==', idCliente)
-    );
-
-    return this.getAll();
+  initClienteId(idCliente: any): any {
+    if (idCliente !== "") {
+      this.setCollection('/cliente', ref =>
+        ref.where('id', '==', idCliente)
+      );
+      return this.getAll();
+    }
   }
 
   setCollectionFoto(cliente: string) {

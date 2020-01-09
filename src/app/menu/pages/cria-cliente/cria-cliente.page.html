@@ -291,4 +291,146 @@
       </ion-button>
     </div>
   </form>
+
+  <div>
+    <ion-card [@tamanhoArquivo]="liberaArquivo ? 'comArquivo' : 'semArquivo'">
+      <ion-grid>
+        <ion-row align-items-center>
+          <ion-col text-center class="teste">
+            <ion-card text-center *ngIf="liberaArquivo">
+              <ion-card-header>
+                <ion-card-title style="font-size: 15px;">
+                  Arquivo selecionado:
+                  <a [href]="urlArquivo" target="_blank"><b>{{ fileName }}</b></a>
+                </ion-card-title>
+              </ion-card-header>
+            </ion-card>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+      <div class="fileUpload" text-center>
+        <div *ngIf="uploadPercent | async as pct">
+          Progress: {{ pct | number }}%
+          <ion-progress-bar value="{{ pct / 100 }}"></ion-progress-bar>
+        </div>
+        <div [@marginBotao]="liberaArquivo ? 'comArquivo' : 'semArquivo'">
+          <label for="uploadBtn" class="btn">Imposto de Renda</label>
+          <input class="upload" id="uploadBtn" type="file" (change)="openGalery($event.target.files)">
+        </div>
+      </div>
+    </ion-card>
+  </div>
+
+  <div>
+    <ion-card [@tamanhoArquivo]="liberaArquivo ? 'comArquivo' : 'semArquivo'">
+      <ion-grid>
+        <ion-row align-items-center>
+          <ion-col text-center class="teste">
+            <ion-card text-center *ngIf="liberaArquivo">
+              <ion-card-header>
+                <ion-card-title style="font-size: 15px;">
+                  Arquivo selecionado:
+                  <a [href]="urlArquivo" target="_blank"><b>{{ fileName }}</b></a>
+                </ion-card-title>
+              </ion-card-header>
+            </ion-card>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+      <div class="fileUpload" text-center>
+        <div *ngIf="uploadPercent | async as pct">
+          Progress: {{ pct | number }}%
+          <ion-progress-bar value="{{ pct / 100 }}"></ion-progress-bar>
+        </div>
+        <div [@marginBotao]="liberaArquivo ? 'comArquivo' : 'semArquivo'">
+          <label for="uploadBtn" class="btn">CNH</label>
+          <input class="upload" id="uploadBtn" type="file" (change)="openGalery($event.target.files)">
+        </div>
+      </div>
+    </ion-card>
+  </div>
+
+
+
+
+
+<!--
+  <div>
+    <ion-list id="impostoDeRenda" *ngIf="impostoDeRenda$ | async as impostoDeRenda" style="display:flex; align-items:center;">
+      <ng-container *ngIf="impostoDeRenda.length > 0; else semImpostoDeRenda">
+        <h4 style="margin-left:10px;">I. de renda</h4>
+        <ion-item slot="end" style="margin: 0; padding: 0; width: 160px; font-size: 65%;" lines="none">
+          <label for="uploadBtnUpdateImpostoDeRenda" class="btnAzul"><ion-icon slot="end" name="create"></ion-icon></label>
+          <input
+            class="upload"
+            id="uploadBtnUpdateImpostoDeRenda"
+            type="file"
+            (change)="openGaleryImpostoDeRendaUpdate($event.target.files, impostoDeRenda[0].id)"
+          >
+        </ion-item>
+
+          <ion-button color="primary" (click)="openLink(impostoDeRenda[0].impostoDeRenda);" style="margin-top: 1px;">
+            <ion-icon slot="icon-only" name="cloud-download"></ion-icon>
+          </ion-button>
+
+      </ng-container>
+      <ng-template #semImpostoDeRenda>
+        <h1>Imposto de renda</h1>
+        <ion-item slot="end"  lines="none">
+          <label for="uploadBtnCreateImpostoDeRenda" class="btn-down"><ion-icon slot="end" name="add"></ion-icon></label>
+          <input
+            class="upload"
+            id="uploadBtnCreateImpostoDeRenda"
+            type="file"
+            (change)="openGaleryImpostoDeRendaCreate($event.target.files)"
+          >
+        </ion-item>
+
+      </ng-template>
+    </ion-list>
+  </div>
+
+  
+
+
+
+
+
+<div>
+  <ion-list id="cnh" *ngIf="cnh$ | async as cnh" style="display:flex; align-items:center;">
+    <ng-container *ngIf="cnh.length > 0; else semCnh">
+      <h3 style="margin-left:10px;">CNH</h3>
+      <ion-item slot="end" style="margin: 0; padding: 0; width: 160px; font-size: 65%;" lines="none">
+        <label for="uploadBtnUpdateCnh" class="btnAzul"><ion-icon slot="end" name="create"></ion-icon></label>
+        <input
+          class="upload"
+          id="uploadBtnUpdateCnh"
+          type="file"
+          (change)="openGaleryCnhUpdate($event.target.files, cnh[0].id)"
+        >
+      </ion-item>
+
+        <ion-button color="primary" (click)="openLink(cnh[0].cnh);" style="margin-top: 1px;">
+          <ion-icon slot="icon-only" name="cloud-download"></ion-icon>
+        </ion-button>
+
+    </ng-container>
+    <ng-template #semCnh>
+      <h1>CNH</h1>
+      <ion-item slot="end"  lines="none">
+        <label for="uploadBtnCreateCnh" class="btn-down"><ion-icon slot="end" name="add"></ion-icon></label>
+        <input
+          class="upload"
+          id="uploadBtnCreateCnh"
+          type="file"
+          (change)="openGaleryCnhCreate($event.target.files)"
+        >
+      </ion-item>
+
+    </ng-template>
+  </ion-list>
+</div>-->
 </ion-content>
+
+      
+ 

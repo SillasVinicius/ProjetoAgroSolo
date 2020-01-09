@@ -32,25 +32,25 @@ export class ListaCARPage implements OnInit {
   ) {}
 
   listaCar: Array<any> = [];
-  listaCarCliente: Array<any> = [];
+  listaClientesCar: Array<any> = [];
 
   async ngOnInit(): Promise<void> {
-    console.log(this.usuarioService);
     const loading = await this.overlayService.loading();
     if (this.usuarioService.admin) {
       this.cadastroAmbientalRuralService.initCAR();
       this.cadastrosAmbientaisRurais$ = this.cadastroAmbientalRuralService.getAll();
       this.cadastrosAmbientaisRurais$.pipe(take(1)).subscribe(() => loading.dismiss());
 
-      this.cadastrosAmbientaisRurais$.forEach(cars => {
-        cars.forEach(car => {
-          if(car.clienteId != ""){
-          this.clientes$ = this.clienteService.initClienteId(car.clienteId);
-          this.clientes$.subscribe(async (r: Cliente[]) => {
-            car['nomeCliente'] = r[0].nome;
+      this.cadastrosAmbientaisRurais$.forEach(Cars => {
+        this.listaClientesCar = [];
+        Cars.forEach(Car => {
+          if(Car.clienteId !== ""){
+            this.clientes$ = this.clienteService.initClienteId(Car.clienteId);
+            this.clientes$.subscribe(async (r: Cliente[]) => {
+              Car['nomeCliente'] = r[0].nome;
           });
-          this.listaCarCliente.push(car);
-        }
+          this.listaClientesCar.push(Car);
+          }            
         });
       });
     }
@@ -189,4 +189,3 @@ export class ListaCARPage implements OnInit {
 
 
 }
-

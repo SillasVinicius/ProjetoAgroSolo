@@ -6,7 +6,7 @@
   <ion-button (click)="sliding.close(); fechar()" fill="clear" *ngIf="clicado">
     <ion-icon slot="icon-only" name="menu"></ion-icon>
   </ion-button>
-  {{cadastroAmbientalRural.nomeCliente}} - {{ cadastroAmbientalRural.descricao }}
+  {{cadastroAmbientalRural.nomeCliente}} ° {{ cadastroAmbientalRural.descricao }}
 </ion-item>
   <ion-item-options side="start">
     <ion-item-option color="danger" (click)="delete.emit(cadastroAmbientalRural); sliding.close()" *ngIf="admin">

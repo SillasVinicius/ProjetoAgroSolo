@@ -66,6 +66,33 @@ label {
   opacity: 0;
 }
 
+.btn-down {
+  color: white;
+  background-color: #217e36;
+  width: 50%;
+  font-size: 20px;
+  border-radius: 5px;
+  font-weight: bold;
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+  float: left;
+}
+.btnAzul {
+  color: white;
+  background-color: #007bff;
+  width: 50%;
+  font-size: 20px;
+  border-radius: 5px;
+  font-weight: bold;
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+}
+
+
 .dropzone {
   display: flex;
   align-items: center;
