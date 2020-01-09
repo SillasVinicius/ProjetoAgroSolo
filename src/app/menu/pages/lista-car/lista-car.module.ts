@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { SharedModule } from '../../../shared/shared.module';
 import { ComponentsModule } from '../../component/components.module';
 import { ListaCARPage } from './lista-car.page';
+import { RelatorioCarPage } from "../relatorio-car/relatorio-car.page";
 
 const routes: Routes = [
   {
@@ -13,6 +14,7 @@ const routes: Routes = [
 
 @NgModule({
 imports: [ SharedModule, ComponentsModule, RouterModule.forChild(routes)],
-  declarations: [ListaCARPage]
+  declarations: [ListaCARPage, RelatorioCarPage],
+  entryComponents: [RelatorioCarPage]
 })
 export class ListaCARPageModule {}

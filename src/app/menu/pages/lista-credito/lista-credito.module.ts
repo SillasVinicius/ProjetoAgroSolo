@@ -8,6 +8,7 @@ import { IonicModule } from '@ionic/angular';
 import { ListaCreditoPage } from './lista-credito.page';
 import { ComponentsModule } from '../../component/components.module';
 import { SharedModule } from 'src/app/shared/shared.module';
+import { RelatorioCreditoPage } from "../relatorio-credito/relatorio-credito.page";
 
 const routes: Routes = [
   {
@@ -25,6 +26,7 @@ const routes: Routes = [
     SharedModule,
     RouterModule.forChild(routes)
   ],
-  declarations: [ListaCreditoPage]
+  declarations: [ListaCreditoPage, RelatorioCreditoPage],
+  entryComponents: [RelatorioCreditoPage]
 })
 export class ListaCreditoPageModule {}
