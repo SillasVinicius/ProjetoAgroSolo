@@ -7,6 +7,7 @@ import { DeclaracaoAmbiental } from '../../models/da.model';
 import { DaService } from 'src/app/core/services/da.service';
 import { UsuarioService } from 'src/app/core/services/usuario.service';
 import { Cliente } from '../../models/cliente.model';
+import { ClienteService } from 'src/app/core/services/cliente.service';
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
@@ -29,7 +30,8 @@ export class ListaDAPage implements OnInit {
     private daService: DaService,
     private overlayService: OverlayService,
     private ModalController: ModalController,
-    private usuarioService: UsuarioService
+    private usuarioService: UsuarioService,
+    private clienteService: ClienteService
   ) {}
 
   listaDa: Array<any> = [];

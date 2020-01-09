@@ -10,7 +10,8 @@ const routes: Routes = [
     loadChildren: './menu/menu.module#MenuModule',
     canLoad: [AuthGuard]
   },
-  { path: 'RelatorioClientePage', loadChildren: 'src/app/menu/pages/relatorio-cliente/relatorio-cliente.page' },
+
+  
 ];
 
 @NgModule({
