@@ -5,4 +5,5 @@ export interface Outorga {
   clienteId: string;
   arquivo?: string;
   nomeArquivo?: string;
+  nomeCliente?: string;
 }

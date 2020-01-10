@@ -9,6 +9,7 @@ import { UsuarioService } from 'src/app/core/services/usuario.service';
 import { Cliente } from '../../models/cliente.model';
 import { ClienteService } from 'src/app/core/services/cliente.service';
 import { RelatorioOutorgaPage } from "../relatorio-outorga/relatorio-outorga.page";
+import { AngularFireStorage } from '@angular/fire/storage';
 
 @Component({
   selector: 'app-lista-outorga',
@@ -30,6 +31,7 @@ export class ListaOutorgaPage implements OnInit {
     private overlayService: OverlayService,
     private usuarioService: UsuarioService,
     private clienteService: ClienteService,
+    private storage: AngularFireStorage
   ) {}
 
   listaOutorga: Array<any> = [];
@@ -45,12 +47,12 @@ export class ListaOutorgaPage implements OnInit {
       this.outorgas$.forEach(Outs => {
         this.listaClientesOutorgas = [];
         Outs.forEach(Out => {
-          if(Out.clienteId !== ""){
+          if(Out.clienteId !== "" && Out.clienteId !== undefined){
             this.clientes$ = this.clienteService.initClienteId(Out.clienteId);
             this.clientes$.subscribe(async (r: Cliente[]) => {
-              Out['nomeCliente'] = r[0].nome;
-          });
-          this.listaClientesOutorgas.push(Out);
+              Out['nomeCliente'] = (r.length > 0) ? r[0].nome : 'Cliente excluído';
+            });
+            this.listaClientesOutorgas.push(Out);
           }            
         });
       });      
@@ -68,23 +70,27 @@ export class ListaOutorgaPage implements OnInit {
 
   async deletar(outorga: Outorga): Promise<void> {
     await this.overlayService.alert({
-      message: `Você realmente deseja deletar a outorga "${outorga.descricao}"?`,
+      message: `Você realmente deseja deletar a outorga do Cliente: ${outorga.nomeCliente} - ${outorga.descricao}?`,
       buttons: [
         {
           text: 'Sim',
           handler: async () => {
-            await this.outorgaService.init();
-            await this.outorgaService.delete(outorga);
+            this.deletarArquivoOutorga(outorga);
             await this.outorgaService.init();
             await this.outorgaService.delete(outorga);
             await this.overlayService.toast({
-              message: `Outorga "${outorga.descricao}" excluido!`
+              message: `Outorga do Cliente: ${outorga.nomeCliente} - ${outorga.descricao} excluido!`
             });
           }
         },
         'Não'
       ]
     });
+  }
+
+  deletarArquivoOutorga(outorga: Outorga) {
+    const ref = this.storage.ref(`/outorga${outorga.id}`);
+    ref.child(`${outorga.nomeArquivo}`).delete();
   }
 
   async openModal() {

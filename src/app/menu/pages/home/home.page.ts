@@ -107,7 +107,7 @@ export class HomePage implements OnInit {
       this.outorgas$.pipe(take(1)).subscribe(() => loading.dismiss());
 
 
-      this.licencaAmbientalService.initLA();
+      this.licencaAmbientalService.init();
       this.licencasAmbientais$ = this.licencaAmbientalService.getAll();
       this.licencasAmbientais$.pipe(take(1)).subscribe(() => loading.dismiss());
 
@@ -129,7 +129,7 @@ export class HomePage implements OnInit {
       this.outorgas$ = this.outorgaService.buscaOutorgasClientes(this.usuario.id);
       this.outorgas$.pipe(take(1)).subscribe(() => loading.dismiss());
 
-      this.licencaAmbientalService.initLA();
+      this.licencaAmbientalService.init();
       this.licencasAmbientais$ = this.licencaAmbientalService.buscaLaClientes(this.usuario.id);
       this.licencasAmbientais$.pipe(take(1)).subscribe(() => loading.dismiss());
 

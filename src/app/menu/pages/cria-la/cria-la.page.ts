@@ -153,12 +153,12 @@ export class CriaLaPage implements OnInit {
       }
 
       async cadastraListaGlobal(id: string) {
-        this.licencaAmbientalService.initLA();
+        this.licencaAmbientalService.init();
         const licencaAmbiental = await this.licencaAmbientalService.createGlobal(this.licencaAmbientalForm.value, id);
       }
 
       async AtualizaListaGlobal() {
-        this.licencaAmbientalService.initLA();
+        this.licencaAmbientalService.init();
         const atualizarFoto = await this.licencaAmbientalService.update({
           id: this.licencaAmbientalId,
           descricao: this.licencaAmbientalForm.get('descricao').value,
@@ -241,7 +241,7 @@ export class CriaLaPage implements OnInit {
               this.liberaArquivo = true;
 
               this.downloadUrl.subscribe(async r => {
-                this.licencaAmbientalService.initLA();
+                this.licencaAmbientalService.init();
                 const atualizarFoto = await this.licencaAmbientalService.update({
                   id: this.licencaAmbientalService.id,
                   descricao: this.licencaAmbientalForm.get('descricao').value,
@@ -256,7 +256,6 @@ export class CriaLaPage implements OnInit {
       }
 
       deletePicture(){
-
         let idLa = (this.licencaAmbientalService.id === '') ? this.licencaAmbientalId : this.licencaAmbientalService.id;
 
         const ref = this.storage.ref(`/LicencaAmbiental${idLa}`);

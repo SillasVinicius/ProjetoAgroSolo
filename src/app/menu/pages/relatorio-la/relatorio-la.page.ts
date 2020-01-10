@@ -37,7 +37,7 @@ export class RelatorioLaPage implements OnInit {
 
   async ngOnInit(): Promise<void> {
     const loading = await this.overlayService.loading(); 
-    this.clienteService.initCliente();
+    this.clienteService.init();
     this.clientes$ = this.clienteService.getAll();
     this.clientes$.pipe(take(1)).subscribe(() => loading.dismiss());
 

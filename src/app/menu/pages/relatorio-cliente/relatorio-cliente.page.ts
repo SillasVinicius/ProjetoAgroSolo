@@ -32,7 +32,7 @@ export class RelatorioClientePage implements OnInit {
   listaCliente: Array<any> = [];  
   async ngOnInit(): Promise<void> {
     const loading = await this.overlayService.loading(); 
-    this.clienteService.initCliente();
+    this.clienteService.init();
     this.clientes$ = this.clienteService.getAll();
     this.clientes$.pipe(take(1)).subscribe(() => loading.dismiss());
 

@@ -12,6 +12,7 @@ import pdfFonts from "pdfmake/build/vfs_fonts";
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 import { RelatorioLaPage } from "../relatorio-la/relatorio-la.page";
 import { ClienteService } from 'src/app/core/services/cliente.service';
+import {AngularFireStorage }from '@angular/fire/storage';
 
 @Component({
   selector: 'app-lista-la',
@@ -30,7 +31,8 @@ export class ListaLAPage implements OnInit {
     private ModalController: ModalController,
     private overlayService: OverlayService,
     private usuarioService: UsuarioService,
-    private clienteService: ClienteService
+    private clienteService: ClienteService,
+    private storage: AngularFireStorage
   ) {}
 
 
@@ -39,21 +41,21 @@ export class ListaLAPage implements OnInit {
   async ngOnInit(): Promise<void> {
     const loading = await this.overlayService.loading();
     if (this.usuarioService.admin) {
-      this.licencaAmbientalService.initLA();
+      this.licencaAmbientalService.init();
       this.licencasAmbientais$ = this.licencaAmbientalService.getAll();
       this.licencasAmbientais$.pipe(take(1)).subscribe(() => loading.dismiss());
 
       this.licencasAmbientais$.forEach(La => {
       this.listaLaCliente = [];
-        	        La.forEach(la => {
-        	          if(la.clienteId != ""){
-        	          this.clientes$ = this.clienteService.initClienteId(la.clienteId);
-        	          this.clientes$.subscribe(async (r: Cliente[]) => {
-        	            la['nomeCliente'] = r[0].nome;
-        	          });
-      	          this.listaLaCliente.push(la);
-        	        }
-        	        });
+          La.forEach(la => {
+            if(la.clienteId !== "" && la.clienteId !== undefined){
+              this.clientes$ = this.clienteService.initClienteId(la.clienteId);
+              this.clientes$.subscribe(async (r: Cliente[]) => {
+                la['nomeCliente'] = (r.length > 0) ? r[0].nome : 'Cliente excluído';
+              });
+              this.listaLaCliente.push(la);
+            }
+          });
        });
 
     }
@@ -70,17 +72,16 @@ export class ListaLAPage implements OnInit {
 
   async deletar(licencaAmbiental: LicencaAmbiental): Promise<void> {
     await this.overlayService.alert({
-      message: `Você realmente deseja deletar a licenca ambiental "${licencaAmbiental.descricao}"?`,
+      message: `Você realmente deseja deletar a licenca ambiental do Cliente: ${licencaAmbiental.nomeCliente} - ${licencaAmbiental.descricao}?`,
       buttons: [
         {
           text: 'Sim',
           handler: async () => {
+            await this.deletarArquivoLicencaAmbiental(licencaAmbiental);
             await this.licencaAmbientalService.init();
             await this.licencaAmbientalService.delete(licencaAmbiental);
-            await this.licencaAmbientalService.initLA();
-            await this.licencaAmbientalService.delete(licencaAmbiental);
             await this.overlayService.toast({
-              message: `licenca ambiental "${licencaAmbiental.descricao}" excluida!`
+              message: `licenca ambiental do Cliente ${licencaAmbiental.nomeCliente} - ${licencaAmbiental.descricao} excluida!`
             });
           }
         },
@@ -96,5 +97,10 @@ export class ListaLAPage implements OnInit {
     modal.present();
   } 
 
+  //deleta arquvios da licença ambiental
+  deletarArquivoLicencaAmbiental(licencaAmbiental: LicencaAmbiental) {
+    const ref = this.storage.ref(`/LicencaAmbiental${licencaAmbiental.id}`);
+    ref.child(`${licencaAmbiental.nomeArquivo}`).delete();
+  }
 
 }

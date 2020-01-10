@@ -5,4 +5,5 @@ export interface LicencaAmbiental {
   clienteId: string;
   arquivo?: string;
   nomeArquivo?: string;
+  nomeCliente?: string;
 }

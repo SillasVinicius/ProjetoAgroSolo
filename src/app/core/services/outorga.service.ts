@@ -20,10 +20,6 @@ export class OutorgaService extends Firestore<Outorga> {
     this.setCollection('/outorga');
   }
 
-  setCollectionArquivo(outorga: string) {
-    this.setCollection(`/users/${this.usuarioId}/outorga/${outorga}/arquivos`);
-  }
-
   buscaOutorgasClientes(id: string){
     this.setCollection('/outorga', ref =>
       ref.where('clienteId', '==', id)
