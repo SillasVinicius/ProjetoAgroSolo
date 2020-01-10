@@ -154,12 +154,12 @@ export class CriaDaPage implements OnInit {
     }
 
     async cadastraListaGlobal(id: string) {
-      this.declaracaoAmbientalService.initDA();
+      this.declaracaoAmbientalService.init();
       const declaracaoAmbiental = await this.declaracaoAmbientalService.createGlobal(this.declaracaoAmbientalForm.value, id);
     }
 
     async AtualizaListaGlobal() {
-      this.declaracaoAmbientalService.initDA();
+      this.declaracaoAmbientalService.init();
       const atualizarFoto = await this.declaracaoAmbientalService.update({
         id: this.declaracaoAmbientalId,
         descricao: this.declaracaoAmbientalForm.get('descricao').value,
@@ -176,7 +176,7 @@ export class CriaDaPage implements OnInit {
       try {
         const declaracaoAmbiental = '';
         if (!this.declaracaoAmbientalId) {
-          this.declaracaoAmbientalService.initDA();
+          this.declaracaoAmbientalService.init();
           const declaracaoAmbiental = await this.declaracaoAmbientalService.create(this.declaracaoAmbientalForm.value);
           this.cadastraListaGlobal(this.declaracaoAmbientalService.id);
 
@@ -238,7 +238,7 @@ export class CriaDaPage implements OnInit {
             this.liberaArquivo = true;
 
             this.downloadUrl.subscribe(async r => {
-              this.declaracaoAmbientalService.initDA();
+              this.declaracaoAmbientalService.init();
               const atualizarFoto = await this.declaracaoAmbientalService.update({
                 id: this.declaracaoAmbientalService.id,
                 descricao: this.declaracaoAmbientalForm.get('descricao').value,

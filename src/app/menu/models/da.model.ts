@@ -5,4 +5,5 @@ export interface DeclaracaoAmbiental {
   clienteId: string;
   arquivo?: string;
   nomeArquivo?: string;
+  nomeCliente?: string;
 }

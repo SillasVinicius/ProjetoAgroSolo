@@ -12,6 +12,8 @@ import {OutorgaService }from 'src/app/core/services/outorga.service';
 import {Outorga }from '../../models/outorga.model';
 import { LicencaAmbiental } from '../../models/la.model';
 import { LaService } from 'src/app/core/services/la.service';
+import { DeclaracaoAmbiental } from '../../models/da.model';
+import { DaService } from 'src/app/core/services/da.service';
 
 @Component( {
   selector:'app-lista-cliente', 
@@ -29,11 +31,13 @@ export class ListaClientePage implements OnInit {
     private usuarioService: UsuarioService, 
     private storage: AngularFireStorage, 
     private outorgaService: OutorgaService,
-    private laService: LaService
+    private laService: LaService,
+    private daService: DaService
   ) {}
 
   outorgas$: Observable <Outorga[]>;
   la$: Observable <LicencaAmbiental[]>;
+  da$: Observable <DeclaracaoAmbiental[]>;
 
 
   listaCliente:Array < any >  = []; 
@@ -62,8 +66,10 @@ export class ListaClientePage implements OnInit {
           handler:async () =>  {
             //deletar as outorgas vinculados ao cliente
             await this.deletarOutorgasCliente(cliente);
-            //deçetar licença ambiental
+            //deletar licença ambiental
             await this.deletarLicencaAmbientalCliente(cliente);
+            //deletar declaração ambiental
+            await this.deletarDeclacaoAmbientalCliente(cliente);
 
            /* await this.clienteService.init(); 
             await this.clienteService.delete(cliente); 
@@ -110,22 +116,22 @@ export class ListaClientePage implements OnInit {
     }); 
   }
 
- /* async deletarOutorgasCliente(cliente: Cliente) {
-    this.outorgas$ = this.outorgaService.buscaOutorgasClientes(cliente.id); 
-    this.outorgas$.forEach(outorgas =>  {
-      if (outorgas.length > 0) {
-        outorgas.forEach(outorga => {
-          if (outorga.id !== undefined && outorga.id !== '') {
-            this.deletarArquivoOutorga(outorga);
-            this.outorgaService.init();
-            this.outorgaService.delete(outorga);
+ async deletarDeclacaoAmbientalCliente(cliente: Cliente) {
+    this.da$ = this.daService.buscaDeclaracoesClientes(cliente.id); 
+    this.da$.forEach(das =>  {
+      if (das.length > 0) {
+        das.forEach(da => {
+          if (da.id !== undefined && da.id !== '') {
+            this.deletarArquivoDeclaracaoAmbiental(da);
+            this.daService.init();
+            this.daService.delete(da);
           }
         });
       }
     }); 
   }
 
-  async deletarOutorgasCliente(cliente: Cliente) {
+  /*async deletarOutorgasCliente(cliente: Cliente) {
     this.outorgas$ = this.outorgaService.buscaOutorgasClientes(cliente.id); 
     this.outorgas$.forEach(outorgas =>  {
       if (outorgas.length > 0) {
@@ -172,12 +178,12 @@ export class ListaClientePage implements OnInit {
     ref.child(`${la.nomeArquivo}`).delete();
   }
 
-  /*deletarArquivoOutorga(outorga: Outorga) {
-    const ref = this.storage.ref(`/outorga${outorga.id}`);
-    ref.child(`${outorga.nomeArquivo}`).delete();
+  deletarArquivoDeclaracaoAmbiental(da: DeclaracaoAmbiental) {
+    const ref = this.storage.ref(`/DeclaracaoAmbiental${da.id}`);
+    ref.child(`${da.nomeArquivo}`).delete();
   }
 
-  deletarArquivoOutorga(outorga: Outorga) {
+  /*deletarArquivoOutorga(outorga: Outorga) {
     const ref = this.storage.ref(`/outorga${outorga.id}`);
     ref.child(`${outorga.nomeArquivo}`).delete();
   }

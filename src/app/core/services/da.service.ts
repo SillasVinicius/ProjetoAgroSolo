@@ -16,11 +16,11 @@ export class DaService extends Firestore<DeclaracaoAmbiental>{
     this.usuarioId = this.usuarioService.id;
   }
 
-    init(): void {
+    /*init(): void {
       this.setCollection(`/users/${this.usuarioService.id}/DeclaracaoAmbiental`, ref => ref.orderBy('dataDeVencimento', 'desc'));
-    }
+    }*/
 
-    initDA(): void {
+    init(): void {
       this.setCollection('/DeclaracaoAmbiental');
     }
 
@@ -29,10 +29,6 @@ export class DaService extends Firestore<DeclaracaoAmbiental>{
         ref.where('clienteId', '==', id)
       );
       return this.getAll();
-    }
-
-    setCollectionArquivo(da: string) {
-      this.setCollection(`/users/${this.usuarioId}/DeclaracaoAmbiental/${da}/arquivos`);
     }
 
     criarId(): string {

@@ -12,6 +12,7 @@ import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 import { RelatorioDaPage } from "../relatorio-da/relatorio-da.page";
+import { AngularFireStorage } from '@angular/fire/storage';
 
 
 @Component({
@@ -31,7 +32,8 @@ export class ListaDAPage implements OnInit {
     private overlayService: OverlayService,
     private ModalController: ModalController,
     private usuarioService: UsuarioService,
-    private clienteService: ClienteService
+    private clienteService: ClienteService,
+    private storage: AngularFireStorage
   ) {}
 
   listaDa: Array<any> = [];
@@ -39,19 +41,19 @@ export class ListaDAPage implements OnInit {
   async ngOnInit(): Promise<void> {
     const loading = await this.overlayService.loading();
     if (this.usuarioService.admin) {
-      this.daService.initDA();
+      this.daService.init();
       this.das$ = this.daService.getAll();
       this.das$.pipe(take(1)).subscribe(() => loading.dismiss());
 
-      this.das$.forEach(Das => {
+      this.das$.forEach(das => {
         this.listaDaCliente = [];
-        Das.forEach(Da => {
-          if(Da.clienteId != "") {
-            this.clientes$ = this.clienteService.initClienteId(Da.clienteId);
+        das.forEach(da => {
+          if(da.clienteId !== "" && da.clienteId !== undefined) {
+            this.clientes$ = this.clienteService.initClienteId(da.clienteId);
             this.clientes$.subscribe(async (r: Cliente[]) => {
-            Da['nomeCliente'] = r[0].nome;
-          });
-          this.listaDaCliente.push(Da);
+              da['nomeCliente'] = (r.length > 0) ? r[0].nome : 'Cliente excluído';
+            });
+            this.listaDaCliente.push(da);
         }
         });
       }); 
@@ -70,23 +72,28 @@ export class ListaDAPage implements OnInit {
 
   async deletar(da: DeclaracaoAmbiental): Promise<void> {
     await this.overlayService.alert({
-      message: `Você realmente deseja deletar a Declaracao Ambiental "${da.descricao}"?`,
+      message: `Você realmente deseja deletar a Declaracao Ambiental do Cliente: ${da.nomeCliente} - ${da.descricao}?`,
       buttons: [
         {
           text: 'Sim',
           handler: async () => {
+            //deletar arquvios da declaração ambiental
+            await this.deletarArquivoDeclaracaoAmbiental(da);
             await this.daService.init();
             await this.daService.delete(da);
-            await this.daService.initDA();
-            await this.daService.delete(da);
             await this.overlayService.toast({
-              message: `Declaracao Ambiental "${da.descricao}" excluida!`
+              message: `Declaracao Ambiental do Cliente: ${da.nomeCliente} - ${da.descricao} excluida!`
             });
           }
         },
         'Não'
       ]
     });
+  }
+
+  deletarArquivoDeclaracaoAmbiental(da: DeclaracaoAmbiental) {
+    const ref = this.storage.ref(`/DeclaracaoAmbiental${da.id}`);
+    ref.child(`${da.nomeArquivo}`).delete();
   }
 
   async openModal() {

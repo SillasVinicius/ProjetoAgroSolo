@@ -111,7 +111,7 @@ export class HomePage implements OnInit {
       this.licencasAmbientais$ = this.licencaAmbientalService.getAll();
       this.licencasAmbientais$.pipe(take(1)).subscribe(() => loading.dismiss());
 
-      this.daService.initDA();
+      this.daService.init();
       this.das$ = this.daService.getAll();
       this.das$.pipe(take(1)).subscribe(() => loading.dismiss());
 
@@ -133,7 +133,7 @@ export class HomePage implements OnInit {
       this.licencasAmbientais$ = this.licencaAmbientalService.buscaLaClientes(this.usuario.id);
       this.licencasAmbientais$.pipe(take(1)).subscribe(() => loading.dismiss());
 
-      this.daService.initDA();
+      this.daService.init();
       this.das$ = this.daService.buscaDeclaracoesClientes(this.usuario.id);
       this.das$.pipe(take(1)).subscribe(() => loading.dismiss());
 
