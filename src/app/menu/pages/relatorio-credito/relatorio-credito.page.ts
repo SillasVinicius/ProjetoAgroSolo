@@ -6,7 +6,7 @@ import { CreditoService } from 'src/app/core/services/credito.service';
 import { Cliente } from '../../models/cliente.model';
 import { Credito } from '../../models/credito.model';
 import { Observable } from 'rxjs';
-import { take } from 'rxjs/operators';
+import { take, isEmpty } from 'rxjs/operators';
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
@@ -116,6 +116,11 @@ export class RelatorioCreditoPage implements OnInit {
     const loading = await this.overlayService.loading(); 
     this.listaCredito = [];
 
+    console.log(this.data_aprovacao_ini)
+    console.log(this.data_aprovacao_fim)
+    console.log(this.data_expiracao_ini)
+    console.log(this.data_expiracao_fim)
+
     if (this.data_aprovacao_ini > this.data_aprovacao_fim)
     {
       alert("Data inicial não pode ser maior que data final, em relação a data de aprovação!");
@@ -123,9 +128,37 @@ export class RelatorioCreditoPage implements OnInit {
       return;
     }
 
+    if (!(this.data_aprovacao_ini) && (this.data_aprovacao_fim))
+    {
+      alert("Informar data inicial de Aprovação!");
+      loading.remove();
+      return;
+    }
+
+    if ((this.data_aprovacao_ini) && !(this.data_aprovacao_fim))
+    {
+      alert("Informar data final de Aprovação!");
+      loading.remove();
+      return;
+    }
+
     if (this.data_expiracao_ini > this.data_expiracao_fim)
     {
       alert("Data inicial não pode ser maior que data final, em relação a data de expiração!");
+      loading.remove();
+      return;
+    }
+
+    if (!(this.data_expiracao_ini) && (this.data_expiracao_fim))
+    {
+      alert("Informar data inicial de expiração!");
+      loading.remove();
+      return;
+    }
+
+    if ((this.data_expiracao_ini) && !(this.data_expiracao_fim))
+    {
+      alert("Informar data final de expiração!");
       loading.remove();
       return;
     }
