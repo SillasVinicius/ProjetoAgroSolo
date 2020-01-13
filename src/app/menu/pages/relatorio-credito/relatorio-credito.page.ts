@@ -1,4 +1,4 @@
-import { Component, OnInit} from '@angular/core';
+import { Component, OnInit, ViewChildren, QueryList, ElementRef } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { ClienteService } from 'src/app/core/services/cliente.service';
 import { OverlayService } from 'src/app/core/services/overlay.service';
@@ -27,6 +27,7 @@ export class RelatorioCreditoPage implements OnInit {
   data_aprovacao_fim: String;
   data_expiracao_ini: String; 
   data_expiracao_fim: String;
+  @ViewChildren('filter') filtrosRelatorio: QueryList<ElementRef>;
 
   constructor(
     private ModalController: ModalController,
@@ -59,6 +60,17 @@ export class RelatorioCreditoPage implements OnInit {
 
   async closeModal(){
     await this.ModalController.dismiss();
+  }
+
+  clearFilters() {
+    this.id_cli = '';
+    this.data_aprovacao_ini = '';
+    this.data_aprovacao_fim = '';
+    this.data_expiracao_ini = '';
+    this.data_expiracao_fim = '';
+    this.filtrosRelatorio.forEach(filtro => {
+      filtro.el.value = null;
+    });    
   }
 
   async obter_id_cliente(id: String){

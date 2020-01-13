@@ -13,7 +13,7 @@
     <ion-list>
       <ion-item>
         <ion-label position="floating" color="primary">Cliente</ion-label>
-              <ion-select (ionChange)="obter_id_cliente($event.target.value);">
+              <ion-select (ionChange)="obter_id_cliente($event.target.value);" #filter>
                 <ion-select-option *ngFor="let cliente of clientes" [value]= "cliente.id">
                   {{cliente.nome}}
                 </ion-select-option>
@@ -31,13 +31,13 @@
         <ion-col>
           <ion-label position="floating" color="primary">Data Inicial</ion-label>
           <ion-datetime displayFormat="DD/MM/YYYY" name="dt_inicial"
-          (ionChange)="obter_dt_aprovacao_cliente_ini($event.target.value);"></ion-datetime>
+          (ionChange)="obter_dt_aprovacao_cliente_ini($event.target.value);" #filter></ion-datetime>
         </ion-col>
 
         <ion-col>
           <ion-label position="floating" color="primary">Data Final</ion-label>
           <ion-datetime displayFormat="DD/MM/YYYY"
-          (ionChange)="obter_dt_aprovacao_cliente_fim($event.target.value);" ></ion-datetime>
+          (ionChange)="obter_dt_aprovacao_cliente_fim($event.target.value);" #filter></ion-datetime>
         </ion-col>
       </ion-row>
       
@@ -50,12 +50,12 @@
         <ion-col>
           <ion-label position="floating" color="primary">Data Inicial</ion-label>
           <ion-datetime displayFormat="DD/MM/YYYY" name="dt_inicial"
-          (ionChange)="obter_dt_expiracao_cliente_ini($event.target.value);"></ion-datetime>
+          (ionChange)="obter_dt_expiracao_cliente_ini($event.target.value);" #filter></ion-datetime>
         </ion-col>
         <ion-col>
           <ion-label position="floating" color="primary">Data Final</ion-label>
           <ion-datetime displayFormat="DD/MM/YYYY"
-          (ionChange)="obter_dt_expiracao_cliente_fim($event.target.value);" ></ion-datetime>
+          (ionChange)="obter_dt_expiracao_cliente_fim($event.target.value);" #filter></ion-datetime>
         </ion-col>
       </ion-row>
 
@@ -65,5 +65,10 @@
     <ion-button expand="block" (click)="relatorio_credito()" >
       <ion-icon name="print"></ion-icon> 
     </ion-button>
+
+    <ion-button expand="block" (click)="clearFilters()" >
+      <ion-icon name="trash"></ion-icon> 
+    </ion-button>
+    
     <img src="../../../../assets/img/grama.png" alt="" style="margin-bottom: 0px;">
 </ion-content>

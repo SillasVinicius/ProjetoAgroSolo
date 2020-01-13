@@ -1,4 +1,4 @@
-import { Component, OnInit} from '@angular/core';
+import { Component, OnInit, ViewChildren, QueryList, ElementRef } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { ClienteService } from 'src/app/core/services/cliente.service';
 import { OverlayService } from 'src/app/core/services/overlay.service';
@@ -14,7 +14,6 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
   templateUrl: './relatorio-cliente.page.html',
   styleUrls: ['./relatorio-cliente.page.scss'],
 })
-
 export class RelatorioClientePage implements OnInit {
   clientes$: Observable<Cliente[]>;
   clientes: Cliente[] = [];
@@ -22,6 +21,7 @@ export class RelatorioClientePage implements OnInit {
   id_cli: String;
   data_nasc_cli_ini: String; 
   data_nasc_cli_fim: String;
+  @ViewChildren('filter') filtrosRelatorio: QueryList<ElementRef>;
 
   constructor(
     private ModalController: ModalController,
@@ -45,6 +45,15 @@ export class RelatorioClientePage implements OnInit {
   
   async closeModal(){
     await this.ModalController.dismiss();
+  }
+
+  clearFilters() {
+    this.id_cli = '';
+    this.data_nasc_cli_ini = ''; 
+    this.data_nasc_cli_fim = '';
+    this.filtrosRelatorio.forEach(filtro => {
+      filtro.el.value = null;
+    });    
   }
 
   async obter_id_cliente(id: String){
