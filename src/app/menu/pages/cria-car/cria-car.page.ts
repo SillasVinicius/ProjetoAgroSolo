@@ -136,8 +136,8 @@ export class CriaCarPage implements OnInit {
       .pipe(take(1))
       .subscribe(({ descricao, clienteId, arquivo, nomeArquivo }) => {
         this.cadastroRuralAmbientalForm.get('descricao').setValue(descricao);
-          this.cadastroRuralAmbientalForm.get('clienteId').setValue(clienteId);
-          this.liberaArquivo = true;
+        this.cadastroRuralAmbientalForm.get('clienteId').setValue(clienteId);
+        this.liberaArquivo = true;
         this.urlArquivo = arquivo;
         this.fileName = nomeArquivo;
         this.arquivoAntigo = nomeArquivo;
@@ -145,13 +145,13 @@ export class CriaCarPage implements OnInit {
   }
 
   async cadastraListaGlobal(id: string) {
-    this.cadastroRuralAmbientalService.initCAR();
-    const cadastroRuralAmbiental = await this.cadastroRuralAmbientalService.createGlobal(this.cadastroRuralAmbientalForm.value, id);
+    this.cadastroRuralAmbientalService.init();
+    await this.cadastroRuralAmbientalService.createGlobal(this.cadastroRuralAmbientalForm.value, id);
   }
 
   async AtualizaListaGlobal() {
-    this.cadastroRuralAmbientalService.initCAR();
-    const atualizarFoto = await this.cadastroRuralAmbientalService.update({
+    this.cadastroRuralAmbientalService.init();
+    await this.cadastroRuralAmbientalService.update({
       id: this.cadastroRuralAmbientalId,
       descricao: this.cadastroRuralAmbientalForm.get('descricao').value,
       clienteId: this.cadastroRuralAmbientalForm.get('clienteId').value
@@ -230,9 +230,9 @@ export class CriaCarPage implements OnInit {
         this.liberaArquivo = true;
 
         this.downloadUrl.subscribe(async r => {
-          this.cadastroRuralAmbientalService.initCAR();
-          const atualizarFoto = await this.cadastroRuralAmbientalService.update({
-            id: this.cadastroRuralAmbientalService.id,
+          this.cadastroRuralAmbientalService.init();
+          await this.cadastroRuralAmbientalService.update({
+            id: idCar,
             descricao: this.cadastroRuralAmbientalForm.get('descricao').value,
             clienteId: this.cadastroRuralAmbientalForm.get('clienteId').value,
             arquivo: r,

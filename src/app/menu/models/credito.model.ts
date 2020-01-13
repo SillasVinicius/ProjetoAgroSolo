@@ -7,4 +7,5 @@ export interface Credito{
     valorCredito: string;
     arquivo?: string;
     nomeArquivo?: string;
+    nomeCliente?: string;
 }

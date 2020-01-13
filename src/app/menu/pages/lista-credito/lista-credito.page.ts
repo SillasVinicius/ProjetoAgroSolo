@@ -42,7 +42,7 @@ export class ListaCreditoPage implements OnInit {
   async ngOnInit(): Promise<void> {
     const loading = await this.overlayService.loading();
     if (this.usuarioService.admin) {
-      this.creditoService.initCredito();
+      this.creditoService.init();
       this.cadastrosDeCreditos$ = this.creditoService.getAll();
       this.cadastrosDeCreditos$.pipe(take(1)).subscribe(() => loading.dismiss());
 
@@ -72,19 +72,16 @@ export class ListaCreditoPage implements OnInit {
 
   async deletar(credito: Credito): Promise<void> {
     await this.overlayService.alert({
-      message: `Você realmente deseja deletar o crédito de valor R$ "${credito.valorCredito}"?`,
+      message: `Você realmente deseja deletar o crédito de valor R$ ${credito.valorCredito} para o Cliente ${credito.nomeCliente}?`,
       buttons: [
         {
           text: 'Sim',
           handler: async () => {
-            const ref = this.storage.ref(`/credito${credito.id}/`);
-            ref.child(`${credito.nomeArquivo}`).delete();
+            await this.deletarArquivoCredito(credito);
             await this.creditoService.init();
             await this.creditoService.delete(credito);
-            await this.creditoService.initCredito();
-            await this.creditoService.delete(credito);
             await this.overlayService.toast({
-              message: `Crédito de R$"${credito.valorCredito}" excluido!`
+              message: `Crédito de R$ ${credito.valorCredito} para o Cliente ${credito.nomeCliente} excluido!`
             });
           }
         },
@@ -98,6 +95,11 @@ export class ListaCreditoPage implements OnInit {
       component: RelatorioCreditoPage
     })
     modal.present();
-  }  
+  } 
+  
+  deletarArquivoCredito(credito: Credito) {
+    const ref = this.storage.ref(`/CreditoFinaceiro${credito.id}`);
+    ref.child(`${credito.nomeArquivo}`).delete();
+  }
 
 }

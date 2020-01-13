@@ -14,6 +14,10 @@ import { LicencaAmbiental } from '../../models/la.model';
 import { LaService } from 'src/app/core/services/la.service';
 import { DeclaracaoAmbiental } from '../../models/da.model';
 import { DaService } from 'src/app/core/services/da.service';
+import { CarService } from 'src/app/core/services/car.service';
+import { CadastroAmbientalRural } from '../../models/car.model';
+import { CreditoService } from 'src/app/core/services/credito.service';
+import { Credito } from 'src/app/menu/models/credito.model';
 
 @Component( {
   selector:'app-lista-cliente', 
@@ -32,12 +36,16 @@ export class ListaClientePage implements OnInit {
     private storage: AngularFireStorage, 
     private outorgaService: OutorgaService,
     private laService: LaService,
-    private daService: DaService
+    private daService: DaService,
+    private carService: CarService,
+    private creditoService: CreditoService
   ) {}
 
   outorgas$: Observable <Outorga[]>;
   la$: Observable <LicencaAmbiental[]>;
   da$: Observable <DeclaracaoAmbiental[]>;
+  cadastrosAmbientaisRurais$: Observable<CadastroAmbientalRural[]>;
+  creditoFinanceiro$: Observable<Credito[]>;
 
 
   listaCliente:Array < any >  = []; 
@@ -65,11 +73,20 @@ export class ListaClientePage implements OnInit {
           text:'Sim', 
           handler:async () =>  {
             //deletar as outorgas vinculados ao cliente
+            this.outorgaService.init();
             await this.deletarOutorgasCliente(cliente);
             //deletar licença ambiental
+            this.laService.init();
             await this.deletarLicencaAmbientalCliente(cliente);
             //deletar declaração ambiental
+            this.daService.init();
             await this.deletarDeclacaoAmbientalCliente(cliente);
+            //deletar cadastro de lincença ambiental
+            this.carService.init();
+            await this.deletarCadastroAmbientalRuralCliente(cliente);
+            //deletar os creditos financeiros cadastrados para o cliente
+            this.creditoService.init();
+            await this.deletarCreditoFinanceiroCliente(cliente);
 
            /* await this.clienteService.init(); 
             await this.clienteService.delete(cliente); 
@@ -86,80 +103,89 @@ export class ListaClientePage implements OnInit {
     }); 
   }
 
+  //busca todas as outorgas existentes para o cliente e deletas as mesmas
   async deletarOutorgasCliente(cliente: Cliente) {
+    let executar = true; // evita que o processo seja executado duas vezes para o mesmo registro
     this.outorgas$ = this.outorgaService.buscaOutorgasClientes(cliente.id); 
     this.outorgas$.forEach(outorgas =>  {
       if (outorgas.length > 0) {
         outorgas.forEach(outorga => {
-          if (outorga.id !== undefined && outorga.id !== '') {
+          if (outorga.id !== undefined && outorga.id !== '' && executar) {
             this.deletarArquivoOutorga(outorga);
-            this.outorgaService.init();
             this.outorgaService.delete(outorga);
           }
         });
+        executar = false;
       }
     }); 
   }
 
+  //busca todas as licenças ambientais existentes para o cliente e deletas as mesmas
   async deletarLicencaAmbientalCliente(cliente: Cliente) {
+    let executar = true; // evita que o processo seja executado duas vezes para o mesmo registro
     this.la$ = this.laService.buscaLaClientes(cliente.id); 
     this.la$.forEach(las =>  {
       if (las.length > 0) {
         las.forEach(la => {
-          if (la.id !== undefined && la.id !== '') {
+          if (la.id !== undefined && la.id !== '' && executar) {
             this.deletarArquivoLicencaAmbiental(la);
-            this.laService.init();
             this.laService.delete(la);
           }
         });
+        executar = false;
       }
     }); 
   }
 
+ //busca todas as declarações existentes para o cliente e deletas as mesmas
  async deletarDeclacaoAmbientalCliente(cliente: Cliente) {
+    let executar = true; // evita que o processo seja executado duas vezes para o mesmo registro
     this.da$ = this.daService.buscaDeclaracoesClientes(cliente.id); 
     this.da$.forEach(das =>  {
       if (das.length > 0) {
         das.forEach(da => {
-          if (da.id !== undefined && da.id !== '') {
+          if (da.id !== undefined && da.id !== '' && executar) {
             this.deletarArquivoDeclaracaoAmbiental(da);
-            this.daService.init();
             this.daService.delete(da);
           }
         });
+        executar = false;
       }
     }); 
   }
 
-  /*async deletarOutorgasCliente(cliente: Cliente) {
-    this.outorgas$ = this.outorgaService.buscaOutorgasClientes(cliente.id); 
-    this.outorgas$.forEach(outorgas =>  {
-      if (outorgas.length > 0) {
-        outorgas.forEach(outorga => {
-          if (outorga.id !== undefined && outorga.id !== '') {
-            this.deletarArquivoOutorga(outorga);
-            this.outorgaService.init();
-            this.outorgaService.delete(outorga);
+ //busca todas os cadastros ambientais do cliente
+ async deletarCadastroAmbientalRuralCliente(cliente: Cliente) {
+    let executar = true; // evita que o processo seja executado duas vezes para o mesmo registro
+    this.cadastrosAmbientaisRurais$ = this.carService.buscaCarClientes(cliente.id);    
+    this.cadastrosAmbientaisRurais$.forEach(cars =>  {
+      if (cars.length > 0) {
+        cars.forEach(car => {
+          if (car.id !== undefined && car.id !== '' && executar) {
+            this.deletarArquivoAmbientalRural(car);
+            this.carService.delete(car);
           }
         });
+        executar = false;
       }
     }); 
   }
 
-  async deletarOutorgasCliente(cliente: Cliente) {
-    this.outorgas$ = this.outorgaService.buscaOutorgasClientes(cliente.id); 
-    this.outorgas$.forEach(outorgas =>  {
-      if (outorgas.length > 0) {
-        outorgas.forEach(outorga => {
-          if (outorga.id !== undefined && outorga.id !== '') {
-            this.deletarArquivoOutorga(outorga);
-            this.outorgaService.init();
-            this.outorgaService.delete(outorga);
+  async deletarCreditoFinanceiroCliente(cliente: Cliente) {
+    let executar = true;
+    this.creditoFinanceiro$ = this.creditoService.buscaCreditoClientes(cliente.id); 
+    this.creditoFinanceiro$.forEach(creditos =>  {
+      if (creditos.length > 0) {
+        creditos.forEach(credito => {
+          if (credito.id !== undefined && credito.id !== '' && executar) {
+            this.deletarArquivoCreditoFinanceiro(credito);
+            this.creditoService.delete(credito);
           }
         });
+        executar = false;
       }
     }); 
-  }*/
+  }
 
   deletarArquivoFotoCliente(cliente: Cliente) {
     const ref = this.storage.ref(`/cliente${cliente.id}/`); 
@@ -168,30 +194,31 @@ export class ListaClientePage implements OnInit {
 
   // deleta arquivos das ortogas
   deletarArquivoOutorga(outorga: Outorga) {
-    const ref = this.storage.ref(`/outorga${outorga.id}`);
+    const ref = this.storage.ref(`/outorga${outorga.id}/`);
     ref.child(`${outorga.nomeArquivo}`).delete();
   }
   
   //deleta arquvios da licença ambiental
   deletarArquivoLicencaAmbiental(la: LicencaAmbiental) {
-    const ref = this.storage.ref(`/LicencaAmbiental${la.id}`);
+    const ref = this.storage.ref(`/LicencaAmbiental${la.id}/`);
     ref.child(`${la.nomeArquivo}`).delete();
   }
 
+  //deleta arquivos da declaração ambiental
   deletarArquivoDeclaracaoAmbiental(da: DeclaracaoAmbiental) {
-    const ref = this.storage.ref(`/DeclaracaoAmbiental${da.id}`);
+    const ref = this.storage.ref(`/DeclaracaoAmbiental${da.id}/`);
     ref.child(`${da.nomeArquivo}`).delete();
   }
 
-  /*deletarArquivoOutorga(outorga: Outorga) {
-    const ref = this.storage.ref(`/outorga${outorga.id}`);
-    ref.child(`${outorga.nomeArquivo}`).delete();
+  deletarArquivoAmbientalRural(car: CadastroAmbientalRural) {
+    const ref = this.storage.ref(`/CadastroRuralAmbiental${car.id}/`);
+    ref.child(`${car.nomeArquivo}`).delete();
   }
 
-  deletarArquivoOutorga(outorga: Outorga) {
-    const ref = this.storage.ref(`/outorga${outorga.id}`);
-    ref.child(`${outorga.nomeArquivo}`).delete();
-  }*/
+  deletarArquivoCreditoFinanceiro(credito: Credito) {
+    const ref = this.storage.ref(`/CreditoFinaceiro${credito.id}/`);
+    ref.child(`${credito.nomeArquivo}`).delete();
+  }
 
   async openModal() {
     const modal = await this.ModalController.create( {

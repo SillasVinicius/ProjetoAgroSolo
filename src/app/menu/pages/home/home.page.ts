@@ -115,7 +115,7 @@ export class HomePage implements OnInit {
       this.das$ = this.daService.getAll();
       this.das$.pipe(take(1)).subscribe(() => loading.dismiss());
 
-      this.creditoService.initCredito();
+      this.creditoService.init();
       this.cadastrosDeCreditos$ = this.creditoService.getAll();
       this.cadastrosDeCreditos$.pipe(take(1)).subscribe(() => loading.dismiss());
 
@@ -137,7 +137,7 @@ export class HomePage implements OnInit {
       this.das$ = this.daService.buscaDeclaracoesClientes(this.usuario.id);
       this.das$.pipe(take(1)).subscribe(() => loading.dismiss());
 
-      this.creditoService.initCredito();
+      this.creditoService.init();
       this.cadastrosDeCreditos$ = this.creditoService.buscaCreditoClientes(this.usuario.id);
       this.cadastrosDeCreditos$.pipe(take(1)).subscribe(() => loading.dismiss());
 

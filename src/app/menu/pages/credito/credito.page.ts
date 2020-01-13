@@ -142,6 +142,7 @@ export class CreditoPage implements OnInit {
     }
     this.update = true;
     this.creditoId = creditoId;
+    console.log(this.creditoId);
     this.pageTitle = 'Atualizar Cadastro Financeiro';
     this.botaoTitle = 'ATUALIZAR';
     this.toastMessage = 'Atualizando...';
@@ -150,11 +151,11 @@ export class CreditoPage implements OnInit {
       .pipe(take(1))
       .subscribe(({ descricao, dataAprovacaoCredito, dataExpiracaoCredito, valorCredito, clienteId, arquivo, nomeArquivo }) => {
         this.cadastroCreditoFinanceiro.get('dataAprovacaoCredito').setValue(dataAprovacaoCredito),
-          this.cadastroCreditoFinanceiro.get('dataExpiracaoCredito').setValue(dataExpiracaoCredito),
-          this.cadastroCreditoFinanceiro.get('valorCredito').setValue(valorCredito),
-          this.cadastroCreditoFinanceiro.get('descricao').setValue(descricao),
-          this.cadastroCreditoFinanceiro.get('clienteId').setValue(clienteId),
-          this.liberaArquivo = true;
+        this.cadastroCreditoFinanceiro.get('dataExpiracaoCredito').setValue(dataExpiracaoCredito),
+        this.cadastroCreditoFinanceiro.get('valorCredito').setValue(valorCredito),
+        this.cadastroCreditoFinanceiro.get('descricao').setValue(descricao),
+        this.cadastroCreditoFinanceiro.get('clienteId').setValue(clienteId),
+        this.liberaArquivo = true;
         this.urlArquivo = arquivo;
         this.fileName = nomeArquivo;
         this.arquivoAntigo = nomeArquivo;
@@ -162,19 +163,20 @@ export class CreditoPage implements OnInit {
   }
 
   async cadastraListaGlobal(id: string) {
-    this.creditoService.initCredito();
-    const cadastroCredito = await this.creditoService.createGlobal(this.cadastroCreditoFinanceiro.value, id);
+    this.creditoService.init();
+    await this.creditoService.createGlobal(this.cadastroCreditoFinanceiro.value, id);
   }
 
   async AtualizaListaGlobal() {
-    this.creditoService.initCredito();
-    const cadastroCredito = await this.creditoService.update({
+    this.creditoService.init();
+    console.log(this.creditoId);
+    await this.creditoService.update({
       id: this.creditoId,
-      descricao: this.cadastroCreditoFinanceiro.get('descricao').value,
       dataAprovacaoCredito: this.cadastroCreditoFinanceiro.get('dataAprovacaoCredito').value,
-      dataExpiracaoCredito: this.cadastroCreditoFinanceiro.get(' dataExpiracaoCredito').value,
+      dataExpiracaoCredito: this.cadastroCreditoFinanceiro.get('dataExpiracaoCredito').value,
       valorCredito: this.cadastroCreditoFinanceiro.get('valorCredito').value,
-      clienteId: this.cadastroCreditoFinanceiro.get('clienteId').value
+      clienteId: this.cadastroCreditoFinanceiro.get('clienteId').value,
+      descricao: this.cadastroCreditoFinanceiro.get('descricao').value
     });
   }
 
@@ -187,7 +189,7 @@ export class CreditoPage implements OnInit {
       const cadastroCredito = '';
       if (!this.creditoId) {
 
-        this.creditoService.initCredito();
+        this.creditoService.init();
 
         const cadastroCredito = await this.creditoService.create(this.cadastroCreditoFinanceiro.value);
 
@@ -242,7 +244,7 @@ export class CreditoPage implements OnInit {
 
     let idCredito = (this.creditoService.id === '') ? this.creditoId : this.creditoService.id;
 
-    const ref2 = this.storage.ref(`/credito${idCredito}/${this.fileName}`);
+    const ref2 = this.storage.ref(`/CreditoFinaceiro${idCredito}/${this.fileName}`);
     const task2 = ref2.put(file);
 
     this.uploadPercent = task2.percentageChanges();
@@ -257,9 +259,9 @@ export class CreditoPage implements OnInit {
         this.liberaArquivo = true;
 
         this.downloadUrl.subscribe(async r => {
-          this.creditoService.initCredito();
+          this.creditoService.init();
           await this.creditoService.update({
-            id: this.creditoService.id,
+            id: idCredito,
             dataAprovacaoCredito: this.cadastroCreditoFinanceiro.get('dataAprovacaoCredito').value,
             dataExpiracaoCredito: this.cadastroCreditoFinanceiro.get('dataExpiracaoCredito').value,
             valorCredito: this.cadastroCreditoFinanceiro.get('valorCredito').value,
@@ -278,7 +280,7 @@ export class CreditoPage implements OnInit {
   deletePicture() {
     let idCredito = (this.creditoService.id === '') ? this.creditoId : this.creditoService.id;
 
-    const ref = this.storage.ref(`/credito${idCredito}/`);
+    const ref = this.storage.ref(`/CreditoFinaceiro${idCredito}/`);
     ref.child(`${this.arquivoAntigo}`).delete();
   }
 

@@ -11,21 +11,12 @@ export class CreditoService extends Firestore<Credito>{
   usuarioId: string;
   constructor(db: AngularFirestore, private usuarioService: UsuarioService) {
     super(db);
-    this.init();
     this.usuarioId = this.usuarioService.id;  
   }  
 
   init(): void {
-    this.setCollection(`/users/${this.usuarioService.id}/cadastroCredito`,ref => ref.orderBy('dataAprovacaoCredito', 'desc'));
-  }
-
-  initCredito(): void {
     this.setCollection('/cadastroCredito');
   }  
-
-  setCollectionArquivo(cliente: string) {
-    this.setCollection(`/users/${this.usuarioId}/cadastroCredito/${cliente}/arquivos`);
-  }
 
   buscaCreditoClientes(id: string){
     this.setCollection('/cadastroCredito', ref =>

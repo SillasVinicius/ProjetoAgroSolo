@@ -12,16 +12,10 @@ export class CarService extends Firestore<CadastroAmbientalRural>{
   usuarioId: string;
   constructor(db: AngularFirestore, private usuarioService: UsuarioService) {
     super(db);
-    this.init();
     this.usuarioId = this.usuarioService.id;
   }
 
     init(): void {
-      this.setCollection(`/users/${this.usuarioService.id}/CadastroAmbientalRural`);
-    }
-
-
-    initCAR(): void {
       this.setCollection(`/CadastroAmbientalRural`);
     }
 
@@ -30,10 +24,6 @@ export class CarService extends Firestore<CadastroAmbientalRural>{
         ref.where('clienteId', '==', id)
       );
       return this.getAll();
-    }
-
-    setCollectionArquivo(la: string) {
-      this.setCollection(`/users/${this.usuarioId}/CadastroAmbientalRural/${la}/arquivos`);
     }
 
     criarId(): string {

@@ -12,6 +12,7 @@ import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 import { RelatorioCarPage } from "../relatorio-car/relatorio-car.page";
+import { AngularFireStorage } from '@angular/fire/storage';
 
 @Component({
   selector: 'app-lista-car',
@@ -30,7 +31,8 @@ export class ListaCARPage implements OnInit {
     private usuarioService: UsuarioService,
     private clienteService: ClienteService,
     private ModalController: ModalController,
-    private overlayService: OverlayService
+    private overlayService: OverlayService,
+    private storage: AngularFireStorage
   ) {}
 
   listaCar: Array<any> = [];
@@ -38,17 +40,17 @@ export class ListaCARPage implements OnInit {
   async ngOnInit(): Promise<void> {
     const loading = await this.overlayService.loading();
     if (this.usuarioService.admin) {
-      this.cadastroAmbientalRuralService.initCAR();
+      this.cadastroAmbientalRuralService.init();
       this.cadastrosAmbientaisRurais$ = this.cadastroAmbientalRuralService.getAll();
       this.cadastrosAmbientaisRurais$.pipe(take(1)).subscribe(() => loading.dismiss());
 
       this.cadastrosAmbientaisRurais$.forEach(Cars => {
         this.listaClientesCar = [];
         Cars.forEach(Car => {
-          if(Car.clienteId !== ""){
+          if(Car.clienteId !== "" && Car.clienteId !== undefined){
             this.clientes$ = this.clienteService.initClienteId(Car.clienteId);
             this.clientes$.subscribe(async (r: Cliente[]) => {
-              Car['nomeCliente'] = r[0].nome;
+              Car['nomeCliente'] = (r.length > 0) ? r[0].nome : 'Cliente excluído';
           });
           this.listaClientesCar.push(Car);
           }            
@@ -70,17 +72,16 @@ export class ListaCARPage implements OnInit {
 
   async deletar(cadastroAmbientalRural: CadastroAmbientalRural): Promise<void> {
     await this.overlayService.alert({
-      message: `Você realmente deseja deletar o cadastro Ambiental Rural "${cadastroAmbientalRural.descricao}"?`,
+      message: `Você realmente deseja deletar o cadastro Ambiental Rural do Cliente: ${cadastroAmbientalRural.nomeCliente} - ${cadastroAmbientalRural.descricao}?`,
       buttons: [
         {
           text: 'Sim',
           handler: async () => {
+            await this.deletarArquivoCar(cadastroAmbientalRural);
             await this.cadastroAmbientalRuralService.init();
             await this.cadastroAmbientalRuralService.delete(cadastroAmbientalRural);
-            await this.cadastroAmbientalRuralService.initCAR();
-            await this.cadastroAmbientalRuralService.delete(cadastroAmbientalRural);
             await this.overlayService.toast({
-              message: `cadastro Ambiental Rural "${cadastroAmbientalRural.descricao}" excluido!`
+              message: `cadastro Ambiental Rural do Cliente: ${cadastroAmbientalRural.nomeCliente} - ${cadastroAmbientalRural.descricao} excluido!`
             });
           }
         },
@@ -95,5 +96,10 @@ export class ListaCARPage implements OnInit {
     })
     modal.present();
   } 
+
+  deletarArquivoCar(car: CadastroAmbientalRural) {
+    const ref = this.storage.ref(`/CadastroRuralAmbiental${car.id}`);
+    ref.child(`${car.nomeArquivo}`).delete();
+  }
 }
 
