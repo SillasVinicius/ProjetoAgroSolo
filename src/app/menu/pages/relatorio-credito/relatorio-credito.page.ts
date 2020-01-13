@@ -115,15 +115,11 @@ export class RelatorioCreditoPage implements OnInit {
     let gerar: any;
     const loading = await this.overlayService.loading(); 
     this.listaCredito = [];
-
-    console.log(this.data_aprovacao_ini)
-    console.log(this.data_aprovacao_fim)
-    console.log(this.data_expiracao_ini)
-    console.log(this.data_expiracao_fim)
+   
 
     if (this.data_aprovacao_ini > this.data_aprovacao_fim)
     {
-      alert("Data inicial não pode ser maior que data final, em relação a data de aprovação!");
+      alert("Data inicial de aprovação não pode ser maior que data final de aprovação!");
       loading.remove();
       return;
     }
@@ -144,7 +140,7 @@ export class RelatorioCreditoPage implements OnInit {
 
     if (this.data_expiracao_ini > this.data_expiracao_fim)
     {
-      alert("Data inicial não pode ser maior que data final, em relação a data de expiração!");
+      alert("Data inicial de expiração não pode ser maior que data final de expiração!");
       loading.remove();
       return;
     }
@@ -332,8 +328,8 @@ export class RelatorioCreditoPage implements OnInit {
     return {
       table: {
         headerRows: 1,
-        widths: [100, 100, 100, 100, 100, 100, 100, 100, 100],
-        body: this.buildTableBody(data, columns, header)
+        widths: [100, 100, 100, 100, 100],
+        body: this.buildTableBody(data, columns, header)            
       },
       layout: "lightHorizontalLines"
     }
@@ -347,15 +343,18 @@ export class RelatorioCreditoPage implements OnInit {
           {
             stack: [
               {
-                text: "Agro Solo",
+                text: "AgroSolo",
                 fontSize: 18,
-                alignment: "center" 
+                bold: true,      
+                alignment: "center",
+                color: "#1a744e"
               },
+              
             ],
             width: '*'
           }
         ],
-        margin: [15, 15]
+        margin: [10, 10]
       },
 
       pageOrientation: 'landscape',
@@ -379,8 +378,10 @@ export class RelatorioCreditoPage implements OnInit {
       {
         tableHeader: {
           bold:true,
-          fontSize: 13,
-          color: "Black"
+          fontSize: 11,
+          color: "Black" ,
+          center: true
+                                
         }
       },
 
