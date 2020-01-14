@@ -177,6 +177,7 @@ export class CriaClientePage implements OnInit {
         Validators.minLength(14),
         Validators.maxLength(18)
       ]),
+      
       rg: this.formBuilder.control('', [
         Validators.required,
         Validators.minLength(1),
@@ -338,5 +339,4 @@ export class CriaClientePage implements OnInit {
       loading.dismiss();
     }
   }
-
 }

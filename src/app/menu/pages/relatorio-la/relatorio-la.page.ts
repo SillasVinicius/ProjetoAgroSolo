@@ -1,4 +1,4 @@
-import { Component, OnInit} from '@angular/core';
+import { Component, OnInit, ViewChildren, QueryList, ElementRef } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { ClienteService } from 'src/app/core/services/cliente.service';
 import { OverlayService } from 'src/app/core/services/overlay.service';
@@ -23,8 +23,9 @@ export class RelatorioLaPage implements OnInit {
   las: LicencaAmbiental[] = [];
   pdfObject: any;
   id_cli: String;
-  data_vencimento_ini: String; 
+  data_vencimento_ini: String;
   data_vencimento_fim: String;
+  @ViewChildren('filter') filtrosRelatorio: QueryList<any>;
 
   constructor(
     private ModalController: ModalController,
@@ -33,7 +34,7 @@ export class RelatorioLaPage implements OnInit {
     private overlayService: OverlayService
   ) { }
 
-  listaLa: Array<any> = []; 
+  listaLa: Array<any> = [];
 
   async ngOnInit(): Promise<void> {
     const loading = await this.overlayService.loading(); 
@@ -43,36 +44,45 @@ export class RelatorioLaPage implements OnInit {
 
     this.clienteService.getAll().subscribe((c: Cliente[]) => {
       for (let i = 0; i < c.length; i++) {
-          this.clientes[i] = c[i];
+        this.clientes[i] = c[i];
       }
     });
 
     this.LaService.getAll().subscribe((l: LicencaAmbiental[]) => {
       for (let i = 0; i < l.length; i++) {
-          this.las[i] = l[i];
+        this.las[i] = l[i];
       }
     });
 
   }
 
-  async closeModal(){
+  async closeModal() {
     await this.ModalController.dismiss();
   }
 
-  async obter_id_cliente(id: String){
+  clearFilters() {
+    this.id_cli = '';
+    this.data_vencimento_ini = ''; 
+    this.data_vencimento_fim = '';
+    this.filtrosRelatorio.forEach(filtro => {
+      filtro.el.value = null;
+    });    
+  }
+
+  async obter_id_cliente(id: String) {
     this.id_cli = id;
   }
 
-  formatarData(dt: String){
+  formatarData(dt: String) {
     let dataNascForm: String;
     let ano: string;
     let mes: string;
     let dia: string;
     dataNascForm = dt;
-    ano = dataNascForm.substring(0,4);
-    mes = dataNascForm.substring(5,7);
-    dia = dataNascForm.substring(8,10);
-    let validar = dia+"/"+mes+"/"+ano
+    ano = dataNascForm.substring(0, 4);
+    mes = dataNascForm.substring(5, 7);
+    dia = dataNascForm.substring(8, 10);
+    let validar = dia + "/" + mes + "/" + ano
     if (validar.length === 10) {
       return `${dia}/${mes}/${ano}`;
     }
@@ -81,61 +91,53 @@ export class RelatorioLaPage implements OnInit {
     }
   }
 
-  registroDataHora()
-  {
+  registroDataHora() {
     var data = new Date();
     var dia = data.getDate();
     var mes = data.getMonth() + 1;
     var ano = data.getFullYear();
     var horas = data.getHours();
     var minutos = data.getMinutes();
-    return dia+"/"+mes+"/"+ano+" - "+horas + "h" + minutos;
+    return dia + "/" + mes + "/" + ano + " - " + horas + "h" + minutos;
   }
 
-  async obter_dt_vescimento_cliente_ini(dt_vencimento_ini: String){
+  async obter_dt_vescimento_cliente_ini(dt_vencimento_ini: String) {
     this.data_vencimento_ini = dt_vencimento_ini;
   }
 
-  async obter_dt_vescimento_cliente_fim(dt_vencimento_fim: String){
+  async obter_dt_vescimento_cliente_fim(dt_vencimento_fim: String) {
     this.data_vencimento_fim = dt_vencimento_fim;
   }
 
-  async relatorio_la()
-  {
+  async relatorio_la() {
     let gerar: any;
-    const loading = await this.overlayService.loading(); 
+    const loading = await this.overlayService.loading();
     this.listaLa = [];
 
-    if (this.data_vencimento_ini > this.data_vencimento_fim)
-    {
+    if (this.data_vencimento_ini > this.data_vencimento_fim) {
       alert("Data inicial não pode ser maior que data final!");
       loading.remove();
       return;
     }
 
-    if ((this.id_cli) && (this.data_vencimento_ini) && (this.data_vencimento_fim))
-    {
+    if ((this.id_cli) && (this.data_vencimento_ini) && (this.data_vencimento_fim)) {
       gerar = await this.las.forEach(la => {
-        if ((la.dataDeVencimento >= this.data_vencimento_ini) && 
-            (la.dataDeVencimento <= this.data_vencimento_fim))
-        {
-          this.clientes.forEach(cliente =>{
-            if (cliente.id == this.id_cli)
-            {
+        if ((la.dataDeVencimento >= this.data_vencimento_ini) &&
+          (la.dataDeVencimento <= this.data_vencimento_fim)) {
+          this.clientes.forEach(cliente => {
+            if (cliente.id == this.id_cli) {
               la['nomeCliente'] = cliente.nome;
               la['dtVencimentoForm'] = this.formatarData(la.dataDeVencimento);
               this.listaLa.push(la);
             }
-          }); 
+          });
         }
       });
     }
-    else if (this.id_cli) 
-    {
+    else if (this.id_cli) {
       gerar = await this.las.forEach(la => {
-        this.clientes.forEach(cliente =>{
-          if ((cliente.id == this.id_cli) && (cliente.id == la.clienteId))
-          {
+        this.clientes.forEach(cliente => {
+          if ((cliente.id == this.id_cli) && (cliente.id == la.clienteId)) {
             la['nomeCliente'] = cliente.nome;
             la['dtVencimentoForm'] = this.formatarData(la.dataDeVencimento);
             this.listaLa.push(la);
@@ -143,37 +145,32 @@ export class RelatorioLaPage implements OnInit {
         });
       });
     }
-    else if ((this.data_vencimento_ini) && (this.data_vencimento_fim))
-    {
+    else if ((this.data_vencimento_ini) && (this.data_vencimento_fim)) {
       gerar = await this.las.forEach(la => {
-        if ((la.dataDeVencimento >= this.data_vencimento_ini) && 
-            (la.dataDeVencimento <= this.data_vencimento_fim))
-        {
-          this.clientes.forEach(cliente =>{
-            if (cliente.id == la.clienteId)
-            {
+        if ((la.dataDeVencimento >= this.data_vencimento_ini) &&
+          (la.dataDeVencimento <= this.data_vencimento_fim)) {
+          this.clientes.forEach(cliente => {
+            if (cliente.id == la.clienteId) {
               la['nomeCliente'] = cliente.nome;
               la['dtVencimentoForm'] = this.formatarData(la.dataDeVencimento);
               this.listaLa.push(la);
-            } 
+            }
           });
         }
       });
     }
-    else
-    {
+    else {
       gerar = await this.las.forEach(la => {
-        this.clientes.forEach(cliente =>{
-          if (cliente.id == la.clienteId)
-          {
+        this.clientes.forEach(cliente => {
+          if (cliente.id == la.clienteId) {
             la['nomeCliente'] = cliente.nome;
             la['dtVencimentoForm'] = this.formatarData(la.dataDeVencimento);
-          this.listaLa.push(la);
-          } 
+            this.listaLa.push(la);
+          }
         });
       });
     }
-    
+
     loading.remove();
     this.exportPdf();
   }
@@ -218,7 +215,7 @@ export class RelatorioLaPage implements OnInit {
               {
                 text: "Agro Solo",
                 fontSize: 18,
-                alignment: "center" 
+                alignment: "center"
               },
             ],
             width: '*'
@@ -228,24 +225,24 @@ export class RelatorioLaPage implements OnInit {
       },
 
       pageOrientation: 'landscape',
-      pageSize: {height: 850, width: 1100},
-      content: 
-      [
-        this.table(
-          this.listaLa,
-          ["nomeCliente", "descricao", "dataDeVencimento"],
-          [
-            { text: "Nome Cliente", style: "tableHeader" },
-            { text: "Descricao", style: "tableHeader" },
-            { text: "Data de Vencimento", style: "tableHeader"},
-          
-          ]
-        )
-      ],
+      pageSize: { height: 850, width: 1100 },
+      content:
+        [
+          this.table(
+            this.listaLa,
+            ["nomeCliente", "descricao", "dataDeVencimento"],
+            [
+              { text: "Nome Cliente", style: "tableHeader" },
+              { text: "Descricao", style: "tableHeader" },
+              { text: "Data de Vencimento", style: "tableHeader" },
+
+            ]
+          )
+        ],
       styles:
       {
         tableHeader: {
-          bold:true,
+          bold: true,
           fontSize: 13,
           color: "Black"
         }
@@ -253,17 +250,17 @@ export class RelatorioLaPage implements OnInit {
 
       footer: {
         columns: [
-          { text: ""},
-          { text: this.registroDataHora()},
-          { text: ""},
-          { text: ""},
-          { text: ""},
-          { text: ""},
-          { text: ""},
-          { text: ""},
-          { text: ""},
-          { text: "Registros: "+this.listaLa.length},
-          { text: ""},
+          { text: "" },
+          { text: this.registroDataHora() },
+          { text: "" },
+          { text: "" },
+          { text: "" },
+          { text: "" },
+          { text: "" },
+          { text: "" },
+          { text: "" },
+          { text: "Registros: " + this.listaLa.length },
+          { text: "" },
         ]
       },
 

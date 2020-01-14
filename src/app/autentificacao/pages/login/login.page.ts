@@ -1,17 +1,18 @@
-import {Component, OnInit }from '@angular/core'; 
-import {FormGroup, FormBuilder, Validators, FormControl }from '@angular/forms'; 
-import {trigger, state, transition, style, animate }from '@angular/animations'; 
-import {OverlayService }from 'src/app/core/services/overlay.service'; 
-import {UsuarioService }from 'src/app/core/services/usuario.service'; 
-import {NavController }from '@ionic/angular'; 
-import {Observable }from 'rxjs'; 
-import {Usuario }from './model/usuario.model'; 
+import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
+import { trigger, state, transition, style, animate } from '@angular/animations';
+import { OverlayService } from 'src/app/core/services/overlay.service';
+import { UsuarioService } from 'src/app/core/services/usuario.service';
+import { NavController, ModalController } from '@ionic/angular';
+import { Observable } from 'rxjs';
+import { Usuario } from './model/usuario.model';
+import { RecuperarSenhaPage} from 'src/app/autentificacao/recuperar-senha/recuperar-senha.page';
 
-@Component( {
-  selector:'app-login', 
-  templateUrl:'./login.page.html', 
-  styleUrls:['./login.page.scss'], 
-  animations:[
+@Component({
+  selector: 'app-login',
+  templateUrl: './login.page.html',
+  styleUrls: ['./login.page.scss'],
+  animations: [
     trigger('movDiv', [
       state('cadastro', style( {'margin-top':'-14%', 'height':'105%', 'border-radius':'3%'})), 
       state('login', style( {'margin-top':'33%', 'height':'79%', 'border-radius':'5%'})), 
@@ -31,10 +32,11 @@ export class LoginPage implements OnInit {
   private user:Observable < Usuario[] > ; 
 
   constructor(
-    private formBuilder:FormBuilder, 
-    private overlayService:OverlayService, 
-    private usuarioService:UsuarioService, 
-    private navCtrl:NavController
+    private formBuilder: FormBuilder,
+    private ModalController: ModalController,
+    private overlayService: OverlayService,
+    private usuarioService: UsuarioService,
+    private navCtrl: NavController
   ) {}
 
   ngOnInit() {
@@ -119,4 +121,14 @@ export class LoginPage implements OnInit {
   onSubmit() {
     this.login(); 
   }
+
+
+  async openModal() {
+    const modal = await this.ModalController.create({
+      component: RecuperarSenhaPage
+    })
+    modal.present();
+  } 
+
+
 }

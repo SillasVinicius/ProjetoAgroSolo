@@ -10,6 +10,8 @@ const routes: Routes = [
     loadChildren: './menu/menu.module#MenuModule',
     canLoad: [AuthGuard]
   },
+  { path: 'recuperar-senha', loadChildren: './autentificacao/recuperar-senha/recuperar-senha.module#RecuperarSenhaPageModule' },
+
 
   
 ];

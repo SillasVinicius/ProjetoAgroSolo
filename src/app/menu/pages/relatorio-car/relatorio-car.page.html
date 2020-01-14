@@ -1,11 +1,24 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>
+    <ion-grid>
+      <ion-row>
+      
+      <ion-col>
+      <ion-title>
       Dados de Filtro
-      <ion-button (click)="closeModal()" class="titulo"> 
-        <ion-icon slot="icon-only" name="close"></ion-icon>  
+      </ion-title>
+      </ion-col>
+      
+      
+      <ion-buttons end>
+      <ion-button (click)="closeModal()" class="fechar">
+      <ion-icon slot="icon-only" name="close"git></ion-icon>
       </ion-button>
-    </ion-title>
+      </ion-buttons>
+      
+      
+      </ion-row>
+      </ion-grid>
   </ion-toolbar>
 </ion-header>
 
@@ -13,7 +26,7 @@
     <ion-list>
       <ion-item>
         <ion-label position="floating" color="primary">Cliente</ion-label>
-              <ion-select (ionChange)="obter_id_cliente($event.target.value);">
+              <ion-select (ionChange)="obter_id_cliente($event.target.value);" #filter>
                 <ion-select-option *ngFor="let cliente of clientes" [value]= "cliente.id">
                   {{cliente.nome}}
                 </ion-select-option>
@@ -23,6 +36,10 @@
       
     <ion-button expand="block" (click)="relatorio_car()" >
       <ion-icon name="print"></ion-icon> 
+    </ion-button>
+
+    <ion-button expand="block" (click)="clearFilters()" >
+      <ion-icon name="trash"></ion-icon> 
     </ion-button>
 
 </ion-content>

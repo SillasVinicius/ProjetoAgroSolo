@@ -1,4 +1,4 @@
-import { Component, OnInit} from '@angular/core';
+import { Component, OnInit, ViewChildren, QueryList, ElementRef } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { ClienteService } from 'src/app/core/services/cliente.service';
 import { OverlayService } from 'src/app/core/services/overlay.service';
@@ -23,8 +23,9 @@ export class RelatorioCarPage implements OnInit {
   cars: CadastroAmbientalRural[] = [];
   pdfObject: any;
   id_cli: String;
-  data_vencimento_ini: String; 
+  data_vencimento_ini: String;
   data_vencimento_fim: String;
+  @ViewChildren('filter') filtrosRelatorio: QueryList<any>;
 
   constructor(
     private ModalController: ModalController,
@@ -58,6 +59,15 @@ export class RelatorioCarPage implements OnInit {
     await this.ModalController.dismiss();
   }
 
+  clearFilters() {
+    this.id_cli = '';
+    this.data_vencimento_ini = '';
+    this.data_vencimento_fim = '';
+    this.filtrosRelatorio.forEach(filtro => {
+      filtro.el.value = null;
+    });
+  }
+
   async obter_id_cliente(id: String){
     this.id_cli = id;
   }
@@ -76,7 +86,7 @@ export class RelatorioCarPage implements OnInit {
   async relatorio_car()
   {
     let gerar: any;
-    const loading = await this.overlayService.loading(); 
+    const loading = await this.overlayService.loading();
     this.listaCar = [];
 
     if (this.data_vencimento_ini > this.data_vencimento_fim)
@@ -86,7 +96,7 @@ export class RelatorioCarPage implements OnInit {
       return;
     }
 
-    if (this.id_cli) 
+    if (this.id_cli)
     {
       gerar = await this.cars.forEach(car => {
         this.clientes.forEach(cliente =>{
@@ -106,7 +116,7 @@ export class RelatorioCarPage implements OnInit {
           {
             car['nomeCliente'] = cliente.nome;
           this.listaCar.push(car);
-          } 
+          }
         });
       });
     }
@@ -156,7 +166,7 @@ export class RelatorioCarPage implements OnInit {
               {
                 text: "Agro Solo",
                 fontSize: 18,
-                alignment: "center" 
+                alignment: "center"
               },
             ],
             width: '*'
@@ -167,7 +177,7 @@ export class RelatorioCarPage implements OnInit {
 
       pageOrientation: 'landscape',
       pageSize: {height: 850, width: 1100},
-      content: 
+      content:
       [
         this.table(
           this.listaCar,
@@ -175,7 +185,7 @@ export class RelatorioCarPage implements OnInit {
           [
             { text: "Nome Cliente", style: "tableHeader" },
             { text: "Descricao", style: "tableHeader" },
-          
+
           ]
         )
       ],

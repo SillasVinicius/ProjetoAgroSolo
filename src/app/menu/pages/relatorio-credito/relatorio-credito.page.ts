@@ -1,4 +1,4 @@
-import { Component, OnInit} from '@angular/core';
+import { Component, OnInit, ViewChildren, QueryList, ElementRef } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { ClienteService } from 'src/app/core/services/cliente.service';
 import { OverlayService } from 'src/app/core/services/overlay.service';
@@ -6,7 +6,7 @@ import { CreditoService } from 'src/app/core/services/credito.service';
 import { Cliente } from '../../models/cliente.model';
 import { Credito } from '../../models/credito.model';
 import { Observable } from 'rxjs';
-import { take } from 'rxjs/operators';
+import { take, isEmpty } from 'rxjs/operators';
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
@@ -27,6 +27,7 @@ export class RelatorioCreditoPage implements OnInit {
   data_aprovacao_fim: String;
   data_expiracao_ini: String; 
   data_expiracao_fim: String;
+  @ViewChildren('filter') filtrosRelatorio: QueryList<any>;
 
   constructor(
     private ModalController: ModalController,
@@ -59,6 +60,17 @@ export class RelatorioCreditoPage implements OnInit {
 
   async closeModal(){
     await this.ModalController.dismiss();
+  }
+
+  clearFilters() {
+    this.id_cli = '';
+    this.data_aprovacao_ini = '';
+    this.data_aprovacao_fim = '';
+    this.data_expiracao_ini = '';
+    this.data_expiracao_fim = '';
+    this.filtrosRelatorio.forEach(filtro => {
+      filtro.el.value = null;
+    });    
   }
 
   async obter_id_cliente(id: String){
@@ -115,17 +127,46 @@ export class RelatorioCreditoPage implements OnInit {
     let gerar: any;
     const loading = await this.overlayService.loading(); 
     this.listaCredito = [];
+   
 
     if (this.data_aprovacao_ini > this.data_aprovacao_fim)
     {
-      alert("Data inicial não pode ser maior que data final, em relação a data de aprovação!");
+      alert("Data inicial de aprovação não pode ser maior que data final de aprovação!");
+      loading.remove();
+      return;
+    }
+
+    if (!(this.data_aprovacao_ini) && (this.data_aprovacao_fim))
+    {
+      alert("Informar data inicial de Aprovação!");
+      loading.remove();
+      return;
+    }
+
+    if ((this.data_aprovacao_ini) && !(this.data_aprovacao_fim))
+    {
+      alert("Informar data final de Aprovação!");
       loading.remove();
       return;
     }
 
     if (this.data_expiracao_ini > this.data_expiracao_fim)
     {
-      alert("Data inicial não pode ser maior que data final, em relação a data de expiração!");
+      alert("Data inicial de expiração não pode ser maior que data final de expiração!");
+      loading.remove();
+      return;
+    }
+
+    if (!(this.data_expiracao_ini) && (this.data_expiracao_fim))
+    {
+      alert("Informar data inicial de expiração!");
+      loading.remove();
+      return;
+    }
+
+    if ((this.data_expiracao_ini) && !(this.data_expiracao_fim))
+    {
+      alert("Informar data final de expiração!");
       loading.remove();
       return;
     }
@@ -299,8 +340,8 @@ export class RelatorioCreditoPage implements OnInit {
     return {
       table: {
         headerRows: 1,
-        widths: [100, 100, 100, 100, 100, 100, 100, 100, 100],
-        body: this.buildTableBody(data, columns, header)
+        widths: [100, 100, 100, 100, 100],
+        body: this.buildTableBody(data, columns, header)            
       },
       layout: "lightHorizontalLines"
     }
@@ -314,15 +355,18 @@ export class RelatorioCreditoPage implements OnInit {
           {
             stack: [
               {
-                text: "Agro Solo",
+                text: "AgroSolo",
                 fontSize: 18,
-                alignment: "center" 
+                bold: true,      
+                alignment: "center",
+                color: "#1a744e"
               },
+              
             ],
             width: '*'
           }
         ],
-        margin: [15, 15]
+        margin: [10, 10]
       },
 
       pageOrientation: 'landscape',
@@ -346,8 +390,10 @@ export class RelatorioCreditoPage implements OnInit {
       {
         tableHeader: {
           bold:true,
-          fontSize: 13,
-          color: "Black"
+          fontSize: 11,
+          color: "Black" ,
+          center: true
+                                
         }
       },
 

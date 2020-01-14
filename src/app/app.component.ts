@@ -39,7 +39,7 @@ export class AppComponent {
     this.pagesCliente = [
       { url: '/menu', icon: 'home', text: 'Home', direction: 'back' },
       { url: '/menu/cliente', icon: 'person-add', text: 'Meu Cadastro', direction: 'forward' },
-      { url: '/menu/ambiental', icon: 'flower', text: 'Ambiental', direction: 'forward' },
+      { url: '/menu/ambiental', icon: 'flower', text: 'Ambiental', direction: 'forward' }
     ];
 
     this.platform.ready().then(() => {
