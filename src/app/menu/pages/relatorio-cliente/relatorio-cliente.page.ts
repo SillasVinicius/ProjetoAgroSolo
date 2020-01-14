@@ -21,7 +21,7 @@ export class RelatorioClientePage implements OnInit {
   id_cli: String;
   data_nasc_cli_ini: String; 
   data_nasc_cli_fim: String;
-  @ViewChildren('filter') filtrosRelatorio: QueryList<ElementRef>;
+  @ViewChildren('filter') filtrosRelatorio: QueryList<any>;
 
   constructor(
     private ModalController: ModalController,
@@ -53,7 +53,8 @@ export class RelatorioClientePage implements OnInit {
     this.data_nasc_cli_fim = '';
     this.filtrosRelatorio.forEach(filtro => {
       filtro.el.value = null;
-    });    
+      console.log(typeof(filtro));
+    });
   }
 
   async obter_id_cliente(id: String){
