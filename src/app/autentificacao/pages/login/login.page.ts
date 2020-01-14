@@ -3,9 +3,10 @@ import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms'
 import { trigger, state, transition, style, animate } from '@angular/animations';
 import { OverlayService } from 'src/app/core/services/overlay.service';
 import { UsuarioService } from 'src/app/core/services/usuario.service';
-import { NavController } from '@ionic/angular';
+import { NavController, ModalController } from '@ionic/angular';
 import { Observable } from 'rxjs';
 import { Usuario } from './model/usuario.model';
+import { RecuperarSenhaPage} from 'src/app/autentificacao/recuperar-senha/recuperar-senha.page';
 
 @Component({
   selector: 'app-login',
@@ -56,6 +57,7 @@ export class LoginPage implements OnInit {
   ]);
   constructor(
     private formBuilder: FormBuilder,
+    private ModalController: ModalController,
     private overlayService: OverlayService,
     private usuarioService: UsuarioService,
     private navCtrl: NavController
@@ -197,6 +199,12 @@ export class LoginPage implements OnInit {
   }
 
 
+  async openModal() {
+    const modal = await this.ModalController.create({
+      component: RecuperarSenhaPage
+    })
+    modal.present();
+  } 
 
 
 }
