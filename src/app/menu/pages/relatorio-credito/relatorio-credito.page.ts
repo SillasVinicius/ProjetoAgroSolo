@@ -105,6 +105,7 @@ export class RelatorioCreditoPage implements OnInit {
     var minutos = data.getMinutes();
     return dia+"/"+mes+"/"+ano+" - "+horas + "h" + minutos;
   }
+  
 
   async obter_dt_aprovacao_cliente_ini(dt_aprovacao_ini: String){
     this.data_aprovacao_ini = dt_aprovacao_ini;
@@ -185,6 +186,7 @@ export class RelatorioCreditoPage implements OnInit {
               credito['nomeCliente'] = cliente.nome;
               credito['dtAprovacaoForm'] = this.formatarData(credito.dataAprovacaoCredito);
               credito['dtExpiracaoForm'] = this.formatarData(credito.dataExpiracaoCredito);
+              credito['valorCreditoForm'] = cliente.patrimonio;
               this.listaCredito.push(credito);
             }
           });
@@ -199,6 +201,7 @@ export class RelatorioCreditoPage implements OnInit {
               credito['nomeCliente'] = cliente.nome;
               credito['dtAprovacaoForm'] = this.formatarData(credito.dataAprovacaoCredito);
               credito['dtExpiracaoForm'] = this.formatarData(credito.dataExpiracaoCredito);
+              credito['valorCreditoForm'] = cliente.patrimonio;
               this.listaCredito.push(credito);
             }
           });
@@ -220,6 +223,7 @@ export class RelatorioCreditoPage implements OnInit {
               credito['nomeCliente'] = cliente.nome;
               credito['dtAprovacaoForm'] = this.formatarData(credito.dataAprovacaoCredito);
               credito['dtExpiracaoForm'] = this.formatarData(credito.dataExpiracaoCredito);
+              credito['valorCreditoForm'] = cliente.patrimonio;
               this.listaCredito.push(credito);
             }
           });
@@ -239,6 +243,7 @@ export class RelatorioCreditoPage implements OnInit {
               credito['nomeCliente'] = cliente.nome;
               credito['dtAprovacaoForm'] = this.formatarData(credito.dataAprovacaoCredito);
               credito['dtExpiracaoForm'] = this.formatarData(credito.dataExpiracaoCredito);
+              credito['valorCreditoForm'] = cliente.patrimonio;
               this.listaCredito.push(credito);
             }
           });
@@ -254,6 +259,7 @@ export class RelatorioCreditoPage implements OnInit {
             credito['nomeCliente'] = cliente.nome;
             credito['dtAprovacaoForm'] = this.formatarData(credito.dataAprovacaoCredito);
             credito['dtExpiracaoForm'] = this.formatarData(credito.dataExpiracaoCredito);
+            credito['valorCreditoForm'] = cliente.patrimonio;
             this.listaCredito.push(credito);
           }
         });
@@ -271,7 +277,8 @@ export class RelatorioCreditoPage implements OnInit {
             {
               credito['nomeCliente'] = cliente.nome;
               credito['dtAprovacaoForm'] = this.formatarData(credito.dataAprovacaoCredito);
-              credito['dtExpiracaoForm'] = this.formatarData(credito.dataExpiracaoCredito);
+              credito['dtExpiracaoForm'] = this.formatarData(credito.dataExpiracaoCredito); 
+              credito['valorCreditoForm'] = cliente.patrimonio;            
               this.listaCredito.push(credito);
             }
           });
@@ -291,6 +298,7 @@ export class RelatorioCreditoPage implements OnInit {
               credito['nomeCliente'] = cliente.nome;
               credito['dtAprovacaoForm'] = this.formatarData(credito.dataAprovacaoCredito);
               credito['dtExpiracaoForm'] = this.formatarData(credito.dataExpiracaoCredito);
+              credito['valorCreditoForm'] = cliente.patrimonio;
               this.listaCredito.push(credito);
             }
           });
@@ -306,7 +314,8 @@ export class RelatorioCreditoPage implements OnInit {
             credito['nomeCliente'] = cliente.nome;
             credito['dtAprovacaoForm'] = this.formatarData(credito.dataAprovacaoCredito);
             credito['dtExpiracaoForm'] = this.formatarData(credito.dataExpiracaoCredito);
-            this.listaCredito.push(credito);
+            credito['valorCreditoForm'] = cliente.patrimonio;
+            this.listaCredito.push(credito);             
           }
         });
       }); 
@@ -340,7 +349,7 @@ export class RelatorioCreditoPage implements OnInit {
     return {
       table: {
         headerRows: 1,
-        widths: [100, 100, 100, 100, 100],
+        widths: [200, 150, 200, 200, 200],
         body: this.buildTableBody(data, columns, header)            
       },
       layout: "lightHorizontalLines"
@@ -375,7 +384,7 @@ export class RelatorioCreditoPage implements OnInit {
       [
         this.table(
           this.listaCredito,
-          ["nomeCliente", "descricao", "valorCredito", "dtAprovacaoForm", "dtExpiracaoForm"],
+          ["nomeCliente", "descricao", "valorCreditoForm", "dtAprovacaoForm", "dtExpiracaoForm"],
           [
             { text: "Nome Cliente", style: "tableHeader" },
             { text: "Descrição", style: "tableHeader" },
@@ -390,10 +399,9 @@ export class RelatorioCreditoPage implements OnInit {
       {
         tableHeader: {
           bold:true,
-          fontSize: 11,
+          fontSize: 13,
           color: "Black" ,
-          center: true
-                                
+          center: true                                
         }
       },
 
