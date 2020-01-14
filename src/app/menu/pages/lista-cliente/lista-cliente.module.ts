@@ -5,6 +5,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { ComponentsModule } from '../../component/components.module';
 import { RelatorioClientePage } from '../relatorio-cliente/relatorio-cliente.page';
 
+
 const routes: Routes = [
   {
     path: '',
