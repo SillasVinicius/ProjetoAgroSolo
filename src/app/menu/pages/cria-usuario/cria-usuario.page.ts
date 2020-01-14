@@ -53,6 +53,8 @@ export class CriaUsuarioPage implements OnInit {
   arquivos: Object;
   files2: Observable<any[]>;
   fileName = '';
+  novaFoto = false;
+  fotoAntigo: any;
 
   // Dependencias
   constructor(
@@ -74,19 +76,16 @@ export class CriaUsuarioPage implements OnInit {
 
     if (this.usuarioService.admin) {
       this.usuarioService.init();
-      console.log('this.usuarioService.init();');
       this.admin = true;
     }
     else {
       this.usuarioService.init();
-      console.log('this.usuarioService.init();');
       this.admin = false;
     }
 
     this.acao();
   }
-
-
+  
   async openGalery(event: FileList){
     try {
       const file = event.item(0);
@@ -98,7 +97,8 @@ export class CriaUsuarioPage implements OnInit {
         }
       this.fileName = file.name;
       this.arquivos = file;
-      this.uploadFile(file);
+      this.uploadFile(this.arquivos);
+      this.novaFoto = true;
 
     }catch(error){
       console.error(error);
@@ -106,7 +106,7 @@ export class CriaUsuarioPage implements OnInit {
   }
 
   async uploadFile(file: Object){
-      const ref = this.storage.ref(`${this.fileName}`);
+      const ref = this.storage.ref(`foto${this.fileName}`);
       const task = ref.put(file);
       //
       this.uploadPercent = task.percentageChanges();
@@ -128,7 +128,9 @@ export class CriaUsuarioPage implements OnInit {
 
     async uploadFileTo(file: Object){
 
-        const ref2 = this.storage.ref(`/users/${this.usuarioService.id}/usuario/${this.usuarioService.id}/${this.fileName}`);
+        let idUser = (this.usuarioService.id === '') ? this.usuarioId : this.usuarioService.id;
+
+        const ref2 = this.storage.ref(`/AdmnistradorFoto${idUser}/${this.fileName}`);
         const task2 = ref2.put(file);
 
         try{
@@ -141,14 +143,15 @@ export class CriaUsuarioPage implements OnInit {
               this.liberaAlterar = true;
 
               this.downloadUrl.subscribe(async r => {
-                this.usuarioService.init();
-                const usuario = await this.usuarioService.update({
-                id: this.usuarioService.id,
-                nome: this.usuarioForm.get('nome').value,
-                email: this.usuarioForm.get('email').value,
-                senha: this.usuarioForm.get('senha').value,
-                foto: r
-              });
+                  this.usuarioService.init();
+                  await this.usuarioService.update({
+                    id: idUser,
+                    nome: this.usuarioForm.get('nome').value,
+                    email: this.usuarioForm.get('email').value,
+                    senha: this.usuarioForm.get('senha').value,
+                    foto: r,
+                    nomeFoto: this.fileName
+                  });
               });
             })
           ).subscribe();
@@ -160,38 +163,18 @@ export class CriaUsuarioPage implements OnInit {
 
     }
 
-    async uploadFileToUpdate(file: Object){
+  deletePicture(){
+    const ref = this.storage.ref(`foto${this.fileName}`);;
+    const task = ref.delete();
+  }
 
-        const ref2 = this.storage.ref(`/users/${this.usuarioService.id}/usuario/${this.usuarioService.id}/${this.fileName}`);
-        const task2 = ref2.put(file);
+  deletePicturePasta(){
+    let idUser = (this.usuarioService.id === '') ? this.usuarioId : this.usuarioService.id;
 
-        task2.snapshotChanges().pipe(
-          finalize(async () => {
+    const ref = this.storage.ref(`/AdmnistradorFoto${idUser}/`);
+    ref.child(`${this.fotoAntigo}`).delete();
+  }
 
-            this.downloadUrl = ref2.getDownloadURL();
-            this.liberaArquivo = true;
-            this.liberaAlterar = true;
-
-            this.downloadUrl.subscribe(async r => {
-              this.usuarioService.init();
-              const usuario = await this.usuarioService.update({
-              id: this.usuarioId,
-              nome: this.usuarioForm.get('nome').value,
-              email: this.usuarioForm.get('email').value,
-              senha: this.usuarioForm.get('senha').value,
-              foto: r
-            });
-            });
-          })
-        ).subscribe();
-    }
-
-    deletePicture(){
-      const ref = this.storage.ref(`${this.fileName}`);;
-      const task = ref.delete();
-    }
-
-  // Cria formulários
   // Cria formulários
   criaFormulario(): void {
     this.usuarioForm = this.formBuilder.group({
@@ -210,7 +193,6 @@ export class CriaUsuarioPage implements OnInit {
   get nome(): FormControl {
     return this.usuarioForm.get('nome') as FormControl;
   }
-
   get email(): FormControl {
     return this.usuarioForm.get('email') as FormControl;
   }
@@ -230,25 +212,24 @@ export class CriaUsuarioPage implements OnInit {
     this.pageTitle = 'Atualizar Administrador';
     this.botaoTitle = 'ATUALIZAR';
     this.toastMessage = 'Atualizando...';
+    this.liberaArquivo = true;
+    this.usuarioService.id = '';
     this.usuarioService
       .get(usuarioId)
       .pipe(take(1))
-      .subscribe(({ nome, email, senha }) => {
+      .subscribe(({ nome, email, senha, foto, nomeFoto }) => {
           this.usuarioForm.get('senha').setValue(senha),
           this.usuarioForm.get('nome').setValue(nome),
-          this.usuarioForm.get('email').setValue(email)
+          this.usuarioForm.get('email').setValue(email),
+          this.urlFoto = foto;
+          this.fileName = nomeFoto;
+          this.fotoAntigo = nomeFoto;
       });
-  }
-
-
-  async cadastraListaGlobal(id: string) {
-    this.usuarioService.init();
-    const usuario = await this.usuarioService.createGlobal(this.usuarioForm.value, id);
   }
 
   async AtualizaListaGlobal() {
     this.usuarioService.init();
-    const usuario = await this.usuarioService.update({
+    await this.usuarioService.update({
       id: this.usuarioId,
       nome: this.usuarioForm.get('nome').value,
       senha: this.usuarioForm.get('senha').value,
@@ -265,16 +246,24 @@ export class CriaUsuarioPage implements OnInit {
     try {
       const usuario = '';
       if (!this.usuarioId) {
+
         const usuario = await this.usuarioService.create(this.usuarioForm.value);
         this.deletePicture();
         this.uploadFileTo(this.arquivos);
+
       } else {
 
-        //this.deletePicture();
-
-        //this.uploadPictureToUpdate(this.imageBlob);
-
-
+        if (this.novaFoto) {
+          if(this.fotoAntigo !== "") {
+            this.deletePicturePasta();
+            // deleta a foto temporaria que foi feito upload no servidor
+            this.deletePicture();
+          }
+          this.uploadFileTo(this.arquivos);
+          this.novaFoto = false;
+        } else {
+          this.AtualizaListaGlobal();
+        }
 
       }
       console.log('Administrador Criado', usuario);

@@ -52,7 +52,7 @@ export class ListaCreditoPage implements OnInit {
           if (Cred.clienteId != "") {
             this.clientes$ = this.clienteService.initClienteId(Cred.clienteId);
             this.clientes$.subscribe(async (r: Cliente[]) => {
-              Cred['nomeCliente'] = r[0].nome;
+              Cred['nomeCliente'] = (r.length > 0) ? r[0].nome : 'Cliente excluído';
             });
             this.listaCreditoPrincipal.push(Cred);                       
           }

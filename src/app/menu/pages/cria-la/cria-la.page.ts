@@ -76,7 +76,6 @@ export class CriaLaPage implements OnInit {
 
       // metodo que é chamado quando a pagina é carregada
       ngOnInit() {
-        console.log("5454545454");
         this.criaFormulario();
         if (this.usuarioService.admin) {
           this.clienteService.init();

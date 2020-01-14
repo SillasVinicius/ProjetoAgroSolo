@@ -24,7 +24,7 @@
           >
             <ion-card-header>
               <ion-avatar>
-                <img [src]="downloadUrl | async" *ngIf="downloadUrl | async">
+                <img [src]="urlFoto" *ngIf="urlFoto">
                 <img src="../../../assets/img/avatar.svg" *ngIf="!liberaArquivo">
               </ion-avatar>
             </ion-card-header>

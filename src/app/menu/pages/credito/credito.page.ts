@@ -142,7 +142,6 @@ export class CreditoPage implements OnInit {
     }
     this.update = true;
     this.creditoId = creditoId;
-    console.log(this.creditoId);
     this.pageTitle = 'Atualizar Cadastro Financeiro';
     this.botaoTitle = 'ATUALIZAR';
     this.toastMessage = 'Atualizando...';
@@ -169,7 +168,6 @@ export class CreditoPage implements OnInit {
 
   async AtualizaListaGlobal() {
     this.creditoService.init();
-    console.log(this.creditoId);
     await this.creditoService.update({
       id: this.creditoId,
       dataAprovacaoCredito: this.cadastroCreditoFinanceiro.get('dataAprovacaoCredito').value,
@@ -247,13 +245,8 @@ export class CreditoPage implements OnInit {
     const ref2 = this.storage.ref(`/CreditoFinaceiro${idCredito}/${this.fileName}`);
     const task2 = ref2.put(file);
 
-    this.uploadPercent = task2.percentageChanges();
     task2.snapshotChanges().pipe(
       finalize(async () => {
-
-        const loading = await this.overlayService.loading({
-          message: "Carregando arquivo..."
-        });
 
         this.downloadUrl = ref2.getDownloadURL();
         this.liberaArquivo = true;
@@ -271,8 +264,6 @@ export class CreditoPage implements OnInit {
             nomeArquivo: this.fileName
           });
         });
-
-        loading.dismiss();
       })
     ).subscribe();
   }

@@ -5,6 +5,7 @@ import { take } from 'rxjs/operators';
 import { NavController } from '@ionic/angular';
 import { UsuarioService } from 'src/app/core/services/usuario.service';
 import { OverlayService } from 'src/app/core/services/overlay.service';
+import {AngularFireStorage }from '@angular/fire/storage';
 
 @Component({
   selector: 'app-lista-usuario',
@@ -16,12 +17,13 @@ export class ListaUsuarioPage implements OnInit {
   constructor(
     private navCtrl: NavController,
     private usuarioService: UsuarioService,
-    private overlayService: OverlayService
+    private overlayService: OverlayService,
+    private storage: AngularFireStorage
   ) {}
 
   async ngOnInit(): Promise<void> {
     const loading = await this.overlayService.loading();
-    this.usuarioService.initFiltro();
+    this.usuarioService.init();
     this.usuarios$ = this.usuarioService.getAll();
     this.usuarios$.pipe(take(1)).subscribe(() => loading.dismiss());
   }
@@ -37,6 +39,7 @@ export class ListaUsuarioPage implements OnInit {
         {
           text: 'Sim',
           handler: async () => {
+            await this.deletePicturePasta(usuario);
             await this.usuarioService.init();
             await this.usuarioService.delete(usuario);
             await this.overlayService.toast({
@@ -47,6 +50,11 @@ export class ListaUsuarioPage implements OnInit {
         'Não'
       ]
     });
+  }
+
+  deletePicturePasta(usuario: Usuario){
+    const ref = this.storage.ref(`/AdmnistradorFoto${usuario.id}/`);
+    ref.child(`${usuario.nomeFoto}`).delete();
   }
 
 }

@@ -7,7 +7,7 @@ import {ClienteService }from 'src/app/core/services/cliente.service';
 import {OverlayService }from 'src/app/core/services/overlay.service'; 
 import {UsuarioService }from 'src/app/core/services/usuario.service'; 
 import {RelatorioClientePage }from "../relatorio-cliente/relatorio-cliente.page"; 
-import {AngularFireStorage }from '@angular/fire/storage'; 
+import {AngularFireStorage }from '@angular/fire/storage';
 import {OutorgaService }from 'src/app/core/services/outorga.service'; 
 import {Outorga }from '../../models/outorga.model';
 import { LicencaAmbiental } from '../../models/la.model';
@@ -88,10 +88,10 @@ export class ListaClientePage implements OnInit {
             this.creditoService.init();
             await this.deletarCreditoFinanceiroCliente(cliente);
 
-           /* await this.clienteService.init(); 
+            await this.clienteService.init(); 
             await this.clienteService.delete(cliente); 
             //deletando os arquivos vinculado ao cliente
-            await this.deletarArquivoFotoCliente(cliente); */
+            await this.deletarArquivoFotoCliente(cliente);
 
             await this.overlayService.toast( {
               message:`Cliente "${cliente.nome}" excluido ! `
