@@ -1,0 +1,57 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-grid>
+      <ion-row>
+        
+        <ion-col>
+          <ion-title>
+            Recuperar Dados
+          </ion-title>
+        </ion-col>
+
+        
+          <ion-buttons end>
+            <ion-button (click)="closeModal()" class="fechar"> 
+              <ion-icon slot="icon-only" name="close"git></ion-icon>  
+            </ion-button>
+          </ion-buttons>
+        
+
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-grid>
+
+      <ion-row>
+        <ion-col>
+          <ion-input
+          type="texte"
+          color="primary"
+          placeholder="Digite seu Email!"
+          (ionChange)="habilitar_email($event.target.value);"></ion-input>
+        </ion-col>
+      </ion-row> 
+
+      <ion-row>
+        <ion-col>
+          <ion-input
+          type="texte"
+          color="primary"
+          placeholder="Digite seu Email novamente!"
+          (ionChange)="habilitar_email_novamente($event.target.value);"></ion-input>
+        </ion-col>
+      </ion-row>
+
+    </ion-grid>
+    
+
+    <ion-button expand="block" (click)="recuperarSenha()" [disabled]="this.habilitar_botao" >
+      <ion-icon name="key"></ion-icon> 
+    </ion-button>
+
+</ion-content>
+<img src="../../../../assets/img/grama.png" alt="" style="margin-bottom: 0px;"><ion-header></ion-header>
+  

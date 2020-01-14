@@ -1,11 +1,24 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>
+    <ion-grid>
+      <ion-row>
+      
+      <ion-col>
+      <ion-title>
       Dados de Filtro
-      <ion-button (click)="closeModal()" class="titulo"> 
-        <ion-icon slot="icon-only" name="close"></ion-icon>  
+      </ion-title>
+      </ion-col>
+      
+      
+      <ion-buttons end>
+      <ion-button (click)="closeModal()" class="fechar">
+      <ion-icon slot="icon-only" name="close"git></ion-icon>
       </ion-button>
-    </ion-title>
+      </ion-buttons>
+      
+      
+      </ion-row>
+      </ion-grid>
   </ion-toolbar>
 </ion-header>
 
@@ -27,6 +40,7 @@
         </ion-col>
       </ion-row>
       <ion-row>
+<<<<<<< HEAD
         <ion-col>
           <ion-label position="floating" color="primary">Data Inicial</ion-label>
           <ion-datetime 
@@ -41,6 +55,16 @@
             displayFormat="DD/MM/YYYY"
             (ionChange)="obter_dt_nascimento_cliente_fim($event.target.value);"
             #filter></ion-datetime>
+=======
+        <ion-col>          
+          <ion-datetime placeholder="Data Inicial" displayFormat="DD/MM/YYYY" min="1930" max="2200" 
+          (ionChange)="obter_dt_nascimento_cliente_ini($event.target.value);"></ion-datetime>
+        </ion-col>
+
+        <ion-col>          
+          <ion-datetime placeholder= "Data Final" displayFormat="DD/MM/YYYY" min="1930" max="2200" 
+          (ionChange)="obter_dt_nascimento_cliente_fim($event.target.value);" ></ion-datetime>
+>>>>>>> master
         </ion-col>
       </ion-row>
     </ion-grid>
