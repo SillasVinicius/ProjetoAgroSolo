@@ -25,7 +25,7 @@ export class RelatorioCarPage implements OnInit {
   id_cli: String;
   data_vencimento_ini: String;
   data_vencimento_fim: String;
-  @ViewChildren('filter') filtrosRelatorio: QueryList<ElementRef>;
+  @ViewChildren('filter') filtrosRelatorio: QueryList<any>;
 
   constructor(
     private ModalController: ModalController,

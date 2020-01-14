@@ -7,6 +7,7 @@ let url = "smtps://meninovitor53@gmail.com%40gmail.com:"+encodeURIComponent('vit
 let transporter = nodemailer.createTransport(url);
 
 exports.enviarEmail = functions.https.onRequest((req, res) => {
+
   cors(req, res, () => {
     let remetente = '"vitor" meninovitor53@gmail.com';
 
@@ -30,4 +31,7 @@ exports.enviarEmail = functions.https.onRequest((req, res) => {
         console.log('Mensagem %s enviada: %s', info.messageId, info.response);
     });
   });
+
+
+
 });

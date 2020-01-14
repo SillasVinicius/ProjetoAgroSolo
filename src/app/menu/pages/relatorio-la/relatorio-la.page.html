@@ -41,17 +41,15 @@
       </ion-row>
       <ion-row>
         <ion-col>
-          <ion-label position="floating" color="primary">Data Inicial</ion-label>
           <ion-datetime
-            displayFormat="DD/MM/YYYY" name="dt_inicial"
+            displayFormat="DD/MM/YYYY" name="dt_inicial" placeholder="Data Inicial" min="1930" max="2300"
             (ionChange)="obter_dt_vescimento_cliente_ini($event.target.value);"
             #filter></ion-datetime>
         </ion-col>
 
         <ion-col>
-          <ion-label position="floating" color="primary">Data Final</ion-label>
           <ion-datetime
-            displayFormat="DD/MM/YYYY"
+            displayFormat="DD/MM/YYYY" placeholder="Data Final" min="1930" max="2300"
             (ionChange)="obter_dt_vescimento_cliente_fim($event.target.value);"
             #filter></ion-datetime>
         </ion-col>

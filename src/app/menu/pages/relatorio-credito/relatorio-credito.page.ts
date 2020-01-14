@@ -27,7 +27,7 @@ export class RelatorioCreditoPage implements OnInit {
   data_aprovacao_fim: String;
   data_expiracao_ini: String; 
   data_expiracao_fim: String;
-  @ViewChildren('filter') filtrosRelatorio: QueryList<ElementRef>;
+  @ViewChildren('filter') filtrosRelatorio: QueryList<any>;
 
   constructor(
     private ModalController: ModalController,

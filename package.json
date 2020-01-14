@@ -28,6 +28,7 @@
     "@ionic-native/core": "^5.0.0",
     "@ionic-native/crop": "^5.12.0",
     "@ionic-native/document-viewer": "^5.15.1",
+    "@ionic-native/email-composer": "^5.19.1",
     "@ionic-native/file": "^5.14.0",
     "@ionic-native/file-opener": "^5.18.0",
     "@ionic-native/file-path": "^5.0.0",

@@ -42,14 +42,12 @@
       </ion-row>
       <ion-row>
         <ion-col>
-          <ion-label position="floating" color="primary">Data Inicial</ion-label>
-          <ion-datetime displayFormat="DD/MM/YYYY" name="dt_inicial"
+          <ion-datetime displayFormat="DD/MM/YYYY" name="dt_inicial" placeholder="Data Inicial" min="1930" max="2300"
           (ionChange)="obter_dt_aprovacao_cliente_ini($event.target.value);" #filter></ion-datetime>
         </ion-col>
 
         <ion-col>
-          <ion-label position="floating" color="primary">Data Final</ion-label>
-          <ion-datetime displayFormat="DD/MM/YYYY"
+          <ion-datetime displayFormat="DD/MM/YYYY" placeholder="Data Final" min="1930" max="2300"
           (ionChange)="obter_dt_aprovacao_cliente_fim($event.target.value);" #filter></ion-datetime>
         </ion-col>
       </ion-row>
@@ -61,17 +59,15 @@
       </ion-row>
       <ion-row>
         <ion-col>
-          <ion-label position="floating" color="primary">Data Inicial</ion-label>
-          <ion-datetime displayFormat="DD/MM/YYYY" name="dt_inicial"
+          <ion-datetime displayFormat="DD/MM/YYYY" name="dt_inicial" placeholder="Data Inicial" min="1930" max="2300"
           (ionChange)="obter_dt_expiracao_cliente_ini($event.target.value);" #filter></ion-datetime>
         </ion-col>
         <ion-col>
-          <ion-label position="floating" color="primary">Data Final</ion-label>
-          <ion-datetime displayFormat="DD/MM/YYYY"
+          <ion-datetime displayFormat="DD/MM/YYYY" placeholder="Data Final" min="1930" max="2300"
           (ionChange)="obter_dt_expiracao_cliente_fim($event.target.value);" #filter></ion-datetime>
         </ion-col>
       </ion-row>
-
+      </ion-grid>
 
     <ion-button expand="block" (click)="relatorio_credito()" >
       <ion-icon name="print"></ion-icon>

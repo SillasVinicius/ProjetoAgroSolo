@@ -8,6 +8,7 @@
   </ion-toolbar>
 </ion-header>
 <ion-content padding>
+
   <form [formGroup]="updateUsuarioForm" (submit)="onSubmit()" novalidate>
     <!-- inicio arquivo -->
     <ion-card [@tamanhoArquivo]="liberaArquivo ? 'comArquivo' : 'semArquivo'">
@@ -75,8 +76,8 @@
         >
           Mínimo 3 caracteres
         </ion-note>
-      <!-- </ion-item>
-      <ion-item>
+       </ion-item>
+      <!--<ion-item>
         <ion-icon
           slot="start"
           name="key"
@@ -228,7 +229,7 @@
         Mínimo 6 caracteres
       </ion-note>
     </ion-item>
-    <ion-button expand="block" type="submit" [*ngIf]="updateUsuarioForm.valid && liberaArquivo" style="margin-top: 15%;">
+    <ion-button expand="block" type="submit" *ngIf="updateUsuarioForm.valid && liberaArquivo" style="margin-top: 15%;">
       ALTERAR
     </ion-button>
     <ion-button
@@ -243,4 +244,5 @@
       ALTERAR
     </ion-button>
   </form>
+  
 </ion-content>
