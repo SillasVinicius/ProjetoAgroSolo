@@ -2,21 +2,21 @@
   <ion-toolbar>
     <ion-grid>
       <ion-row>
-      
+
       <ion-col>
       <ion-title>
       Dados de Filtro
       </ion-title>
       </ion-col>
-      
-      
+
+
       <ion-buttons end>
       <ion-button (click)="closeModal()" class="fechar">
       <ion-icon slot="icon-only" name="close"git></ion-icon>
       </ion-button>
       </ion-buttons>
-      
-      
+
+
       </ion-row>
       </ion-grid>
   </ion-toolbar>
@@ -40,44 +40,32 @@
         </ion-col>
       </ion-row>
       <ion-row>
-<<<<<<< HEAD
         <ion-col>
           <ion-label position="floating" color="primary">Data Inicial</ion-label>
-          <ion-datetime 
-            displayFormat="DD/MM/YYYY" 
+          <ion-datetime
+            displayFormat="DD/MM/YYYY"
             (ionChange)="obter_dt_nascimento_cliente_ini($event.target.value);"
             #filter></ion-datetime>
         </ion-col>
 
         <ion-col>
           <ion-label position="floating" color="primary">Data Final</ion-label>
-          <ion-datetime 
+          <ion-datetime
             displayFormat="DD/MM/YYYY"
             (ionChange)="obter_dt_nascimento_cliente_fim($event.target.value);"
             #filter></ion-datetime>
-=======
-        <ion-col>          
-          <ion-datetime placeholder="Data Inicial" displayFormat="DD/MM/YYYY" min="1930" max="2200" 
-          (ionChange)="obter_dt_nascimento_cliente_ini($event.target.value);"></ion-datetime>
-        </ion-col>
-
-        <ion-col>          
-          <ion-datetime placeholder= "Data Final" displayFormat="DD/MM/YYYY" min="1930" max="2200" 
-          (ionChange)="obter_dt_nascimento_cliente_fim($event.target.value);" ></ion-datetime>
->>>>>>> master
         </ion-col>
       </ion-row>
     </ion-grid>
-    
+
 
     <ion-button expand="block" (click)="relatorio_cli()" >
-      <ion-icon name="print"></ion-icon> 
+      <ion-icon name="print"></ion-icon>
     </ion-button>
 
     <ion-button expand="block" (click)="clearFilters()" >
-      <ion-icon name="trash"></ion-icon> 
+      <ion-icon name="trash"></ion-icon>
     </ion-button>
 
 </ion-content>
 <img src="../../../../assets/img/grama.png" alt="" style="margin-bottom: 0px;"><ion-header>
-  

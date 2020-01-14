@@ -2,28 +2,27 @@
   <ion-toolbar>
     <ion-grid>
       <ion-row>
-      
+
       <ion-col>
       <ion-title>
       Dados de Filtro
       </ion-title>
       </ion-col>
-      
-      
+
+
       <ion-buttons end>
       <ion-button (click)="closeModal()" class="fechar">
       <ion-icon slot="icon-only" name="close"git></ion-icon>
       </ion-button>
       </ion-buttons>
-      
-      
+
+
       </ion-row>
       </ion-grid>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-<<<<<<< HEAD
     <ion-list>
       <ion-item>
         <ion-label position="floating" color="primary">Cliente</ion-label>
@@ -41,7 +40,7 @@
           <ion-label position="floating" color="primary">Intervalo de Data de Aprovação</ion-label>
         </ion-col>
       </ion-row>
-      <ion-row> 
+      <ion-row>
         <ion-col>
           <ion-label position="floating" color="primary">Data Inicial</ion-label>
           <ion-datetime displayFormat="DD/MM/YYYY" name="dt_inicial"
@@ -54,13 +53,13 @@
           (ionChange)="obter_dt_aprovacao_cliente_fim($event.target.value);" #filter></ion-datetime>
         </ion-col>
       </ion-row>
-      
+
       <ion-row>
         <ion-col>
           <ion-label position="floating" color="primary">Intervalo de Data de Expiração</ion-label>
         </ion-col>
       </ion-row>
-      <ion-row> 
+      <ion-row>
         <ion-col>
           <ion-label position="floating" color="primary">Data Inicial</ion-label>
           <ion-datetime displayFormat="DD/MM/YYYY" name="dt_inicial"
@@ -72,71 +71,15 @@
           (ionChange)="obter_dt_expiracao_cliente_fim($event.target.value);" #filter></ion-datetime>
         </ion-col>
       </ion-row>
-=======
-  <ion-list>
-    <ion-item>
-      <ion-label position="floating" color="primary">Cliente</ion-label>
-      <ion-select (ionChange)="obter_id_cliente($event.target.value);">
-        <ion-select-option *ngFor="let cliente of clientes" [value]="cliente.id">
-          {{cliente.nome}}
-        </ion-select-option>
-      </ion-select>
-    </ion-item>
-  </ion-list>
-  <ion-grid>
-
-    <ion-row>
-      <ion-col>
-        <ion-label position="floating" color="primary">Intervalo de Data de Aprovação</ion-label>
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col>        
-        <ion-datetime placeholder="Data Inicial" displayFormat="DD/MM/YYYY" name="dt_inicial" min="1930" max="2200"
-          (ionChange)="obter_dt_aprovacao_cliente_ini($event.target.value);"></ion-datetime>
-      </ion-col>
-
-      <ion-col>        
-        <ion-datetime placeholder="Data Final" displayFormat="DD/MM/YYYY" (ionChange)="obter_dt_aprovacao_cliente_fim($event.target.value);" min="1930" max="2200">
-        </ion-datetime>
-      </ion-col>
-    </ion-row>
-
-    <ion-row>
-      <ion-col>
-        <ion-label position="floating" color="primary">Intervalo de Data de Expiração</ion-label>
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col>        
-        <ion-datetime placeholder="Data Final" displayFormat="DD/MM/YYYY" name="dt_inicial"
-          (ionChange)="obter_dt_expiracao_cliente_ini($event.target.value);" min="1930" max="2200"></ion-datetime>
-      </ion-col>
-      <ion-col>        
-        <ion-datetime placeholder="Data Final" displayFormat="DD/MM/YYYY" (ionChange)="obter_dt_expiracao_cliente_fim($event.target.value);" min="1930" max="2200">
-        </ion-datetime>
-      </ion-col>
-    </ion-row>
-
-  </ion-grid>
->>>>>>> master
 
 
-<<<<<<< HEAD
     <ion-button expand="block" (click)="relatorio_credito()" >
-      <ion-icon name="print"></ion-icon> 
+      <ion-icon name="print"></ion-icon>
     </ion-button>
 
     <ion-button expand="block" (click)="clearFilters()" >
-      <ion-icon name="trash"></ion-icon> 
+      <ion-icon name="trash"></ion-icon>
     </ion-button>
-    
+
     <img src="../../../../assets/img/grama.png" alt="" style="margin-bottom: 0px;">
 </ion-content>
-=======
-  <ion-button expand="block" (click)="relatorio_credito()">
-    <ion-icon name="print"></ion-icon>
-  </ion-button>
-  <img src="../../../../assets/img/grama.png" alt="" style="margin-bottom: 0px;">
-</ion-content>
->>>>>>> master
