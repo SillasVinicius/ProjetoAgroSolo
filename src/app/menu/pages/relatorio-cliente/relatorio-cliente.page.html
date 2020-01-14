@@ -40,7 +40,6 @@
         </ion-col>
       </ion-row>
       <ion-row>
-<<<<<<< HEAD
         <ion-col>          
           <ion-datetime placeholder="Data Inicial" displayFormat="DD/MM/YYYY" min="1930" max="2200" 
           (ionChange)="obter_dt_nascimento_cliente_ini($event.target.value);"></ion-datetime>
@@ -48,17 +47,6 @@
 
         <ion-col>          
           <ion-datetime placeholder= "Data Final" displayFormat="DD/MM/YYYY" min="1930" max="2200" 
-=======
-        <ion-col>
-          <ion-label position="floating" color="primary">Data Inicial</ion-label>
-          <ion-datetime displayFormat="DD/MM/YYYY" min="1981" max="2099"
-          (ionChange)="obter_dt_nascimento_cliente_ini($event.target.value);"></ion-datetime>
-        </ion-col>
-
-        <ion-col>
-          <ion-label position="floating" color="primary">Data Final</ion-label>
-          <ion-datetime displayFormat="DD/MM/YYYY" max="9999"
->>>>>>> master
           (ionChange)="obter_dt_nascimento_cliente_fim($event.target.value);" ></ion-datetime>
         </ion-col>
       </ion-row>
