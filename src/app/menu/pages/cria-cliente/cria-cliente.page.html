@@ -11,55 +11,39 @@
   <form [formGroup]="clienteForm" (submit)="onSubmit()" novalidate>
     <!-- inicio arquivo -->
     <div>
-    <ion-card [@tamanhoArquivo]="liberaArquivo ? 'comArquivo' : 'semArquivo'">
-      <ion-grid >
-        <ion-row align-items-center>
-          <ion-col
-            text-center
-            class="teste"
-          >
-          <ion-card
-            text-center
-            *ngIf="liberaArquivo"
-          >
-            <ion-card-header>
-              <ion-avatar>
-                <img [src]="urlFoto" *ngIf="urlFoto" text-center>
-                <img src="../../../assets/img/avatar.svg" *ngIf="!liberaArquivo" text-center>
-              </ion-avatar>
-            </ion-card-header>
-          </ion-card>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
+      <ion-card [@tamanhoArquivo]="liberaArquivo ? 'comArquivo' : 'semArquivo'">
+        <ion-grid>
+          <ion-row align-items-center>
+            <ion-col text-center class="teste">
+              <ion-card text-center *ngIf="liberaArquivo">
+                <ion-card-header>
+                  <ion-avatar>
+                    <img [src]="urlFoto" *ngIf="urlFoto" text-center>
+                    <img src="../../../assets/img/avatar.svg" *ngIf="!liberaArquivo" text-center>
+                  </ion-avatar>
+                </ion-card-header>
+              </ion-card>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
 
-      <div class="fileUpload" text-center *ngIf="admin">
-        <div *ngIf="uploadPercent | async as pct">
-          Progress: {{ pct | number }}%
-          <ion-progress-bar value="{{ pct / 100 }}"></ion-progress-bar>
+        <div class="fileUpload" text-center *ngIf="admin">
+          <div *ngIf="uploadPercent | async as pct">
+            Progress: {{ pct | number }}%
+            <ion-progress-bar value="{{ pct / 100 }}"></ion-progress-bar>
+          </div>
+          <div [@marginBotao]="liberaArquivo ? 'comArquivo' : 'semArquivo'">
+            <label for="uploadBtn" class="btn">Escolher Foto</label>
+            <input class="upload" id="uploadBtn" type="file" (change)="openGalery($event.target.files)">
+          </div>
         </div>
-        <div [@marginBotao]="liberaArquivo ? 'comArquivo' : 'semArquivo'">
-          <label for="uploadBtn" class="btn">Escolher Foto</label>
-          <input
-            class="upload"
-            id="uploadBtn"
-            type="file"
-            (change)="openGalery($event.target.files)"
-          >
-        </div>
-      </div>
-    </ion-card>
+      </ion-card>
     </div>
 
     <!-- fim arquivo -->
     <ion-item>
       <ion-label position="floating" color="primary">Nome</ion-label>
-      <ion-input
-        formControlName="nome"
-        type="text"
-        color="primary"
-        autoFocus="true"
-      ></ion-input>
+      <ion-input formControlName="nome" type="text" color="primary" autoFocus="true"></ion-input>
     </ion-item>
     <ion-note slot="start" color="danger" *ngIf="nome.dirty && nome.hasError('required')">
       Nome Obrigatório!
@@ -69,47 +53,22 @@
     </ion-note>
     <ion-item>
       <ion-label position="floating" color="primary">CPF/CNPJ</ion-label>
-       <ion-input
-         type="text"
-         name="cpf"
-         formControlName="cpf"
-         [brmasker]="{person: true}"
-         color="primary"
-       ></ion-input>
+      <ion-input type="text" name="cpf" formControlName="cpf" [brmasker]="{person: true}" color="primary"></ion-input>
     </ion-item>
-    <ion-note
-      slot="start"
-      color="danger"
-      *ngIf="cpf.dirty && cpf.hasError('required')"
-    >
+    <ion-note slot="start" color="danger" *ngIf="cpf.dirty && cpf.hasError('required')">
       Cpf Obrigatório!
     </ion-note>
-    <ion-note
-      slot="start"
-      color="danger"
-      *ngIf="cpf.dirty && (cpf.hasError('minlength') || cpf.hasError('maxlength'))"
-    >
+    <ion-note slot="start" color="danger" *ngIf="cpf.dirty && (cpf.hasError('minlength') || cpf.hasError('maxlength'))">
       Cpf Inválido!
     </ion-note>
 
     <ion-item>
       <ion-label position="floating" color="primary">RG</ion-label>
-      <ion-input
-        color="primary"
-        formControlName="rg"
-      ></ion-input>
-      <ion-note
-        slot="end"
-        color="danger"
-        *ngIf="rg.dirty && rg.hasError('required')"
-      >
+      <ion-input color="primary" formControlName="rg"></ion-input>
+      <ion-note slot="end" color="danger" *ngIf="rg.dirty && rg.hasError('required')">
         RG Obrigatório!
       </ion-note>
-      <ion-note
-        slot="end"
-        color="danger"
-        *ngIf="rg.dirty && (rg.hasError('minlength') || rg.hasError('maxlength'))"
-      >
+      <ion-note slot="end" color="danger" *ngIf="rg.dirty && (rg.hasError('minlength') || rg.hasError('maxlength'))">
         RG inválido!
       </ion-note>
     </ion-item>
@@ -117,35 +76,24 @@
 
     <ion-item>
       <ion-label position="floating" color="primary">Telefone</ion-label>
-       <ion-input
-        type="text"
-        color="primary"
-        formControlName="telefone"
-        [brmasker]="{phone: true}">
+      <ion-input type="text" color="primary" formControlName="telefone" [brmasker]="{phone: true}">
       </ion-input>
     </ion-item>
-    <ion-note
-      slot="start"
-      color="danger"
-      *ngIf="telefone.dirty && telefone.hasError('required')"
-    >
+    <ion-note slot="start" color="danger" *ngIf="telefone.dirty && telefone.hasError('required')">
       Telefone Obrigatório!
     </ion-note>
-    <ion-note
-      slot="start"
-      color="danger"
-      *ngIf="
+    <ion-note slot="start" color="danger" *ngIf="
         telefone.dirty &&
         (telefone.hasError('minlength') || telefone.hasError('maxlength'))
-      "
-    >
+      ">
       Telefone inválido!
     </ion-note>
 
 
     <ion-item>
       <ion-label position="floating" color="primary">Data de Nascimento</ion-label>
-      <ion-datetime displayFormat="DD/MM/YYYY" formControlName="dataNascimento" placeholder="Selecione uma data..."></ion-datetime>
+      <ion-datetime displayFormat="DD/MM/YYYY" formControlName="dataNascimento" placeholder="Selecione uma data...">
+      </ion-datetime>
     </ion-item>
 
 
@@ -153,56 +101,36 @@
       <ion-label position="floating" color="primary">Patrimônio <span style="font-size: 12px">(R$) Real</span></ion-label>
       <ion-input formControlName="patrimonio" color="primary" [brmasker]="{money: true, thousand: '.',  decimalCaracter: ',', decimal: '3'}"></ion-input>
     </ion-item>
-    <ion-note
-      slot="end"
-      color="danger"
-      *ngIf="patrimonio.dirty && patrimonio.hasError('required')"
-    >
+    <ion-note slot="end" color="danger" *ngIf="patrimonio.dirty && patrimonio.hasError('required')">
       Patrimônio Obrigatório!
     </ion-note>
-    <ion-note
-      slot="end"
-      color="danger"
-      *ngIf="
+    <ion-note slot="end" color="danger" *ngIf="
         patrimonio.dirty && (patrimonio.hasError('minlength'))
-      "
-    >
+      ">
       Patrimônio Inválido!
     </ion-note>
 
 
-    
+
     <ion-item>
       <ion-label position="floating" color="primary">Produtividade Agropecuária</ion-label>
-      <ion-input
-        formControlName="pdtvAgro"
-        color="primary"
-      ></ion-input>
+      <ion-input formControlName="pdtvAgro" color="primary"></ion-input>
     </ion-item>
     <ion-note slot="end" color="danger" *ngIf="pdtvAgro.dirty && pdtvAgro.hasError('required')">
       Prod.Agropecuária Obrigatória!
     </ion-note>
-    <ion-note
-      slot="end"
-      color="danger"
-      *ngIf="pdtvAgro.dirty && (pdtvAgro.hasError('minlength') || pdtvAgro.hasError('maxlength'))"
-    >
+    <ion-note slot="end" color="danger"
+      *ngIf="pdtvAgro.dirty && (pdtvAgro.hasError('minlength') || pdtvAgro.hasError('maxlength'))">
       Prod.Agropecuária Inválida!
     </ion-note>
 
 
     <ion-item>
       <ion-label position="floating" color="primary">Informações Adicionais</ion-label>
-      <ion-textarea
-        formControlName="informacoesAdicionais"
-        color="primary"
-      ></ion-textarea>
+      <ion-textarea formControlName="informacoesAdicionais" color="primary"></ion-textarea>
     </ion-item>
-    <ion-note
-      slot="end"
-      color="danger"
-      *ngIf="informacoesAdicionais.dirty && (informacoesAdicionais.hasError('minlength') || informacoesAdicionais.hasError('maxlength'))"
-    >
+    <ion-note slot="end" color="danger"
+      *ngIf="informacoesAdicionais.dirty && (informacoesAdicionais.hasError('minlength') || informacoesAdicionais.hasError('maxlength'))">
       Máximo 400 caracteres!
     </ion-note>
 
@@ -214,148 +142,108 @@
 
     <ion-item>
       <ion-label position="floating" color="primary">Email</ion-label>
-      <ion-input
-        type="email"
-        inputmode="email"
-        color="primary"
-        formControlName="email"
-        autoFocus="true"
-      ></ion-input>
-      <ion-note
-        slot="end"
-        color="danger"
-        *ngIf="email.dirty && email.hasError('required')"
-      >
+      <ion-input type="email" inputmode="email" color="primary" formControlName="email" autoFocus="true"></ion-input>
+      <ion-note slot="end" color="danger" *ngIf="email.dirty && email.hasError('required')">
         Email Obrigatório!
       </ion-note>
-      <ion-note
-        slot="end"
-        color="danger"
-        *ngIf="email.dirty && email.hasError('email')"
-      >
+      <ion-note slot="end" color="danger" *ngIf="email.dirty && email.hasError('email')">
         Email inválido!
       </ion-note>
     </ion-item>
 
     <ion-item>
       <ion-label position="floating" color="primary">Senha</ion-label>
-      <ion-input
-        type="password"
-        color="primary"
-        formControlName="senha"
-      ></ion-input>
-      <ion-note
-        slot="end"
-        color="danger"
-        *ngIf="senha.dirty && senha.hasError('required')"
-      >
+      <ion-input type="password" color="primary" formControlName="senha"></ion-input>
+      <ion-note slot="end" color="danger" *ngIf="senha.dirty && senha.hasError('required')">
         Senha Obrigatória!
       </ion-note>
-      <ion-note
-        slot="end"
-        color="danger"
-        *ngIf="senha.dirty && senha.hasError('minlength')"
-      >
+      <ion-note slot="end" color="danger" *ngIf="senha.dirty && senha.hasError('minlength')">
         Mínimo 6 caracteres
       </ion-note>
     </ion-item>
 
+
+    <ion-grid>
+      <ion-row>
+        <ion-grid>
+          <div>
+            <ion-card [@tamanhoArquivo]="'comArquivo'">
+              <ion-grid>
+                <ion-row align-items-center>
+                  <ion-col text-center class="teste">
+                    <ion-card text-center >
+                      <ion-card-header>
+                        <ion-card-title style="font-size: 15px;">
+                          Arquivo:
+                          <a [href]="urlIr" target="_blank"><b>{{ irName }}</b></a>
+                        </ion-card-title>
+                      </ion-card-header>
+                    </ion-card>
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+              <div class="fileUpload" text-center *ngIf="admin">
+                <div *ngIf="uploadPercent | async as pct">
+                  Progress: {{ pct| number }}%
+                  <ion-progress-bar value="{{ pct / 100 }}"></ion-progress-bar>
+                </div>
+                <div [@marginBotao]="'comArquivo'" >
+                  <label for="uploadBtnIr" class="btn">Imposto de Renda</label>
+                  <input class="upload" id="uploadBtnIr" type="file" (change)='openArquivos($event.target.files, "IR")'>
+                </div>
+              </div>
+            </ion-card>
+          </div>
+        </ion-grid>
+
+        <ion-grid>
+          <div>
+            <ion-card [@tamanhoArquivo]="'comArquivo'">
+              <ion-grid>
+                <ion-row align-items-center>
+                  <ion-col text-center class="teste">
+                    <ion-card text-center >
+                      <ion-card-header>
+                        <ion-card-title style="font-size: 15px;">
+                          Arquivo:
+                          <a [href]="urlCnh" target="_blank"><b>{{ cnhName }}</b></a>
+                        </ion-card-title>
+                      </ion-card-header>
+                    </ion-card>
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+              <div class="fileUpload"  text-center *ngIf="admin">
+                <div *ngIf="uploadPercent | async as pct">
+                  Progress: {{ pct | number }}%
+                  <ion-progress-bar value="{{ pct / 100 }}"></ion-progress-bar>
+                </div>
+                <div [@marginBotao]="'comArquivo'">
+                  <label for="uploadBtnCnh" class="btn">CNH</label>
+                  <input class="upload" id="uploadBtnCnh" type="file" (change)='openArquivos($event.target.files, "CNH")'>
+                </div>
+              </div>
+            </ion-card>
+          </div>
+        </ion-grid>
+      </ion-row>
+    </ion-grid>
+
     <div *ngIf="!update && admin">
-      <ion-button expand="full" type="submit" *ngIf="clienteForm.valid && liberaArquivo" style="margin-top: 15%;">
+      <ion-button expand="full" type="submit" *ngIf="clienteForm.valid && liberaArquivo" style="margin-top: 0px;">
         CADASTRAR
       </ion-button>
-      <ion-button
-      style="margin-top: 15%;"
-        expand="full"
-        [disabled]="true"
-        *ngIf="
-          (!clienteForm.valid && !liberaArquivo) ||
-          (!clienteForm.valid && liberaArquivo) ||
-          (clienteForm.valid && !liberaArquivo)
-        "
-      >
+      <ion-button style="margin-top: 0px;" expand="full" [disabled]="true" *ngIf="(!clienteForm.valid && !liberaArquivo) || (!clienteForm.valid && liberaArquivo) || (clienteForm.valid && !liberaArquivo)">
         CADASTRAR
       </ion-button>
     </div>
     <div *ngIf="update && admin">
-      <ion-button expand="full" type="submit" *ngIf="clienteForm.valid" style="margin-top: 15%;">
+      <ion-button expand="full" type="submit" *ngIf="clienteForm.valid" style="margin-top: 0px;">
         ATUALIZAR
       </ion-button>
-      <ion-button
-      style="margin-top: 15%;"
-        expand="full"
-        [disabled]="true"
-        *ngIf="!clienteForm.valid"
-      >
+      <ion-button style="margin-top: 15%;" expand="full" [disabled]="true" *ngIf="!clienteForm.valid">
         ATUALIZAR
       </ion-button>
     </div>
   </form>
-
-  <div>
-    <ion-card [@tamanhoArquivo]="liberaArquivo ? 'comArquivo' : 'semArquivo'">
-      <ion-grid>
-        <ion-row align-items-center>
-          <ion-col text-center class="teste">
-            <ion-card text-center *ngIf="liberaArquivo">
-              <ion-card-header>
-                <ion-card-title style="font-size: 15px;">
-                  Arquivo selecionado:
-                  <a [href]="urlArquivo" target="_blank"><b>{{ fileName }}</b></a>
-                </ion-card-title>
-              </ion-card-header>
-            </ion-card>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-      <div class="fileUpload" text-center>
-        <div *ngIf="uploadPercent | async as pct">
-          Progress: {{ pct | number }}%
-          <ion-progress-bar value="{{ pct / 100 }}"></ion-progress-bar>
-        </div>
-        <div [@marginBotao]="liberaArquivo ? 'comArquivo' : 'semArquivo'">
-          <label for="uploadBtn" class="btn">Imposto de Renda</label>
-          <input class="upload" id="uploadBtn" type="file" (change)="openGalery($event.target.files)">
-        </div>
-      </div>
-    </ion-card>
-  </div>
-
-  <div>
-    <ion-card [@tamanhoArquivo]="liberaArquivo ? 'comArquivo' : 'semArquivo'">
-      <ion-grid>
-        <ion-row align-items-center>
-          <ion-col text-center class="teste">
-            <ion-card text-center *ngIf="liberaArquivo">
-              <ion-card-header>
-                <ion-card-title style="font-size: 15px;">
-                  Arquivo selecionado:
-                  <a [href]="urlArquivo" target="_blank"><b>{{ fileName }}</b></a>
-                </ion-card-title>
-              </ion-card-header>
-            </ion-card>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-      <div class="fileUpload" text-center>
-        <div *ngIf="uploadPercent | async as pct">
-          Progress: {{ pct | number }}%
-          <ion-progress-bar value="{{ pct / 100 }}"></ion-progress-bar>
-        </div>
-        <div [@marginBotao]="liberaArquivo ? 'comArquivo' : 'semArquivo'">
-          <label for="uploadBtn" class="btn">CNH</label>
-          <input class="upload" id="uploadBtn" type="file" (change)="openGalery($event.target.files)">
-        </div>
-      </div>
-    </ion-card>
-  </div>
-
-
-
-
-
-
 </ion-content>
-
-      
- 
