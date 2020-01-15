@@ -46,7 +46,7 @@ export class ListaLAPage implements OnInit {
       this.licencasAmbientais$.pipe(take(1)).subscribe(() => loading.dismiss());
 
       this.licencasAmbientais$.forEach(La => {
-      this.listaLaCliente = [];
+          this.listaLaCliente = [];
           La.forEach(la => {
             if(la.clienteId !== "" && la.clienteId !== undefined){
               this.clientes$ = this.clienteService.initClienteId(la.clienteId);
@@ -68,6 +68,10 @@ export class ListaLAPage implements OnInit {
 
   atualizar(licencaAmbiental: LicencaAmbiental): void {
     this.navCtrl.navigateForward(`/menu/ambiental/UpdateLicencaAmbiental/${licencaAmbiental.id}`);
+  }
+
+  viewLa(licencaAmbiental: LicencaAmbiental): void {
+    this.navCtrl.navigateForward(`/menu/ambiental/viewLa/${licencaAmbiental.id}/view`);
   }
 
   async deletar(licencaAmbiental: LicencaAmbiental): Promise<void> {

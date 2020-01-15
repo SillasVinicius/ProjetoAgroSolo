@@ -18,10 +18,9 @@
         *ngFor="let cadastro of listaLaCliente"
         [licencaAmbiental]="cadastro"
         (update)="atualizar($event)"
-        (delete)="deletar($event)"
-        (visualizar)="visualizar($event)"></app-lista-la-item>
+        (delete)="deletar($event)"></app-lista-la-item>
     </ng-container>
-    <ng-template #semLicencasAmbientais>
+    <ng-template #semcadastrosDeCreditos>
       <ion-item lines="none">Sem Licenças Ambientais cadastradas...</ion-item>
     </ng-template>
   </ion-list>
@@ -39,8 +38,8 @@
 <ion-content *ngIf="!usuarioService.admin">
   <ion-list *ngIf="licencasAmbientais$ | async as licencasAmbientais">
     <ng-container *ngIf="licencasAmbientais.length > 0; else semLicencasAmbientais">
-      <app-lista-la-item *ngFor="let licencaAmbientai of licencasAmbientais" [licencaAmbiental]="licencaAmbientai"
-         ></app-lista-la-item>
+      <app-lista-la-item *ngFor="let licencaAmbiental of licencasAmbientais" [licencaAmbiental]="licencaAmbiental"
+         (view)="viewLa($event)" ></app-lista-la-item>
     </ng-container>
     <ng-template #semLicencasAmbientais>
       <ion-item lines="none">Sem Lincença ambiental cadastrada...</ion-item>

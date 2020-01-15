@@ -46,6 +46,7 @@
       <app-lista-credito-item
         *ngFor="let cadastro of cadastrosDeCreditos"
         [cadastroCreditoFinanceiro]="cadastro"
+        (view)="viewCre($event)"
         ></app-lista-credito-item>
     </ng-container>
     <ng-template #semcadastrosDeCreditos>

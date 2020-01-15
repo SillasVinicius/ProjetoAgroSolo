@@ -70,6 +70,10 @@ export class ListaCreditoPage implements OnInit {
     this.navCtrl.navigateForward(`/menu/ambiental/UpdateCadastroCreditoFinanceiro/${credito.id}`);
   }
 
+  viewCre(credito: Credito): void {
+    this.navCtrl.navigateForward(`/menu/ambiental/viewCre/${credito.id}/view`);
+  }
+
   async deletar(credito: Credito): Promise<void> {
     await this.overlayService.alert({
       message: `Você realmente deseja deletar o crédito de valor R$ ${credito.valorCredito} para o Cliente ${credito.nomeCliente}?`,
