@@ -28,6 +28,7 @@ export class ListaOutorgaItemComponent implements OnInit{
   @Input() outorga: Outorga;
   @Output() update = new EventEmitter<Outorga>();
   @Output() delete = new EventEmitter<Outorga>();
+  @Output() view = new EventEmitter<Outorga>();
 
 
 

@@ -27,7 +27,7 @@ export class ListaLaItemComponent implements OnInit {
   @Input() licencaAmbiental: LicencaAmbiental;
   @Output() update = new EventEmitter<LicencaAmbiental>();
   @Output() delete = new EventEmitter<LicencaAmbiental>();
-  @Output() visualizar = new EventEmitter<LicencaAmbiental>();
+  @Output() view = new EventEmitter<LicencaAmbiental>();
 
   ngOnInit(){
     this.clicado = false;

@@ -51,7 +51,7 @@
 <ion-content *ngIf="!usuarioService.admin">
   <ion-list *ngIf="outorgas$ | async as outorgas">
     <ng-container *ngIf="outorgas.length > 0; else semOutorgas">
-      <app-lista-outorga-item *ngFor="let outorga of outorgas" [outorga]="outorga"  ></app-lista-outorga-item>
+      <app-lista-outorga-item *ngFor="let outorga of outorgas" [outorga]="outorga" (view)="viewOutorga($event)" ></app-lista-outorga-item>
     </ng-container>
     <ng-template #semOutorgas>
       <ion-item lines="none">Sem Outorgas cadastradas...</ion-item>

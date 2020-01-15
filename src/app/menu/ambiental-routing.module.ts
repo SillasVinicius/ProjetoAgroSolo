@@ -16,6 +16,10 @@ const routes: Routes = [
         loadChildren: './pages/cria-da/cria-da.module#CriaDaPageModule'
       },
       {
+        path: 'viewDa/:id/view',
+        loadChildren: './pages/cria-da/cria-da.module#CriaDaPageModule'
+      },
+      {
         path: 'CadastroLicencaAmbiental',
         loadChildren: './pages/cria-la/cria-la.module#CriaLaPageModule'
       },
@@ -24,11 +28,15 @@ const routes: Routes = [
         loadChildren: './pages/cria-la/cria-la.module#CriaLaPageModule'
       },
       {
-        path: 'VisualizarLA/:id',
+        path: 'viewLa/:id/view',
         loadChildren: './pages/cria-la/cria-la.module#CriaLaPageModule'
       },
       {
         path: 'UpdateCadastroAmbientalRural/:id',
+        loadChildren: './pages/cria-car/cria-car.module#CriaCarPageModule'
+      },
+      {
+        path: 'viewCar/:id/view',
         loadChildren: './pages/cria-car/cria-car.module#CriaCarPageModule'
       },
       {
@@ -57,6 +65,10 @@ const routes: Routes = [
       },
       {
         path: 'UpdateCadastroCreditoFinanceiro/:id',
+        loadChildren: './pages/credito/credito.module#CreditoPageModule'
+      },
+      {
+        path: 'viewCre/:id/view',
         loadChildren: './pages/credito/credito.module#CreditoPageModule'
       },
       {

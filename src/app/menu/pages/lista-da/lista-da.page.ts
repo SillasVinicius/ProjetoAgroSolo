@@ -70,6 +70,10 @@ export class ListaDAPage implements OnInit {
     this.navCtrl.navigateForward(`menu/ambiental/UpdateDeclaracaoAmbiental/${da.id}`);
   }
 
+  viewDa(da: DeclaracaoAmbiental): void {
+    this.navCtrl.navigateForward(`menu/ambiental/viewDa/${da.id}/view`);
+  }
+
   async deletar(da: DeclaracaoAmbiental): Promise<void> {
     await this.overlayService.alert({
       message: `Você realmente deseja deletar a Declaracao Ambiental do Cliente: ${da.nomeCliente} - ${da.descricao}?`,

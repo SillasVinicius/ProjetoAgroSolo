@@ -16,7 +16,7 @@
     <ion-item-option color="tertiary" (click)="update.emit(licencaAmbiental); sliding.close()" *ngIf="admin">
       <ion-icon slot="icon-only" name="create"></ion-icon>
     </ion-item-option>
-    <ion-item-option color="tertiary" (click)="visualizar.emit(licencaAmbiental); sliding.close();" *ngIf="!admin">
+    <ion-item-option color="tertiary" (click)="view.emit(licencaAmbiental); sliding.close();" *ngIf="!admin">
       <ion-icon slot="icon-only" name="eye"></ion-icon>
     </ion-item-option>
     <ion-item-option color="primary" (click)="openLink(); sliding.close()" *ngIf="!admin">

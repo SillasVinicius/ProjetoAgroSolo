@@ -28,6 +28,7 @@ export class ListaCreditoItemComponent implements OnInit {
   @Input() cadastroCreditoFinanceiro: Credito;
   @Output() update = new EventEmitter<Credito>();
   @Output() delete = new EventEmitter<Credito>();
+  @Output() view = new EventEmitter<Credito>();
 
   ngOnInit() {
     this.clicado = false;
