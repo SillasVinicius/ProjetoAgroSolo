@@ -28,6 +28,10 @@ const routes: Routes = [
         loadChildren: './pages/cria-cliente/cria-cliente.module#CriaClientePageModule'
       },
       {
+        path: 'viewCliente/:id/view',
+        loadChildren: './pages/cria-cliente/cria-cliente.module#CriaClientePageModule'
+      },
+      {
         path: 'updateUsuario/:id',
         loadChildren: './pages/altera-usuario/altera-usuario.module#AlteraUsuarioPageModule'
       },

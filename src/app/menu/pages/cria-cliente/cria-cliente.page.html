@@ -33,7 +33,7 @@
         </ion-row>
       </ion-grid>
 
-      <div class="fileUpload" text-center >
+      <div class="fileUpload" text-center *ngIf="admin">
         <div *ngIf="uploadPercent | async as pct">
           Progress: {{ pct | number }}%
           <ion-progress-bar value="{{ pct / 100 }}"></ion-progress-bar>
@@ -260,7 +260,7 @@
       </ion-note>
     </ion-item>
 
-    <div *ngIf="!update">
+    <div *ngIf="!update && admin">
       <ion-button expand="full" type="submit" *ngIf="clienteForm.valid && liberaArquivo" style="margin-top: 15%;">
         CADASTRAR
       </ion-button>
@@ -277,7 +277,7 @@
         CADASTRAR
       </ion-button>
     </div>
-    <div *ngIf="update">
+    <div *ngIf="update && admin">
       <ion-button expand="full" type="submit" *ngIf="clienteForm.valid" style="margin-top: 15%;">
         ATUALIZAR
       </ion-button>
