@@ -39,7 +39,7 @@
 <ion-content *ngIf="!usuarioService.admin">
   <ion-list *ngIf="clientes$ | async as clientes">
     <ng-container *ngIf="clientes.length > 0; else semClientes">
-      <app-lista-cliente-item *ngFor="let cliente of clientes" [cliente]="cliente">
+      <app-lista-cliente-item *ngFor="let cliente of clientes" [cliente]="cliente" (view)="viewCliente($event)">
         <ng-template>
         </ng-template>
       </app-lista-cliente-item>

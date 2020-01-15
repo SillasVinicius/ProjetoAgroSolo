@@ -14,6 +14,7 @@ export class ListaClienteItemComponent implements OnInit{
   @Input() cliente: Cliente;
   @Output() update = new EventEmitter<Cliente>();
   @Output() delete = new EventEmitter<Cliente>();
+  @Output() view = new EventEmitter<Cliente>();
 
   ngOnInit(){
     this.clicado = false;

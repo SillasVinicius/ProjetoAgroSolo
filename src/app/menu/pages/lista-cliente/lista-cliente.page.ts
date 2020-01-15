@@ -66,6 +66,10 @@ export class ListaClientePage implements OnInit {
     this.navCtrl.navigateForward(`/menu/updateCliente/${cliente.id}`); 
   }
 
+  viewCliente(cliente: Cliente) : void {
+    this.navCtrl.navigateForward(`/menu/viewCliente/${cliente.id}/view`); 
+  }
+
   async deletar(cliente:Cliente):Promise < void >  {
     await this.overlayService.alert( {
       message:`Você realmente deseja deletar o cliente "${cliente.nome}"?`, 
