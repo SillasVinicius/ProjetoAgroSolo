@@ -62,6 +62,10 @@ export class CreditoPage implements OnInit {
   novoArquivo = false;
   arquivoAntigo: any;
 
+  //validação de data
+  dt_aprovacao: string;
+  dt_expiracao: string;
+
 
   constructor(
     private formBuilder: FormBuilder,
@@ -111,7 +115,7 @@ export class CreditoPage implements OnInit {
       ]),
       clienteId: this.formBuilder.control('', [Validators.required])
     });
-  }
+  }  
 
   // metodos get que pegam o valor do input no formulário
   get descricao(): FormControl {
@@ -129,6 +133,7 @@ export class CreditoPage implements OnInit {
   get clienteId(): FormControl {
     return this.cadastroCreditoFinanceiro.get('clienteId') as FormControl;
   }
+  
 
   // verifica se a acao é de criação ou atualização
   acao(): void {
@@ -178,11 +183,30 @@ export class CreditoPage implements OnInit {
     });
   }
 
+  async obter_dt_aprovacao_credito(dt_aprovacao: string)
+  {
+    this.dt_aprovacao = dt_aprovacao;
+  }
+
+  async obter_dt_expiracao_credito(dt_expiracao: string)
+  {
+    this.dt_expiracao = dt_expiracao;
+  }
+
   // método que envia os dados do formulário para o banco de dados
   async onSubmit(): Promise<void> {
+    
+
     const loading = await this.overlayService.loading({
       message: this.toastMessage
     });
+
+    if(this.dt_aprovacao > this.dt_expiracao){
+      alert('Data Expiração Crédito não pode ser menor que Data Aprovação Crédito!');  
+      loading.remove();
+      return;
+    }
+
     try {
       const cadastroCredito = '';
       if (!this.creditoId) {

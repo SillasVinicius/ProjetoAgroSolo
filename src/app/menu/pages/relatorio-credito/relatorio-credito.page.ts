@@ -375,7 +375,7 @@ export class RelatorioCreditoPage implements OnInit {
             width: '*'
           }
         ],
-        margin: [10, 10]
+        margin: [15, 15]
       },
 
       pageOrientation: 'landscape',
@@ -416,7 +416,7 @@ export class RelatorioCreditoPage implements OnInit {
           { text: ""},
           { text: ""},
           { text: ""},
-          { text: "Registros: "+this.listaCredito.length},
+          { text: "Registros: " + this.listaCredito.length},
           { text: ""},
         ]
       },

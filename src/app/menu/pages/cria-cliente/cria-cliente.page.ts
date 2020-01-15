@@ -305,6 +305,8 @@ export class CriaClientePage implements OnInit {
     const loading = await this.overlayService.loading({
       message: this.toastMessage
     });
+   
+    
     try {
       const cliente = '';
       if (!this.clienteId) {
