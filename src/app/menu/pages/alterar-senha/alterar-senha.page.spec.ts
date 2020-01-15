@@ -1,26 +1,26 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AlteraUsuarioPage } from './altera-usuario.page';
+import { AlterarSenhaPage } from './alterar-senha.page';
 
-describe('AlteraUsuarioPage', () => {
-  let component: AlteraUsuarioPage;
-  let fixture: ComponentFixture<AlteraUsuarioPage>;
+describe('AlterarSenhaPage', () => {
+  let component: AlterarSenhaPage;
+  let fixture: ComponentFixture<AlterarSenhaPage>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AlteraUsuarioPage ],
+      declarations: [ AlterarSenhaPage ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AlteraUsuarioPage);
+    fixture = TestBed.createComponent(AlterarSenhaPage);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
- 
+
   it('should create', () => {
     expect(component).toBeTruthy();
   });
