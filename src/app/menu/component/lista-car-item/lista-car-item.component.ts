@@ -15,6 +15,7 @@ export class ListaCarItemComponent implements OnInit {
   @Input() cadastroAmbientalRural: CadastroAmbientalRural;
   @Output() update = new EventEmitter<CadastroAmbientalRural>();
   @Output() delete = new EventEmitter<CadastroAmbientalRural>();
+  @Output() view = new EventEmitter<CadastroAmbientalRural>();
 
   openLink(){
     this.iab.create(`${this.cadastroAmbientalRural.arquivo}`, `_system`);

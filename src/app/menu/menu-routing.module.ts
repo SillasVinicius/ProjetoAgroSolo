@@ -24,6 +24,10 @@ const routes: Routes = [
         loadChildren: './pages/cria-outorga/cria-outorga.module#CriaOutorgaPageModule'
       },
       {
+        path: 'viewOutorga/:id/view',
+        loadChildren: './pages/cria-outorga/cria-outorga.module#CriaOutorgaPageModule'
+      },      
+      {
         path: 'updateCliente/:id',
         loadChildren: './pages/cria-cliente/cria-cliente.module#CriaClientePageModule'
       },

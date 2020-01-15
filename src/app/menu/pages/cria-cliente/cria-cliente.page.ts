@@ -16,20 +16,20 @@ import { UsuarioService } from 'src/app/core/services/usuario.service';
   styleUrls: ['./cria-cliente.page.scss'],
   animations: [
     trigger('tamanhoArquivo', [
-      state('semArquivo', style({ 'height': '100px'})),
-      state('comArquivo', style({ 'height': '250px'})),
+      state('semArquivo', style({ 'height': '100px' })),
+      state('comArquivo', style({ 'height': '250px' })),
       transition('antes => depois', [style({ transition: '0.2s' }), animate('100ms 0s ease-in')]),
       transition('depois => antes', [style({ transition: '0.2s' }), animate('100ms 0s ease-in')])
     ]),
     trigger('marginBotao', [
-      state('semArquivo', style({ 'margin-top': '2px'})),
-      state('comArquivo', style({ 'margin-top': '30px'})),
+      state('semArquivo', style({ 'margin-top': '2px' })),
+      state('comArquivo', style({ 'margin-top': '30px' })),
       transition('antes => depois', [style({ transition: '0.1s' }), animate('100ms 0s ease-in')]),
       transition('depois => antes', [style({ transition: '0.1s' }), animate('100ms 0s ease-in')])
     ]),
   ]
 })
-export class CriaClientePage implements OnInit { 
+export class CriaClientePage implements OnInit {
   // Cliente
   clienteForm: FormGroup;
   clienteId: string = undefined;
@@ -42,16 +42,38 @@ export class CriaClientePage implements OnInit {
   toastMessage = '...';
   liberaArquivo = false;
   liberaAlterar = false;
+  
+ 
+
+  //liberaIr = false;
 
   // FOTOS
   public uploadPercent: Observable<number>;
   public downloadUrl: Observable<string>;
   public urlFoto: string;
+
+  public uploadIr: Observable<number>;
+  public urlIr: string;
+  arquivoIr: Object;
+
+  public uploadCnh: Observable<number>;
+  public urlCnh: string;
+  arquivoCnh: Object;
+
   arquivos: Object;
   files2: Observable<any[]>;
   fileName = '';
   novaFoto = false;
   fotoAntigo: any;
+
+  irName = '';
+  novoIr = false;
+  irAntigo: any;
+
+  cnhName = '';
+  novoCnh = false;
+  cnhAntigo: any;
+
 
   // Dependencias
   constructor(
@@ -62,7 +84,7 @@ export class CriaClientePage implements OnInit {
     private clienteService: ClienteService,
     private storage: AngularFireStorage,
     private usuarioService: UsuarioService,
-  ) {}
+  ) { }
 
   // metodo que é chamado quando a pagina é carregada
   async ngOnInit() {
@@ -79,96 +101,6 @@ export class CriaClientePage implements OnInit {
     this.acao();
   }
 
-  async openGalery(event: FileList){
-    try {
-      const file = event.item(0);
-        if (file.type.split('/')[0] !== 'image') {
-          await this.overlayService.toast({
-            message: 'tipo de arquivo não pode ser enviado por esse campo :('
-          });
-          return;
-        }
-      this.fileName = file.name;
-      this.arquivos = file;
-      this.uploadFile(this.arquivos);
-      this.novaFoto = true;
-
-    }catch(error){
-      console.error(error);
-    }
-  }
-
-  async uploadFile(file: Object){
-      const ref = this.storage.ref(`${this.fileName}`);
-      const task = ref.put(file);
-      //
-      this.uploadPercent = task.percentageChanges();
-      task.snapshotChanges().pipe(
-        finalize(async () => {
-          const loading = await this.overlayService.loading({
-            message: "Carregando Foto..."
-          });
-
-          this.downloadUrl = ref.getDownloadURL();
-          this.liberaArquivo = true;
-
-          this.downloadUrl.subscribe(async r => {
-            this.urlFoto = r;
-          });
-          loading.dismiss();
-        })
-      ).subscribe();
-  }
-
-  async uploadFileTo(file: Object){
-
-      let idCliente = (this.clienteService.id === '') ? this.clienteId : this.clienteService.id;
-
-      const ref2 = this.storage.ref(`/cliente${idCliente}/${this.fileName}`);
-      const task2 = ref2.put(file);
-
-      task2.snapshotChanges().pipe(
-        finalize(async () => {
-
-          this.downloadUrl = ref2.getDownloadURL();
-          this.liberaArquivo = true;
-          this.liberaAlterar = true;
-
-          this.downloadUrl.subscribe(async r => {
-            this.clienteService.init();
-            await this.clienteService.update({
-              id: idCliente,
-              cpf: this.clienteForm.get('cpf').value,
-              nome: this.clienteForm.get('nome').value,
-              foto: r,
-              nomeFoto: this.fileName,
-              patrimonio: this.clienteForm.get('patrimonio').value,
-              pdtvAgro: this.clienteForm.get('pdtvAgro').value,
-              informacoesAdicionais: this.clienteForm.get('informacoesAdicionais').value,
-              rg: this.clienteForm.get('rg').value,
-              dataNascimento: this.clienteForm.get('dataNascimento').value,
-              telefone: this.clienteForm.get('telefone').value,
-              email: this.clienteForm.get('email').value,
-              senha: this.clienteForm.get('senha').value,
-            });
-          });
-        })
-      ).subscribe();
-  }
-
-  deletePicture(){
-    const ref = this.storage.ref(`${this.fileName}`);
-    const task = ref.delete();
-  }
-
-  deletePicturePasta(){
-    let idCliente =  (this.clienteService.id === '') ? this.clienteId : this.clienteService.id;
-
-    const ref = this.storage.ref(`/cliente${idCliente}/`);
-    ref.child(`${this.fotoAntigo}`).delete();
-  }
-
-  // Cria formulários
   criaFormulario(): void {
     this.clienteForm = this.formBuilder.group({
       nome: this.formBuilder.control('', [Validators.required, Validators.minLength(3)]),
@@ -177,7 +109,7 @@ export class CriaClientePage implements OnInit {
         Validators.minLength(14),
         Validators.maxLength(18)
       ]),
-      
+
       rg: this.formBuilder.control('', [
         Validators.required,
         Validators.minLength(1),
@@ -206,7 +138,7 @@ export class CriaClientePage implements OnInit {
         Validators.required,
         Validators.minLength(3)
       ]),
-      informacoesAdicionais: this.formBuilder.control('', [Validators.minLength(0),Validators.maxLength(400)])
+      informacoesAdicionais: this.formBuilder.control('', [Validators.minLength(0), Validators.maxLength(400)])
     });
   }
 
@@ -261,7 +193,7 @@ export class CriaClientePage implements OnInit {
     this.clienteService
       .get(clienteId)
       .pipe(take(1))
-      .subscribe(({ nome, cpf, patrimonio, pdtvAgro, informacoesAdicionais, rg, telefone, dataNascimento, email, senha, foto, nomeFoto}) => {
+      .subscribe(({ nome, cpf, patrimonio, pdtvAgro, informacoesAdicionais, rg, telefone, dataNascimento, email, senha, foto, nomeFoto, impostoRenda, nomeIr, cnh, nomeCnh }) => {
         this.clienteForm.get('nome').setValue(nome),
           this.clienteForm.get('cpf').setValue(cpf),
           this.clienteForm.get('patrimonio').setValue(patrimonio),
@@ -273,9 +205,16 @@ export class CriaClientePage implements OnInit {
           this.clienteForm.get('email').setValue(email),
           this.clienteForm.get('senha').setValue(senha),
           this.urlFoto = foto;
-          this.fileName = nomeFoto;
-          this.fotoAntigo = nomeFoto;
+        this.urlIr = impostoRenda;
+        this.fileName = nomeFoto;
+        this.fotoAntigo = nomeFoto;
+        this.irName = nomeIr;
+        this.irAntigo = nomeIr;
+        this.urlCnh = cnh;
+        this.cnhAntigo = nomeCnh;
+        this.cnhName = nomeCnh;
       });
+     // console.log(this.irAntigo, this.cnhAntigo);
   }
 
   async cadastraListaGlobal(id: string) {
@@ -299,7 +238,7 @@ export class CriaClientePage implements OnInit {
       senha: this.clienteForm.get('senha').value,
     });
   }
-  
+
   // método que envia os dados do formulário para o banco de dados
   async onSubmit(): Promise<void> {
     const loading = await this.overlayService.loading({
@@ -315,8 +254,26 @@ export class CriaClientePage implements OnInit {
         this.uploadFileTo(this.arquivos);
       } else {
 
+          if (this.novoIr) {
+             if (this.irAntigo !== "" && this.irAntigo !== undefined) {
+              this.deleteArquivosPasta("irCliente", this.irAntigo);
+             }
+            this.uploadArquivos(this.arquivoIr, "irCliente", this.irName, "IR");
+            this.novoIr = false;
+            console.log(this.novoIr);
+          }
+
+          if (this.novoCnh) {
+            if (this.cnhAntigo !== "" && this.cnhAntigo !== undefined) {
+               this.deleteArquivosPasta("cnhCliente", this.cnhAntigo);
+             }
+            this.uploadArquivos(this.arquivoCnh, "cnhCliente", this.cnhName, "CNH");
+            this.novoCnh = false;
+            console.log(this.novoCnh);
+          }
+
         if (this.novaFoto) {
-          if(this.fotoAntigo !== "") {
+          if (this.fotoAntigo !== "" && this.fotoAntigo !== undefined) {
             this.deletePicturePasta();
             // deleta a foto temporaria que foi feito upload no servidor
             this.deletePicture();
@@ -339,4 +296,193 @@ export class CriaClientePage implements OnInit {
       loading.dismiss();
     }
   }
+
+  async uploadFile(file: Object) {
+    const ref = this.storage.ref(`${this.fileName}`);
+    const task = ref.put(file);
+    //
+    this.uploadPercent = task.percentageChanges();
+    task.snapshotChanges().pipe(
+      finalize(async () => {
+        const loading = await this.overlayService.loading({
+          message: "Carregando Foto..."
+        });
+
+        this.downloadUrl = ref.getDownloadURL();
+        this.liberaArquivo = true;
+
+        this.downloadUrl.subscribe(async r => {
+          this.urlFoto = r;
+        });
+        loading.dismiss();
+      })
+    ).subscribe();
+  }
+
+  async openGalery(event: FileList) {
+    try {
+      const file = event.item(0);
+      if (file.type.split('/')[0] !== 'image') {
+        await this.overlayService.toast({
+          message: 'tipo de arquivo não pode ser enviado por esse campo :('
+        });
+        return;
+      }
+      this.fileName = file.name;
+      this.arquivos = file;
+      this.uploadFile(this.arquivos);
+      this.novaFoto = true;
+
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  async openArquivos(event: FileList, flagOp: string) {
+    try {
+      const file = event.item(0);
+      if (file.type.split('/')[0] === 'image') {
+        await this.overlayService.toast({
+          message: 'tipo de arquivo não pode ser enviado por esse campo :('
+        });
+        return;
+      }
+
+      switch (flagOp) {
+        case "IR":
+          this.irName = file.name;
+          this.arquivoIr = file;
+          this.novoIr = true;
+          break;
+        case "CNH":
+          this.cnhName = file.name;
+          this.arquivoCnh = file;
+          this.novoCnh = true;
+          break;
+      }
+    } catch (error) {
+      console.error(error);
+    }
+   
+  }
+
+  async uploadFileTo(file: Object) {
+
+    let idCliente = (this.clienteService.id === '') ? this.clienteId : this.clienteService.id;
+
+    const ref2 = this.storage.ref(`/cliente${idCliente}/${this.fileName}`);
+    const task2 = ref2.put(file);
+
+    task2.snapshotChanges().pipe(
+      finalize(async () => {
+
+        this.downloadUrl = ref2.getDownloadURL();
+        this.liberaArquivo = true;
+        this.liberaAlterar = true;
+
+        this.downloadUrl.subscribe(async r => {
+          this.clienteService.init();
+          await this.clienteService.update({
+            id: idCliente,
+            cpf: this.clienteForm.get('cpf').value,
+            nome: this.clienteForm.get('nome').value,
+            foto: r,
+            nomeFoto: this.fileName,
+            patrimonio: this.clienteForm.get('patrimonio').value,
+            pdtvAgro: this.clienteForm.get('pdtvAgro').value,
+            informacoesAdicionais: this.clienteForm.get('informacoesAdicionais').value,
+            rg: this.clienteForm.get('rg').value,
+            dataNascimento: this.clienteForm.get('dataNascimento').value,
+            telefone: this.clienteForm.get('telefone').value,
+            email: this.clienteForm.get('email').value,
+            senha: this.clienteForm.get('senha').value,
+          });
+        });
+      })
+    ).subscribe();
+  }
+
+  async uploadArquivos(file: Object, caminho: string, fileName: string, flagOp: string) {
+
+    let idCliente = (this.clienteService.id === '') ? this.clienteId : this.clienteService.id;
+
+    const ref2 = this.storage.ref(`/${caminho}${idCliente}/${fileName}`);
+    const task2 = ref2.put(file);
+
+    task2.snapshotChanges().pipe(
+      finalize(async () => {
+
+        this.downloadUrl = ref2.getDownloadURL();
+
+        this.downloadUrl.subscribe(async r => {
+          this.clienteService.init();
+          if (flagOp == "IR") {
+            await this.salvarIr(idCliente, r);      
+          }
+          if (flagOp == "CNH") {
+            await this.salvarCnh(idCliente, r);
+          }
+        });
+      })
+    ).subscribe();
+  }
+
+  salvarIr(idCliente: string, enderecoArquivo: string) {
+    this.clienteService.update({
+      id: idCliente,
+      cpf: this.clienteForm.get('cpf').value,
+      nome: this.clienteForm.get('nome').value,
+      patrimonio: this.clienteForm.get('patrimonio').value,
+      pdtvAgro: this.clienteForm.get('pdtvAgro').value,
+      informacoesAdicionais: this.clienteForm.get('informacoesAdicionais').value,
+      rg: this.clienteForm.get('rg').value,
+      dataNascimento: this.clienteForm.get('dataNascimento').value,
+      telefone: this.clienteForm.get('telefone').value,
+      email: this.clienteForm.get('email').value,
+      senha: this.clienteForm.get('senha').value,
+      impostoRenda: enderecoArquivo,
+      nomeIr: this.irName
+    });
+  }
+
+  salvarCnh(idCliente: string, enderecoArquivo: string) {
+    this.clienteService.update({
+      id: idCliente,
+      cpf: this.clienteForm.get('cpf').value,
+      nome: this.clienteForm.get('nome').value,
+      patrimonio: this.clienteForm.get('patrimonio').value,
+      pdtvAgro: this.clienteForm.get('pdtvAgro').value,
+      informacoesAdicionais: this.clienteForm.get('informacoesAdicionais').value,
+      rg: this.clienteForm.get('rg').value,
+      dataNascimento: this.clienteForm.get('dataNascimento').value,
+      telefone: this.clienteForm.get('telefone').value,
+      email: this.clienteForm.get('email').value,
+      senha: this.clienteForm.get('senha').value,
+      cnh: enderecoArquivo,
+      nomeCnh: this.cnhName
+    });
+  }
+
+  deletePicture() {
+    const ref = this.storage.ref(`${this.fileName}`);
+    const task = ref.delete();
+  }
+
+  deletePicturePasta() {
+    let idCliente = (this.clienteService.id === '') ? this.clienteId : this.clienteService.id;
+
+    const ref = this.storage.ref(`/cliente${idCliente}/`);
+    ref.child(`${this.fotoAntigo}`).delete();
+  }
+
+  deleteArquivosPasta(caminho: string, nomeArquivo: string) {
+    let idCliente = (this.clienteService.id === '') ? this.clienteId : this.clienteService.id;
+
+    const ref = this.storage.ref(`/${caminho}${idCliente}/`);
+    ref.child(`${nomeArquivo}`).delete();
+  }
+
+  // Cria formulários
+
+
 }
