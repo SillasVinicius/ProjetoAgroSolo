@@ -19,7 +19,7 @@
     <ion-item-option color="tertiary" (click)="update.emit(cliente); sliding.close()" *ngIf="admin">
       <ion-icon slot="icon-only" name="create"></ion-icon>
     </ion-item-option>
-    <ion-item-option color="tertiary" (click)="update.emit(cliente); sliding.close()" *ngIf="!admin">
+    <ion-item-option color="tertiary" (click)="view.emit(cliente); sliding.close()" *ngIf="!admin">
       <ion-icon slot="icon-only" name="eye"></ion-icon>
     </ion-item-option>
   </ion-item-options>
