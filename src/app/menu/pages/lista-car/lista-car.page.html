@@ -38,7 +38,8 @@
   <ion-list *ngIf="cadastrosAmbientaisRurais$ | async as cadastrosAmbientaisRurais">
     <ng-container *ngIf="cadastrosAmbientaisRurais.length > 0; else semCadastrosAmbientaisRurais">
       <app-lista-car-item *ngFor="let cadastroAmbientalRural of cadastrosAmbientaisRurais"
-        [cadastroAmbientalRural]="cadastroAmbientalRural">
+        [cadastroAmbientalRural]="cadastroAmbientalRural"
+        (view)="viewCar($event)">
       </app-lista-car-item>
     </ng-container>
     <ng-template #semCadastrosAmbientaisRurais>

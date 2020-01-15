@@ -70,6 +70,10 @@ export class ListaCARPage implements OnInit {
     this.navCtrl.navigateForward(`menu/ambiental/UpdateCadastroAmbientalRural/${cadastroAmbientalRural.id}`);
   }
 
+  viewCar(cadastroAmbientalRural: CadastroAmbientalRural): void {
+    this.navCtrl.navigateForward(`menu/ambiental/viewCar/${cadastroAmbientalRural.id}/view`);
+  }
+
   async deletar(cadastroAmbientalRural: CadastroAmbientalRural): Promise<void> {
     await this.overlayService.alert({
       message: `Você realmente deseja deletar o cadastro Ambiental Rural do Cliente: ${cadastroAmbientalRural.nomeCliente} - ${cadastroAmbientalRural.descricao}?`,
