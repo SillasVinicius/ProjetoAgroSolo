@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { NavController } from '@ionic/angular';
+import { NavController, ModalController } from '@ionic/angular';
 import { UsuarioService } from 'src/app/core/services/usuario.service';
 import { ClienteService } from 'src/app/core/services/cliente.service';
 import { Cliente } from '../../models/cliente.model';
@@ -14,6 +14,7 @@ import { LicencaAmbiental } from '../../models/la.model';
 import { LaService } from 'src/app/core/services/la.service';
 import { DeclaracaoAmbiental } from '../../models/da.model';
 import { DaService } from 'src/app/core/services/da.service';
+import { AlterarSenhaPage } from 'src/app/menu/pages/alterar-senha/alterar-senha.page'
 
 @Component({
   selector: 'app-home',
@@ -60,7 +61,8 @@ export class HomePage implements OnInit {
     private outorgaService: OutorgaService,
     private licencaAmbientalService: LaService,
     private daService: DaService,
-    private creditoService: CreditoService
+    private creditoService: CreditoService,
+    private ModalController: ModalController,
   ) { }
   linkCliente() {
     this.navCtrl.navigateForward('/menu/cliente');
@@ -280,5 +282,16 @@ export class HomePage implements OnInit {
       });
     });
 
+  }
+
+  async openModal() {
+    const modal = await this.ModalController.create( {
+      component:AlterarSenhaPage, 
+      componentProps: {
+        'id_usu': this.usuario.id,
+        'validar_usuario': this.usuario.admin
+      }
+    } )
+    modal.present(); 
   }
 }

@@ -1,0 +1,33 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-button class="main-button" slot="start" (click)="closeModal()" >
+      <ion-icon name="arrow-round-back"></ion-icon>
+    </ion-button>
+
+
+    <ion-title>Alterar Senha...</ion-title>
+    <!-- <app-logout-button slot="end" menu="main-menu"></app-logout-button> -->
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-input [type]="this.mostraSenha ? 'password' : 'text'" color="primary" placeholder="Digite a antiga senha..."
+   (ionChange)="habilitar_senha_antiga($event.target.value);"> </ion-input>
+
+  <ion-input [type]="this.mostraSenha ? 'password' : 'text'" color="primary" placeholder="Digite a nova senha ..."
+  (ionChange)="habilitar_senha($event.target.value);" minlength="6"></ion-input>
+
+  <ion-input [type]="this.mostraSenha ? 'password' : 'text'" color="primary" placeholder="Confirme a nova senha..."
+  (ionChange)="habilitar_senha_novamente($event.target.value);"  minlength="6">
+  </ion-input>
+
+  <ion-button expand="block" (click)="alteraSenha()"  [disabled]="this.habilitar_botao" >
+    <ion-icon name="key"></ion-icon>
+  </ion-button>
+
+  <ion-button expand="block" (click)="mostrarSenha()" >
+    <ion-icon [name]="this.mostraSenha ? 'eye-off' : 'eye'"></ion-icon>
+  </ion-button> 
+
+</ion-content>
+<img src="../../../../assets/img/grama.png" alt="" style="margin-bottom: 0px;"><ion-header></ion-header>
