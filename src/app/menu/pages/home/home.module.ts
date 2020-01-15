@@ -17,3 +17,4 @@ const routes: Routes = [
   entryComponents: [AlterarSenhaPage]
 })
 export class HomePageModule {}
+ 

@@ -127,7 +127,7 @@ export class RecuperarSenhaPage implements OnInit {
         senha: "agro123",
         email: this.usuarioEmail,
       });
-    }
+    } 
     else {
       this.clienteService.init();
       await this.clienteService.update({

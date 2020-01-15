@@ -11,7 +11,7 @@ const routes: Routes = [
     component: AlteraUsuarioPage
   }
 ];
-
+ 
 @NgModule({
 imports: [SharedModule, RouterModule.forChild(routes), FormsModule, ReactiveFormsModule, BrMaskerModule],
   declarations: [AlteraUsuarioPage]
