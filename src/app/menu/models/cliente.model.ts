@@ -12,5 +12,8 @@ export interface Cliente {
   informacoesAdicionais?: string;
   foto?: string;
   nomeFoto?: string;
-
+  impostoRenda?: string;
+  nomeIr?: string;
+  cnh?: string;
+  nomeCnh?: string;
 }
