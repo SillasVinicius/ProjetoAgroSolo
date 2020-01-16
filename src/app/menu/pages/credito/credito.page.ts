@@ -194,17 +194,18 @@ export class CreditoPage implements OnInit {
   }
 
   // método que envia os dados do formulário para o banco de dados
-  async onSubmit(): Promise<void> {
-    
+  async onSubmit(): Promise<void> {    
 
     const loading = await this.overlayService.loading({
       message: this.toastMessage
     });
 
     if(this.dt_aprovacao > this.dt_expiracao){
-      alert('Data Expiração Crédito não pode ser menor que Data Aprovação Crédito!');  
-      loading.remove();
-      return;
+      await this.overlayService.toast({
+        message: "Data de Aprovação não pode ser maior que a Data de Expiração!"
+        });
+        loading.dismiss();
+        return;      
     }
 
     try {

@@ -11,6 +11,9 @@ import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 import { File } from '@ionic-native/file/ngx';
 import { UsuarioService } from 'src/app/core/services/usuario.service';
 import { trigger, state, transition, style, animate } from '@angular/animations';
+import { ClienteService } from 'src/app/core/services/cliente.service';
+import { Cliente } from 'src/app/menu/models/cliente.model';
+import { Usuario } from 'src/app/autentificacao/pages/login/model/usuario.model';
 
 @Component({
   selector: 'app-altera-usuario',
@@ -42,6 +45,7 @@ export class AlteraUsuarioPage implements OnInit {
   liberaArquivo = false;
   liberaAlterar = false;
 
+
   //FOTOS
   public uploadPercent: Observable<number>;
   public downloadUrl: Observable<string>;
@@ -49,6 +53,13 @@ export class AlteraUsuarioPage implements OnInit {
   arquivos: Object;
   files2: Observable<any[]>;
   fileName = '';
+
+  //Validação de email;
+  clientes : Cliente [] = [];
+  usuarios : Usuario [] = [];
+  validar_email_existe : boolean;
+  email_atual: string;
+
 
   // Dependencias
   constructor(
@@ -61,13 +72,28 @@ export class AlteraUsuarioPage implements OnInit {
     private database: AngularFirestore,
     private camera: Camera,
     private platform: Platform,
-    private file: File
+    private file: File,
+    private clienteService: ClienteService
   ){}
 
+  
   // metodo que é chamado quando a pagina é carregada
   ngOnInit() {
     this.criaFormulario();
     this.usuarioService.init();
+    this.usuarioService.getAll().subscribe((u: Usuario[]) => {
+        for(let i = 0; i<u.length; i++){
+          this.usuarios[i] = u[i];
+        }
+      }); 
+
+      this.clienteService.init();
+      this.clienteService.getAll().subscribe((c: Cliente[]) => {
+          for(let i = 0; i<c.length; i++){
+            this.clientes[i] = c[i];
+          }
+        }); 
+    
     this.acao();
   }
 
@@ -202,6 +228,8 @@ export class AlteraUsuarioPage implements OnInit {
 
 
       });
+
+      this.email_atual = this.updateUsuarioForm.get('email').value;
   }
 
   // metodos get que pegam o valor do input no formulário
@@ -219,10 +247,14 @@ export class AlteraUsuarioPage implements OnInit {
 
   // método que envia os dados do formulário para o banco de dados
   async onSubmit(): Promise<void> {
+    
     const loading = await this.overlayService.loading({
       message: 'Alterando Perfil...'
     });
+
+
     try {
+      
       this.deletePicture();
 
       this.uploadFileTo(this.arquivos);

@@ -5,7 +5,6 @@ import { Cliente } from 'src/app/menu/models/cliente.model';
 import { UsuarioService } from 'src/app/core/services/usuario.service';
 import { ClienteService } from 'src/app/core/services/cliente.service';
 
-
 @Component({
   selector: 'app-recuperar-senha',
   templateUrl: './recuperar-senha.page.html',

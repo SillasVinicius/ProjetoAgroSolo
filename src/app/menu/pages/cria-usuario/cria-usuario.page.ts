@@ -11,6 +11,8 @@ import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 import { File } from '@ionic-native/file/ngx';
 import { trigger, state, transition, style, animate } from '@angular/animations';
 import { ClienteService } from 'src/app/core/services/cliente.service';
+import { Cliente } from 'src/app/menu/models/cliente.model';
+import { Usuario } from 'src/app/autentificacao/pages/login/model/usuario.model';
 
 @Component({
   selector: 'app-cria-usuario',
@@ -18,14 +20,14 @@ import { ClienteService } from 'src/app/core/services/cliente.service';
   styleUrls: ['./cria-usuario.page.scss'],
   animations: [
     trigger('tamanhoArquivo', [
-      state('semArquivo', style({ 'height': '100px'})),
-      state('comArquivo', style({ 'height': '250px'})),
+      state('semArquivo', style({ 'height': '100px' })),
+      state('comArquivo', style({ 'height': '250px' })),
       transition('antes => depois', [style({ transition: '0.2s' }), animate('100ms 0s ease-in')]),
       transition('depois => antes', [style({ transition: '0.2s' }), animate('100ms 0s ease-in')])
     ]),
     trigger('marginBotao', [
-      state('semArquivo', style({ 'margin-top': '2px'})),
-      state('comArquivo', style({ 'margin-top': '30px'})),
+      state('semArquivo', style({ 'margin-top': '2px' })),
+      state('comArquivo', style({ 'margin-top': '30px' })),
       transition('antes => depois', [style({ transition: '0.1s' }), animate('100ms 0s ease-in')]),
       transition('depois => antes', [style({ transition: '0.1s' }), animate('100ms 0s ease-in')])
     ]),
@@ -56,6 +58,12 @@ export class CriaUsuarioPage implements OnInit {
   novaFoto = false;
   fotoAntigo: any;
 
+  //Validação de email;
+  clientes: Cliente[] = [];
+  usuarios: Usuario[] = [];
+  validar_email_existe: boolean;
+  email_atual: string;
+
   // Dependencias
   constructor(
     private formBuilder: FormBuilder,
@@ -68,7 +76,7 @@ export class CriaUsuarioPage implements OnInit {
     private platform: Platform,
     private file: File,
     private clienteService: ClienteService,
-  ) {}
+  ) { }
 
   // metodo que é chamado quando a pagina é carregada
   ngOnInit() {
@@ -83,92 +91,106 @@ export class CriaUsuarioPage implements OnInit {
       this.admin = false;
     }
 
+    this.usuarioService.init();
+    this.usuarioService.getAll().subscribe((u: Usuario[]) => {
+        for(let i = 0; i<u.length; i++){
+          this.usuarios[i] = u[i];
+        }
+      }); 
+
+      this.clienteService.init();
+      this.clienteService.getAll().subscribe((c: Cliente[]) => {
+          for(let i = 0; i<c.length; i++){
+            this.clientes[i] = c[i];
+          }
+        }); 
+
     this.acao();
   }
-  
-  async openGalery(event: FileList){
+
+  async openGalery(event: FileList) {
     try {
       const file = event.item(0);
-        if (file.type.split('/')[0] !== 'image') {
-          await this.overlayService.toast({
-            message: 'tipo de arquivo não pode ser enviado por esse campo :('
-          });
-          return;
-        }
+      if (file.type.split('/')[0] !== 'image') {
+        await this.overlayService.toast({
+          message: 'tipo de arquivo não pode ser enviado por esse campo :('
+        });
+        return;
+      }
       this.fileName = file.name;
       this.arquivos = file;
       this.uploadFile(this.arquivos);
       this.novaFoto = true;
 
-    }catch(error){
+    } catch (error) {
       console.error(error);
     }
   }
 
-  async uploadFile(file: Object){
-      const ref = this.storage.ref(`foto${this.fileName}`);
-      const task = ref.put(file);
-      //
-      this.uploadPercent = task.percentageChanges();
-      task.snapshotChanges().pipe(
-        finalize(async () => {
-          const loading = await this.overlayService.loading({
-            message: "Carregando Foto..."
-          });
-          this.downloadUrl = ref.getDownloadURL();
-          this.liberaArquivo = true;
-          this.downloadUrl.subscribe(async r => {
-            this.urlFoto = r;
-          });
+  async uploadFile(file: Object) {
+    const ref = this.storage.ref(`foto${this.fileName}`);
+    const task = ref.put(file);
+    //
+    this.uploadPercent = task.percentageChanges();
+    task.snapshotChanges().pipe(
+      finalize(async () => {
+        const loading = await this.overlayService.loading({
+          message: "Carregando Foto..."
+        });
+        this.downloadUrl = ref.getDownloadURL();
+        this.liberaArquivo = true;
+        this.downloadUrl.subscribe(async r => {
+          this.urlFoto = r;
+        });
 
-          loading.dismiss();
-        })
-      ).subscribe();
+        loading.dismiss();
+      })
+    ).subscribe();
   }
 
-    async uploadFileTo(file: Object){
+  async uploadFileTo(file: Object) {
 
-        let idUser = (this.usuarioService.id === '') ? this.usuarioId : this.usuarioService.id;
+    let idUser = (this.usuarioService.id === '') ? this.usuarioId : this.usuarioService.id;
 
-        const ref2 = this.storage.ref(`/AdmnistradorFoto${idUser}/${this.fileName}`);
-        const task2 = ref2.put(file);
+    const ref2 = this.storage.ref(`/AdmnistradorFoto${idUser}/${this.fileName}`);
+    const task2 = ref2.put(file);
 
-        try{
+    try {
 
-          task2.snapshotChanges().pipe(
-            finalize(async () => {
+      task2.snapshotChanges().pipe(
+        finalize(async () => {
 
-              this.downloadUrl = ref2.getDownloadURL();
-              this.liberaArquivo = true;
-              this.liberaAlterar = true;
+          this.downloadUrl = ref2.getDownloadURL();
+          this.liberaArquivo = true;
+          this.liberaAlterar = true;
 
-              this.downloadUrl.subscribe(async r => {
-                  this.usuarioService.init();
-                  await this.usuarioService.update({
-                    id: idUser,
-                    nome: this.usuarioForm.get('nome').value,
-                    email: this.usuarioForm.get('email').value,
-                    senha: this.usuarioForm.get('senha').value,
-                    foto: r,
-                    nomeFoto: this.fileName
-                  });
-              });
-            })
-          ).subscribe();
+          this.downloadUrl.subscribe(async r => {
+            this.usuarioService.init();
+            await this.usuarioService.update({
+              id: idUser,
+              nome: this.usuarioForm.get('nome').value,
+              email: this.usuarioForm.get('email').value,
+              senha: this.usuarioForm.get('senha').value,
+              foto: r,
+              nomeFoto: this.fileName
+            });
+          });
+        })
+      ).subscribe();
 
-        }catch(error){
-          alert(error);
-        }
-
-
+    } catch (error) {
+      alert(error);
     }
 
-  deletePicture(){
+
+  }
+
+  deletePicture() {
     const ref = this.storage.ref(`foto${this.fileName}`);;
     const task = ref.delete();
   }
 
-  deletePicturePasta(){
+  deletePicturePasta() {
     let idUser = (this.usuarioService.id === '') ? this.usuarioId : this.usuarioService.id;
 
     const ref = this.storage.ref(`/AdmnistradorFoto${idUser}/`);
@@ -218,12 +240,13 @@ export class CriaUsuarioPage implements OnInit {
       .get(usuarioId)
       .pipe(take(1))
       .subscribe(({ nome, email, senha, foto, nomeFoto }) => {
-          this.usuarioForm.get('senha').setValue(senha),
+        this.usuarioForm.get('senha').setValue(senha),
           this.usuarioForm.get('nome').setValue(nome),
           this.usuarioForm.get('email').setValue(email),
+          this.email_atual = email,
           this.urlFoto = foto;
-          this.fileName = nomeFoto;
-          this.fotoAntigo = nomeFoto;
+        this.fileName = nomeFoto;
+        this.fotoAntigo = nomeFoto;
       });
   }
 
@@ -238,11 +261,66 @@ export class CriaUsuarioPage implements OnInit {
   }
 
 
+
+
   // método que envia os dados do formulário para o banco de dados
   async onSubmit(): Promise<void> {
     const loading = await this.overlayService.loading({
       message: this.toastMessage
     });
+    this.validar_email_existe = false;
+    // if para alteração(*) e o else para inserção(#) 
+    if (this.email_atual)//*
+    {
+      //validar se o usuario está inserido o mesmo email.
+      if (this.email_atual == this.usuarioForm.get('email').value)
+        this.validar_email_existe = false;
+      else
+      {
+        for (let i = 0; i < this.usuarios.length; i++) {
+          if (this.usuarios[i].email == this.usuarioForm.get('email').value) {
+            this.validar_email_existe = true;     
+            break;
+          }
+          }
+  
+          if (!this.validar_email_existe) {
+            for (let i = 0; i < this.clientes.length; i++) {
+              if (this.clientes[i].email == this.usuarioForm.get('email').value) {
+                this.validar_email_existe = true;
+                break;
+              }
+            }
+          }
+      }
+    }
+    else //#
+    {
+      for (let i = 0; i < this.usuarios.length; i++) {
+        if (this.usuarios[i].email == this.usuarioForm.get('email').value) {
+          this.validar_email_existe = true;     
+          break;
+        }
+        }
+
+        if (!this.validar_email_existe) {
+          for (let i = 0; i < this.clientes.length; i++) {
+            if (this.clientes[i].email == this.usuarioForm.get('email').value) {
+              this.validar_email_existe = true;
+              break;
+            }
+          }
+        }
+    }
+
+    if (this.validar_email_existe) {
+      await this.overlayService.toast({
+        message: "Este email já está sendo usado por outro usuário!"
+      });
+      loading.dismiss();
+      return;
+    }
+
     try {
       const usuario = '';
       if (!this.usuarioId) {
@@ -254,7 +332,7 @@ export class CriaUsuarioPage implements OnInit {
       } else {
 
         if (this.novaFoto) {
-          if(this.fotoAntigo !== "") {
+          if (this.fotoAntigo !== "") {
             this.deletePicturePasta();
             // deleta a foto temporaria que foi feito upload no servidor
             this.deletePicture();
@@ -282,9 +360,9 @@ export class CriaUsuarioPage implements OnInit {
 
     if (data.length > 10) {
       //2019-10-04T08:45:55.822-03:00
-      let ano: string = data.substring(0,4);
-      let mes: string = data.substring(5,7);
-      let dia: string = data.substring(8,10);
+      let ano: string = data.substring(0, 4);
+      let mes: string = data.substring(5, 7);
+      let dia: string = data.substring(8, 10);
 
       return `${dia}/${mes}/${ano}`;
     }
@@ -297,8 +375,8 @@ export class CriaUsuarioPage implements OnInit {
     if (data.length === 10) {
       //04/03/2001
       let ano: string = data.substring(6);
-      let mes: string = data.substring(3,5);
-      let dia: string = data.substring(0,2);
+      let mes: string = data.substring(3, 5);
+      let dia: string = data.substring(0, 2);
 
       return `${mes}/${dia}/${ano}`;
     }
