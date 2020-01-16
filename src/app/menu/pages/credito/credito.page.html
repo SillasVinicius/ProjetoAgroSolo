@@ -111,6 +111,11 @@
             </ion-col>
           </ion-row>
         </ion-grid>
+
+        <div *ngIf="!admin" text-center>
+          <p class="nomes">Arquivo Carregado</p>
+        </div>
+
         <div class="fileUpload" text-center *ngIf="admin">
           <div *ngIf="uploadPercent | async as pct">
             Progress: {{ pct | number }}%
