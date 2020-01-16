@@ -67,6 +67,9 @@ export class ListaOutorgaPage implements OnInit {
     this.navCtrl.navigateForward(`/menu/updateOutorga/${outorga.id}`);
   }
 
+  viewOutorga(outorga: Outorga): void {
+    this.navCtrl.navigateForward(`/menu/viewOutorga/${outorga.id}/view`);
+  }
 
   async deletar(outorga: Outorga): Promise<void> {
     await this.overlayService.alert({
@@ -89,7 +92,7 @@ export class ListaOutorgaPage implements OnInit {
   }
 
   deletarArquivoOutorga(outorga: Outorga) {
-    const ref = this.storage.ref(`/DeclaracaoAmbiental${outorga.id}`);
+    const ref = this.storage.ref(`/outorga${outorga.id}/`);
     ref.child(`${outorga.nomeArquivo}`).delete();
   }
 

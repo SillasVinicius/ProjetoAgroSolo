@@ -27,6 +27,7 @@ export class ListaDaItemComponent implements OnInit {
   @Input() declaracaoAmbiental: DeclaracaoAmbiental;
   @Output() update = new EventEmitter<DeclaracaoAmbiental>();
   @Output() delete = new EventEmitter<DeclaracaoAmbiental>();
+  @Output() view = new EventEmitter<DeclaracaoAmbiental>();
 
   ngOnInit(){
     this.clicado = false;

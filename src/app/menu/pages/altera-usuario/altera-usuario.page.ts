@@ -22,7 +22,7 @@ import { trigger, state, transition, style, animate } from '@angular/animations'
       state('comArquivo', style({ 'height': '250px'})),
       transition('antes => depois', [style({ transition: '0.2s' }), animate('100ms 0s ease-in')]),
       transition('depois => antes', [style({ transition: '0.2s' }), animate('100ms 0s ease-in')])
-    ]),
+    ]), 
     trigger('marginBotao', [
       state('semArquivo', style({ 'margin-top': '2px'})),
       state('comArquivo', style({ 'margin-top': '30px'})),

@@ -290,7 +290,7 @@ export class HomePage implements OnInit {
       componentProps: {
         'id_usu': this.usuario.id,
         'validar_usuario': this.usuario.admin
-      }
+      } 
     } )
     modal.present(); 
   }
