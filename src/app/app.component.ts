@@ -32,7 +32,7 @@ export class AppComponent {
       { url: '/menu', icon: 'home', text: 'Home', direction: 'back' },
       { url: '/menu/cliente', icon: 'person-add', text: 'Cliente', direction: 'forward' },
       { url: '/menu/usuario', icon: 'ios-person-add', text: 'Administrador', direction: 'forward' },
-      { url: '/menu/dadosPessoais', icon: 'folder', text: 'Dados Pessoais', direction: 'forward' },
+      //{ url: '/menu/dadosPessoais', icon: 'folder', text: 'Dados Pessoais', direction: 'forward' },
       { url: '/menu/ambiental', icon: 'flower', text: 'Ambiental', direction: 'forward' }
 
     ],
