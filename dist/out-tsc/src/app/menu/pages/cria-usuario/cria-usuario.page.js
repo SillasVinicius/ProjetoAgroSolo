@@ -40,12 +40,10 @@ var CriaUsuarioPage = /** @class */ (function () {
         this.criaFormulario();
         if (this.usuarioService.admin) {
             this.usuarioService.init();
-            console.log('this.usuarioService.init();');
             this.admin = true;
         }
         else {
             this.usuarioService.init();
-            console.log('this.usuarioService.init();');
             this.admin = false;
         }
         this.acao();

@@ -112,7 +112,6 @@ export class CriaClientePage implements OnInit {
     });
 
 
-    console.log(this.validar_email_existente);
     if (!this.validar_email_existente) {
       this.clienteService.init();
       this.clienteService.getAll().subscribe((c: Cliente[]) => {

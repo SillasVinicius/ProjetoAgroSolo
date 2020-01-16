@@ -30,7 +30,6 @@ var ListaClientePage = /** @class */ (function () {
                             this.clientes$ = this.clienteService.getAll();
                             this.clientes$.pipe(take(1)).subscribe(function () { return loading.dismiss(); });
                         }
-                        console.log(this.clientes$);
                         return [2 /*return*/];
                 }
             });

@@ -90,8 +90,6 @@ export class LoginPage implements OnInit {
               console.log('Usuário Logado', this.user); 
               this.usuarioService.setId(r[0].id); 
               this.logar(); 
-              console.log(r[0].id); 
-              console.log(this.logado); 
               this.navCtrl.navigateForward('/menu'); 
               this.usuarioService.logado = true; 
               this.usuarioService.nomeUser = r[0].nome; 
