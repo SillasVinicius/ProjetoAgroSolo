@@ -89,9 +89,30 @@ export class RelatorioCarPage implements OnInit {
     const loading = await this.overlayService.loading();
     this.listaCar = [];
 
+    
+    if (!(this.data_vencimento_ini) && (this.data_vencimento_fim))
+    {
+      await this.overlayService.toast({
+        message: "Informar data inicial do intervalo, relacionado com data de Vencimento!"
+      });
+      loading.remove();
+      return;
+    }
+
+    if ((this.data_vencimento_ini) && !(this.data_vencimento_fim))
+    {
+      await this.overlayService.toast({
+        message: "Informar data final do intervalo, relacionado com data de Vencimento!"
+      });
+      loading.remove();
+      return;
+    }
+
     if (this.data_vencimento_ini > this.data_vencimento_fim)
     {
-      alert("Data inicial não pode ser maior que data final!");
+      await this.overlayService.toast({
+        message: "Data inicial não pode ser maior que data final!"
+      });
       loading.remove();
       return;
     }

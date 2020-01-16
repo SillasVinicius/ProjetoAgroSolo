@@ -114,8 +114,28 @@ export class RelatorioLaPage implements OnInit {
     const loading = await this.overlayService.loading();
     this.listaLa = [];
 
+    if (!(this.data_vencimento_ini) && (this.data_vencimento_fim))
+    {
+      await this.overlayService.toast({
+        message: "Informar data inicial do intervalo, relacionado com data de vencimento!"
+      });
+      loading.remove();
+      return;
+    }
+
+    if ((this.data_vencimento_ini) && !(this.data_vencimento_fim))
+    {
+      await this.overlayService.toast({
+        message: "Informar data final do intervalo, relacionado com data de vencimento!"
+      });
+      loading.remove();
+      return;
+    }
+
     if (this.data_vencimento_ini > this.data_vencimento_fim) {
-      alert("Data inicial não pode ser maior que data final!");
+      await this.overlayService.toast({
+        message: "Data inicial não pode ser maior que data final!"
+      });
       loading.remove();
       return;
     }

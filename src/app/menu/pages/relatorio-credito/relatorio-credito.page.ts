@@ -129,45 +129,56 @@ export class RelatorioCreditoPage implements OnInit {
     const loading = await this.overlayService.loading(); 
     this.listaCredito = [];
    
-
-    if (this.data_aprovacao_ini > this.data_aprovacao_fim)
-    {
-      alert("Data inicial de aprovação não pode ser maior que data final de aprovação!");
-      loading.remove();
-      return;
-    }
-
     if (!(this.data_aprovacao_ini) && (this.data_aprovacao_fim))
     {
-      alert("Informar data inicial de Aprovação!");
+      await this.overlayService.toast({
+        message: "Informar data inicial do intervalo, relacionado com data de Aprovação!"
+      });
       loading.remove();
       return;
     }
 
     if ((this.data_aprovacao_ini) && !(this.data_aprovacao_fim))
     {
-      alert("Informar data final de Aprovação!");
+      await this.overlayService.toast({
+        message: "Informar data final do intervalo, relacionado com data de Aprovação!"
+      });
       loading.remove();
       return;
     }
 
-    if (this.data_expiracao_ini > this.data_expiracao_fim)
+    if (this.data_aprovacao_ini > this.data_aprovacao_fim)
     {
-      alert("Data inicial de expiração não pode ser maior que data final de expiração!");
+      await this.overlayService.toast({
+        message: "Data inicial de aprovação não pode ser maior que data final de aprovação!"
+      });
       loading.remove();
       return;
     }
 
     if (!(this.data_expiracao_ini) && (this.data_expiracao_fim))
     {
-      alert("Informar data inicial de expiração!");
+      await this.overlayService.toast({
+        message: "Informar data inicial do intervalo, relacionado com data de expiração!"
+      });
       loading.remove();
       return;
     }
 
     if ((this.data_expiracao_ini) && !(this.data_expiracao_fim))
     {
-      alert("Informar data final de expiração!");
+      await this.overlayService.toast({
+        message: "Informar data final do intervalo, relacionado com data de expiração!"
+      });
+      loading.remove();
+      return;
+    }
+  
+    if (this.data_expiracao_ini > this.data_expiracao_fim)
+    {
+      await this.overlayService.toast({
+        message: "Data inicial de expiração não pode ser maior que data final de expiração!"
+      });
       loading.remove();
       return;
     }

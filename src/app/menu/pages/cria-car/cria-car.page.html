@@ -34,7 +34,10 @@
     </ion-item>
     <!-- inicio arquivo -->
     <div>
+      
       <ion-card [@tamanhoArquivo]="liberaArquivo ? 'comArquivo' : 'semArquivo'">
+        
+  
         <ion-grid>
           <ion-row align-items-center>
             <ion-col text-center class="teste">
@@ -49,6 +52,11 @@
             </ion-col>
           </ion-row>
         </ion-grid>
+        
+        <div *ngIf="!admin" text-center>
+          <p class="nomes">Arquivo Carregado</p>
+        </div>
+
         <div class="fileUpload" text-center *ngIf="admin">
           <div *ngIf="uploadPercent | async as pct">
             Progress: {{ pct | number }}%
