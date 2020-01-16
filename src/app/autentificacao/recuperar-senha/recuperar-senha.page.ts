@@ -5,6 +5,8 @@ import { Cliente } from 'src/app/menu/models/cliente.model';
 import { UsuarioService } from 'src/app/core/services/usuario.service';
 import { ClienteService } from 'src/app/core/services/cliente.service';
 import { OverlayService } from 'src/app/core/services/overlay.service';
+import { EmailService } from 'src/app/core/services/email.service';
+import { ConfigEmail } from 'src/app/menu/models/config-email.model';
 
 @Component({
   selector: 'app-recuperar-senha',
@@ -17,7 +19,8 @@ export class RecuperarSenhaPage implements OnInit {
     private ModalController: ModalController,
     private usuarioService: UsuarioService,
     private clienteService: ClienteService,
-    private overlayService: OverlayService
+    private overlayService: OverlayService,
+    private emailService: EmailService
   ) { }
 
   habilitar_botao: boolean = true;
@@ -38,8 +41,6 @@ export class RecuperarSenhaPage implements OnInit {
   rg_usu: string;
   telefone_usu: string;
   dataNascimento_usu: string;
-
-
 
   async ngOnInit(): Promise<void> {
     this.usuarioService.getAll().subscribe((r: Usuario[]) => {
@@ -79,6 +80,7 @@ export class RecuperarSenhaPage implements OnInit {
   }
 
   async recuperarSenha() {
+
     const loading = await this.overlayService.loading();
 
     try {
@@ -110,34 +112,6 @@ export class RecuperarSenhaPage implements OnInit {
             break;
           }
         }
-
-        if (this.admin) {
-          this.usuarioService.init();
-          await this.usuarioService.update({
-            id: this.usuarioId,
-            nome: this.usuarioNome,
-            senha: "agro123",
-            email: this.usuarioEmail,
-          });
-        }
-        else {
-          this.clienteService.init();
-          await this.clienteService.update({
-            id: this.usuarioId,
-            cpf: this.cpf_usu,
-            nome: this.usuarioNome,
-            patrimonio: this.patrimonio_usu,
-            pdtvAgro: this.pdtvAgro_usu,
-            informacoesAdicionais: this.informacoesAdicionais_usu,
-            rg: this.rg_usu,
-            telefone: this.telefone_usu,
-            dataNascimento: this.dataNascimento_usu,
-            email: this.usuarioEmail,
-            senha: "agro123",
-          });
-        }
-
-
 
         if (this.validar_usuario_existe == false) {
           await this.overlayService.toast({
@@ -173,6 +147,13 @@ export class RecuperarSenhaPage implements OnInit {
           });
         }
       }
+
+      const config = new ConfigEmail(this.usuarioNome, 'agro123', this.usuarioEmail);
+      this.emailService.sendMail(config)
+      .subscribe((resp) => {
+        console.log(resp);
+      })
+
     }
     finally {
       loading.remove();
