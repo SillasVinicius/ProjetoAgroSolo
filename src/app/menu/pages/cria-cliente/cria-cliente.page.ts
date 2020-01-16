@@ -71,6 +71,7 @@ export class CriaClientePage implements OnInit {
   clientes: Cliente[] = [];
   usuarios: Usuario[] = [];
   validar_email_existente: boolean;
+  email_atual: string;
   irName = '';
   novoIr = false;
   irAntigo: any;
@@ -229,6 +230,7 @@ export class CriaClientePage implements OnInit {
           this.clienteForm.get('dataNascimento').setValue(dataNascimento),
           this.clienteForm.get('email').setValue(email),
           this.clienteForm.get('senha').setValue(senha),
+          this.email_atual = email;
           this.urlFoto = foto;
         this.urlIr = impostoRenda;
         this.fileName = nomeFoto;
@@ -271,24 +273,49 @@ export class CriaClientePage implements OnInit {
     });
 
     this.validar_email_existente = false;
+
+    if (this.email_atual)
+    {
+      if (this.email_atual == this.clienteForm.get('email').value)
+        this.validar_email_existente = false;
+      else
+      {
+        for (let i = 0; i < this.usuarios.length; i++) {
+          if (this.usuarios[i].email == this.clienteForm.get('email').value) {
+            this.validar_email_existente = true;
+            break;
+          }
+        }
+          if (!this.validar_email_existente) {
+            for (let i = 0; i < this.clientes.length; i++) {
+              if (this.clientes[i].email == this.clienteForm.get('email').value) {
+                this.validar_email_existente = true;
+                break;
+              }
+            }
+          }
+      }
+    }
+    else
+    {
+      
     for (let i = 0; i < this.usuarios.length; i++) {
       if (this.usuarios[i].email == this.clienteForm.get('email').value) {
         this.validar_email_existente = true;
         break;
       }
     }
-
-    if (!this.validar_email_existente) {
-      for (let i = 0; i < this.clientes.length; i++) {
-        if (this.clientes[i].email == this.clienteForm.get('email').value) {
-          this.validar_email_existente = true;
-          break;
+      if (!this.validar_email_existente) {
+        for (let i = 0; i < this.clientes.length; i++) {
+          if (this.clientes[i].email == this.clienteForm.get('email').value) {
+            this.validar_email_existente = true;
+            break;
+          }
         }
       }
     }
 
 
-    console.log(this.validar_email_existente);
     if (this.validar_email_existente) {
       await this.overlayService.toast({
         message: "Este e-mail já esta sendo usado por outro usuário!"
