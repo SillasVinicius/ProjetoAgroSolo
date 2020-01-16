@@ -9,6 +9,8 @@ import { AngularFireStorage } from '@angular/fire/storage';
 import { Observable } from 'rxjs';
 import { trigger, state, transition, style, animate } from '@angular/animations';
 import { UsuarioService } from 'src/app/core/services/usuario.service';
+import { Cliente } from 'src/app/menu/models/cliente.model';
+import { Usuario } from 'src/app/autentificacao/pages/login/model/usuario.model';
 
 @Component({
   selector: 'app-cria-cliente',
@@ -53,6 +55,10 @@ export class CriaClientePage implements OnInit {
   novaFoto = false;
   fotoAntigo: any;
 
+  clientes: Cliente[] = [];
+  usuarios: Usuario[] = [];
+  validar_email_existente: boolean;
+
   // Dependencias
   constructor(
     private formBuilder: FormBuilder,
@@ -75,6 +81,28 @@ export class CriaClientePage implements OnInit {
       this.clienteService.init();
       this.admin = false;
     }
+
+    this.usuarioService.init();
+      this.usuarioService.getAll().subscribe((u: Usuario[]) => {
+        for (let i = 0; i < u.length; i++) {
+          this.usuarios[i] = u[i]          
+        }
+      });
+
+    
+    console.log(this.validar_email_existente);
+    if (!this.validar_email_existente)
+    {
+      this.clienteService.init();
+      this.clienteService.getAll().subscribe((c: Cliente[]) => {
+        for (let i = 0; i < c.length; i++)
+        {
+          this.clientes[i] = c[i]  
+        }  
+      });
+    }
+
+
 
     this.acao();
   }
@@ -299,12 +327,48 @@ export class CriaClientePage implements OnInit {
       senha: this.clienteForm.get('senha').value,
     });
   }
+
+  
   
   // método que envia os dados do formulário para o banco de dados
   async onSubmit(): Promise<void> {
     const loading = await this.overlayService.loading({
       message: this.toastMessage
     });
+
+    this.validar_email_existente = false;
+    for (let i = 0;i < this.usuarios.length;i++)
+    {
+      if (this.usuarios[i].email == this.clienteForm.get('email').value)
+      {
+        this.validar_email_existente = true;
+        break;
+      }
+    }
+
+    if (!this.validar_email_existente)
+    {
+      for (let i = 0;i < this.clientes.length;i++)
+      {
+        if (this.clientes[i].email == this.clienteForm.get('email').value)
+        {
+          this.validar_email_existente = true;
+          break;
+        }
+      }
+    }
+        
+
+    console.log(this.validar_email_existente);
+    if (this.validar_email_existente)
+    {
+      await this.overlayService.toast({
+        message: "Este e-mail já esta sendo usado por outro usuário!"
+      });
+      loading.dismiss();
+      return;
+    }
+
     try {
       const cliente = '';
       if (!this.clienteId) {

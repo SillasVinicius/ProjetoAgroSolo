@@ -4,6 +4,7 @@ import { UsuarioService } from 'src/app/core/services/usuario.service';
 import { ClienteService } from 'src/app/core/services/cliente.service';
 import { Usuario} from 'src/app/autentificacao/pages/login/model/usuario.model';
 import { Cliente } from '../../models/cliente.model';
+import { OverlayService } from 'src/app/core/services/overlay.service';
 
 @Component({
   selector: 'app-alterar-senha',
@@ -15,7 +16,8 @@ export class AlterarSenhaPage implements OnInit {
   constructor(
     private ModalController: ModalController,
     private usuarioService: UsuarioService,
-    private clienteService: ClienteService
+    private clienteService: ClienteService,
+    private overlayService: OverlayService
   ) { 
     
   }
@@ -121,40 +123,46 @@ export class AlterarSenhaPage implements OnInit {
   }
 
   async alteraSenha(){
-    this.habilitar_botao = true;
-
-    if (this.validar_usuario)
+    const loading = await this.overlayService.loading(); 
+    try
     {
-      this.usuarioService.init();
-      await this.usuarioService.update({
+      this.habilitar_botao = true;
+      if (this.validar_usuario)
+      {
+        this.usuarioService.init();
+        await this.usuarioService.update({
+            id: this.id_usu,
+            nome: this.nome_usu,
+            senha: this.senha,
+            email: this.email_usu
+        });
+      }
+      else
+      {
+        this.clienteService.init();
+        await this.clienteService.update({
           id: this.id_usu,
+          cpf: this.cpf_usu,
           nome: this.nome_usu,
+          patrimonio: this.patrimonio_usu,
+          pdtvAgro: this.pdtvAgro_usu,
+          informacoesAdicionais: this.informacoesAdicionais_usu,
+          rg: this.rg_usu,
+          telefone: this.telefone_usu,
+          dataNascimento: this.dataNascimento_usu,
+          email: this.email_usu,
           senha: this.senha,
-          email: this.email_usu
+        });
+      }
+
+      await this.overlayService.toast({
+        message: 'Senha alterada com sucesso!'
       });
     }
-    else
+    finally
     {
-      this.clienteService.init();
-      await this.clienteService.update({
-        id: this.id_usu,
-        cpf: this.cpf_usu,
-        nome: this.nome_usu,
-        patrimonio: this.patrimonio_usu,
-        pdtvAgro: this.pdtvAgro_usu,
-        informacoesAdicionais: this.informacoesAdicionais_usu,
-        rg: this.rg_usu,
-        telefone: this.telefone_usu,
-        dataNascimento: this.dataNascimento_usu,
-        email: this.email_usu,
-        senha: this.senha,
-      });
+      loading.remove();
+      this.closeModal();
     }
-
-    
-
-    alert("Senha alterada com sucesso!");
-    
-    this.closeModal();
   }
 }

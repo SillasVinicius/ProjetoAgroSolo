@@ -105,7 +105,27 @@ export class RelatorioClientePage implements OnInit {
 
     if (this.data_nasc_cli_ini > this.data_nasc_cli_fim)
     {
-      alert("Data inicial não pode ser maior que data final!");
+      await this.overlayService.toast({
+        message: "Data inicial não pode ser maior que data final!"
+      });
+      loading.remove();
+      return;
+    }
+
+    if (!(this.data_nasc_cli_ini) && (this.data_nasc_cli_fim))
+    {
+      await this.overlayService.toast({
+        message: "Informar data inicial do intervalo, relacionado com data de nascimento!"
+      });
+      loading.remove();
+      return;
+    }
+
+    if ((this.data_nasc_cli_ini) && !(this.data_nasc_cli_fim))
+    {
+      await this.overlayService.toast({
+        message: "Informar data final do intervalo, relacionado com data de nascimento!"
+      });
       loading.remove();
       return;
     }
