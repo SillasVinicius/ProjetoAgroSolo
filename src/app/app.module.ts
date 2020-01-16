@@ -12,12 +12,11 @@ import { SplashScreen } from "@ionic-native/splash-screen/ngx";
 import { StatusBar } from "@ionic-native/status-bar/ngx";
 import { RouteReuseStrategy } from "@angular/router";
 import { IonicModule, IonicRouteStrategy } from "@ionic/angular";
-import { Md5 } from 'ts-md5/dist/md5';
 
 @NgModule({
   declarations: [AppComponent],
   imports: [CoreModule, AppRoutingModule, IonicStorageModule.forRoot()],
-  providers: [WebView, FilePath, Network, InAppBrowser, DocumentViewer, StatusBar, SplashScreen, Md5,
+  providers: [WebView, FilePath, Network, InAppBrowser, DocumentViewer, StatusBar, SplashScreen, 
   { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],
 })
