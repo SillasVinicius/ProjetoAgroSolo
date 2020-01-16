@@ -194,6 +194,14 @@ export class CriaClientePage implements OnInit {
       .get(clienteId)
       .pipe(take(1))
       .subscribe(({ nome, cpf, patrimonio, pdtvAgro, informacoesAdicionais, rg, telefone, dataNascimento, email, senha, foto, nomeFoto, impostoRenda, nomeIr, cnh, nomeCnh }) => {
+        this.urlIr = impostoRenda;
+        this.fileName = nomeFoto;
+        this.fotoAntigo = nomeFoto;
+        this.irName = nomeIr;
+        this.irAntigo = nomeIr;
+        this.urlCnh = cnh;
+        this.cnhAntigo = nomeCnh;
+        this.cnhName = nomeCnh;
         this.clienteForm.get('nome').setValue(nome),
           this.clienteForm.get('cpf').setValue(cpf),
           this.clienteForm.get('patrimonio').setValue(patrimonio),
@@ -205,16 +213,7 @@ export class CriaClientePage implements OnInit {
           this.clienteForm.get('email').setValue(email),
           this.clienteForm.get('senha').setValue(senha),
           this.urlFoto = foto;
-        this.urlIr = impostoRenda;
-        this.fileName = nomeFoto;
-        this.fotoAntigo = nomeFoto;
-        this.irName = nomeIr;
-        this.irAntigo = nomeIr;
-        this.urlCnh = cnh;
-        this.cnhAntigo = nomeCnh;
-        this.cnhName = nomeCnh;
       });
-     // console.log(this.irAntigo, this.cnhAntigo);
   }
 
   async cadastraListaGlobal(id: string) {
@@ -252,6 +251,14 @@ export class CriaClientePage implements OnInit {
         this.cadastraListaGlobal(this.clienteService.id);
         this.deletePicture();
         this.uploadFileTo(this.arquivos);
+        
+        if(this.cnhName !== "" && this.cnhName !== undefined){
+          this.uploadArquivos(this.arquivoCnh, "cnhCliente", this.cnhName, "CNH");
+        } 
+        if(this.irName !== "" && this.irName !== undefined){
+          this.uploadArquivos(this.arquivoIr, "irCliente", this.irName, "IR");
+        }
+
       } else {
 
           if (this.novoIr) {
@@ -260,7 +267,6 @@ export class CriaClientePage implements OnInit {
              }
             this.uploadArquivos(this.arquivoIr, "irCliente", this.irName, "IR");
             this.novoIr = false;
-            console.log(this.novoIr);
           }
 
           if (this.novoCnh) {
@@ -269,7 +275,6 @@ export class CriaClientePage implements OnInit {
              }
             this.uploadArquivos(this.arquivoCnh, "cnhCliente", this.cnhName, "CNH");
             this.novoCnh = false;
-            console.log(this.novoCnh);
           }
 
         if (this.novaFoto) {
@@ -417,7 +422,7 @@ export class CriaClientePage implements OnInit {
         this.downloadUrl.subscribe(async r => {
           this.clienteService.init();
           if (flagOp == "IR") {
-            await this.salvarIr(idCliente, r);      
+            await this.salvarIr(idCliente, r); 
           }
           if (flagOp == "CNH") {
             await this.salvarCnh(idCliente, r);
