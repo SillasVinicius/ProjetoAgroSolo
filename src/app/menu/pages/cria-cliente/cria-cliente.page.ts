@@ -9,6 +9,8 @@ import { AngularFireStorage } from '@angular/fire/storage';
 import { Observable } from 'rxjs';
 import { trigger, state, transition, style, animate } from '@angular/animations';
 import { UsuarioService } from 'src/app/core/services/usuario.service';
+import { Cliente } from 'src/app/menu/models/cliente.model';
+import { Usuario } from 'src/app/autentificacao/pages/login/model/usuario.model';
 
 @Component({
   selector: 'app-cria-cliente',
@@ -42,8 +44,8 @@ export class CriaClientePage implements OnInit {
   toastMessage = '...';
   liberaArquivo = false;
   liberaAlterar = false;
-  
- 
+
+
 
   //liberaIr = false;
 
@@ -66,6 +68,10 @@ export class CriaClientePage implements OnInit {
   novaFoto = false;
   fotoAntigo: any;
 
+  clientes: Cliente[] = [];
+  usuarios: Usuario[] = [];
+  validar_email_existente: boolean;
+  email_atual: string;
   irName = '';
   novoIr = false;
   irAntigo: any;
@@ -97,6 +103,26 @@ export class CriaClientePage implements OnInit {
       this.clienteService.init();
       this.admin = false;
     }
+
+    this.usuarioService.init();
+    this.usuarioService.getAll().subscribe((u: Usuario[]) => {
+      for (let i = 0; i < u.length; i++) {
+        this.usuarios[i] = u[i]
+      }
+    });
+
+
+    console.log(this.validar_email_existente);
+    if (!this.validar_email_existente) {
+      this.clienteService.init();
+      this.clienteService.getAll().subscribe((c: Cliente[]) => {
+        for (let i = 0; i < c.length; i++) {
+          this.clientes[i] = c[i]
+        }
+      });
+    }
+
+
 
     this.acao();
   }
@@ -194,6 +220,14 @@ export class CriaClientePage implements OnInit {
       .get(clienteId)
       .pipe(take(1))
       .subscribe(({ nome, cpf, patrimonio, pdtvAgro, informacoesAdicionais, rg, telefone, dataNascimento, email, senha, foto, nomeFoto, impostoRenda, nomeIr, cnh, nomeCnh }) => {
+        this.urlIr = impostoRenda;
+        this.fileName = nomeFoto;
+        this.fotoAntigo = nomeFoto;
+        this.irName = nomeIr;
+        this.irAntigo = nomeIr;
+        this.urlCnh = cnh;
+        this.cnhAntigo = nomeCnh;
+        this.cnhName = nomeCnh;
         this.clienteForm.get('nome').setValue(nome),
           this.clienteForm.get('cpf').setValue(cpf),
           this.clienteForm.get('patrimonio').setValue(patrimonio),
@@ -204,17 +238,9 @@ export class CriaClientePage implements OnInit {
           this.clienteForm.get('dataNascimento').setValue(dataNascimento),
           this.clienteForm.get('email').setValue(email),
           this.clienteForm.get('senha').setValue(senha),
+          this.email_atual = email;
           this.urlFoto = foto;
-        this.urlIr = impostoRenda;
-        this.fileName = nomeFoto;
-        this.fotoAntigo = nomeFoto;
-        this.irName = nomeIr;
-        this.irAntigo = nomeIr;
-        this.urlCnh = cnh;
-        this.cnhAntigo = nomeCnh;
-        this.cnhName = nomeCnh;
       });
-     // console.log(this.irAntigo, this.cnhAntigo);
   }
 
   async cadastraListaGlobal(id: string) {
@@ -244,8 +270,59 @@ export class CriaClientePage implements OnInit {
     const loading = await this.overlayService.loading({
       message: this.toastMessage
     });
-   
-    
+
+    this.validar_email_existente = false;
+
+    if (this.email_atual)
+    {
+      if (this.email_atual == this.clienteForm.get('email').value)
+        this.validar_email_existente = false;
+      else
+      {
+        for (let i = 0; i < this.usuarios.length; i++) {
+          if (this.usuarios[i].email == this.clienteForm.get('email').value) {
+            this.validar_email_existente = true;
+            break;
+          }
+        }
+          if (!this.validar_email_existente) {
+            for (let i = 0; i < this.clientes.length; i++) {
+              if (this.clientes[i].email == this.clienteForm.get('email').value) {
+                this.validar_email_existente = true;
+                break;
+              }
+            }
+          }
+      }
+    }
+    else
+    {
+      
+    for (let i = 0; i < this.usuarios.length; i++) {
+      if (this.usuarios[i].email == this.clienteForm.get('email').value) {
+        this.validar_email_existente = true;
+        break;
+      }
+    }
+      if (!this.validar_email_existente) {
+        for (let i = 0; i < this.clientes.length; i++) {
+          if (this.clientes[i].email == this.clienteForm.get('email').value) {
+            this.validar_email_existente = true;
+            break;
+          }
+        }
+      }
+    }
+
+
+    if (this.validar_email_existente) {
+      await this.overlayService.toast({
+        message: "Este e-mail já esta sendo usado por outro usuário!"
+      });
+      loading.dismiss();
+      return;
+    }
+
     try {
       const cliente = '';
       if (!this.clienteId) {
@@ -254,6 +331,14 @@ export class CriaClientePage implements OnInit {
         this.cadastraListaGlobal(this.clienteService.id);
         this.deletePicture();
         this.uploadFileTo(this.arquivos);
+        
+        if(this.cnhName !== "" && this.cnhName !== undefined){
+          this.uploadArquivos(this.arquivoCnh, "cnhCliente", this.cnhName, "CNH");
+        } 
+        if(this.irName !== "" && this.irName !== undefined){
+          this.uploadArquivos(this.arquivoIr, "irCliente", this.irName, "IR");
+        }
+
       } else {
 
           if (this.novoIr) {
@@ -262,16 +347,14 @@ export class CriaClientePage implements OnInit {
              }
             this.uploadArquivos(this.arquivoIr, "irCliente", this.irName, "IR");
             this.novoIr = false;
-            console.log(this.novoIr);
           }
-
+          
           if (this.novoCnh) {
             if (this.cnhAntigo !== "" && this.cnhAntigo !== undefined) {
                this.deleteArquivosPasta("cnhCliente", this.cnhAntigo);
              }
             this.uploadArquivos(this.arquivoCnh, "cnhCliente", this.cnhName, "CNH");
             this.novoCnh = false;
-            console.log(this.novoCnh);
           }
 
         if (this.novaFoto) {
@@ -365,7 +448,7 @@ export class CriaClientePage implements OnInit {
     } catch (error) {
       console.error(error);
     }
-   
+
   }
 
   async uploadFileTo(file: Object) {
@@ -419,7 +502,7 @@ export class CriaClientePage implements OnInit {
         this.downloadUrl.subscribe(async r => {
           this.clienteService.init();
           if (flagOp == "IR") {
-            await this.salvarIr(idCliente, r);      
+            await this.salvarIr(idCliente, r);
           }
           if (flagOp == "CNH") {
             await this.salvarCnh(idCliente, r);

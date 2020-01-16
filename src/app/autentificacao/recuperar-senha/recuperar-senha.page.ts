@@ -4,6 +4,7 @@ import { Usuario } from 'src/app/autentificacao/pages/login/model/usuario.model'
 import { Cliente } from 'src/app/menu/models/cliente.model';
 import { UsuarioService } from 'src/app/core/services/usuario.service';
 import { ClienteService } from 'src/app/core/services/cliente.service';
+import { OverlayService } from 'src/app/core/services/overlay.service';
 
 
 @Component({
@@ -17,6 +18,7 @@ export class RecuperarSenhaPage implements OnInit {
     private ModalController: ModalController,
     private usuarioService: UsuarioService,
     private clienteService: ClienteService,
+    private overlayService: OverlayService
   ) { }
 
   habilitar_botao: boolean = true;
@@ -32,7 +34,7 @@ export class RecuperarSenhaPage implements OnInit {
   // cliente 
   cpf_usu: string;
   patrimonio_usu: string;
-  pdtvAgro_usu: string;  
+  pdtvAgro_usu: string;
   informacoesAdicionais_usu: string;
   rg_usu: string;
   telefone_usu: string;
@@ -78,77 +80,105 @@ export class RecuperarSenhaPage implements OnInit {
   }
 
   async recuperarSenha() {
-    for (let i = 0; i < this.usuario.length; i++) 
-    {
-      this.validar_usuario_existe = (this.email == this.usuario[i].email);
-      if (this.validar_usuario_existe) {
-        this.usuarioId = this.usuario[i].id;
-        this.usuarioNome = this.usuario[i].nome;
-        this.usuarioEmail = this.usuario[i].email;
-        this.admin = this.usuario[i].admin;
-        break;
-      }
-    }
+    const loading = await this.overlayService.loading();
 
-    if (!this.admin)
-    {
-      for (let i = 0; i < this.cliente.length; i++)
-      {
-        this.validar_usuario_existe = (this.email == this.cliente[i].email);
+    try {
+      for (let i = 0; i < this.usuario.length; i++) {
+        this.validar_usuario_existe = (this.email == this.usuario[i].email);
         if (this.validar_usuario_existe) {
-          this.usuarioId = this.cliente[i].id;
-          this.usuarioNome = this.cliente[i].nome;
-          this.usuarioEmail = this.cliente[i].email;
-          this.cpf_usu = this.cliente[i].cpf;
-          this.patrimonio_usu = this.cliente[i].patrimonio;
-          this.pdtvAgro_usu = this.cliente[i].pdtvAgro;
-          this.informacoesAdicionais_usu = this.cliente[i].informacoesAdicionais;
-          this.rg_usu = this.cliente[i].rg;
-          this.telefone_usu = this.cliente[i].telefone;
-          this.dataNascimento_usu = this.cliente[i].dataNascimento;
+          this.usuarioId = this.usuario[i].id;
+          this.usuarioNome = this.usuario[i].nome;
+          this.usuarioEmail = this.usuario[i].email;
+          this.admin = this.usuario[i].admin;
           break;
         }
       }
 
+      if (!this.admin) {
+        for (let i = 0; i < this.cliente.length; i++) {
+          this.validar_usuario_existe = (this.email == this.cliente[i].email);
+          if (this.validar_usuario_existe) {
+            this.usuarioId = this.cliente[i].id;
+            this.usuarioNome = this.cliente[i].nome;
+            this.usuarioEmail = this.cliente[i].email;
+            this.cpf_usu = this.cliente[i].cpf;
+            this.patrimonio_usu = this.cliente[i].patrimonio;
+            this.pdtvAgro_usu = this.cliente[i].pdtvAgro;
+            this.informacoesAdicionais_usu = this.cliente[i].informacoesAdicionais;
+            this.rg_usu = this.cliente[i].rg;
+            this.telefone_usu = this.cliente[i].telefone;
+            this.dataNascimento_usu = this.cliente[i].dataNascimento;
+            break;
+          }
+        }
+
+        if (this.admin) {
+          this.usuarioService.init();
+          await this.usuarioService.update({
+            id: this.usuarioId,
+            nome: this.usuarioNome,
+            senha: "agro123",
+            email: this.usuarioEmail,
+          });
+        }
+        else {
+          this.clienteService.init();
+          await this.clienteService.update({
+            id: this.usuarioId,
+            cpf: this.cpf_usu,
+            nome: this.usuarioNome,
+            patrimonio: this.patrimonio_usu,
+            pdtvAgro: this.pdtvAgro_usu,
+            informacoesAdicionais: this.informacoesAdicionais_usu,
+            rg: this.rg_usu,
+            telefone: this.telefone_usu,
+            dataNascimento: this.dataNascimento_usu,
+            email: this.usuarioEmail,
+            senha: "agro123",
+          });
+        }
+
+
+
+        if (this.validar_usuario_existe == false) {
+          await this.overlayService.toast({
+            message: "Usuário não encontrado..."
+          });
+          loading.remove();
+          return;
+        }
+
+        if (this.admin) {
+          this.usuarioService.init();
+          await this.usuarioService.update({
+            id: this.usuarioId,
+            nome: this.usuarioNome,
+            senha: "agro123",
+            email: this.usuarioEmail,
+          });
+        }
+        else {
+          this.clienteService.init();
+          await this.clienteService.update({
+            id: this.usuarioId,
+            cpf: this.cpf_usu,
+            nome: this.usuarioNome,
+            patrimonio: this.patrimonio_usu,
+            pdtvAgro: this.pdtvAgro_usu,
+            informacoesAdicionais: this.informacoesAdicionais_usu,
+            rg: this.rg_usu,
+            telefone: this.telefone_usu,
+            dataNascimento: this.dataNascimento_usu,
+            email: this.usuarioEmail,
+            senha: "agro123",
+          });
+        }
+      }
     }
-
-
-
-    if (this.validar_usuario_existe == false) {
-      alert("Usuário não encontrado...");
-      return;
+    finally {
+      loading.remove();
+      this.closeModal();
     }
-
-    if (this.admin) {
-      this.usuarioService.init();
-      await this.usuarioService.update({
-        id: this.usuarioId,
-        nome: this.usuarioNome,
-        senha: "agro123",
-        email: this.usuarioEmail,
-      });
-    } 
-    else {
-      this.clienteService.init();
-      await this.clienteService.update({
-        id: this.usuarioId,
-        cpf: this.cpf_usu,
-        nome: this.usuarioNome,
-        patrimonio: this.patrimonio_usu,
-        pdtvAgro: this.pdtvAgro_usu,
-        informacoesAdicionais: this.informacoesAdicionais_usu,
-        rg: this.rg_usu,
-        telefone: this.telefone_usu,
-        dataNascimento: this.dataNascimento_usu,
-        email: this.usuarioEmail,
-        senha: "agro123",
-      });
-    }
-
-
-
-
-    this.closeModal();
   }
 
 }

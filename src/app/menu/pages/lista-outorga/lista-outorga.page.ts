@@ -92,7 +92,7 @@ export class ListaOutorgaPage implements OnInit {
   }
 
   deletarArquivoOutorga(outorga: Outorga) {
-    const ref = this.storage.ref(`/DeclaracaoAmbiental${outorga.id}`);
+    const ref = this.storage.ref(`/outorga${outorga.id}/`);
     ref.child(`${outorga.nomeArquivo}`).delete();
   }
 
