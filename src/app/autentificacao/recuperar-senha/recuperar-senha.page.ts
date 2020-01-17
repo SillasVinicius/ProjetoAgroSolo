@@ -113,51 +113,55 @@ export class RecuperarSenhaPage implements OnInit {
           }
         }
 
-        if (this.validar_usuario_existe == false) {
-          await this.overlayService.toast({
-            message: "Usuário não encontrado..."
-          });
-          loading.remove();
-          return;
-        }
-
-        if (this.admin) {
-          this.usuarioService.init();
-          await this.usuarioService.update({
-            id: this.usuarioId,
-            nome: this.usuarioNome,
-            senha: "agro123",
-            email: this.usuarioEmail,
-          });
-        }
-        else {
-          this.clienteService.init();
-          await this.clienteService.update({
-            id: this.usuarioId,
-            cpf: this.cpf_usu,
-            nome: this.usuarioNome,
-            patrimonio: this.patrimonio_usu,
-            pdtvAgro: this.pdtvAgro_usu,
-            informacoesAdicionais: this.informacoesAdicionais_usu,
-            rg: this.rg_usu,
-            telefone: this.telefone_usu,
-            dataNascimento: this.dataNascimento_usu,
-            email: this.usuarioEmail,
-            senha: "agro123",
-          });
-        }
       }
+
+      if (this.validar_usuario_existe == false) {
+        await this.overlayService.toast({
+          message: "Usuário não encontrado..."
+        });
+        return;
+      }
+
+      
+
+      if (this.admin) {
+        this.usuarioService.init();
+        await this.usuarioService.update({
+          id: this.usuarioId,
+          nome: this.usuarioNome,
+          senha: "agro123",
+          email: this.usuarioEmail,
+        });
+      }
+      else {
+        this.clienteService.init();
+        await this.clienteService.update({
+          id: this.usuarioId,
+          cpf: this.cpf_usu,
+          nome: this.usuarioNome,
+          patrimonio: this.patrimonio_usu,
+          pdtvAgro: this.pdtvAgro_usu,
+          informacoesAdicionais: this.informacoesAdicionais_usu,
+          rg: this.rg_usu,
+          telefone: this.telefone_usu,
+          dataNascimento: this.dataNascimento_usu,
+          email: this.usuarioEmail,
+          senha: "agro123",
+        });
+      }
+
 
       const config = new ConfigEmail(this.usuarioNome, 'agro123', this.usuarioEmail);
       this.emailService.sendMail(config)
-      .subscribe((resp) => {
-        console.log(resp);
-      })
+        .subscribe((resp) => {
+          console.log(resp);
+        });
 
+      this.closeModal();
     }
     finally {
       loading.remove();
-      this.closeModal();
+
     }
   }
 

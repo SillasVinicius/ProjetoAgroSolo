@@ -14,18 +14,39 @@ exports.sendMail = function (nomeDest, novaSenha, emailDest) {
 
     let mailOptions = {
         from: $usuario,
-        to: destinatario,
-        subject: 'Enviando um email pelo Node.js',
-        text: `
-        O nome do usuário é ${nomeDest}.
-        `
+        to: emailDest,
+        subject: 'Agrosolo - recuperação de senha.',
+        html: `
+        <!DOCTYPE html>
+        <html lang="pt-br">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <style>
+                body {
+                    padding: 10px;
+                    font-family: Arial, Helvetica, sans-serif;
+                    font-size: medium;
+                }
+                span {
+                    font-weight: bold;
+                }
+            </style>
+        </head>
+        <body>
+            <h3>Olá ${nomeDest}!!</h3>
+            <p>
+                Sua nova senha AgroSolo é <span>${novaSenha}</span>.</div>
+            </p> 
+        </body>
+
+        </html>
+        ` 
     };
 
-    transporter.sendMail(mailOptions, function(error, info){
-        if (error) {
-            return false;
-        } else {
-            return true;
-        }
+    let emailSent = false;
+    transporter.sendMail(mailOptions, (error, info) => {
+        emailSent = error ? false : true 
     });
+    return emailSent;
 }

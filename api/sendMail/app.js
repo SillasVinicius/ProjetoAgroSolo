@@ -9,7 +9,7 @@ app.use(bodyParser.json());
 
 // Routes
 app.post('/recuperasenha', (req, res) => {
-    const nome = req.body['user_name'];
+    const nome = req.body['usuario'];
     const senha = req.body['senha'];
     const destinatario = req.body['destinatario'];
 
