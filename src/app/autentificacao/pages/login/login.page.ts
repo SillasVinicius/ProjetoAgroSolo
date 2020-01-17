@@ -27,7 +27,7 @@ export class LoginPage implements OnInit {
   author:string = ''; 
   loginForm:FormGroup; 
   logado = false; 
-  numberPattern = /^[0-9] * $/; 
+  numberPattern = /^[0-9] * $/;
 
   private user:Observable < Usuario[] > ; 
 
@@ -36,7 +36,7 @@ export class LoginPage implements OnInit {
     private ModalController: ModalController,
     private overlayService: OverlayService,
     private usuarioService: UsuarioService,
-    private navCtrl: NavController
+    private navCtrl: NavController,
   ) {}
 
   ngOnInit() {
@@ -67,9 +67,10 @@ export class LoginPage implements OnInit {
     }); 
 
     try {
+      const sha1 = require('sha1');
       this.user = await this.usuarioService.loginDb(
         this.loginForm.get('email').value, 
-        this.loginForm.get('senha').value, 
+        sha1(this.loginForm.get('senha').value), 
       ); 
       this.user.subscribe(async (r:Usuario[]) =>  {
         if (r.length >= 1) {
@@ -84,7 +85,7 @@ export class LoginPage implements OnInit {
         }else {
           this.user = await this.usuarioService.loginDbCliente(
             this.loginForm.get('email').value, 
-            this.loginForm.get('senha').value, ); 
+            sha1(this.loginForm.get('senha').value), ); 
           this.user.subscribe(async (r:Usuario[]) =>  {
             if (r.length >= 1) {
               console.log('Usuário Logado', this.user); 

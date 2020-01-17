@@ -80,6 +80,9 @@ export class CriaClientePage implements OnInit {
   novoCnh = false;
   cnhAntigo: any;
 
+  senha_cript: string;
+  senha_banco: string;
+
 
   // Dependencias
   constructor(
@@ -111,8 +114,6 @@ export class CriaClientePage implements OnInit {
       }
     });
 
-
-    console.log(this.validar_email_existente);
     if (!this.validar_email_existente) {
       this.clienteService.init();
       this.clienteService.getAll().subscribe((c: Cliente[]) => {
@@ -238,17 +239,27 @@ export class CriaClientePage implements OnInit {
           this.clienteForm.get('dataNascimento').setValue(dataNascimento),
           this.clienteForm.get('email').setValue(email),
           this.clienteForm.get('senha').setValue(senha),
+          this.senha_cript = senha;
           this.email_atual = email;
           this.urlFoto = foto;
       });
   }
 
   async cadastraListaGlobal(id: string) {
+    //hash
+    const sha1 = require('sha1');
+    this.clienteForm.get('senha').setValue(sha1(this.clienteForm.get('senha').value));
     this.clienteService.init();
     const cliente = await this.clienteService.createGlobal(this.clienteForm.value, id);
   }
 
   async AtualizaListaGlobal() {
+    //hash
+    const sha1 = require('sha1');
+    if (this.senha_cript ==  this.clienteForm.get('senha').value)
+        this.senha_banco = this.senha_cript;
+    else this.senha_banco = sha1(this.clienteForm.get('senha').value);
+    
     this.clienteService.init();
     await this.clienteService.update({
       id: this.clienteId,
@@ -261,7 +272,7 @@ export class CriaClientePage implements OnInit {
       telefone: this.clienteForm.get('telefone').value,
       dataNascimento: this.clienteForm.get('dataNascimento').value,
       email: this.clienteForm.get('email').value,
-      senha: this.clienteForm.get('senha').value,
+      senha: this.senha_banco,
     });
   }
 
@@ -464,6 +475,11 @@ export class CriaClientePage implements OnInit {
         this.downloadUrl = ref2.getDownloadURL();
         this.liberaArquivo = true;
         this.liberaAlterar = true;
+        //hash
+        const sha1 = require('sha1');
+        if (this.senha_cript ==  this.clienteForm.get('senha').value)
+            this.senha_banco = this.senha_cript;
+        else this.senha_banco = sha1(this.clienteForm.get('senha').value);
 
         this.downloadUrl.subscribe(async r => {
           this.clienteService.init();
@@ -480,7 +496,7 @@ export class CriaClientePage implements OnInit {
             dataNascimento: this.clienteForm.get('dataNascimento').value,
             telefone: this.clienteForm.get('telefone').value,
             email: this.clienteForm.get('email').value,
-            senha: this.clienteForm.get('senha').value,
+            senha: this.senha_banco,
           });
         });
       })
@@ -513,6 +529,12 @@ export class CriaClientePage implements OnInit {
   }
 
   salvarIr(idCliente: string, enderecoArquivo: string) {
+    //hash
+    const sha1 = require('sha1');
+    if (this.senha_cript ==  this.clienteForm.get('senha').value)
+        this.senha_banco = this.senha_cript;
+    else this.senha_banco = sha1(this.clienteForm.get('senha').value);
+
     this.clienteService.update({
       id: idCliente,
       cpf: this.clienteForm.get('cpf').value,
@@ -524,13 +546,19 @@ export class CriaClientePage implements OnInit {
       dataNascimento: this.clienteForm.get('dataNascimento').value,
       telefone: this.clienteForm.get('telefone').value,
       email: this.clienteForm.get('email').value,
-      senha: this.clienteForm.get('senha').value,
+      senha: this.senha_banco,
       impostoRenda: enderecoArquivo,
       nomeIr: this.irName
     });
   }
 
   salvarCnh(idCliente: string, enderecoArquivo: string) {
+    //hash
+    const sha1 = require('sha1');
+    if (this.senha_cript ==  this.clienteForm.get('senha').value)
+        this.senha_banco = this.senha_cript;
+    else this.senha_banco = sha1(this.clienteForm.get('senha').value);
+
     this.clienteService.update({
       id: idCliente,
       cpf: this.clienteForm.get('cpf').value,
@@ -542,7 +570,7 @@ export class CriaClientePage implements OnInit {
       dataNascimento: this.clienteForm.get('dataNascimento').value,
       telefone: this.clienteForm.get('telefone').value,
       email: this.clienteForm.get('email').value,
-      senha: this.clienteForm.get('senha').value,
+      senha: this.senha_banco,
       cnh: enderecoArquivo,
       nomeCnh: this.cnhName
     });
