@@ -232,7 +232,7 @@ export class RelatorioOutorgaPage implements OnInit {
     return {
       table: {
         headerRows: 1,
-        widths: [100, 100, 100, 100, 100, 100, 100, 100, 100],
+        widths: [300, 480, 200],
         body: this.buildTableBody(data, columns, header)
       },
       layout: "lightHorizontalLines"

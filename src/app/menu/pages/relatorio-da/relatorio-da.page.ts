@@ -232,7 +232,7 @@ export class RelatorioDaPage implements OnInit {
     return {
       table: {
         headerRows: 1,
-        widths: [100, 100, 100, 100, 100, 100, 100, 100, 100],
+        widths: [300, 480, 200],
         body: this.buildTableBody(data, columns, header)
       },
       layout: "lightHorizontalLines"
@@ -249,7 +249,9 @@ export class RelatorioDaPage implements OnInit {
               {
                 text: "Agro Solo",
                 fontSize: 18,
-                alignment: "center" 
+                alignment: "center" ,
+                color: "#00643a"
+                
               },
             ],
             width: '*'
@@ -264,7 +266,7 @@ export class RelatorioDaPage implements OnInit {
       [
         this.table(
           this.listaDa,
-          ["nomeCliente", "descricao", "dataDeVencimento"],
+          ["nomeCliente", "descricao", "ddtVencimentoForm"],
           [
             { text: "Nome Cliente", style: "tableHeader" },
             { text: "Descricao", style: "tableHeader" },

@@ -149,6 +149,7 @@ export class RelatorioLaPage implements OnInit {
               la['nomeCliente'] = cliente.nome;
               la['dtVencimentoForm'] = this.formatarData(la.dataDeVencimento);
               this.listaLa.push(la);
+              console.log()
             }
           });
         }
@@ -218,7 +219,7 @@ export class RelatorioLaPage implements OnInit {
     return {
       table: {
         headerRows: 1,
-        widths: [100, 100, 100, 100, 100, 100, 100, 100, 100],
+        widths: [300, 480, 200],
         body: this.buildTableBody(data, columns, header)
       },
       layout: "lightHorizontalLines"
@@ -235,7 +236,8 @@ export class RelatorioLaPage implements OnInit {
               {
                 text: "Agro Solo",
                 fontSize: 18,
-                alignment: "center"
+                alignment: "center",
+                color: "#00643a"
               },
             ],
             width: '*'
@@ -250,7 +252,7 @@ export class RelatorioLaPage implements OnInit {
         [
           this.table(
             this.listaLa,
-            ["nomeCliente", "descricao", "dataDeVencimento"],
+            ["nomeCliente", "descricao", "dtVencimentoForm"],
             [
               { text: "Nome Cliente", style: "tableHeader" },
               { text: "Descricao", style: "tableHeader" },
