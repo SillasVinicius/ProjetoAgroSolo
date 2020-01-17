@@ -56,7 +56,6 @@ var CriaOutorgaPage = /** @class */ (function () {
             });
             this.admin = false;
         }
-        console.log(this.clientes);
         this.clienteService.id = '';
         this.acao();
     };

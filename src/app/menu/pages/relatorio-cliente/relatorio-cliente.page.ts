@@ -53,7 +53,6 @@ export class RelatorioClientePage implements OnInit {
     this.data_nasc_cli_fim = '';
     this.filtrosRelatorio.forEach(filtro => {
       filtro.el.value = null;
-      console.log(typeof(filtro));
     });
   }
 
