@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { UsuarioService } from 'src/app/core/services/usuario.service';
+import { OverlayService } from 'src/app/core/services/overlay.service';
 
 import { Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
@@ -22,7 +23,9 @@ export class AppComponent {
     private platform: Platform,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
-    private network: Network  ) {
+    private network: Network,
+    private overlayService: OverlayService,
+    ) {
     this.initializeApp();
   }
 
