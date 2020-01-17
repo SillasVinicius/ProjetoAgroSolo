@@ -7,6 +7,7 @@ import { NavController, ModalController } from '@ionic/angular';
 import { Observable } from 'rxjs';
 import { Usuario } from './model/usuario.model';
 import { RecuperarSenhaPage} from 'src/app/autentificacao/recuperar-senha/recuperar-senha.page';
+import { Network } from '@ionic-native/network/ngx';
 
 @Component({
   selector: 'app-login',
@@ -31,15 +32,24 @@ export class LoginPage implements OnInit {
 
   private user:Observable < Usuario[] > ; 
 
+
   constructor(
     private formBuilder: FormBuilder,
     private ModalController: ModalController,
     private overlayService: OverlayService,
     private usuarioService: UsuarioService,
-    private navCtrl: NavController
+    private navCtrl: NavController,
+    private network: Network
   ) {}
 
   ngOnInit() {
+
+    let disconnectSubscription = this.network.onDisconnect().subscribe(async () => {
+      await this.overlayService.loading({
+        message: "sem internet!"
+      });
+    });
+
     this.loginForm = this.formBuilder.group( {
       senha:this.formBuilder.control('123456', [Validators.required, Validators.minLength(6)]), 
       email:this.formBuilder.control('admin@gmail.com', [Validators.required, Validators.email]), 
