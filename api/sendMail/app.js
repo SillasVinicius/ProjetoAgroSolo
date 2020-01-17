@@ -13,9 +13,8 @@ app.post('/recuperasenha', (req, res) => {
     const senha = req.body['senha'];
     const destinatario = req.body['destinatario'];
 
-    if (nome && senha && destinatario) {
-        
-        if ( sendMail.sendMail(nome, senha, destinatario) ) {
+    if (nome && senha && destinatario) { 
+        if ( sendMail.send(nome, senha, destinatario) ) {
             res.status(200).send(JSON.stringify({ response: 'Email sent.' }));
         } else {
             res.status(500).send(JSON.stringify({ message: 'Error sending email.' })) // Internal Server Error

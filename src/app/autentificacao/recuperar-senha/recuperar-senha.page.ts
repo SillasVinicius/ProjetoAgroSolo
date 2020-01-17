@@ -153,7 +153,10 @@ export class RecuperarSenhaPage implements OnInit {
 
       const config = new ConfigEmail(this.usuarioNome, 'agro123', this.usuarioEmail);
       this.emailService.sendMail(config)
-        .subscribe((resp) => {
+        .subscribe(async (resp) => {
+          await this.overlayService.toast({
+            message: 'Um email com sua nova senha foi enviado!'
+          });
           console.log(resp);
         });
 
