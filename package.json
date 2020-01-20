@@ -61,6 +61,7 @@
     "dom-to-image": "^2.6.0",
     "fabric": "^3.5.1",
     "firebase": "^5.9.4",
+    "firebase-admin": "^8.9.1",
     "format-currency-to-br": "^1.0.0",
     "grpc": "^1.24.2",
     "ionic-gallery-modal": "^0.2.7",
@@ -69,6 +70,7 @@
     "jspdf": "^1.5.3",
     "pdfmake": "^0.1.63",
     "rxjs": "~6.5.1",
+    "sha1": "^1.1.1",
     "tslib": "^1.9.0",
     "web-animations-js": "^2.3.2",
     "zone.js": "~0.8.29"
