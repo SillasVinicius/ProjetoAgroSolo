@@ -154,7 +154,7 @@ export class RecuperarSenhaPage implements OnInit {
       const config = new ConfigEmail(this.usuarioNome, 'agro123', this.usuarioEmail);
       this.emailService.sendMail(config)
         .subscribe((resp) => {
-          console.log(resp);
+          console.log(resp.status);
         });
 
       this.closeModal();

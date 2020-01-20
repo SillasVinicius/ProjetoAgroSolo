@@ -44,9 +44,11 @@ exports.sendMail = function (nomeDest, novaSenha, emailDest) {
         ` 
     };
 
-    let emailSent = false;
-    transporter.sendMail(mailOptions, (error, info) => {
-        emailSent = error ? false : true 
+    let emailSent = true;
+    transporter.sendMail(mailOptions, (error) => {
+        if (error) {
+            emailSent = false;
+        }
     });
     return emailSent;
 }

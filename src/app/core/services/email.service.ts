@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { ConfigEmail } from 'src/app/menu/models/config-email.model';
 
 @Injectable({
@@ -16,6 +16,6 @@ export class EmailService {
   constructor(private http: HttpClient) { }
 
   sendMail(configs: ConfigEmail) {
-    return this.http.post(this.sendMailUrl, configs, this.httpOptions);
+    return this.http.post<HttpResponse<ArrayBuffer>>(this.sendMailUrl, configs, this.httpOptions);
   }
 }
