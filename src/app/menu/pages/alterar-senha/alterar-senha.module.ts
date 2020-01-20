@@ -6,7 +6,6 @@ import { Routes, RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 
 import { AlterarSenhaPage } from './alterar-senha.page';
-import { Md5 } from 'ts-md5/dist/md5';
 
 const routes: Routes = [
   {
@@ -20,8 +19,7 @@ const routes: Routes = [
     CommonModule,
     FormsModule,
     IonicModule,
-    RouterModule.forChild(routes),
-    Md5
+    RouterModule.forChild(routes)
   ],
   declarations: [AlterarSenhaPage]
 })
