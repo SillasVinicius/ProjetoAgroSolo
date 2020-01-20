@@ -35,12 +35,10 @@ var CriaClientePage = /** @class */ (function () {
         this.criaFormulario();
         if (this.usuarioService.admin) {
             this.clienteService.initCliente();
-            console.log('this.clienteService.initCliente();');
             this.admin = true;
         }
         else {
             this.clienteService.init();
-            console.log('this.clienteService.init();');
             this.admin = false;
         }
         this.acao();

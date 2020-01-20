@@ -16,7 +16,7 @@ import { IonicModule, IonicRouteStrategy } from "@ionic/angular";
 @NgModule({
   declarations: [AppComponent],
   imports: [CoreModule, AppRoutingModule, IonicStorageModule.forRoot()],
-  providers: [WebView, FilePath, Network, InAppBrowser, DocumentViewer, StatusBar, SplashScreen,
+  providers: [WebView, FilePath, Network, InAppBrowser, DocumentViewer, StatusBar, SplashScreen, 
   { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],
 })
