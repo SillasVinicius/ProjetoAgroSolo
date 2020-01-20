@@ -96,7 +96,7 @@
 
     <ion-item>
       <ion-label position="floating" color="primary">Data de Nascimento</ion-label>
-      <ion-datetime displayFormat="DD/MM/YYYY" formControlName="dataNascimento" placeholder="Selecione uma data...">
+      <ion-datetime displayFormat="DD/MM/YYYY" formControlName="dataNascimento" placeholder="Selecione uma data..."  min="1930" max="2300">
       </ion-datetime>
     </ion-item>
 
@@ -190,10 +190,7 @@
                 <p class="nomes">I. Renda</p>
               </div>
               <div class="fileUpload" text-center *ngIf="admin">
-                <!--<div *ngIf="uploadPercent | async as pct">
-                  Progress: {{ pct| number }}%
-                  <ion-progress-bar value="{{ pct / 100 }}"></ion-progress-bar>
-                </div>-->
+               
                 <div [@marginBotao]="'comArquivo'" >
                   <label for="uploadBtnIr" class="btn">I. Renda</label>
                   <input class="upload" id="uploadBtnIr" type="file" (change)='openArquivos($event.target.files, "IR")'>
@@ -224,10 +221,7 @@
                 <p class="nomes">CNH</p>
               </div>
               <div class="fileUpload"  text-center *ngIf="admin">
-              <!--  <div *ngIf="uploadPercent | async as pct">
-                  Progress: {{ pct | number }}%
-                  <ion-progress-bar value="{{ pct / 100 }}"></ion-progress-bar>
-                </div>-->
+              
                 <div [@marginBotao]="'comArquivo'">
                   <label for="uploadBtnCnh" class="btn">CNH</label>
                   <input class="upload" id="uploadBtnCnh" type="file" (change)='openArquivos($event.target.files, "CNH")'>
