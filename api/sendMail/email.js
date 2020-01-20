@@ -10,7 +10,7 @@ const transporter = nodemailer.createTransport({
     }
 });
 
-exports.sendMail = function (nomeDest, novaSenha, emailDest) {
+exports.send = function (nomeDest, novaSenha, emailDest) {
 
     let mailOptions = {
         from: $usuario,
@@ -41,7 +41,7 @@ exports.sendMail = function (nomeDest, novaSenha, emailDest) {
         </body>
 
         </html>
-        ` 
+        `
     };
 
     let emailSent = true;
