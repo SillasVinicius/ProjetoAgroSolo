@@ -151,9 +151,19 @@ export class RecuperarSenhaPage implements OnInit {
 
       const config = new ConfigEmail(this.usuarioNome, 'agro123', this.usuarioEmail);
       this.emailService.sendMail(config)
-        .subscribe((resp) => {
-          console.log(resp.status);
-        });
+        .subscribe(
+          async (resp) => {
+            await this.overlayService.toast({
+              message: 'Email de recuperação de senha enviado!'
+            });
+          },
+          async (error) => {
+            await this.overlayService.toast({
+              message: 'Falha ao enviar email para recuperação de senha!',
+              color: 'danger'
+            });
+          }
+        );
 
       this.closeModal();
     }
