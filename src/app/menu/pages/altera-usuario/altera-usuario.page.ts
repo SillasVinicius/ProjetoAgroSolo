@@ -184,9 +184,6 @@ export class AlteraUsuarioPage implements OnInit {
             const usuario = await this.usuarioService.update({
             id: this.updateUsuarioId,
             nome: this.updateUsuarioForm.get('nome').value,
-
-
-
             email: this.updateUsuarioForm.get('email').value,
             senha: this.updateUsuarioForm.get('senha').value,
 
@@ -223,7 +220,6 @@ export class AlteraUsuarioPage implements OnInit {
 
           this.updateUsuarioForm.get('senha').setValue(senha),
           this.updateUsuarioForm.get('nome').setValue(nome),
-
           this.updateUsuarioForm.get('email').setValue(email)
 
 

@@ -91,10 +91,9 @@ var ListaDaItemComponent = /** @class */ (function () {
         var dataInicialRecebida = new Date(this.declaracaoAmbiental.dataDeVencimento);
         var dataFinalFormatada = (dataInicialRecebida.getMonth() + 1) + "/" + (dataInicialRecebida.getDate() + 1) + "/" + dataInicialRecebida.getFullYear();
         var dataInicialFormatada = this.dataAtual;
-        //console.log(dataInicialFormatada + " - " + dataFinalFormatada);
+        
         var dataInicialMilissegundos = new Date(dataInicialFormatada).getTime();
         var dataFinalMilissegundos = new Date(dataFinalFormatada).getTime();
-        //console.log(dataInicialMilissegundos + ' - ' + dataFinalMilissegundos);
         // Transforme 1 dia em milissegundos
         var umDiaMilissegundos = 1000 * 60 * 60 * 24;
         // Calcule a diferença em milissegundos

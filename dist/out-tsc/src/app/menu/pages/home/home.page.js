@@ -74,14 +74,12 @@ var HomePage = /** @class */ (function () {
             var _this = this;
             return tslib_1.__generator(this, function (_a) {
                 this.clientes$.forEach(function (element) {
-                    console.log('Cliente');
                     _this.aniversariantesMes = [];
                     _this.quantidadeAniversariantesMes = [];
                     var nomesAniversariantesDia = [];
                     var qtdNiverMes = 0;
                     var qtdArray = [];
                     element.forEach(function (cli) {
-                        console.log(cli.dataNascimento);
                         var dataInicialRecebida = new Date(cli.dataNascimento);
                         var dataFinalFormatada = (dataInicialRecebida.getMonth() + 1) + "/" + (dataInicialRecebida.getDate());
                         var dataInicialFormatada = _this.dataAtual;
@@ -97,19 +95,16 @@ var HomePage = /** @class */ (function () {
                         var diferencaMilissegundos = dataFinalMilissegundos - dataInicialMilissegundos;
                         // Converta novamente para data
                         var diferencaData = Math.round(diferencaMilissegundos / umDiaMilissegundos);
-                        console.log(diferencaData);
                         if (diferencaData == 0) {
                             nomesAniversariantesDia.push(cli.nome);
                         }
                         if (_this.mesAtual == dataMesAtualNiver && diferencaData >= 0) {
-                            console.log('54541541');
                             qtdNiverMes = qtdNiverMes + 1;
                             qtdArray.push(qtdNiverMes);
                         }
                     });
                     _this.aniversariantesMes.push(nomesAniversariantesDia);
                     _this.quantidadeAniversariantesMes = qtdArray;
-                    console.log(_this.aniversariantesMes, '------', _this.quantidadeAniversariantesMes);
                 });
                 return [2 /*return*/];
             });

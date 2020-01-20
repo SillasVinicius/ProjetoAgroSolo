@@ -24,7 +24,7 @@ export class RecuperarSenhaPage implements OnInit {
   ) { }
 
   habilitar_botao: boolean = true;
-  validar_usuario_existe: boolean = true;
+  validar_usuario_existe: boolean;
   email: string;
   email_novamente: string;
   usuario: Usuario[] = [];
@@ -54,12 +54,11 @@ export class RecuperarSenhaPage implements OnInit {
         this.cliente[i] = c[i];
       }
     });
-
-
   }
 
+
+
   async closeModal() {
-    this.usuario = [];
     await this.ModalController.dismiss();
   }
 
@@ -82,7 +81,7 @@ export class RecuperarSenhaPage implements OnInit {
   async recuperarSenha() {
 
     const loading = await this.overlayService.loading();
-
+    this.validar_usuario_existe = false;
     try {
       for (let i = 0; i < this.usuario.length; i++) {
         this.validar_usuario_existe = (this.email == this.usuario[i].email);
@@ -112,24 +111,23 @@ export class RecuperarSenhaPage implements OnInit {
             break;
           }
         }
-
       }
-
-      if (this.validar_usuario_existe == false) {
+      
+      if (!this.validar_usuario_existe) {
         await this.overlayService.toast({
           message: "Usuário não encontrado..."
         });
         return;
       }
 
-      
+      const sha1 = require('sha1');
 
       if (this.admin) {
         this.usuarioService.init();
         await this.usuarioService.update({
           id: this.usuarioId,
           nome: this.usuarioNome,
-          senha: "agro123",
+          senha: sha1('agro123'),
           email: this.usuarioEmail,
         });
       }
@@ -146,7 +144,7 @@ export class RecuperarSenhaPage implements OnInit {
           telefone: this.telefone_usu,
           dataNascimento: this.dataNascimento_usu,
           email: this.usuarioEmail,
-          senha: "agro123",
+          senha: sha1('agro123'),
         });
       }
 
@@ -161,7 +159,6 @@ export class RecuperarSenhaPage implements OnInit {
     }
     finally {
       loading.remove();
-
     }
   }
 

@@ -56,7 +56,6 @@ var CriaDaPage = /** @class */ (function () {
             });
             this.admin = false;
         }
-        console.log(this.clientes);
         this.clienteService.id = '';
         this.acao();
     };
@@ -192,7 +191,6 @@ var CriaDaPage = /** @class */ (function () {
                         this.AtualizaListaGlobal();
                         _a.label = 6;
                     case 6:
-                        console.log('declaracao Ambiental Criada', declaracaoAmbiental);
                         this.navCtrl.navigateBack('/menu/ambiental/DeclaracaoAmbiental');
                         return [3 /*break*/, 10];
                     case 7:
