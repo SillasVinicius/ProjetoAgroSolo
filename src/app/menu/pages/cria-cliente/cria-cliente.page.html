@@ -182,6 +182,9 @@
                           <a [href]="urlIr" target="_blank"><b>{{ irName }}</b></a>
                         </ion-card-title>
                       </ion-card-header>
+                      <div *ngIf="liberaIr">
+                      <p style="cursor: pointer;" (click)="deletaArquivosBotao('IR')">x</p>
+                    </div>
                     </ion-card>
                   </ion-col>
                 </ion-row>
@@ -196,6 +199,7 @@
                   <input class="upload" id="uploadBtnIr" type="file" (change)='openArquivos($event.target.files, "IR")'>
                 </div>
               </div>
+              
             </ion-card>
           </div>
         </ion-grid>
@@ -210,10 +214,13 @@
                       <ion-card-header>
                         <ion-card-title style="font-size: 15px;">
                           Arquivo:
-                          <a [href]="urlCnh" target="_blank"><b>{{ cnhName }}</b></a>
+                          <a [href]="urlCnh" target="_blank"><b>{{ cnhName }}</b></a> 
                         </ion-card-title>
                       </ion-card-header>
-                    </ion-card>
+                      <div *ngIf="liberaCnh">
+                        <p style="cursor: pointer;" (click)="deletaArquivosBotao('CNH')">x</p>
+                      </div>
+                      </ion-card>
                   </ion-col>
                 </ion-row>
               </ion-grid>
@@ -225,8 +232,8 @@
                 <div [@marginBotao]="'comArquivo'">
                   <label for="uploadBtnCnh" class="btn">CNH</label>
                   <input class="upload" id="uploadBtnCnh" type="file" (change)='openArquivos($event.target.files, "CNH")'>
-                </div>
-              </div>
+                </div>            
+              </div>           
             </ion-card>
           </div>
         </ion-grid>
