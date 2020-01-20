@@ -242,6 +242,7 @@ export class CriaClientePage implements OnInit {
           this.senha_cript = senha;
           this.email_atual = email;
           this.urlFoto = foto;
+          
       });
   }
 

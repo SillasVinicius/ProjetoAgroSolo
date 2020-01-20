@@ -1,4 +1,4 @@
-<ion-header>
+this.clicado<ion-header>
   <ion-toolbar color="primary">
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/menu/usuario"></ion-back-button>
@@ -87,7 +87,7 @@
       ></ion-icon>
       <ion-label position="floating" color="primary">Email</ion-label>
       <ion-input
-        type="email"
+        type="email" 
         inputmode="email"
         color="primary"
         formControlName="email"
@@ -117,6 +117,7 @@
       <ion-label position="floating" color="primary">Senha</ion-label>
       <ion-input
         type="password"
+        (click)="clearField($event);"
         color="primary"
         formControlName="senha"
       ></ion-input>
