@@ -87,35 +87,7 @@ export class RelatorioCarPage implements OnInit {
   {
     let gerar: any;
     const loading = await this.overlayService.loading();
-    this.listaCar = [];
-
-    
-    if (!(this.data_vencimento_ini) && (this.data_vencimento_fim))
-    {
-      await this.overlayService.toast({
-        message: "Informar data inicial do intervalo, relacionado com data de Vencimento!"
-      });
-      loading.remove();
-      return;
-    }
-
-    if ((this.data_vencimento_ini) && !(this.data_vencimento_fim))
-    {
-      await this.overlayService.toast({
-        message: "Informar data final do intervalo, relacionado com data de Vencimento!"
-      });
-      loading.remove();
-      return;
-    }
-
-    if (this.data_vencimento_ini > this.data_vencimento_fim)
-    {
-      await this.overlayService.toast({
-        message: "Data inicial não pode ser maior que data final!"
-      });
-      loading.remove();
-      return;
-    }
+    this.listaCar = [];    
 
     if (this.id_cli)
     {
@@ -144,7 +116,6 @@ export class RelatorioCarPage implements OnInit {
 
     loading.remove();
     this.exportPdf();
-
   }
 
   buildTableBody(data, columns, header) {
@@ -170,7 +141,7 @@ export class RelatorioCarPage implements OnInit {
     return {
       table: {
         headerRows: 1,
-        widths: [100, 100, 100, 100, 100, 100, 100, 100, 100],
+        widths: [650, 350],
         body: this.buildTableBody(data, columns, header)
       },
       layout: "lightHorizontalLines"
@@ -187,7 +158,8 @@ export class RelatorioCarPage implements OnInit {
               {
                 text: "Agro Solo",
                 fontSize: 18,
-                alignment: "center"
+                alignment: "center",
+                color: "#00643a"
               },
             ],
             width: '*'
