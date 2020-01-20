@@ -1,4 +1,4 @@
-this.clicado<ion-header>
+<ion-header>
   <ion-toolbar color="primary">
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/menu/usuario"></ion-back-button>
@@ -117,7 +117,8 @@ this.clicado<ion-header>
       <ion-label position="floating" color="primary">Senha</ion-label>
       <ion-input
         type="password"
-        (click)="clearField($event);"
+        (click)="clearField($event);"   
+        (ionBlur)="verificarSenha($event);" (ionFocus)="verificarSenha;" 
         color="primary"
         formControlName="senha"
       ></ion-input>

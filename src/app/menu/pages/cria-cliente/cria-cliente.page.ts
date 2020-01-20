@@ -83,7 +83,7 @@ export class CriaClientePage implements OnInit {
   senha_cript: string;
   senha_banco: string;
 
-
+  campoValidacaoSenha: string;
   // Dependencias
   constructor(
     private formBuilder: FormBuilder,
@@ -597,6 +597,17 @@ export class CriaClientePage implements OnInit {
   }
 
   // Cria formulários
+
+  clearField(){   
+    this.campoValidacaoSenha = this.clienteForm.get('senha').value; 
+    this.clienteForm.get('senha').reset();         
+}
+
+verificarSenha(){
+  if(!this.clienteForm.get('senha').value) {
+      this.clienteForm.get('senha').setValue(this.campoValidacaoSenha);    
+  }
+}
 
 
 }

@@ -65,10 +65,9 @@ export class CriaUsuarioPage implements OnInit {
   email_atual: string;
 
   senha_cript: string;
-  senha_banco: string;
+  senha_banco: string; 
 
-  //clear field senha
-  clicado: boolean;
+  campoValidacaoSenha: string;
 
   // Dependencias
   constructor(
@@ -221,9 +220,15 @@ export class CriaUsuarioPage implements OnInit {
     });
   }
 
-  clearField(){      
-      this.usuarioForm.get('senha').reset(); 
-        
+  clearField(){   
+      this.campoValidacaoSenha = this.usuarioForm.get('senha').value; 
+      this.usuarioForm.get('senha').reset();         
+  }
+
+  verificarSenha(){
+    if(!this.usuarioForm.get('senha').value) {
+        this.usuarioForm.get('senha').setValue(this.campoValidacaoSenha);    
+    }
   }
 
   // metodos get que pegam o valor do input no formulário
