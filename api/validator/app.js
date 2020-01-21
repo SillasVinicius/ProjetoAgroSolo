@@ -20,24 +20,6 @@ let ccVencer15Dias;
 let ccVencer30Dias;
 let ccVencer130Dias;
 
-// const dados = {
-//     clientes:[],
-//     outorgas:[],
-//     declaracoesAmbientais:[],
-//     licencasAmbientais:[],
-//     cadastrosCredito:[],
-//     aniveriantesDia:[],
-//     outorgasVencer30Dias:[],
-//     outorgasVencer15Dias:[],
-//     daVencer30Dias:[],
-//     daVencer15Dias:[],
-//     laVencer15Dias:[],
-//     laVencer60Dias:[],
-//     laVencer130Dias:[],
-//     ccVencer15Dias:[],
-//     ccVencer30Dias:[],
-//     ccVencer130Dias:[],
-// }
 
 async function buscaDados() {
     // Limpa variaveis
@@ -103,7 +85,7 @@ async function buscaDados() {
             console.log('Error getting documents', err);
         })
 
-    // busca todas as licenças ambientais
+    // busca todas os cadastro de credito
     await db.collection('cadastroCredito').get()
         .then((snapshot) => {
             snapshot.forEach((doc) => {
@@ -153,7 +135,7 @@ async function buscaDados() {
         }
     )
 
-    // Busca declaracoes ambientais a vencer em 15 dias ou menos, 60 dias ou menos e 130 dias ou menos
+    // Busca licenças ambientais a vencer em 15 dias ou menos, 60 dias ou menos e 130 dias ou menos
     licencasAmbientais.forEach(
         (la) => {
             dtVencimento = new Date(la.dataDeVencimento);
@@ -169,7 +151,7 @@ async function buscaDados() {
         }
     )
 
-    // Busca declaracoes ambientais a vencer em 15 dias ou menos, 30 dias ou menos e 130 dias ou menos
+    // Busca cadastros de credito a vencer em 15 dias ou menos, 30 dias ou menos e 130 dias ou menos
     cadastrosCredito.forEach(
         (cc) => {
             dtExpiracao = new Date(cc.dataExpiracaoCredito);
@@ -192,27 +174,81 @@ async function buscaDados() {
 // dividir em dois documentos, talvez usando um objeto como retorno
 buscaDados();
 function montarEmail() {
-    let htmlAniversariantes = '';
-    let htmlOutorgas = '';
+    let htmlAniversariantes = '<tr><td>Sem aniversariantes hoje!</td></tr>';
+    let htmlOutorgas30 = '<tr><td>Nenhuma!</td></tr>';
+    let htmlOutorgas15 = '<tr><td>Nenhuma!</td></tr>';
+    let htmlDA30 = '<tr><td>Nenhuma!</td></tr>';
+    let htmlDA15 = '<tr><td>Nenhuma!</td></tr>';
+    let htmlLA15 = '<tr><td>Nenhuma!</td></tr>';
+    let htmlLA60 = '<tr><td>Nenhuma!</td></tr>';
+    let htmlLA130 = '<tr><td>Nenhuma!</td></tr>';
 
     // monta conteudo da seção de aniverasriantes do dia
     if (aniveriantesDia) {
+        htmlAniversariantes = '';
         aniveriantesDia.forEach(
             (aniversariante) => {
-                htmlAniversariantes += `<tr><td>${aniversariante.nome}<td></tr>`;
+                htmlAniversariantes += `<tr><td>${aniversariante.nome}</td></tr>`;
             }
         );
-    } else {
-        htmlAniversariantes += `<tr><td>Sem aniversariantes hoje!<td></tr>`;
     }
 
     if (outorgasVencer30Dias) {
+        htmlOutorgas30 = '';
         outorgasVencer30Dias.forEach(
-            (outorgas) => {
-                
+            (outorga) => {
+                htmlOutorgas30 += `<tr><td>${outorga.descricao}</td></tr>`
             }
         );
     }
+
+    if (outorgasVencer15Dias) {
+        htmlOutorgas15 = '';
+        outorgasVencer15Dias.forEach(
+            (outorga) => {
+                htmlOutorgas15 += `<tr><td>${outorga.descricao}</td></tr>`
+            }
+        );
+    }
+
+    if (daVencer30Dias) {
+        htmlDA30 = '';
+        daVencer30Dias.forEach(
+            (da) => {
+                htmlDA30 += `<tr><td>${da.descricao}</td></tr>`;
+                console.log(da)
+            }
+        );
+    }
+
+    if (laVencer15Dias) {
+        htmlLA15 = '';
+        laVencer15Dias.forEach(
+            (la) => {
+                htmlLA15 += `<tr><td>${la.descricao}</td></tr>`
+            }
+        );
+    }
+
+    if (laVencer60Dias) {
+        htmlLA60 = '';
+        laVencer60Dias.forEach(
+            (la) => {
+                htmlLA60 += `<tr><td>${la.descricao}</td></tr>`
+            }
+        );
+    }
+
+    if (laVencer130Dias) {
+        htmlLA130 = '';
+        laVencer130Dias.forEach(
+            (la) => {
+                htmlLA130 += `<tr><td>${la.descricao}</td></tr>`
+            }
+        );
+    }
+
+
 
     corpoEmail = 
     `
@@ -221,8 +257,21 @@ function montarEmail() {
     ${htmlAniversariantes}
     <tr><th>Outorgas a vencer</th></tr>
     <tr><th>30 dias:</th></tr>
-
+    ${htmlOutorgas30}
     <tr><th>15 dias:</th></tr>
+    ${htmlOutorgas15}
+    <tr><th>Declarações Ambientais a vencer</th></tr>
+    <tr><th>30 dias</th></tr>
+    ${htmlDA30}
+    <tr><th>15 dias</th></tr>
+    ${htmlDA15}
+    <tr><th>Licenças Ambientais a vencer</th></tr>
+    <tr><th>130 dias</th></tr>
+    ${htmlLA130}
+    <tr><th>60 dias</th></tr>
+    ${htmlLA60}
+    <tr><th>15 dias</th></tr>
+    ${htmlLA15}
     </table>
     `
     console.log(corpoEmail);
