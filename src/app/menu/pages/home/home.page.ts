@@ -157,22 +157,14 @@ export class HomePage implements OnInit {
       let qtdArray: Array<any> = [];
 
       element.forEach(cli => {
-        //console.log(cli.dataNascimento);  
         let dataInicialRecebida = new Date(cli.dataNascimento);
         let dataFinalFormatada = (dataInicialRecebida.getMonth() + 1) + "/" + (dataInicialRecebida.getDate());
         let dataInicialFormatada = this.dataAtual;
 
         let dataMesAtualNiver = (dataInicialRecebida.getMonth() + 1);
-        // console.log('mes', dataMesAtualNiver, ' atual  ', this.mesAtual);
-
-
-        //console.log(dataInicialFormatada + " - " + dataFinalFormatada);
 
         var dataInicialMilissegundos = new Date(dataInicialFormatada).getTime();
         var dataFinalMilissegundos = new Date(dataFinalFormatada).getTime();
-
-        //console.log(dataInicialMilissegundos + ' - ' + dataFinalMilissegundos);
-
         // Transforme 1 dia em milissegundos
         var umDiaMilissegundos = 1000 * 60 * 60 * 24;
 
@@ -196,7 +188,6 @@ export class HomePage implements OnInit {
 
       this.aniversariantesMes = nomesAniversariantesDia;
       this.quantidadeAniversariantesMes = qtdArray;
-      //console.log(this.aniversariantesMes, '------', this.quantidadeAniversariantesMes);
     });
   }
 
@@ -224,7 +215,8 @@ export class HomePage implements OnInit {
 
       vencimentos.forEach(venci => {
 
-        let dataInicialRecebida = new Date(venci.dataDeVencimento);
+
+        let dataInicialRecebida = (painel == "cadastroCredito") ? new Date(venci.dataExpiracaoCredito) : new Date(venci.dataDeVencimento);
         let dataFinalFormatada = (dataInicialRecebida.getMonth() + 1) + "/" + dataInicialRecebida.getDate() + "/" + dataInicialRecebida.getFullYear();
         let dataInicialFormatada = this.dataAtualAno;
 
