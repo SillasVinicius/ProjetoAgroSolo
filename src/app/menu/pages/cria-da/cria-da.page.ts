@@ -194,6 +194,9 @@ export class CriaDaPage implements OnInit {
          }
         }
         console.log('declaracao Ambiental Criada', declaracaoAmbiental);
+        await this.overlayService.toast({
+          message: "declaracao Ambiental Criada"
+        });
         this.navCtrl.navigateBack('/menu/ambiental/DeclaracaoAmbiental');
       } catch (error) {
         await this.overlayService.toast({
