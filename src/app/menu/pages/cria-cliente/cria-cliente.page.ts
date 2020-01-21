@@ -82,7 +82,7 @@ export class CriaClientePage implements OnInit {
   senha_cript: string;
   senha_banco: string;
 
-
+  campoValidacaoSenha: string;
   // Dependencias
   constructor(
     private formBuilder: FormBuilder,

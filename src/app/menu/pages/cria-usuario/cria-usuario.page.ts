@@ -65,7 +65,9 @@ export class CriaUsuarioPage implements OnInit {
   email_atual: string;
 
   senha_cript: string;
-  senha_banco: string;
+  senha_banco: string; 
+
+  campoValidacaoSenha: string;
 
   // Dependencias
   constructor(
@@ -81,6 +83,8 @@ export class CriaUsuarioPage implements OnInit {
     private clienteService: ClienteService,
   ) { }
 
+  
+
   // metodo que é chamado quando a pagina é carregada
   ngOnInit() {
     this.criaFormulario();
@@ -93,6 +97,7 @@ export class CriaUsuarioPage implements OnInit {
       this.usuarioService.init();
       this.admin = false;
     }
+   
 
     this.usuarioService.init();
     this.usuarioService.getAll().subscribe((u: Usuario[]) => {
@@ -213,6 +218,17 @@ export class CriaUsuarioPage implements OnInit {
       nome: this.formBuilder.control('', [Validators.required, Validators.minLength(3)]),
       admin: this.formBuilder.control(true, [])
     });
+  }
+
+  clearField(){   
+      this.campoValidacaoSenha = this.usuarioForm.get('senha').value; 
+      this.usuarioForm.get('senha').reset();         
+  }
+
+  verificarSenha(){
+    if(!this.usuarioForm.get('senha').value) {
+        this.usuarioForm.get('senha').setValue(this.campoValidacaoSenha);    
+    }
   }
 
   // metodos get que pegam o valor do input no formulário
