@@ -5,6 +5,8 @@ import { Cliente } from 'src/app/menu/models/cliente.model';
 import { UsuarioService } from 'src/app/core/services/usuario.service';
 import { ClienteService } from 'src/app/core/services/cliente.service';
 import { OverlayService } from 'src/app/core/services/overlay.service';
+import { EmailService } from 'src/app/core/services/email.service';
+import { ConfigEmail } from 'src/app/menu/models/config-email.model';
 
 @Component({
   selector: 'app-recuperar-senha',
@@ -17,11 +19,12 @@ export class RecuperarSenhaPage implements OnInit {
     private ModalController: ModalController,
     private usuarioService: UsuarioService,
     private clienteService: ClienteService,
-    private overlayService: OverlayService
+    private overlayService: OverlayService,
+    private emailService: EmailService
   ) { }
 
   habilitar_botao: boolean = true;
-  validar_usuario_existe: boolean = true;
+  validar_usuario_existe: boolean;
   email: string;
   email_novamente: string;
   usuario: Usuario[] = [];
@@ -39,8 +42,6 @@ export class RecuperarSenhaPage implements OnInit {
   telefone_usu: string;
   dataNascimento_usu: string;
 
-
-
   async ngOnInit(): Promise<void> {
     this.usuarioService.getAll().subscribe((r: Usuario[]) => {
       for (let i = 0; i < r.length; i++) {
@@ -53,12 +54,11 @@ export class RecuperarSenhaPage implements OnInit {
         this.cliente[i] = c[i];
       }
     });
-
-
   }
 
+
+
   async closeModal() {
-    this.usuario = [];
     await this.ModalController.dismiss();
   }
 
@@ -79,8 +79,9 @@ export class RecuperarSenhaPage implements OnInit {
   }
 
   async recuperarSenha() {
-    const loading = await this.overlayService.loading();
 
+    const loading = await this.overlayService.loading();
+    this.validar_usuario_existe = false;
     try {
       for (let i = 0; i < this.usuario.length; i++) {
         this.validar_usuario_existe = (this.email == this.usuario[i].email);
@@ -110,73 +111,64 @@ export class RecuperarSenhaPage implements OnInit {
             break;
           }
         }
-
-        if (this.admin) {
-          this.usuarioService.init();
-          await this.usuarioService.update({
-            id: this.usuarioId,
-            nome: this.usuarioNome,
-            senha: "agro123",
-            email: this.usuarioEmail,
-          });
-        }
-        else {
-          this.clienteService.init();
-          await this.clienteService.update({
-            id: this.usuarioId,
-            cpf: this.cpf_usu,
-            nome: this.usuarioNome,
-            patrimonio: this.patrimonio_usu,
-            pdtvAgro: this.pdtvAgro_usu,
-            informacoesAdicionais: this.informacoesAdicionais_usu,
-            rg: this.rg_usu,
-            telefone: this.telefone_usu,
-            dataNascimento: this.dataNascimento_usu,
-            email: this.usuarioEmail,
-            senha: "agro123",
-          });
-        }
-
-
-
-        if (this.validar_usuario_existe == false) {
-          await this.overlayService.toast({
-            message: "Usuário não encontrado..."
-          });
-          loading.remove();
-          return;
-        }
-
-        if (this.admin) {
-          this.usuarioService.init();
-          await this.usuarioService.update({
-            id: this.usuarioId,
-            nome: this.usuarioNome,
-            senha: "agro123",
-            email: this.usuarioEmail,
-          });
-        }
-        else {
-          this.clienteService.init();
-          await this.clienteService.update({
-            id: this.usuarioId,
-            cpf: this.cpf_usu,
-            nome: this.usuarioNome,
-            patrimonio: this.patrimonio_usu,
-            pdtvAgro: this.pdtvAgro_usu,
-            informacoesAdicionais: this.informacoesAdicionais_usu,
-            rg: this.rg_usu,
-            telefone: this.telefone_usu,
-            dataNascimento: this.dataNascimento_usu,
-            email: this.usuarioEmail,
-            senha: "agro123",
-          });
-        }
       }
+      
+      if (!this.validar_usuario_existe) {
+        await this.overlayService.toast({
+          message: "Usuário não encontrado..."
+        });
+        return;
+      }
+
+      const sha1 = require('sha1');
+
+      if (this.admin) {
+        this.usuarioService.init();
+        await this.usuarioService.update({
+          id: this.usuarioId,
+          nome: this.usuarioNome,
+          senha: sha1('agro123'),
+          email: this.usuarioEmail,
+        });
+      }
+      else {
+        this.clienteService.init();
+        await this.clienteService.update({
+          id: this.usuarioId,
+          cpf: this.cpf_usu,
+          nome: this.usuarioNome,
+          patrimonio: this.patrimonio_usu,
+          pdtvAgro: this.pdtvAgro_usu,
+          informacoesAdicionais: this.informacoesAdicionais_usu,
+          rg: this.rg_usu,
+          telefone: this.telefone_usu,
+          dataNascimento: this.dataNascimento_usu,
+          email: this.usuarioEmail,
+          senha: sha1('agro123'),
+        });
+      }
+
+
+      const config = new ConfigEmail(this.usuarioNome, 'agro123', this.usuarioEmail);
+      this.emailService.sendMail(config)
+        .subscribe(
+          async (resp) => {
+            await this.overlayService.toast({
+              message: 'Email de recuperação de senha enviado!'
+            });
+          },
+          async (error) => {
+            await this.overlayService.toast({
+              message: 'Falha ao enviar email para recuperação de senha!',
+              color: 'danger'
+            });
+          }
+        );
+
+      this.closeModal();
     }
     finally {
       loading.remove();
-      this.closeModal();
     }
   }
 

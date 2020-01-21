@@ -49,9 +49,6 @@ export class DadosPessoaisPage implements OnInit {
       this.dpService.initCnh();
       this.cnh$ = this.dpService.getAll();
       this.cnh$.pipe(take(1)).subscribe(() => loading2.dismiss());
-
-      console.log(this.impostoDeRenda$);
-      console.log(this.cnh$);
   }
 
   openLink(link: string){

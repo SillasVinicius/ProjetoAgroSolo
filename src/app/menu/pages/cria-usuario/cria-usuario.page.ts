@@ -64,6 +64,11 @@ export class CriaUsuarioPage implements OnInit {
   validar_email_existe: boolean;
   email_atual: string;
 
+  senha_cript: string;
+  senha_banco: string; 
+
+  campoValidacaoSenha: string;
+
   // Dependencias
   constructor(
     private formBuilder: FormBuilder,
@@ -78,6 +83,8 @@ export class CriaUsuarioPage implements OnInit {
     private clienteService: ClienteService,
   ) { }
 
+  
+
   // metodo que é chamado quando a pagina é carregada
   ngOnInit() {
     this.criaFormulario();
@@ -90,6 +97,7 @@ export class CriaUsuarioPage implements OnInit {
       this.usuarioService.init();
       this.admin = false;
     }
+   
 
     this.usuarioService.init();
     this.usuarioService.getAll().subscribe((u: Usuario[]) => {
@@ -163,6 +171,11 @@ export class CriaUsuarioPage implements OnInit {
           this.downloadUrl = ref2.getDownloadURL();
           this.liberaArquivo = true;
           this.liberaAlterar = true;
+          //hash
+          const sha1 = require('sha1');
+          if (this.senha_cript ==  this.usuarioForm.get('senha').value)
+              this.senha_banco = this.senha_cript;
+          else this.senha_banco = sha1(this.usuarioForm.get('senha').value);
 
           this.downloadUrl.subscribe(async r => {
             this.usuarioService.init();
@@ -170,7 +183,7 @@ export class CriaUsuarioPage implements OnInit {
               id: idUser,
               nome: this.usuarioForm.get('nome').value,
               email: this.usuarioForm.get('email').value,
-              senha: this.usuarioForm.get('senha').value,
+              senha: this.senha_banco,
               foto: r,
               nomeFoto: this.fileName
             });
@@ -205,6 +218,17 @@ export class CriaUsuarioPage implements OnInit {
       nome: this.formBuilder.control('', [Validators.required, Validators.minLength(3)]),
       admin: this.formBuilder.control(true, [])
     });
+  }
+
+  clearField(){   
+      this.campoValidacaoSenha = this.usuarioForm.get('senha').value; 
+      this.usuarioForm.get('senha').reset();         
+  }
+
+  verificarSenha(){
+    if(!this.usuarioForm.get('senha').value) {
+        this.usuarioForm.get('senha').setValue(this.campoValidacaoSenha);    
+    }
   }
 
   // metodos get que pegam o valor do input no formulário
@@ -244,6 +268,7 @@ export class CriaUsuarioPage implements OnInit {
           this.usuarioForm.get('nome').setValue(nome),
           this.usuarioForm.get('email').setValue(email),
           this.email_atual = email,
+          this.senha_cript = senha;
           this.urlFoto = foto;
         this.fileName = nomeFoto;
         this.fotoAntigo = nomeFoto;
@@ -251,11 +276,17 @@ export class CriaUsuarioPage implements OnInit {
   }
 
   async AtualizaListaGlobal() {
+    //hash
+    const sha1 = require('sha1');
+    if (this.senha_cript ==  this.usuarioForm.get('senha').value)
+        this.senha_banco = this.senha_cript;
+    else this.senha_banco = sha1(this.usuarioForm.get('senha').value);
+
     this.usuarioService.init();
     await this.usuarioService.update({
       id: this.usuarioId,
       nome: this.usuarioForm.get('nome').value,
-      senha: this.usuarioForm.get('senha').value,
+      senha: this.senha_banco,
       email: this.usuarioForm.get('email').value,
     });
   }

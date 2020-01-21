@@ -26,7 +26,6 @@ export class AlterarSenhaPage implements OnInit {
   senha: string;
   senha_novamente: string;
   senha_antiga: string;
-  hash_senha: string;
 
   // validar se é usuário ou cliente
   @Input() id_usu: string;
@@ -103,7 +102,8 @@ export class AlterarSenhaPage implements OnInit {
   }
 
   habilitar_senha_antiga(senha_antiga: string) {
-    this.senha_antiga = senha_antiga
+    const sha1 = require('sha1');
+    this.senha_antiga = sha1(senha_antiga)
     if (this.senha_novamente && this.senha && (this.senha_antiga.length > 5))
       this.habilitar_botao = !(this.senha_usu == this.senha_antiga)
     else this.habilitar_botao = true;
@@ -121,13 +121,15 @@ export class AlterarSenhaPage implements OnInit {
     try
     {
       this.habilitar_botao = true;
+      const sha1 = require('sha1');
+
       if (this.validar_usuario)
       {
         this.usuarioService.init();
         await this.usuarioService.update({
             id: this.id_usu,
             nome: this.nome_usu,
-            senha: this.senha,
+            senha: sha1(this.senha),
             email: this.email_usu
         });
       }
@@ -145,7 +147,7 @@ export class AlterarSenhaPage implements OnInit {
           telefone: this.telefone_usu,
           dataNascimento: this.dataNascimento_usu,
           email: this.email_usu,
-          senha: this.senha,
+          senha: sha1(this.senha),
         });
       }
 

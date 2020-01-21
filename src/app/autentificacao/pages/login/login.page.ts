@@ -15,22 +15,22 @@ import { Network } from '@ionic-native/network/ngx';
   styleUrls: ['./login.page.scss'],
   animations: [
     trigger('movDiv', [
-      state('cadastro', style( {'margin-top':'-14%', 'height':'105%', 'border-radius':'3%'})), 
-      state('login', style( {'margin-top':'33%', 'height':'79%', 'border-radius':'5%'})), 
-      transition('login => cadastro', [style( {transition:'0.2s'}), animate('100ms 0s ease-in')]), 
-      transition('cadastro => login', [style( {transition:'0.2s'}), animate('100ms 0s ease-in')])
-    ]), 
+      state('cadastro', style({ 'margin-top': '-14%', 'height': '105%', 'border-radius': '3%' })),
+      state('login', style({ 'margin-top': '33%', 'height': '79%', 'border-radius': '5%' })),
+      transition('login => cadastro', [style({ transition: '0.2s' }), animate('100ms 0s ease-in')]),
+      transition('cadastro => login', [style({ transition: '0.2s' }), animate('100ms 0s ease-in')])
+    ]),
   ]
 })
 export class LoginPage implements OnInit {
   // variáveis login
-  version:string = ''; 
-  author:string = ''; 
-  loginForm:FormGroup; 
-  logado = false; 
-  numberPattern = /^[0-9] * $/; 
+  version: string = '';
+  author: string = '';
+  loginForm: FormGroup;
+  logado = false;
+  numberPattern = /^[0-9] * $/;
 
-  private user:Observable < Usuario[] > ; 
+  private user: Observable<Usuario[]>;
 
 
   constructor(
@@ -63,75 +63,82 @@ export class LoginPage implements OnInit {
     this.author = packageJsonInfo.author; 
   }
 
-  get senha():FormControl {
-    return this.loginForm.get('senha')as FormControl; 
+  get senha(): FormControl {
+    return this.loginForm.get('senha') as FormControl;
   }
-  get email():FormControl {
-    return this.loginForm.get('email')as FormControl; 
+  get email(): FormControl {
+    return this.loginForm.get('email') as FormControl;
   }
 
-  logar():void {
-    this.logado = true; 
+  logar(): void {
+    this.logado = true;
   }
   async login() {
-    const loading = await this.overlayService.loading( {
-      message:'Logando...'
-    }); 
+    const loading = await this.overlayService.loading({
+      message: 'Logando...'
+    });
 
     try {
+      const sha1 = require('sha1');
       this.user = await this.usuarioService.loginDb(
-        this.loginForm.get('email').value, 
-        this.loginForm.get('senha').value, 
-      ); 
-      this.user.subscribe(async (r:Usuario[]) =>  {
+        this.loginForm.get('email').value,
+        sha1(this.loginForm.get('senha').value),
+      );
+      this.user.subscribe(async (r: Usuario[]) => {
         if (r.length >= 1) {
-          console.log('Usuário Logado', this.user); 
-          this.usuarioService.setId(r[0].id); 
-          this.logar(); 
-          this.navCtrl.navigateForward('/menu'); 
-          this.usuarioService.logado = true; 
-          this.usuarioService.nomeUser = r[0].nome; 
-          this.usuarioService.urlFoto = r[0].foto; 
-          this.usuarioService.admin = r[0].admin; 
-        }else {
+          console.log('Usuário Logado', this.user);
+          this.usuarioService.setId(r[0].id);
+          this.logar();
+          this.navCtrl.navigateForward('/menu');
+          this.usuarioService.logado = true;
+          this.usuarioService.nomeUser = r[0].nome;
+          this.usuarioService.urlFoto = r[0].foto;
+          this.usuarioService.admin = r[0].admin;
+        } else {
           this.user = await this.usuarioService.loginDbCliente(
-            this.loginForm.get('email').value, 
-            this.loginForm.get('senha').value, ); 
-          this.user.subscribe(async (r:Usuario[]) =>  {
+            this.loginForm.get('email').value,
+            sha1(this.loginForm.get('senha').value));
+          this.user.subscribe(async (r: Usuario[]) => {
             if (r.length >= 1) {
-              console.log('Usuário Logado', this.user); 
-              this.usuarioService.setId(r[0].id); 
-              this.logar(); 
-              console.log(r[0].id); 
-              console.log(this.logado); 
-              this.navCtrl.navigateForward('/menu'); 
-              this.usuarioService.logado = true; 
-              this.usuarioService.nomeUser = r[0].nome; 
-              this.usuarioService.urlFoto = r[0].foto; 
-              this.usuarioService.admin = r[0].admin; 
+              console.log('Usuário Logado', this.user);
+              this.usuarioService.setId(r[0].id);
+              this.logar();
+              this.usuarioService.logado = true;
+              this.usuarioService.nomeUser = r[0].nome;
+              this.usuarioService.urlFoto = r[0].foto;
+              this.usuarioService.admin = r[0].admin;
+              this.navCtrl.navigateForward('/menu');
             }
             else {
-              await this.overlayService.toast( {
-                  message:'Dados incorretos! Verifique-os e tente novamente!'
-                }); 
-                this.usuarioService.logado = false; 
+              if (this.usuarioService.logado == true) {
+                if (this.usuarioService.admin) this.navCtrl.navigateForward('/menu/usuario');
+                else this.navCtrl.navigateForward('/menu/cliente'); 
+              }
+              else {
+                await this.overlayService.toast({
+                  message: 'Dados incorretos! Verifique-os e tente novamente!'
+                });
+                this.usuarioService.logado = false;
+              }
+
             }
-          }); 
+          });
         }
 
-      }, ); 
-    }catch (error) {
-      await this.overlayService.toast( {
-        message:error.message
-      }); 
-      console.log('Erro ao Logar usuário: ', error); 
-    }finally {
-      loading.dismiss(); 
+      });
+
+    } catch (error) {
+      await this.overlayService.toast({
+        message: error.message
+      });
+      console.log('Erro ao Logar usuário: ', error);
+    } finally {
+      loading.dismiss();
     }
   }
 
   onSubmit() {
-    this.login(); 
+    this.login();
   }
 
 
@@ -140,7 +147,7 @@ export class LoginPage implements OnInit {
       component: RecuperarSenhaPage
     })
     modal.present();
-  } 
+  }
 
 
 }

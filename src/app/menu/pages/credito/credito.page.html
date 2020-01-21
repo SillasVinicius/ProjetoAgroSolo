@@ -41,7 +41,7 @@
    <ion-item>
       <ion-label position="floating" color="primary">Data de Aprovação do Crédito Financeiro</ion-label>
       <ion-input type="date" placeholder="Aprovação" color="primary" formControlName="dataAprovacaoCredito" 
-      (ionChange)="obter_dt_aprovacao_credito($event.target.value);">
+      (ionChange)="obter_dt_aprovacao_credito($event.target.value);"  min="1930" max="2300">
       </ion-input>
 
       <ion-note slot="end" color="danger"
@@ -57,7 +57,7 @@
       <ion-label position="floating" color="primary">Data de Expiração do Crédito Financeiro</ion-label>
       <ion-input type="date" placeholder="Data de Expiração do Crédito" color="primary"
         formControlName="dataExpiracaoCredito"
-        (ionChange)="obter_dt_expiracao_credito($event.target.value);">
+        (ionChange)="obter_dt_expiracao_credito($event.target.value);" min="1930" max="2300">
       </ion-input>
       <ion-note slot="end" color="danger"
         *ngIf="dataExpiracaoCredito.dirty && dataExpiracaoCredito.hasError('required')">

@@ -45,9 +45,8 @@ export class CriaClientePage implements OnInit {
   liberaArquivo = false;
   liberaAlterar = false;
 
-
-
-  //liberaIr = false;
+  liberaCnh = false;
+  liberaIr = false;
 
   // FOTOS
   public uploadPercent: Observable<number>;
@@ -80,7 +79,10 @@ export class CriaClientePage implements OnInit {
   novoCnh = false;
   cnhAntigo: any;
 
+  senha_cript: string;
+  senha_banco: string;
 
+  campoValidacaoSenha: string;
   // Dependencias
   constructor(
     private formBuilder: FormBuilder,
@@ -111,8 +113,6 @@ export class CriaClientePage implements OnInit {
       }
     });
 
-
-    console.log(this.validar_email_existente);
     if (!this.validar_email_existente) {
       this.clienteService.init();
       this.clienteService.getAll().subscribe((c: Cliente[]) => {
@@ -220,15 +220,15 @@ export class CriaClientePage implements OnInit {
       .get(clienteId)
       .pipe(take(1))
       .subscribe(({ nome, cpf, patrimonio, pdtvAgro, informacoesAdicionais, rg, telefone, dataNascimento, email, senha, foto, nomeFoto, impostoRenda, nomeIr, cnh, nomeCnh }) => {
-        this.urlIr = impostoRenda;
-        this.fileName = nomeFoto;
-        this.fotoAntigo = nomeFoto;
-        this.irName = nomeIr;
-        this.irAntigo = nomeIr;
-        this.urlCnh = cnh;
-        this.cnhAntigo = nomeCnh;
-        this.cnhName = nomeCnh;
-        this.clienteForm.get('nome').setValue(nome),
+          this.urlIr = impostoRenda,
+          this.fileName = nomeFoto,
+          this.fotoAntigo = nomeFoto,
+          this.irName = nomeIr,
+          this.irAntigo = nomeIr,
+          this.urlCnh = cnh,
+          this.cnhAntigo = nomeCnh,
+          this.cnhName = nomeCnh,
+          this.clienteForm.get('nome').setValue(nome),
           this.clienteForm.get('cpf').setValue(cpf),
           this.clienteForm.get('patrimonio').setValue(patrimonio),
           this.clienteForm.get('pdtvAgro').setValue(pdtvAgro),
@@ -238,17 +238,29 @@ export class CriaClientePage implements OnInit {
           this.clienteForm.get('dataNascimento').setValue(dataNascimento),
           this.clienteForm.get('email').setValue(email),
           this.clienteForm.get('senha').setValue(senha),
-          this.email_atual = email;
-          this.urlFoto = foto;
+          this.senha_cript = senha,
+          this.email_atual = email,
+          this.urlFoto = foto,
+          this.liberaIr = (nomeIr !== '' && nomeIr !== undefined),
+          this.liberaCnh = (nomeCnh !== '' && nomeCnh !== undefined)
       });
   }
 
   async cadastraListaGlobal(id: string) {
+    //hash
+    const sha1 = require('sha1');
+    this.clienteForm.get('senha').setValue(sha1(this.clienteForm.get('senha').value));
     this.clienteService.init();
     const cliente = await this.clienteService.createGlobal(this.clienteForm.value, id);
   }
 
   async AtualizaListaGlobal() {
+    //hash
+    const sha1 = require('sha1');
+    if (this.senha_cript == this.clienteForm.get('senha').value)
+      this.senha_banco = this.senha_cript;
+    else this.senha_banco = sha1(this.clienteForm.get('senha').value);
+
     this.clienteService.init();
     await this.clienteService.update({
       id: this.clienteId,
@@ -261,7 +273,7 @@ export class CriaClientePage implements OnInit {
       telefone: this.clienteForm.get('telefone').value,
       dataNascimento: this.clienteForm.get('dataNascimento').value,
       email: this.clienteForm.get('email').value,
-      senha: this.clienteForm.get('senha').value,
+      senha: this.senha_banco,
     });
   }
 
@@ -273,37 +285,34 @@ export class CriaClientePage implements OnInit {
 
     this.validar_email_existente = false;
 
-    if (this.email_atual)
-    {
+    if (this.email_atual) {
       if (this.email_atual == this.clienteForm.get('email').value)
         this.validar_email_existente = false;
-      else
-      {
+      else {
         for (let i = 0; i < this.usuarios.length; i++) {
           if (this.usuarios[i].email == this.clienteForm.get('email').value) {
             this.validar_email_existente = true;
             break;
           }
         }
-          if (!this.validar_email_existente) {
-            for (let i = 0; i < this.clientes.length; i++) {
-              if (this.clientes[i].email == this.clienteForm.get('email').value) {
-                this.validar_email_existente = true;
-                break;
-              }
+        if (!this.validar_email_existente) {
+          for (let i = 0; i < this.clientes.length; i++) {
+            if (this.clientes[i].email == this.clienteForm.get('email').value) {
+              this.validar_email_existente = true;
+              break;
             }
           }
+        }
       }
     }
-    else
-    {
-      
-    for (let i = 0; i < this.usuarios.length; i++) {
-      if (this.usuarios[i].email == this.clienteForm.get('email').value) {
-        this.validar_email_existente = true;
-        break;
+    else {
+
+      for (let i = 0; i < this.usuarios.length; i++) {
+        if (this.usuarios[i].email == this.clienteForm.get('email').value) {
+          this.validar_email_existente = true;
+          break;
+        }
       }
-    }
       if (!this.validar_email_existente) {
         for (let i = 0; i < this.clientes.length; i++) {
           if (this.clientes[i].email == this.clienteForm.get('email').value) {
@@ -331,31 +340,33 @@ export class CriaClientePage implements OnInit {
         this.cadastraListaGlobal(this.clienteService.id);
         this.deletePicture();
         this.uploadFileTo(this.arquivos);
-        
-        if(this.cnhName !== "" && this.cnhName !== undefined){
+
+        if (this.cnhName !== "" && this.cnhName !== undefined) {
           this.uploadArquivos(this.arquivoCnh, "cnhCliente", this.cnhName, "CNH");
-        } 
-        if(this.irName !== "" && this.irName !== undefined){
+          this.liberaCnh = false;
+        }
+        if (this.irName !== "" && this.irName !== undefined) {
           this.uploadArquivos(this.arquivoIr, "irCliente", this.irName, "IR");
+          this.liberaIr = false;
         }
 
       } else {
 
-          if (this.novoIr) {
-             if (this.irAntigo !== "" && this.irAntigo !== undefined) {
-              this.deleteArquivosPasta("irCliente", this.irAntigo);
-             }
-            this.uploadArquivos(this.arquivoIr, "irCliente", this.irName, "IR");
-            this.novoIr = false;
+        if (this.novoIr) {
+          if (this.irAntigo !== "" && this.irAntigo !== undefined) {
+            this.deleteArquivosPasta("irCliente", this.irAntigo);
           }
-          
-          if (this.novoCnh) {
-            if (this.cnhAntigo !== "" && this.cnhAntigo !== undefined) {
-               this.deleteArquivosPasta("cnhCliente", this.cnhAntigo);
-             }
-            this.uploadArquivos(this.arquivoCnh, "cnhCliente", this.cnhName, "CNH");
-            this.novoCnh = false;
+          this.uploadArquivos(this.arquivoIr, "irCliente", this.irName, "IR");
+          this.novoIr = false;
+        }
+
+        if (this.novoCnh) {
+          if (this.cnhAntigo !== "" && this.cnhAntigo !== undefined) {
+            this.deleteArquivosPasta("cnhCliente", this.cnhAntigo);
           }
+          this.uploadArquivos(this.arquivoCnh, "cnhCliente", this.cnhName, "CNH");
+          this.novoCnh = false;
+        }
 
         if (this.novaFoto) {
           if (this.fotoAntigo !== "" && this.fotoAntigo !== undefined) {
@@ -438,11 +449,13 @@ export class CriaClientePage implements OnInit {
           this.irName = file.name;
           this.arquivoIr = file;
           this.novoIr = true;
+          this.liberaIr = true;
           break;
         case "CNH":
           this.cnhName = file.name;
           this.arquivoCnh = file;
           this.novoCnh = true;
+          this.liberaCnh = true;
           break;
       }
     } catch (error) {
@@ -465,6 +478,12 @@ export class CriaClientePage implements OnInit {
         this.liberaArquivo = true;
         this.liberaAlterar = true;
 
+        //hash
+        const sha1 = require('sha1');
+        if (this.senha_cript == this.clienteForm.get('senha').value)
+          this.senha_banco = this.senha_cript;
+        else this.senha_banco = sha1(this.clienteForm.get('senha').value);
+
         this.downloadUrl.subscribe(async r => {
           this.clienteService.init();
           await this.clienteService.update({
@@ -480,7 +499,7 @@ export class CriaClientePage implements OnInit {
             dataNascimento: this.clienteForm.get('dataNascimento').value,
             telefone: this.clienteForm.get('telefone').value,
             email: this.clienteForm.get('email').value,
-            senha: this.clienteForm.get('senha').value,
+            senha: this.senha_banco,
           });
         });
       })
@@ -503,9 +522,11 @@ export class CriaClientePage implements OnInit {
           this.clienteService.init();
           if (flagOp == "IR") {
             await this.salvarIr(idCliente, r);
+
           }
           if (flagOp == "CNH") {
             await this.salvarCnh(idCliente, r);
+
           }
         });
       })
@@ -513,6 +534,12 @@ export class CriaClientePage implements OnInit {
   }
 
   salvarIr(idCliente: string, enderecoArquivo: string) {
+    //hash
+    const sha1 = require('sha1');
+    if (this.senha_cript == this.clienteForm.get('senha').value)
+      this.senha_banco = this.senha_cript;
+    else this.senha_banco = sha1(this.clienteForm.get('senha').value);
+
     this.clienteService.update({
       id: idCliente,
       cpf: this.clienteForm.get('cpf').value,
@@ -524,13 +551,19 @@ export class CriaClientePage implements OnInit {
       dataNascimento: this.clienteForm.get('dataNascimento').value,
       telefone: this.clienteForm.get('telefone').value,
       email: this.clienteForm.get('email').value,
-      senha: this.clienteForm.get('senha').value,
+      senha: this.senha_banco,
       impostoRenda: enderecoArquivo,
       nomeIr: this.irName
     });
   }
 
   salvarCnh(idCliente: string, enderecoArquivo: string) {
+    //hash
+    const sha1 = require('sha1');
+    if (this.senha_cript == this.clienteForm.get('senha').value)
+      this.senha_banco = this.senha_cript;
+    else this.senha_banco = sha1(this.clienteForm.get('senha').value);
+
     this.clienteService.update({
       id: idCliente,
       cpf: this.clienteForm.get('cpf').value,
@@ -542,7 +575,7 @@ export class CriaClientePage implements OnInit {
       dataNascimento: this.clienteForm.get('dataNascimento').value,
       telefone: this.clienteForm.get('telefone').value,
       email: this.clienteForm.get('email').value,
-      senha: this.clienteForm.get('senha').value,
+      senha: this.senha_banco,
       cnh: enderecoArquivo,
       nomeCnh: this.cnhName
     });
@@ -567,7 +600,34 @@ export class CriaClientePage implements OnInit {
     ref.child(`${nomeArquivo}`).delete();
   }
 
-  // Cria formulários
+  deletaArquivosBotao(caminho: string) {
 
+    this.clienteService.init();
+    let idCliente = (this.clienteService.id === '') ? this.clienteId : this.clienteService.id;
 
+    if (caminho == "CNH") {
+      if(!this.novoCnh){
+       this.deleteArquivosPasta("cnhCliente", this.cnhName);
+      }
+      this.cnhName = '';
+      this.cnhAntigo = '';
+      this.urlCnh = '';
+      this.novoCnh = false;
+      this.liberaCnh = false;
+      this.salvarCnh(idCliente, '');
+
+    }
+    if (caminho == "IR") {
+      if(!this.novoIr){
+        	this.deleteArquivosPasta("irCliente", this.irName);
+      }
+      this.irName = '';
+      this.irAntigo = '';
+      this.urlIr = '';
+      this.novoIr = false;
+      this.liberaIr = false;
+      this.salvarIr(idCliente, '');
+    }
+
+  }
 }

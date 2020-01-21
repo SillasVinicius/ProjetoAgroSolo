@@ -41,8 +41,8 @@ var LoginPage = /** @class */ (function () {
     }
     LoginPage.prototype.ngOnInit = function () {
         this.loginForm = this.formBuilder.group({
-            senha: this.formBuilder.control('123456', [Validators.required, Validators.minLength(6)]),
-            email: this.formBuilder.control('admin@gmail.com', [Validators.required, Validators.email]),
+            senha: this.formBuilder.control('', [Validators.required, Validators.minLength(6)]),
+            email: this.formBuilder.control('', [Validators.required, Validators.email]),
             admin: this.formBuilder.control(false, [])
         });
         var packageJsonInfo = require('package.json');
@@ -144,11 +144,8 @@ var LoginPage = /** @class */ (function () {
                                 switch (_a.label) {
                                     case 0:
                                         if (!(r.length >= 1)) return [3 /*break*/, 1];
-                                        console.log('Usuário Logado', this.user);
                                         this.usuarioService.setId(r[0].id);
                                         this.logar();
-                                        console.log(r[0].id);
-                                        console.log(this.logado);
                                         this.navCtrl.navigateForward('/menu');
                                         this.usuarioService.logado = true;
                                         this.usuarioService.nomeUser = r[0].nome;
