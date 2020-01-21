@@ -45,7 +45,7 @@ export class LoginPage implements OnInit {
   ngOnInit() {
     let disconnectSubscription = this.network.onDisconnect().subscribe(async () => {
       const loading = await this.overlayService.loading({
-        message: "Sem internet!"
+        message: "Verifique sua conexão com a rede!"
       });
         let connectSubscription = this.network.onConnect().subscribe(async () => {
         loading.dismiss();
