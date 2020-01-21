@@ -5,6 +5,8 @@ import { Cliente } from 'src/app/menu/models/cliente.model';
 import { UsuarioService } from 'src/app/core/services/usuario.service';
 import { ClienteService } from 'src/app/core/services/cliente.service';
 import { OverlayService } from 'src/app/core/services/overlay.service';
+import { EmailService } from 'src/app/core/services/email.service';
+import { ConfigEmail } from 'src/app/menu/models/config-email.model';
 
 @Component({
   selector: 'app-recuperar-senha',
@@ -18,6 +20,7 @@ export class RecuperarSenhaPage implements OnInit {
     private usuarioService: UsuarioService,
     private clienteService: ClienteService,
     private overlayService: OverlayService,
+    private emailService: EmailService
   ) { }
 
   habilitar_botao: boolean = true;
@@ -38,7 +41,6 @@ export class RecuperarSenhaPage implements OnInit {
   rg_usu: string;
   telefone_usu: string;
   dataNascimento_usu: string;
-
 
   async ngOnInit(): Promise<void> {
     this.usuarioService.getAll().subscribe((r: Usuario[]) => {
@@ -77,6 +79,7 @@ export class RecuperarSenhaPage implements OnInit {
   }
 
   async recuperarSenha() {
+
     const loading = await this.overlayService.loading();
     this.validar_usuario_existe = false;
     try {
@@ -144,6 +147,24 @@ export class RecuperarSenhaPage implements OnInit {
           senha: sha1('agro123'),
         });
       }
+
+
+      const config = new ConfigEmail(this.usuarioNome, 'agro123', this.usuarioEmail);
+      this.emailService.sendMail(config)
+        .subscribe(
+          async (resp) => {
+            await this.overlayService.toast({
+              message: 'Email de recuperação de senha enviado!'
+            });
+          },
+          async (error) => {
+            await this.overlayService.toast({
+              message: 'Falha ao enviar email para recuperação de senha!',
+              color: 'danger'
+            });
+          }
+        );
+
       this.closeModal();
     }
     finally {
