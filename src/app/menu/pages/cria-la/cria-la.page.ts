@@ -195,6 +195,9 @@ export class CriaLaPage implements OnInit {
             }
           }
           console.log('Licença Ambiental Criada', licencaAmbiental);
+          await this.overlayService.toast({
+            message: "Licença Ambiental Criada"
+          });
           this.navCtrl.navigateBack('/menu/ambiental/LicencaAmbiental');
         } catch (error) {
           await this.overlayService.toast({

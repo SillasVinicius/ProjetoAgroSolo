@@ -192,6 +192,9 @@ export class CriaOutorgaPage implements OnInit {
         }
       }
       console.log('Outorga Criada', outorga);
+      await this.overlayService.toast({
+        message: "Outorga Criada"
+      });
       this.navCtrl.navigateBack('/menu/outorga');
     } catch (error) {
       await this.overlayService.toast({

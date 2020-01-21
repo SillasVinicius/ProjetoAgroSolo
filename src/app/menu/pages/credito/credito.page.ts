@@ -233,6 +233,9 @@ export class CreditoPage implements OnInit {
         }
       }
       console.log('Cadastro Financeiro Criado', cadastroCredito);
+      await this.overlayService.toast({
+        message: "Cadastro Financeiro Criado"
+      });
       this.navCtrl.navigateBack('/menu/ambiental/listaCreditoFinanceiro');
     } catch (error) {
       await this.overlayService.toast({
