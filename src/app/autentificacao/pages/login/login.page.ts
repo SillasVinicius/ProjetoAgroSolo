@@ -79,6 +79,7 @@ export class LoginPage implements OnInit {
     });
 
     try {
+
       const sha1 = require('sha1');
       this.user = await this.usuarioService.loginDb(
         this.loginForm.get('email').value,

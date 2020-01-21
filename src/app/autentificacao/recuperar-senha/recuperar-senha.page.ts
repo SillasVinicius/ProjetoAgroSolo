@@ -41,6 +41,7 @@ export class RecuperarSenhaPage implements OnInit {
   rg_usu: string;
   telefone_usu: string;
   dataNascimento_usu: string;
+  numero_random_alterar_senha: string;
 
   async ngOnInit(): Promise<void> {
     this.usuarioService.getAll().subscribe((r: Usuario[]) => {
@@ -119,15 +120,15 @@ export class RecuperarSenhaPage implements OnInit {
         });
         return;
       }
-
       const sha1 = require('sha1');
-
+      this.numero_random_alterar_senha = Math.floor(Math.random() * 5555112).toString();
+          
       if (this.admin) {
         this.usuarioService.init();
         await this.usuarioService.update({
           id: this.usuarioId,
           nome: this.usuarioNome,
-          senha: sha1('agro123'),
+          senha: sha1(this.numero_random_alterar_senha),
           email: this.usuarioEmail,
         });
       }
@@ -144,12 +145,11 @@ export class RecuperarSenhaPage implements OnInit {
           telefone: this.telefone_usu,
           dataNascimento: this.dataNascimento_usu,
           email: this.usuarioEmail,
-          senha: sha1('agro123'),
+          senha: sha1(this.numero_random_alterar_senha),
         });
       }
-
-
-      const config = new ConfigEmail(this.usuarioNome, 'agro123', this.usuarioEmail);
+      
+      const config = new ConfigEmail(this.usuarioNome, this.numero_random_alterar_senha, this.usuarioEmail);
       this.emailService.sendMail(config)
         .subscribe(
           async (resp) => {
