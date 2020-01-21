@@ -33,7 +33,7 @@ export class AppComponent {
 
     let disconnectSubscription = this.network.onDisconnect().subscribe(async () => {
       const loading = await this.overlayService.loading({
-        message: "sem internet!"
+        message: "Sem internet!"
       });
         let connectSubscription = this.network.onConnect().subscribe(async () => {
         loading.dismiss();

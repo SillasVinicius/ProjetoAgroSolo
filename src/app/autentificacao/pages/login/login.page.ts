@@ -45,7 +45,7 @@ export class LoginPage implements OnInit {
   ngOnInit() {
     let disconnectSubscription = this.network.onDisconnect().subscribe(async () => {
       const loading = await this.overlayService.loading({
-        message: "sem internet!"
+        message: "Sem internet!"
       });
         let connectSubscription = this.network.onConnect().subscribe(async () => {
         loading.dismiss();
@@ -53,8 +53,8 @@ export class LoginPage implements OnInit {
     });
 
     this.loginForm = this.formBuilder.group( {
-      senha:this.formBuilder.control('123456', [Validators.required, Validators.minLength(6)]), 
-      email:this.formBuilder.control('admin@gmail.com', [Validators.required, Validators.email]), 
+      senha:this.formBuilder.control('', [Validators.required, Validators.minLength(6)]), 
+      email:this.formBuilder.control('', [Validators.required, Validators.email]), 
       admin:this.formBuilder.control(false, [])
     }); 
 
