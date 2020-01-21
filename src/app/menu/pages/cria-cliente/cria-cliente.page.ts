@@ -220,7 +220,7 @@ export class CriaClientePage implements OnInit {
       .get(clienteId)
       .pipe(take(1))
       .subscribe(({ nome, cpf, patrimonio, pdtvAgro, informacoesAdicionais, rg, telefone, dataNascimento, email, senha, foto, nomeFoto, impostoRenda, nomeIr, cnh, nomeCnh }) => {
-          this.urlIr = impostoRenda,
+        this.urlIr = impostoRenda,
           this.fileName = nomeFoto,
           this.fotoAntigo = nomeFoto,
           this.irName = nomeIr,
@@ -247,19 +247,13 @@ export class CriaClientePage implements OnInit {
   }
 
   async cadastraListaGlobal(id: string) {
-    //hash
-    const sha1 = require('sha1');
-    this.clienteForm.get('senha').setValue(sha1(this.clienteForm.get('senha').value));
+    
     this.clienteService.init();
     const cliente = await this.clienteService.createGlobal(this.clienteForm.value, id);
   }
 
   async AtualizaListaGlobal() {
-    //hash
-    const sha1 = require('sha1');
-    if (this.senha_cript == this.clienteForm.get('senha').value)
-      this.senha_banco = this.senha_cript;
-    else this.senha_banco = sha1(this.clienteForm.get('senha').value);
+    
 
     this.clienteService.init();
     await this.clienteService.update({
@@ -332,6 +326,14 @@ export class CriaClientePage implements OnInit {
       return;
     }
 
+    //hash
+    const sha1 = require('sha1');
+    if (this.senha_cript ==  this.clienteForm.get('senha').value)
+        this.senha_banco = this.senha_cript;
+    else this.senha_banco = sha1(this.clienteForm.get('senha').value);
+
+    this.clienteForm.get('senha').setValue(this.senha_banco);
+
     try {
       const cliente = '';
       if (!this.clienteId) {
@@ -382,6 +384,9 @@ export class CriaClientePage implements OnInit {
 
       }
       console.log('Cliente Criado', cliente);
+      await this.overlayService.toast({
+        message: "Cliente Criado!"
+      });
       this.navCtrl.navigateBack('/menu/cliente');
     } catch (error) {
       await this.overlayService.toast({
@@ -478,11 +483,7 @@ export class CriaClientePage implements OnInit {
         this.liberaArquivo = true;
         this.liberaAlterar = true;
 
-        //hash
-        const sha1 = require('sha1');
-        if (this.senha_cript == this.clienteForm.get('senha').value)
-          this.senha_banco = this.senha_cript;
-        else this.senha_banco = sha1(this.clienteForm.get('senha').value);
+        
 
         this.downloadUrl.subscribe(async r => {
           this.clienteService.init();
@@ -534,11 +535,7 @@ export class CriaClientePage implements OnInit {
   }
 
   salvarIr(idCliente: string, enderecoArquivo: string) {
-    //hash
-    const sha1 = require('sha1');
-    if (this.senha_cript == this.clienteForm.get('senha').value)
-      this.senha_banco = this.senha_cript;
-    else this.senha_banco = sha1(this.clienteForm.get('senha').value);
+    
 
     this.clienteService.update({
       id: idCliente,
@@ -558,11 +555,7 @@ export class CriaClientePage implements OnInit {
   }
 
   salvarCnh(idCliente: string, enderecoArquivo: string) {
-    //hash
-    const sha1 = require('sha1');
-    if (this.senha_cript == this.clienteForm.get('senha').value)
-      this.senha_banco = this.senha_cript;
-    else this.senha_banco = sha1(this.clienteForm.get('senha').value);
+    
 
     this.clienteService.update({
       id: idCliente,
@@ -606,8 +599,8 @@ export class CriaClientePage implements OnInit {
     let idCliente = (this.clienteService.id === '') ? this.clienteId : this.clienteService.id;
 
     if (caminho == "CNH") {
-      if(!this.novoCnh){
-       this.deleteArquivosPasta("cnhCliente", this.cnhName);
+      if (!this.novoCnh) {
+        this.deleteArquivosPasta("cnhCliente", this.cnhName);
       }
       this.cnhName = '';
       this.cnhAntigo = '';
@@ -618,8 +611,8 @@ export class CriaClientePage implements OnInit {
 
     }
     if (caminho == "IR") {
-      if(!this.novoIr){
-        	this.deleteArquivosPasta("irCliente", this.irName);
+      if (!this.novoIr) {
+        this.deleteArquivosPasta("irCliente", this.irName);
       }
       this.irName = '';
       this.irAntigo = '';
@@ -629,5 +622,16 @@ export class CriaClientePage implements OnInit {
       this.salvarIr(idCliente, '');
     }
 
+  }
+
+  clearField() {
+    this.campoValidacaoSenha = this.clienteForm.get('senha').value;
+    this.clienteForm.get('senha').reset();
+  }
+
+  verificarSenha() {
+    if (!this.clienteForm.get('senha').value) {
+      this.clienteForm.get('senha').setValue(this.campoValidacaoSenha);
+    }
   }
 }
