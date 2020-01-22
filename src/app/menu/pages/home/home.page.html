@@ -51,7 +51,7 @@
     <ion-grid>
       <ion-row>
         <ion-col>
-          <ion-card class="caixa" color="primary ponteiro" (click)="linkCliente()" style=" color: #fff;"
+          <ion-card class="caixa ponteiro"  (click)="linkCliente()" style=" color: #fff; background-color: #3CB371;"
             *ngIf="clientes$ | async as clientes">
             <ion-card-header>
               <ion-card-subtitle style="color:#fff; text-align:center;"><b>Total de clientes
@@ -64,7 +64,7 @@
         </ion-col>
 
         <ion-col>
-          <ion-card class="caixa" color="primary" style="color: #fff;">
+          <ion-card class="caixa" style="color: #fff; background-color: #3CB371;">
             <ion-card-header>
               <ion-card-subtitle style="color:#fff; text-align:center;"><strong>Total de aniversários do mês
                   ({{mesAtual}}/{{ano}})</strong>
@@ -84,17 +84,17 @@
 
         <ion-col>
 
-          <ion-card class="caixa" color="primary" style=" color: #fff;">
+          <ion-card class="caixa"  style=" color: #fff; background-color: #2E8B57;">
             <ion-card-header>
               <ion-card-subtitle style="color: #fff; text-align:center;"><strong>Aniversariantes do dia
                   ({{dia}}/{{mesAtual}})</strong>
               </ion-card-subtitle>
             </ion-card-header>
             <ion-card-content style="text-align:center; font-size: 15px;">
-              <ion-list color="primary" style="color: #fff; background-color: #00643a;">
+              <ion-list style="color: #fff; background-color: #2E8B57;">
                 <ng-container *ngIf="aniversariantesMes.length > 0; else semNiver">
                   <ion-list *ngFor="let niverDay of aniversariantesMes" color="primary"
-                    style="text-align: left; color: #fff; background-color: #00643a;">
+                    style="text-align: left; color: #fff; background-color: #2E8B57;">
                     <strong>- {{niverDay.nome}}</strong>
                   </ion-list>
                 </ng-container>
@@ -112,7 +112,7 @@
     <ion-grid>
       <ion-row>
         <ion-col>
-          <ion-card (click)="linkOutorgas()" class="caixa ponteiro" color="primary" style=" color: #fff;">
+          <ion-card (click)="linkOutorgas()" class="caixa ponteiro"  style=" color: #fff; background-color: #00643a;">
             <ion-card-header>
               <ion-card-subtitle style="color:#fff; text-align:center;"><strong>Outorgas a vencer</strong>
               </ion-card-subtitle>
@@ -126,7 +126,7 @@
        
 
         <ion-col>
-          <ion-card (click)="linkDeclaracoes()" class="caixa ponteiro" color="primary" style=" color: #fff;">
+          <ion-card (click)="linkDeclaracoes()" class="caixa ponteiro" style=" color: #fff; background-color: #00643a;">
             <ion-card-header>
               <ion-card-subtitle style="color:#fff; text-align:center;"><strong>Declarações ambientais a
                 vencer</strong>
@@ -146,7 +146,7 @@
         
 
         <ion-col>
-          <ion-card (click)="linkAmbientais()" class="caixa ponteiro" color="primary" style="color: #fff;">
+          <ion-card (click)="linkAmbientais()" class="caixa ponteiro" style="color: #fff;  background-color: #006453;">
             <ion-card-header>
               <ion-card-subtitle style="color:#fff; text-align:center;"><strong>Licenças ambientais a vencer</strong></ion-card-subtitle>
             </ion-card-header>
@@ -159,7 +159,7 @@
         </ion-col>
 
           <ion-col>
-            <ion-card (click)="linkCredito()" class="caixa ponteiro" color="primary" style="color: #fff;">
+            <ion-card (click)="linkCredito()" class="caixa ponteiro" style="color: #fff;  background-color: #006453;">
               <ion-card-header>
                 <ion-card-subtitle style="color:#fff; text-align:center;"><strong>Cadastros de crédito a vencer</strong></ion-card-subtitle>
               </ion-card-header>
@@ -183,16 +183,16 @@
     <ion-grid>
       <ion-row>
         <ion-col>
-          <ion-card class="caixa" color="primary ponteiro" (click)="linkOutorgas()" style=" color: #fff;"  >
+          <ion-card class="caixa ponteiro" (click)="linkOutorgas()" style=" color: #fff;  background-color: #3CB371;">
             <ion-card-header>
               <ion-card-subtitle style="color:#fff; text-align:center;">
                 <b> Outorgas </b></ion-card-subtitle>
             </ion-card-header>
             <ion-card-content style="text-align:center; font-size: 15px;" *ngIf="outorgas$ | async as outorgas">
-              <ion-list color="primary" style="color: #fff; background-color: #00643a;">
+              <ion-list style="color: #fff; background-color: #3CB371;">
                 <ng-container *ngIf="outorgas.length > 0; else semOutorga">
-                  <ion-list *ngFor="let outroga of outorgas" color="primary"
-                    style="text-align: left; color: #fff; background-color: #00643a;">
+                  <ion-list *ngFor="let outroga of outorgas" 
+                    style="text-align: left; color: #fff; background-color: #3CB371;">
                     <strong>- {{outroga.descricao}}</strong>
                   </ion-list>
                 </ng-container>
@@ -206,16 +206,16 @@
 
         
             <ion-col>
-              <ion-card class="caixa" color="primary ponteiro" (click)="linkAmbientais()" style=" color: #fff;">
+              <ion-card class="caixa ponteiro" (click)="linkAmbientais()" style=" color: #fff; background-color: #2E8B57;">
                 <ion-card-header>
                   <ion-card-subtitle style="color:#fff; text-align:center;">
                     <b>Licenças Ambientais</b></ion-card-subtitle>
                 </ion-card-header>
                 <ion-card-content style="text-align:center; font-size: 15px;" *ngIf="licencasAmbientais$ | async as licencas">
-                  <ion-list color="primary" style="color: #fff; background-color: #00643a;">
+                  <ion-list style="color: #fff; background-color: #2E8B57;">
                     <ng-container *ngIf="licencas.length > 0; else semLicenca">
                       <ion-list *ngFor="let licenca of licencas" color="primary"
-                        style="text-align: left; color: #fff; background-color: #00643a;">
+                        style="text-align: left; color: #fff; background-color: #2E8B57;">
                         <strong>- {{licenca.descricao}}</strong>
                       </ion-list>
                     </ng-container>
@@ -233,13 +233,13 @@
       <ion-grid>
         <ion-row>
           <ion-col>
-            <ion-card class="caixa" color="primary ponteiro" (click)="linkDeclaracoes()" style=" color: #fff;">
+            <ion-card class="caixa ponteiro" (click)="linkDeclaracoes()" style=" color: #fff; background-color: #00643a;">
               <ion-card-header>
                 <ion-card-subtitle style="color:#fff; text-align:center;">
                   <b>Declarações Ambientais </b></ion-card-subtitle>
               </ion-card-header>
               <ion-card-content style="text-align:center; font-size: 15px;" *ngIf="das$ | async as declaracoes">
-                <ion-list color="primary" style="color: #fff; background-color: #00643a;">
+                <ion-list style="color: #fff; background-color: #00643a;">
                   <ng-container *ngIf="declaracoes.length > 0; else semDeclaracoes">
                     <ion-list *ngFor="let declaracao of declaracoes" color="primary"
                       style="text-align: left; color: #fff; background-color: #00643a;">
@@ -255,16 +255,16 @@
           </ion-col>
   
               <ion-col>
-                <ion-card class="caixa" color="primary ponteiro" (click)="linkCredito()" style=" color: #fff;">
+                <ion-card class="caixa ponteiro" (click)="linkCredito()" style=" color: #fff; background-color: #006453;">
                   <ion-card-header>
                     <ion-card-subtitle style="color:#fff; text-align:center;">
                       <b>Cadastro de crédito</b></ion-card-subtitle>
                   </ion-card-header>
                   <ion-card-content style="text-align:center; font-size: 15px;" *ngIf="cadastrosDeCreditos$ | async as creditos">
-                    <ion-list color="primary" style="color: #fff; background-color: #00643a;">
+                    <ion-list style="color: #fff; background-color: #006453;">
                       <ng-container *ngIf="creditos.length > 0; else semDeclaracoes">
                         <ion-list *ngFor="let credito of creditos" color="primary"
-                          style="text-align: left; color: #fff; background-color: #00643a;">
+                          style="text-align: left; color: #fff; background-color: #006453;">
                           <strong>- {{credito.descricao}}</strong>
                         </ion-list>
                       </ng-container>
