@@ -1,9 +1,11 @@
 import { Component, Input } from '@angular/core';
 import { UsuarioService } from 'src/app/core/services/usuario.service';
+import { OverlayService } from 'src/app/core/services/overlay.service';
 
 import { Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
+import { Network } from '@ionic-native/network/ngx';
 
 @Component({
   selector: 'app-root',
@@ -20,11 +22,24 @@ export class AppComponent {
     private usuario: UsuarioService,
     private platform: Platform,
     private splashScreen: SplashScreen,
-    private statusBar: StatusBar  ) {
+    private statusBar: StatusBar,
+    private network: Network,
+    private overlayService: OverlayService,
+    ) {
     this.initializeApp();
   }
 
   initializeApp() {
+
+    let disconnectSubscription = this.network.onDisconnect().subscribe(async () => {
+      const loading = await this.overlayService.loading({
+        message: "Verifique sua conexão com a rede!"
+      });
+        let connectSubscription = this.network.onConnect().subscribe(async () => {
+        loading.dismiss();
+      });
+    });
+
     this.nomeUser = this.usuario.nomeUser;
     this.urlFoto = this.usuario.urlFoto;
     this.admin = this.usuario.admin;

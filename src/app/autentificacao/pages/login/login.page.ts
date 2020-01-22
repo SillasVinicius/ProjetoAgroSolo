@@ -6,7 +6,8 @@ import { UsuarioService } from 'src/app/core/services/usuario.service';
 import { NavController, ModalController } from '@ionic/angular';
 import { Observable } from 'rxjs';
 import { Usuario } from './model/usuario.model';
-import { RecuperarSenhaPage } from 'src/app/autentificacao/recuperar-senha/recuperar-senha.page';
+import { RecuperarSenhaPage} from 'src/app/autentificacao/recuperar-senha/recuperar-senha.page';
+import { Network } from '@ionic-native/network/ngx';
 
 @Component({
   selector: 'app-login',
@@ -31,24 +32,35 @@ export class LoginPage implements OnInit {
 
   private user: Observable<Usuario[]>;
 
+
   constructor(
     private formBuilder: FormBuilder,
     private ModalController: ModalController,
     private overlayService: OverlayService,
     private usuarioService: UsuarioService,
     private navCtrl: NavController,
-  ) { }
+    private network: Network
+  ) {}
 
   ngOnInit() {
-    this.loginForm = this.formBuilder.group({
-      senha: this.formBuilder.control('123456', [Validators.required, Validators.minLength(6)]),
-      email: this.formBuilder.control('admin@gmail.com', [Validators.required, Validators.email]),
-      admin: this.formBuilder.control(false, [])
+    let disconnectSubscription = this.network.onDisconnect().subscribe(async () => {
+      const loading = await this.overlayService.loading({
+        message: "Verifique sua conexão com a rede!"
+      });
+        let connectSubscription = this.network.onConnect().subscribe(async () => {
+        loading.dismiss();
+      });
     });
 
-    var packageJsonInfo = require('package.json');
-    this.version = packageJsonInfo.version;
-    this.author = packageJsonInfo.author;
+    this.loginForm = this.formBuilder.group( {
+      senha:this.formBuilder.control('', [Validators.required, Validators.minLength(6)]), 
+      email:this.formBuilder.control('', [Validators.required, Validators.email]), 
+      admin:this.formBuilder.control(false, [])
+    }); 
+
+    var packageJsonInfo = require('package.json'); 
+    this.version = packageJsonInfo.version; 
+    this.author = packageJsonInfo.author; 
   }
 
   get senha(): FormControl {
@@ -67,6 +79,7 @@ export class LoginPage implements OnInit {
     });
 
     try {
+
       const sha1 = require('sha1');
       this.user = await this.usuarioService.loginDb(
         this.loginForm.get('email').value,

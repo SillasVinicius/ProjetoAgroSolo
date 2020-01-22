@@ -171,12 +171,6 @@ export class CriaUsuarioPage implements OnInit {
           this.downloadUrl = ref2.getDownloadURL();
           this.liberaArquivo = true;
           this.liberaAlterar = true;
-          //hash
-          const sha1 = require('sha1');
-          if (this.senha_cript ==  this.usuarioForm.get('senha').value)
-              this.senha_banco = this.senha_cript;
-          else this.senha_banco = sha1(this.usuarioForm.get('senha').value);
-
           this.downloadUrl.subscribe(async r => {
             this.usuarioService.init();
             await this.usuarioService.update({
@@ -276,12 +270,6 @@ export class CriaUsuarioPage implements OnInit {
   }
 
   async AtualizaListaGlobal() {
-    //hash
-    const sha1 = require('sha1');
-    if (this.senha_cript ==  this.usuarioForm.get('senha').value)
-        this.senha_banco = this.senha_cript;
-    else this.senha_banco = sha1(this.usuarioForm.get('senha').value);
-
     this.usuarioService.init();
     await this.usuarioService.update({
       id: this.usuarioId,
@@ -352,6 +340,14 @@ export class CriaUsuarioPage implements OnInit {
       return;
     }
 
+    //hash
+    const sha1 = require('sha1');
+    if (this.senha_cript ==  this.usuarioForm.get('senha').value)
+        this.senha_banco = this.senha_cript;
+    else this.senha_banco = sha1(this.usuarioForm.get('senha').value);
+
+    this.usuarioForm.get('senha').setValue(this.senha_banco);
+
     try {
       const usuario = '';
       if (!this.usuarioId) {
@@ -376,6 +372,9 @@ export class CriaUsuarioPage implements OnInit {
 
       }
       console.log('Administrador Criado', usuario);
+      await this.overlayService.toast({
+        message: "Administrador Criado!"
+      });
       this.navCtrl.navigateBack('/menu/usuario');
     } catch (error) {
       await this.overlayService.toast({

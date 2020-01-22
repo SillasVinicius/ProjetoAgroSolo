@@ -185,6 +185,9 @@ export class CriaCarPage implements OnInit {
         }
       }
       console.log('Cadastro Ambiental Rural Criado', cadastroRuralAmbiental);
+      await this.overlayService.toast({
+        message: "Cadastro Ambiental Rural Criado"
+      });
       this.navCtrl.navigateBack('/menu/ambiental/CadastroAmbientalRural');
     } catch (error) {
       await this.overlayService.toast({
