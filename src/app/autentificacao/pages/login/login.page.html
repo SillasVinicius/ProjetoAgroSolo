@@ -9,10 +9,25 @@
       >
         <div class="login-menu" [@movDiv]="true">
           <h1 text-center>
-            <ion-img
-              src="../../../assets/img/logo.png"
-              id="img-logo"
-            ></ion-img>
+          <ion-grid>
+            <ion-row>
+              <ion-col>
+
+              </ion-col>
+
+              <ion-col>
+                <ion-img
+                src="../../../assets/img/logo.png"
+                id="img-logo"
+              ></ion-img>
+              </ion-col>
+
+              <ion-col>
+
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+            
           </h1>
           <form
             [formGroup]="loginForm"
