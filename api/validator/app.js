@@ -57,7 +57,7 @@ function executaRelatorio() {
                 }
                 request.post(opcoesApi, (error, response, body) => {
                     if (!error && response.statusCode == 200) {
-                        console.log(body);
+                        console.log('Api retornou resposta Sucesso.' + body);
                     }
                     
                 });
