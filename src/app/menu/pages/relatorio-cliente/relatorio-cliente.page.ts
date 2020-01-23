@@ -239,7 +239,7 @@ export class RelatorioClientePage implements OnInit {
             { text: "Telefone", style: "tableHeader" },
             { text: "Data Nascimento", style: "tableHeader" },
             { text: "Produtividade Agropecuária", style: "tableHeader" },
-            { text: "patrimonioForm", style: "tableHeader" },
+            { text: "Patrimônio", style: "tableHeader" },
             { text: "Informações Adicionais", style: "tableHeader" },
           ]
         )
