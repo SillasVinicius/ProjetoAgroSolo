@@ -192,12 +192,12 @@
                 </ion-row>
               </ion-grid>
               <div *ngIf="!admin" text-center>
-                <p class="nomes">I. Renda</p>
+                <p class="nomes">Imposto de renda</p>
               </div>
               <div class="fileUpload" text-center *ngIf="admin">
                
                 <div [@marginBotao]="'comArquivo'" >
-                  <label for="uploadBtnIr" class="btn">I. Renda</label>
+                  <label for="uploadBtnIr" class="btn">I.R.</label>
                   <input class="upload" id="uploadBtnIr" type="file" (change)='openArquivos($event.target.files, "IR")'>
                 </div>
               </div>
