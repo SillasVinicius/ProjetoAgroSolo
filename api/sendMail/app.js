@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const sendMail = require('./email');
 const cors = require('cors');
+const email = require('./config/configEmail');
 
 var app = express();
 app.use(cors());
@@ -12,10 +13,12 @@ app.post('/recuperasenha', (req, res) => {
     const nome = req.body['usuario'];
     const senha = req.body['senha'];
     const destinatario = req.body['destinatario'];
+    const assuntoEmail = email.assuntoEmailRecSenha;
+    const corpoEmail = email.montaCorpoEmailRecSenha(nome, senha);
 
     if (nome && senha && destinatario) {
 
-        sendMail.send(nome, senha, destinatario)
+        sendMail.send(destinatario, assuntoEmail, corpoEmail)
             .then(
                 (emailEnviado) => {
                     if (emailEnviado) {
@@ -38,7 +41,7 @@ app.post('/enviarelatorio', (req, res) => {
 
     if (destinatarios && assuntoEmail && corpoEmail) { 
 
-        sendMail.enviaEmailGenerico(destinatarios, assuntoEmail, corpoEmail)
+        sendMail.send(destinatarios, assuntoEmail, corpoEmail)
             .then(
                 (emailEnviado) => {
                     if (emailEnviado) {
@@ -53,7 +56,6 @@ app.post('/enviarelatorio', (req, res) => {
         res.status(400).send(JSON.stringify({ message: 'Invalid parameters.' })); // Bad request
     }
 });
-
 
 // Start
 app.listen(8000, function () {
