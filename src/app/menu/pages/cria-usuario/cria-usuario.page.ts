@@ -116,96 +116,8 @@ export class CriaUsuarioPage implements OnInit {
     this.acao();
   }
 
-  async openGalery(event: FileList) {
-    try {
-      const file = event.item(0);
-      if (file.type.split('/')[0] !== 'image') {
-        await this.overlayService.toast({
-          message: 'tipo de arquivo não pode ser enviado por esse campo :('
-        });
-        return;
-      }
-      this.fileName = file.name;
-      this.arquivos = file;
-      this.uploadFile(this.arquivos);
-      this.novaFoto = true;
-
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
-  async uploadFile(file: Object) {
-    const ref = this.storage.ref(`foto${this.fileName}`);
-    const task = ref.put(file);
-    //
-    this.uploadPercent = task.percentageChanges();
-    task.snapshotChanges().pipe(
-      finalize(async () => {
-        const loading = await this.overlayService.loading({
-          message: "Carregando Foto..."
-        });
-        this.downloadUrl = ref.getDownloadURL();
-        this.liberaArquivo = true;
-        this.downloadUrl.subscribe(async r => {
-          this.urlFoto = r;
-        });
-
-        loading.dismiss();
-      })
-    ).subscribe();
-  }
-
-  async uploadFileTo(file: Object) {
-
-    let idUser = (this.usuarioService.id === '') ? this.usuarioId : this.usuarioService.id;
-
-    const ref2 = this.storage.ref(`/AdmnistradorFoto${idUser}/${this.fileName}`);
-    const task2 = ref2.put(file);
-
-    try {
-
-      task2.snapshotChanges().pipe(
-        finalize(async () => {
-
-          this.downloadUrl = ref2.getDownloadURL();
-          this.liberaArquivo = true;
-          this.liberaAlterar = true;
-          this.downloadUrl.subscribe(async r => {
-            this.usuarioService.init();
-            await this.usuarioService.update({
-              id: idUser,
-              nome: this.usuarioForm.get('nome').value,
-              email: this.usuarioForm.get('email').value,
-              senha: this.senha_banco,
-              foto: r,
-              nomeFoto: this.fileName
-            });
-          });
-        })
-      ).subscribe();
-
-    } catch (error) {
-      alert(error);
-    }
-
-
-  }
-
-  deletePicture() {
-    const ref = this.storage.ref(`foto${this.fileName}`);;
-    const task = ref.delete();
-  }
-
-  deletePicturePasta() {
-    let idUser = (this.usuarioService.id === '') ? this.usuarioId : this.usuarioService.id;
-
-    const ref = this.storage.ref(`/AdmnistradorFoto${idUser}/`);
-    ref.child(`${this.fotoAntigo}`).delete();
-  }
-
-  // Cria formulários
-  criaFormulario(): void {
+   // Cria formulários
+   criaFormulario(): void {
     this.usuarioForm = this.formBuilder.group({
       senha: this.formBuilder.control('', [Validators.required, Validators.minLength(6)]),
       email: this.formBuilder.control('', [Validators.required, Validators.email]),
@@ -214,20 +126,9 @@ export class CriaUsuarioPage implements OnInit {
     });
   }
 
-  clearField(){   
-      this.campoValidacaoSenha = this.usuarioForm.get('senha').value; 
-      this.usuarioForm.get('senha').reset();         
-  }
+   // metodos get que pegam o valor do input no formulário
 
-  verificarSenha(){
-    if(!this.usuarioForm.get('senha').value) {
-        this.usuarioForm.get('senha').setValue(this.campoValidacaoSenha);    
-    }
-  }
-
-  // metodos get que pegam o valor do input no formulário
-
-  get senha(): FormControl {
+   get senha(): FormControl {
     return this.usuarioForm.get('senha') as FormControl;
   }
   get nome(): FormControl {
@@ -237,9 +138,6 @@ export class CriaUsuarioPage implements OnInit {
     return this.usuarioForm.get('email') as FormControl;
   }
 
-
-
-  // verifica se a acao é de criação ou atualização
   acao(): void {
     const usuarioId = this.route.snapshot.paramMap.get('id');
     if (!usuarioId) {
@@ -269,7 +167,8 @@ export class CriaUsuarioPage implements OnInit {
       });
   }
 
-  async AtualizaListaGlobal() {
+   // verifica se a acao é de criação ou atualização
+   async AtualizaListaGlobal() {
     this.usuarioService.init();
     await this.usuarioService.update({
       id: this.usuarioId,
@@ -278,9 +177,6 @@ export class CriaUsuarioPage implements OnInit {
       email: this.usuarioForm.get('email').value,
     });
   }
-
-
-
 
   // método que envia os dados do formulário para o banco de dados
   async onSubmit(): Promise<void> {
@@ -291,7 +187,7 @@ export class CriaUsuarioPage implements OnInit {
     // if para alteração(*) e o else para inserção(#) 
     if (this.email_atual)//*
     {
-      //validar se o usuario está inserido o mesmo email.
+      //validar se o usuario está inserindo o mesmo email.
       if (this.email_atual == this.usuarioForm.get('email').value)
         this.validar_email_existe = false;
       else
@@ -386,6 +282,110 @@ export class CriaUsuarioPage implements OnInit {
     }
   }
 
+  async uploadFile(file: Object) {
+    const ref = this.storage.ref(`foto${this.fileName}`);
+    const task = ref.put(file);
+    //
+    this.uploadPercent = task.percentageChanges();
+    task.snapshotChanges().pipe(
+      finalize(async () => {
+        const loading = await this.overlayService.loading({
+          message: "Carregando Foto..."
+        });
+        this.downloadUrl = ref.getDownloadURL();
+        this.liberaArquivo = true;
+        this.downloadUrl.subscribe(async r => {
+          this.urlFoto = r;
+        });
+
+        loading.dismiss();
+      })
+    ).subscribe();
+  }
+
+
+  async openGalery(event: FileList) {
+    try {
+      const file = event.item(0);
+      if (file.type.split('/')[0] !== 'image') {
+        await this.overlayService.toast({
+          message: 'tipo de arquivo não pode ser enviado por esse campo :('
+        });
+        return;
+      }
+      this.fileName = file.name;
+      this.arquivos = file;
+      this.uploadFile(this.arquivos);
+      this.novaFoto = true;
+
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  
+
+  async uploadFileTo(file: Object) {
+
+    let idUser = (this.usuarioService.id === '') ? this.usuarioId : this.usuarioService.id;
+
+    const ref2 = this.storage.ref(`/AdmnistradorFoto${idUser}/${this.fileName}`);
+    const task2 = ref2.put(file);
+
+    try {
+
+      task2.snapshotChanges().pipe(
+        finalize(async () => {
+
+          this.downloadUrl = ref2.getDownloadURL();
+          this.liberaArquivo = true;
+          this.liberaAlterar = true;
+          this.downloadUrl.subscribe(async r => {
+            this.usuarioService.init();
+            await this.usuarioService.update({
+              id: idUser,
+              nome: this.usuarioForm.get('nome').value,
+              email: this.usuarioForm.get('email').value,
+              senha: this.senha_banco,
+              foto: r,
+              nomeFoto: this.fileName
+            });
+          });
+        })
+      ).subscribe();
+
+    } catch (error) {
+      alert(error);
+    }
+
+
+  }
+
+  deletePicture() {
+    const ref = this.storage.ref(`foto${this.fileName}`);;
+    const task = ref.delete();
+  }
+
+  deletePicturePasta() {
+    let idUser = (this.usuarioService.id === '') ? this.usuarioId : this.usuarioService.id;
+
+    const ref = this.storage.ref(`/AdmnistradorFoto${idUser}/`);
+    ref.child(`${this.fotoAntigo}`).delete();
+  }
+
+ 
+
+  clearField(){   
+      this.campoValidacaoSenha = this.usuarioForm.get('senha').value; 
+      this.usuarioForm.get('senha').reset();         
+  }
+
+  verificarSenha(){
+    if(!this.usuarioForm.get('senha').value) {
+        this.usuarioForm.get('senha').setValue(this.campoValidacaoSenha);    
+    }
+  }
+ 
   retornaDataNascimento(data: string): string {
 
     if (data.length > 10) {

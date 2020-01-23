@@ -224,7 +224,7 @@ export class CreditoPage implements OnInit {
 
         if (this.novoArquivo) {
           if (this.arquivoAntigo !== '') {
-            this.deletePicture();
+            this.deleteFile();
           }
           this.uploadFileTo(this.arquivos);
           this.novoArquivo = false;
@@ -296,7 +296,7 @@ export class CreditoPage implements OnInit {
     ).subscribe();
   }
 
-  deletePicture() {
+  deleteFile() {
     let idCredito = (this.creditoService.id === '') ? this.creditoId : this.creditoService.id;
 
     const ref = this.storage.ref(`/CreditoFinaceiro${idCredito}/`);

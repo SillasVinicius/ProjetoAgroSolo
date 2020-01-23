@@ -157,7 +157,7 @@ export class CriaOutorgaPage implements OnInit {
 
   async AtualizaListaGlobal() {
     this.outorgaService.init();
-    const atualizarFoto = await this.outorgaService.update({
+    const atualizarFile = await this.outorgaService.update({
       id: this.outorgaId,
       descricao: this.outorgaForm.get('descricao').value,
       dataDeVencimento: this.outorgaForm.get('dataDeVencimento').value,
@@ -183,7 +183,7 @@ export class CriaOutorgaPage implements OnInit {
 
         if (this.novoArquivo) {
           if (this.arquivoAntigo !== '') {
-            this.deletePicture();
+            this.deleteFile();
           }
           this.uploadFileTo(this.arquivos);
           this.novoArquivo = false;
@@ -255,7 +255,7 @@ export class CriaOutorgaPage implements OnInit {
     ).subscribe();
   }
 
-  deletePicture() {
+  deleteFile() {
 
     let idOutorga = (this.outorgaService.id === '') ? this.outorgaId : this.outorgaService.id;
 
