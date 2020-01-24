@@ -20,7 +20,7 @@ exports.send = async function (emailDest, assuntoEmail, corpoEmail) {
         .catch(
             (err) => {
                 console.log('Erro ao solicictar dados de email!\n', err);
-                emailSent = false; // melhorar isso
+                emailSent = false; 
             }
         );
 

@@ -271,10 +271,7 @@ export class RelatorioClientePage implements OnInit {
       },
 
     };
-
-
     this.pdfObject = pdfMake.createPdf(docDefinition).open();
-
   }
 
 }
