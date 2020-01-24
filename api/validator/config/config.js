@@ -8,6 +8,7 @@ admin.initializeApp({
 });
 
 exports.db = admin.firestore();
+
 exports.urlBase = async function () {
   const db = admin.firestore();
   let urlBase;
@@ -19,6 +20,7 @@ exports.urlBase = async function () {
     )
   return urlBase;
 }
+
 exports.emailsAdmins = async function () {
   const db = admin.firestore();
   let emails = '';
@@ -34,6 +36,7 @@ exports.emailsAdmins = async function () {
     )
   return emails;
 }
+
 exports.envioRelatorio = async function() {
   const db = admin.firestore();
   let relatorio = new Object();
@@ -42,12 +45,23 @@ exports.envioRelatorio = async function() {
       (doc) => {
         relatorio.hrEnvioRelatorio = doc.data()['hrEnvioRelatorio'];
         relatorio.hrUltimoRelatorio = doc.data()['hrUltimoRelatorio'];
+        relatorio.hrUltimaValidClientes = doc.data()['hrUltimaValidClientes'];
+
+        diaSem = new Date().getDay()
+        relatorio.execRelHoje = doc.data()['diasExecRel'][diaSem] === '1';
       }
     )
   return relatorio;
 }
+
 exports.atualizaHoraUltimoRelatorio = async function() {
   const db = admin.firestore();
   const configRef = db.collection('parametrizacoes').doc('geral');
   configRef.update({hrUltimoRelatorio: new Date().toISOString() });
+}
+
+exports.atualizaHoraUltimaValidClientes = async function() {
+  const db = admin.firestore();
+  const configRef = db.collection('parametrizacoes').doc('geral');
+  configRef.update({hrUltimaValidClientes: new Date().toISOString() });
 }

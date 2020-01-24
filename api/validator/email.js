@@ -1,16 +1,16 @@
 function montaCorpoEmail(informacoes) {
 
-    let htmlAniversariantes = '<tr><td>Sem aniversariantes hoje!</td></tr>';
-    let htmlOutorgas30 = '<tr><td>Nenhuma!</td></tr>';
-    let htmlOutorgas15 = '<tr><td>Nenhuma!</td></tr>';
-    let htmlDA30 = '<tr><td>Nenhuma!</td></tr>';
-    let htmlDA15 = '<tr><td>Nenhuma!</td></tr>';
-    let htmlLA15 = '<tr><td>Nenhuma!</td></tr>';
-    let htmlLA60 = '<tr><td>Nenhuma!</td></tr>';
-    let htmlLA130 = '<tr><td>Nenhuma!</td></tr>';
-    let htmlCC15 = '<tr><td>Nenhuma!</td></tr>';
-    let htmlCC30 = '<tr><td>Nenhuma!</td></tr>';
-    let htmlCC130 = '<tr><td>Nenhuma!</td></tr>';
+    let htmlAniversariantes = '<tr style="text-align: center"><td>Sem aniversariantes hoje!</td></tr>';
+    let htmlOutorgas30 = '<tr style="text-align: center"><td>Nenhuma!</td></tr>';
+    let htmlOutorgas15 = '<tr style="text-align: center"><td>Nenhuma!</td></tr>';
+    let htmlDA30 = '<tr style="text-align: center"><td>Nenhuma!</td></tr>';
+    let htmlDA15 = '<tr style="text-align: center"><td>Nenhuma!</td></tr>';
+    let htmlLA15 = '<tr style="text-align: center"><td>Nenhuma!</td></tr>';
+    let htmlLA60 = '<tr style="text-align: center"><td>Nenhuma!</td></tr>';
+    let htmlLA130 = '<tr style="text-align: center"><td>Nenhuma!</td></tr>';
+    let htmlCC15 = '<tr style="text-align: center"><td>Nenhuma!</td></tr>';
+    let htmlCC30 = '<tr style="text-align: center"><td>Nenhuma!</td></tr>';
+    let htmlCC130 = '<tr style="text-align: center"><td>Nenhuma!</td></tr>';
 
     // monta conteudo da seção de aniverasriantes do dia
     if (informacoes.aniversariantesDia.length != 0) {
@@ -145,7 +145,6 @@ function montaCorpoEmail(informacoes) {
     ${htmlLA60}
     <tr style="text-align: center;"><th><u>Em menos de 15 dias</u></th></tr>
     ${htmlLA15}
-    <tr style="text-align: center;"><th><u>Em menos de 130</u></th></tr>
     <tr style="text-align: center;"><th class="divisao" style="border-top: solid black;border-bottom: groove;background-color: #217e36;color: #fff;">Cadastros de crédito a vencer</th></tr>
     <tr style="text-align: center;"><th><u>Em menos de 15 dias</u></th></tr>
     ${htmlCC15}
@@ -158,5 +157,113 @@ function montaCorpoEmail(informacoes) {
     return corpoEmail;
 }
 
-module.exports = { montaCorpoEmail };
+function montaEmailCliente(cliente) {
+
+    conteudo = `<h1>Olá ${cliente.nome}</h1><table style="border:solid black;width: 100%;">`;
+
+    // outorga
+    if (cliente.ouPendentes15) {
+        conteudo += tituloSecao('As seguintes outorgas vencerão em 15 dias:');
+        cliente.ouPendentes15.forEach(
+            (outorga) => {
+                conteudo += dadoSecao(outorga.descricao);
+            }
+        ) 
+    }
+
+    if (cliente.ouPendentes30) {
+        conteudo += tituloSecao('As seguintes outorgas vencerão em 30 dias:');
+        cliente.ouPendentes30.forEach(
+            (outorga) => {
+                conteudo += dadoSecao(outorga.descricao);
+            }
+        ) 
+    }
+
+    // declaracao ambiental
+    if (cliente.daPendentes15) {
+        conteudo += tituloSecao('As seguintes declarações ambientais vencerão em 15 dias:');
+        cliente.daPendentes15.forEach(
+            (decAmb) => {
+                conteudo += dadoSecao(decAmb.descricao);
+            }
+        ) 
+    }
+
+    if (cliente.daPendentes30) {
+        conteudo += tituloSecao('As seguintes declarações ambientais vencerão em 30 dias:');
+        cliente.daPendentes30.forEach(
+            (decAmb) => {
+                conteudo += dadoSecao(decAmb.descricao);
+            }
+        ) 
+    }
+
+    // licença ambiental
+    if (cliente.laPendentes15) {
+        conteudo += tituloSecao('As seguintes licenças ambientais vencerão em 15 dias:');
+        cliente.laPendentes15.forEach(
+            (licAmb) => {
+                conteudo += dadoSecao(licAmb.descricao);
+            }
+        ) 
+    }
+
+    if (cliente.laPendentes60) {
+        conteudo += tituloSecao('As seguintes licenças ambientais vencerão em 60 dias:');
+        cliente.laPendentes60.forEach(
+            (licAmb) => {
+                conteudo += dadoSecao(licAmb.descricao);
+            }
+        ) 
+    }
+
+    if (cliente.laPendentes130) {
+        conteudo += tituloSecao('As seguintes licenças ambientais vencerão em 130 dias:');
+        cliente.laPendentes130.forEach(
+            (licAmb) => {
+                conteudo += dadoSecao(licAmb.descricao);
+            }
+        ) 
+    }
+
+    // cadastro de credito
+    if (cliente.ccPendentes15) {
+        conteudo += tituloSecao('As seguintes cadastros de crédito vencerão em 15 dias:');
+        cliente.ccPendentes15.forEach(
+            (cadCred) => {
+                conteudo += dadoSecao(cadCred.descricao);
+            }
+        ) 
+    }
+
+    if (cliente.ccPendentes30) {
+        conteudo += tituloSecao('As seguintes cadastros de crédito vencerão em 30 dias:');
+        cliente.ccPendentes30.forEach(
+            (cadCred) => {
+                conteudo += dadoSecao(cadCred.descricao);
+            }
+        ) 
+    }
+
+    if (cliente.ccPendentes130) {
+        conteudo += tituloSecao('As seguintes cadastros de crédito vencerão em 130 dias:');
+        cliente.ccPendentes130.forEach(
+            (cadCred) => {
+                conteudo += dadoSecao(cadCred.descricao);
+            }
+        ) 
+    }
+   
+    conteudo += '</table>';
+    return conteudo;
+}
+
+const tituloSecao = (texto) => {
+    return `<tr style="text-align: center;"><th style="border-top: solid black;border-bottom: groove;background-color: #217e36;color: #fff;">${texto}</th></tr>`
+}
+const dadoSecao = (texto) => `<tr style="text-align: center;"><td>${texto}</td></tr>`;
+
+
+module.exports = { montaCorpoEmail, montaEmailCliente };
 
