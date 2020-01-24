@@ -253,8 +253,6 @@ export class CriaClientePage implements OnInit {
   }
 
   async AtualizaListaGlobal() {
-    
-
     this.clienteService.init();
     await this.clienteService.update({
       id: this.clienteId,
@@ -267,7 +265,7 @@ export class CriaClientePage implements OnInit {
       telefone: this.clienteForm.get('telefone').value,
       dataNascimento: this.clienteForm.get('dataNascimento').value,
       email: this.clienteForm.get('email').value,
-      senha: this.senha_banco,
+      senha: this.clienteForm.get('senha').value,
     });
   }
 
@@ -500,7 +498,7 @@ export class CriaClientePage implements OnInit {
             dataNascimento: this.clienteForm.get('dataNascimento').value,
             telefone: this.clienteForm.get('telefone').value,
             email: this.clienteForm.get('email').value,
-            senha: this.senha_banco,
+            senha: this.clienteForm.get('senha').value,
           });
         });
       })
@@ -548,15 +546,13 @@ export class CriaClientePage implements OnInit {
       dataNascimento: this.clienteForm.get('dataNascimento').value,
       telefone: this.clienteForm.get('telefone').value,
       email: this.clienteForm.get('email').value,
-      senha: this.senha_banco,
+      senha: this.clienteForm.get('senha').value,
       impostoRenda: enderecoArquivo,
       nomeIr: this.irName
     });
   }
 
   salvarCnh(idCliente: string, enderecoArquivo: string) {
-    
-
     this.clienteService.update({
       id: idCliente,
       cpf: this.clienteForm.get('cpf').value,
@@ -568,7 +564,7 @@ export class CriaClientePage implements OnInit {
       dataNascimento: this.clienteForm.get('dataNascimento').value,
       telefone: this.clienteForm.get('telefone').value,
       email: this.clienteForm.get('email').value,
-      senha: this.senha_banco,
+      senha: this.clienteForm.get('senha').value,
       cnh: enderecoArquivo,
       nomeCnh: this.cnhName
     });
@@ -597,11 +593,12 @@ export class CriaClientePage implements OnInit {
 
     this.clienteService.init();
     let idCliente = (this.clienteService.id === '') ? this.clienteId : this.clienteService.id;
-
+    
     if (caminho == "CNH") {
       if (!this.novoCnh) {
         this.deleteArquivosPasta("cnhCliente", this.cnhName);
       }
+      
       this.cnhName = '';
       this.cnhAntigo = '';
       this.urlCnh = '';
@@ -609,7 +606,7 @@ export class CriaClientePage implements OnInit {
       this.liberaCnh = false;
       this.salvarCnh(idCliente, '');
 
-    }
+    } else
     if (caminho == "IR") {
       if (!this.novoIr) {
         this.deleteArquivosPasta("irCliente", this.irName);
@@ -621,7 +618,7 @@ export class CriaClientePage implements OnInit {
       this.liberaIr = false;
       this.salvarIr(idCliente, '');
     }
-
+    
   }
 
   clearField() {

@@ -53,8 +53,8 @@ export class LoginPage implements OnInit {
     });
 
     this.loginForm = this.formBuilder.group( {
-      senha:this.formBuilder.control('123456', [Validators.required, Validators.minLength(6)]), 
-      email:this.formBuilder.control('kayza@hmsconsulting.com.br', [Validators.required, Validators.email]), 
+      senha:this.formBuilder.control('', [Validators.required, Validators.minLength(6)]), 
+      email:this.formBuilder.control('', [Validators.required, Validators.email]), 
       admin:this.formBuilder.control(false, [])
     }); 
 

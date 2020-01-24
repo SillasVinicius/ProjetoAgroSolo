@@ -239,7 +239,7 @@ export class RelatorioClientePage implements OnInit {
             { text: "Telefone", style: "tableHeader" },
             { text: "Data Nascimento", style: "tableHeader" },
             { text: "Produtividade Agropecuária", style: "tableHeader" },
-            { text: "patrimonioForm", style: "tableHeader" },
+            { text: "Patrimônio", style: "tableHeader" },
             { text: "Informações Adicionais", style: "tableHeader" },
           ]
         )
@@ -271,10 +271,7 @@ export class RelatorioClientePage implements OnInit {
       },
 
     };
-
-
     this.pdfObject = pdfMake.createPdf(docDefinition).open();
-
   }
 
 }
