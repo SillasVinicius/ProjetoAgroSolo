@@ -67,7 +67,7 @@
     "ionic-gallery-modal": "^0.2.7",
     "json-server": "^0.15.0",
     "jsonwebtoken": "^8.5.1",
-    "jspdf": "^1.5.3",
+    "jspdf": "^2.3.1",
     "nodemailer": "^6.4.2",
     "pdfmake": "^0.1.63",
     "request": "^2.88.0",
